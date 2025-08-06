@@ -1,0 +1,22 @@
+{
+  "short_name": "TaxiTip",
+  "name": "TaxiTip.org",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#f4d35e",
+  "description": "TaxiTip.org – herramientas para taxistas",
+  "icons": [
+    {
+      "src": "./assets/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./assets/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
