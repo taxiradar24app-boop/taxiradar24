@@ -1,35 +1,37 @@
-// server.js
+// opensky-proxy/server.js
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
 
-require('dotenv').config();
+// En Render no hace falta dotenv, pero no molesta en local
+try { require('dotenv').config(); } catch (_) {}
 
 const app = express();
-const PORT = process.env.PORT || 8080;
-
 app.use(cors());
 app.use(express.json());
 
-// Endpoint para pedir token a OpenSky
+const PORT = process.env.PORT || 3000;
+
+// Healthcheck (para probar en el navegador)
+app.get('/health', (_, res) => res.status(200).send('ok'));
+
+// === /token: devuelve token OAuth2 de OpenSky, protegido por secreto ===
 app.post('/token', async (req, res) => {
   try {
     const { authorization } = req.headers;
     const expectedSecret = `Bearer ${process.env.PROXY_AUTH_SECRET}`;
-
     if (!authorization || authorization !== expectedSecret) {
       return res.status(403).json({ error: 'No autorizado' });
     }
 
     const tokenRes = await fetch('https://opensky-network.org/api/v2/auth/token', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
         grant_type: 'client_credentials',
-        client_id: process.env.OPEN_SKY_CLIENT_ID,
-        client_secret: process.env.OPEN_SKY_CLIENT_SECRET,
+        // OJO: nombres de variables correctos
+        client_id: process.env.OPENSKY_CLIENT_ID,
+        client_secret: process.env.OPENSKY_CLIENT_SECRET,
       }),
     });
 
@@ -49,17 +51,17 @@ app.post('/token', async (req, res) => {
   }
 });
 
-// Endpoint para obtener vuelos filtrados cerca de Palma (LEPA)
-app.get('/flights', async (req, res) => {
+// === /flights: obtiene estados y filtra cercanos a Palma (LEPA) ===
+app.get('/flights', async (_req, res) => {
   try {
-    // Primero obtenemos el token OAuth2 de OpenSky
+    // 1) Obtener token
     const tokenRes = await fetch('https://opensky-network.org/api/v2/auth/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
         grant_type: 'client_credentials',
-        client_id: process.env.OPEN_SKY_CLIENT_ID,
-        client_secret: process.env.OPEN_SKY_CLIENT_SECRET,
+        client_id: process.env.OPENSKY_CLIENT_ID,
+        client_secret: process.env.OPENSKY_CLIENT_SECRET,
       }),
     });
 
@@ -67,32 +69,34 @@ app.get('/flights', async (req, res) => {
       const errText = await tokenRes.text();
       throw new Error(`Error al obtener token para /flights: ${tokenRes.status} - ${errText}`);
     }
+    const { access_token } = await tokenRes.json();
 
-    const tokenData = await tokenRes.json();
-    const accessToken = tokenData.access_token;
-
-    // Llamada a OpenSky para obtener estados de vuelos
+    // 2) Llamar a states/all con Bearer
     const response = await fetch('https://opensky-network.org/api/states/all', {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${access_token}` },
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errText = await response.text();
+      throw new Error(`HTTP ${response.status} - ${errText}`);
     }
 
     const data = await response.json();
 
-    const filteredStates = (data.states || []).filter((flight) => {
-      const lat = flight[6];
-      const lon = flight[5];
-      const alt = flight[13];
-      const vert = flight[11];
+    // 3) Filtrar cercanos a Palma
+    const filteredStates = (data.states || []).filter((f) => {
+      const callsign = f[1];
+      const lon = f[5];
+      const lat = f[6];
+      const baroAlt = f[7];     // baro altitude
+      const vertRate = f[11];   // vertical rate m/s
+
       return (
-        lat && lon && alt != null && vert != null &&
+        lat != null && lon != null &&
         Math.abs(lat - 39.5517) < 1.0 &&
         Math.abs(lon - 2.7388) < 1.0 &&
-        alt < 4000 &&
-        vert < 0
+        baroAlt != null && baroAlt < 4000 &&   // por debajo de 4000m
+        vertRate != null && vertRate < 0       // descendiendo
       );
     });
 
@@ -103,6 +107,7 @@ app.get('/flights', async (req, res) => {
   }
 });
 
+// (una sola vez)
 app.listen(PORT, () => {
   console.log(`🚀 Proxy OpenSky escuchando en puerto ${PORT}`);
 });
