@@ -65,6 +65,32 @@ app.get('/flights', async (_req, res) => {
       }),
     });
 
+    // --- DEBUG DE RED ---
+app.get('/debug/net', async (_req, res) => {
+  const results = {};
+  const t0 = Date.now();
+  try {
+    const ipRes = await fetchWithTimeout('https://ifconfig.me/ip', {}, 6000);
+    results.egressIP = ipRes.ok ? (await ipRes.text()).trim() : `status ${ipRes.status}`;
+  } catch (e) {
+    results.egressIP = `error: ${e}`;
+  }
+  async function probe(name, url, method='GET') {
+    const start = Date.now();
+    try {
+      const r = await fetchWithTimeout(url, { method }, 6000);
+      results[name] = { ok: r.ok, status: r.status, ms: Date.now() - start };
+    } catch (e) {
+      results[name] = { ok: false, error: String(e), ms: Date.now() - start };
+    }
+  }
+  await probe('google', 'https://www.google.com', 'HEAD');
+  await probe('opensky_home', 'https://opensky-network.org', 'HEAD');
+  await probe('opensky_api', 'https://opensky-network.org/api', 'HEAD');
+  res.json({ now: new Date().toISOString(), tookMs: Date.now() - t0, results });
+});
+
+
     if (!tokenRes.ok) {
       const errText = await tokenRes.text();
       throw new Error(`Error al obtener token para /flights: ${tokenRes.status} - ${errText}`);
