@@ -12,24 +12,30 @@ export const Container = styled.div`
 export const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSizes.lg};
   color: ${({ theme }) => theme.colors.text};
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   text-align: center;
 `;
 
 export const SubTitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes.md};
   color: ${({ theme }) => theme.colors.text};
-  margin-bottom: 10px;
+  margin: 0 0 14px;
   text-align: center;
+  opacity: 0.8;
+`;
+
+export const ListContainer = styled.div`
+  width: 100%;
+  max-width: 760px;
+  display: grid;
+  gap: 12px;
 `;
 
 export const FlightCard = styled.div`
-  background-color: ${({ theme }) => theme.colors.card || '#1e1e1e'};
-  border-radius: 12px;
-  padding: 12px;
-  margin: 10px 0;
-  width: 100%;
-  max-width: 600px;
+  background-color: ${({ theme }) => theme.colors.card};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  padding: 14px;
+  box-shadow: ${({ theme }) => theme.shadows.light};
 `;
 
 export const FlightText = styled.p`
@@ -38,41 +44,29 @@ export const FlightText = styled.p`
   margin: 4px 0;
 `;
 
-export const RefreshButton = styled.button`
-  margin-top: 24px;
-  padding: 12px 24px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.secondary};
-  }
+export const Bar = styled.div`
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0 16px;
 `;
 
-export const RefreshText = styled.span``;
-
-export const ListContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+export const Muted = styled.span`
+  color: ${({ theme }) => theme.colors.text};
+  opacity: 0.7;
+  font-size: 12px;
 `;
 
 export const LoadingSpinner = styled.div`
-  border: 6px solid #f3f3f3;
+  border: 6px solid rgba(255,255,255,.2);
   border-top: 6px solid ${({ theme }) => theme.colors.primary};
   border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   animation: spin 1s linear infinite;
-  margin-top: 40px;
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+  margin-top: 26px;
+  @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
 `;

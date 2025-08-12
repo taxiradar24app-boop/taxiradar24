@@ -1,7 +1,7 @@
 // src/hooks/useAuth.js
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { db } from '../services/firebaseConfig';
+import { db } from './../services/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
 
 export default function useAuth() {

@@ -1,9 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from './../services/firebaseConfig';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { Container, LogoImage, Title } from './../Styles/homeStyles';
+import { GoogleButton } from './../Styles/Buttons';
 import styled from 'styled-components';
 import logo from './../../assets/Moneda_digital_TaxiTip1.png';
 
@@ -12,30 +13,12 @@ const AnimatedTitle = styled(Title)`
   transition: opacity 1.5s ease-in-out;
 `;
 
-const GoogleButton = styled.button`
-  background-color: #252521;
-  padding: 12px 24px;
-  border-radius: 8px;
-  margin-top: 32px;
-  border: 1px solid #ccc;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #333;
-  }
-`;
-
 export default function LoginScreen() {
   const navigate = useNavigate();
-  const fadeAnim = useRef(0);
-  const [opacity, setOpacity] = React.useState(0);
+  const [opacity, setOpacity] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setOpacity(1);
-    }, 100);
+    const timer = setTimeout(() => setOpacity(1), 100);
     return () => clearTimeout(timer);
   }, []);
 
@@ -48,10 +31,8 @@ export default function LoginScreen() {
 
       const userRef = doc(db, 'usersorg', user.uid);
       const userSnap = await getDoc(userRef);
-      console.log('📥 UID detectado:', user.uid);
 
       if (!userSnap.exists()) {
-        console.log('🆕 Creando nuevo documento en usersorg');
         await setDoc(userRef, {
           uid: user.uid,
           displayName: user.displayName,
@@ -63,15 +44,11 @@ export default function LoginScreen() {
       }
 
       const userData = userSnap.data();
-
       if (userData.phoneNumber) {
-        console.log('📞 Número verificado:', userData.phoneNumber);
         navigate('/');
       } else {
-        console.log('⚠️ Usuario sin número de teléfono');
         navigate('/verify');
       }
-
     } catch (error) {
       console.error('❌ Error en autenticación:', error.message);
     }

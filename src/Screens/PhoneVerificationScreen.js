@@ -1,23 +1,20 @@
-// src/Screens/PhoneVerificationScreen.js
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from './../services/firebaseConfig';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { Container, LogoImage } from './../Styles/homeStyles';
-import { AnimatedTitle, GoogleButton, ButtonText } from './../Styles/PhoneVerificationStyle';
+import { AnimatedTitle } from './../Styles/PhoneVerificationStyle';
+import { GoogleButton, ButtonText } from './../Styles/Buttons';
 import logo from './../../assets/Moneda_digital_TaxiTip1.png';
 
 export default function PhoneVerificationScreen() {
   const navigate = useNavigate();
-  const fadeAnim = useRef(0);
   const [opacity, setOpacity] = useState(0);
   const [phoneNumber, setPhoneNumber] = useState('');
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setOpacity(1);
-    }, 100);
+    const timer = setTimeout(() => setOpacity(1), 100);
     return () => clearTimeout(timer);
   }, []);
 
@@ -29,16 +26,10 @@ export default function PhoneVerificationScreen() {
 
       const userRef = doc(db, 'usersorg', user.uid);
       const userSnap = await getDoc(userRef);
-
       if (!userSnap.exists()) throw new Error('Documento no encontrado');
 
       await updateDoc(userRef, { phoneNumber });
-      console.log('✅ Teléfono guardado:', phoneNumber);
-
-      // 🔁 Recargar los datos del usuario autenticado
       await auth.currentUser.reload();
-
-      console.log('🔄 Redirigiendo a ToolScreen...');
       navigate('/', { replace: true });
     } catch (error) {
       console.error('❌ Error guardando el número:', error.message);

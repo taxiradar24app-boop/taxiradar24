@@ -19,28 +19,24 @@ export const Title = styled.h1`
 `;
 
 export const ToolCard = styled.div`
-  background-color: ${({ theme }) =>
-    theme.mode === 'light' ? '#eee' : theme.colors.secondary};
+  background-color: ${({ theme }) => theme.colors.card};
   width: 100%;
-  max-width: 300px;
+  max-width: 320px;
   border-radius: ${({ theme }) => theme.borderRadius.md};
   padding: ${({ theme }) => theme.spacing.md};
   text-align: center;
   margin-bottom: ${({ theme }) => theme.spacing.md};
   cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: ${({ theme }) =>
-      theme.mode === 'light' ? '#ddd' : theme.colors.primary};
-  }
+  transition: background-color .25s ease, transform .06s ease;
+  &:hover { background-color: ${({ theme }) => theme.colors.secondary}; }
+  &:active { transform: scale(.98); }
 `;
 
 export const ToolText = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: bold;
-  color: ${({ theme, theme: { mode } }) =>
-    mode === 'light' ? '#111' : theme.colors.text};
+  color: ${({ theme }) => theme.colors.text};
+  margin: 0;
 `;
 
 export const ToggleThemeButton = styled.button`
@@ -49,15 +45,11 @@ export const ToggleThemeButton = styled.button`
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   border: 1px solid ${({ theme }) => theme.colors.primary};
   background: none;
+  color: ${({ theme }) => theme.colors.text};
   cursor: pointer;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.primary};
-    color: #fff;
-  }
+  &:hover { background-color: ${({ theme }) => theme.colors.primary}; color: #000; }
 `;
 
 export const ToggleText = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.text};
 `;
