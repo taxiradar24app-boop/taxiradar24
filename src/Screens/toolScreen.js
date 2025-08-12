@@ -4,12 +4,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from './../services/firebaseConfig';
 import { useThemeMode } from './../Styles/ThemeContext';
 import {
-  Container,
-  Title,
-  ToolCard,
-  ToolText,
-  ToggleThemeButton,
-  ToggleText,
+  Container, Title, ToolCard, ToolText, ToggleThemeButton, ToggleText
 } from './../Styles/toolStyle';
 
 export default function ToolScreen() {
@@ -29,7 +24,7 @@ export default function ToolScreen() {
       <Title>Pantalla de Herramientas</Title>
 
       <ToolCard onClick={() => navigate('/radar')}>
-        <ToolText style={{ color: '#000' }}>✈️ Radar de vuelos</ToolText>
+        <ToolText>✈️ Radar de vuelos</ToolText>
       </ToolCard>
 
       <ToggleThemeButton onClick={toggleTheme}>

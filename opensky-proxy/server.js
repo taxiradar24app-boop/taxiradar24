@@ -1,139 +1,115 @@
-// opensky-proxy/server.js
-const express = require('express');
-const cors = require('cors');
-const fetch = require('node-fetch');
+// server.js – OpenSky proxy (Express)
+// .env esperado:
+// OSK_CLIENT_ID=...            (requerido)
+// OSK_CLIENT_SECRET=...        (requerido)
+// PROXY_SECRET=tusecretoseguro123   (opcional; si está, se exige header x-proxy-secret)
+// ALLOW_ORIGIN=https://taxitip.org,http://localhost:3000
+// PORT= (Render lo inyecta)
 
-// En Render no hace falta dotenv, pero no molesta en local
-try { require('dotenv').config(); } catch (_) {}
+require('dotenv').config();
+const express = require('express');
+const fetch = require('node-fetch'); // v2
+const cors = require('cors');
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
+// ---------- CORS por lista ----------
+const allowed = (process.env.ALLOW_ORIGIN || '*')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
 
-// Healthcheck (para probar en el navegador)
-app.get('/health', (_, res) => res.status(200).send('ok'));
+app.use(cors({
+  origin: (origin, cb) => {
+    // Permite curl/SSR (sin Origin) y '*' o coincidencia exacta
+    if (!origin || allowed.includes('*') || allowed.includes(origin)) return cb(null, true);
+    return cb(new Error(`CORS blocked: ${origin}`));
+  },
+}));
 
-// === /token: devuelve token OAuth2 de OpenSky, protegido por secreto ===
-app.post('/token', async (req, res) => {
+// ---------- Credenciales ----------
+const OSK_CLIENT_ID = process.env.OSK_CLIENT_ID;
+const OSK_CLIENT_SECRET = process.env.OSK_CLIENT_SECRET;
+const PROXY_SECRET = process.env.PROXY_SECRET || null;
+
+if (!OSK_CLIENT_ID || !OSK_CLIENT_SECRET) {
+  console.error('❌ Faltan OSK_CLIENT_ID / OSK_CLIENT_SECRET en .env');
+}
+
+// ---------- Protección opcional ----------
+function requireProxySecret(req, res, next) {
+  if (!PROXY_SECRET) return next(); // sin secreto -> libre (útil dev)
+  const header = req.get('x-proxy-secret');
+  if (header === PROXY_SECRET) return next();
+  return res.status(401).json({ error: 'unauthorized', message: 'x-proxy-secret missing/invalid' });
+}
+
+// ---------- Caché de token ----------
+let tokenCache = { access_token: null, expires_at: 0 };
+
+async function getOpenSkyToken() {
+  const now = Math.floor(Date.now() / 1000);
+  if (tokenCache.access_token && tokenCache.expires_at - 60 > now) {
+    return tokenCache.access_token;
+  }
+
+  const url = 'https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token';
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'client_credentials',
+      client_id: OSK_CLIENT_ID,
+      client_secret: OSK_CLIENT_SECRET,
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Token error ${res.status}: ${body}`);
+  }
+
+  const data = await res.json();
+  tokenCache.access_token = data.access_token;
+  tokenCache.expires_at = Math.floor(Date.now() / 1000) + (data.expires_in || 1800);
+  return tokenCache.access_token;
+}
+
+// ---------- Health ----------
+app.get('/', (_req, res) => res.json({ ok: true, service: 'taxitip-opensky-proxy' }));
+
+// ---------- Endpoint estados ----------
+app.get('/opensky/states', requireProxySecret, async (req, res) => {
   try {
-    const { authorization } = req.headers;
-    const expectedSecret = `Bearer ${process.env.PROXY_AUTH_SECRET}`;
-    if (!authorization || authorization !== expectedSecret) {
-      return res.status(403).json({ error: 'No autorizado' });
+    const token = await getOpenSkyToken();
+
+    // Sanitizar QS
+    const allowParams = ['lamin', 'lomin', 'lamax', 'lomax', 'time', 'icao24', 'extended'];
+    const qs = new URLSearchParams();
+    for (const k of allowParams) if (req.query[k] !== undefined) qs.set(k, req.query[k]);
+
+    // Si no pasan bbox, usa Palma (LEPA) por defecto
+    if (![qs.get('lamin'), qs.get('lomin'), qs.get('lamax'), qs.get('lomax')].every(Boolean)) {
+      qs.set('lamin', '39.48');
+      qs.set('lomin', '2.60');
+      qs.set('lamax', '39.78');
+      qs.set('lomax', '2.90');
     }
 
-    const tokenRes = await fetch('https://opensky-network.org/api/v2/auth/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        grant_type: 'client_credentials',
-        // OJO: nombres de variables correctos
-        client_id: process.env.OPENSKY_CLIENT_ID,
-        client_secret: process.env.OPENSKY_CLIENT_SECRET,
-      }),
-    });
+    const upstream = `https://opensky-network.org/api/states/all?${qs.toString()}`;
+    const r = await fetch(upstream, { headers: { Authorization: `Bearer ${token}` } });
 
-    if (!tokenRes.ok) {
-      const errText = await tokenRes.text();
-      throw new Error(`Error al obtener token: ${tokenRes.status} - ${errText}`);
-    }
-
-    const tokenData = await tokenRes.json();
-    res.json({
-      access_token: tokenData.access_token,
-      expires_in: tokenData.expires_in,
-    });
+    const text = await r.text(); // devolvemos tal cual
+    res.status(r.status).type('application/json').send(text);
   } catch (err) {
-    console.error('❌ Error en /token:', err);
-    res.status(500).json({ error: err.message });
+    console.error('Proxy /opensky/states error:', err.message);
+    res.status(500).json({ error: 'proxy_error', message: err.message });
   }
 });
 
-// === /flights: obtiene estados y filtra cercanos a Palma (LEPA) ===
-app.get('/flights', async (_req, res) => {
-  try {
-    // 1) Obtener token
-    const tokenRes = await fetch('https://opensky-network.org/api/v2/auth/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        grant_type: 'client_credentials',
-        client_id: process.env.OPENSKY_CLIENT_ID,
-        client_secret: process.env.OPENSKY_CLIENT_SECRET,
-      }),
-    });
-
-    // --- DEBUG DE RED ---
-app.get('/debug/net', async (_req, res) => {
-  const results = {};
-  const t0 = Date.now();
-  try {
-    const ipRes = await fetchWithTimeout('https://ifconfig.me/ip', {}, 6000);
-    results.egressIP = ipRes.ok ? (await ipRes.text()).trim() : `status ${ipRes.status}`;
-  } catch (e) {
-    results.egressIP = `error: ${e}`;
-  }
-  async function probe(name, url, method='GET') {
-    const start = Date.now();
-    try {
-      const r = await fetchWithTimeout(url, { method }, 6000);
-      results[name] = { ok: r.ok, status: r.status, ms: Date.now() - start };
-    } catch (e) {
-      results[name] = { ok: false, error: String(e), ms: Date.now() - start };
-    }
-  }
-  await probe('google', 'https://www.google.com', 'HEAD');
-  await probe('opensky_home', 'https://opensky-network.org', 'HEAD');
-  await probe('opensky_api', 'https://opensky-network.org/api', 'HEAD');
-  res.json({ now: new Date().toISOString(), tookMs: Date.now() - t0, results });
-});
-
-
-    if (!tokenRes.ok) {
-      const errText = await tokenRes.text();
-      throw new Error(`Error al obtener token para /flights: ${tokenRes.status} - ${errText}`);
-    }
-    const { access_token } = await tokenRes.json();
-
-    // 2) Llamar a states/all con Bearer
-    const response = await fetch('https://opensky-network.org/api/states/all', {
-      headers: { Authorization: `Bearer ${access_token}` },
-    });
-
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(`HTTP ${response.status} - ${errText}`);
-    }
-
-    const data = await response.json();
-
-    // 3) Filtrar cercanos a Palma
-    const filteredStates = (data.states || []).filter((f) => {
-      const callsign = f[1];
-      const lon = f[5];
-      const lat = f[6];
-      const baroAlt = f[7];     // baro altitude
-      const vertRate = f[11];   // vertical rate m/s
-
-      return (
-        lat != null && lon != null &&
-        Math.abs(lat - 39.5517) < 1.0 &&
-        Math.abs(lon - 2.7388) < 1.0 &&
-        baroAlt != null && baroAlt < 4000 &&   // por debajo de 4000m
-        vertRate != null && vertRate < 0       // descendiendo
-      );
-    });
-
-    res.json({ time: data.time, states: filteredStates });
-  } catch (error) {
-    console.error('❌ Error en /flights:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// (una sola vez)
+// ---------- Start ----------
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Proxy OpenSky escuchando en puerto ${PORT}`);
+  console.log(`OpenSky proxy up on :${PORT}`);
 });

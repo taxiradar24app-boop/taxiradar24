@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const PROXY_BASE = "https://taxitip-proxy.onrender.com"; // 👈 tu proxy Render
+const PROXY_SECRET = process.env.EXPO_PUBLIC_PROXY_SECRET; // secreto desde env frontend
 
 // BBox Palma/LEPA
 const BBOX_LEPA = { lamin: 39.48, lomin: 2.60, lamax: 39.78, lomax: 2.90 };
@@ -50,7 +51,12 @@ export default function useFlights(bbox = BBOX_LEPA, extended = true) {
     try {
       abortRef.current?.abort?.();
       abortRef.current = new AbortController();
-      const res = await fetch(url, { signal: abortRef.current.signal });
+      const res = await fetch(url, {
+        signal: abortRef.current.signal,
+        headers: {
+          'x-proxy-secret': PROXY_SECRET || ''
+        }
+      });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       setTime(json.time || null);
