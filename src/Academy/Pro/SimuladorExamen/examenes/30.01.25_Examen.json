@@ -1,0 +1,722 @@
+[
+  {
+    "id": "30_01_25_Q001",
+    "numero": 1,
+    "pregunta": "Señala cuál de estas tres es la afirmación correcta. Transmisión de licencias de auto-taxi. Si se tratase de transmisión “mortis causa”, la transmisión deberá solicitarse al Excmo. Ayuntamiento de Palma dentro de un plazo…",
+    "opciones": {
+      "A": "inferior a tres meses a partir del día siguiente al hecho causante de la transmisión.",
+      "B": "superior a tres meses a partir del día siguiente al hecho causante de la transmisión.",
+      "C": "superior a seis meses a partir del día del hecho causante de la transmisión."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q002",
+    "numero": 2,
+    "pregunta": "Señala cuál de estas tres es la afirmación correcta.",
+    "opciones": {
+      "A": "Únicamente el titular de una licencia de auto-taxi, y su cónyuge, que figuren de alta en el Régimen Especial de Autónomos de la Seguridad Social, podrán conducir el vehículo adscrito a dicha licencia.",
+      "B": "El titular de una licencia de auto-taxi, su cónyuge y sus parientes por consanguinidad o afinidad hasta el segundo grado que figuren de alta en el Régimen Especial de Autónomos de la Seguridad Social, única y exclusivamente pueden conducir el vehículo adscrito a dicha licencia.",
+      "C": "El titular de una licencia de auto-taxi, su cónyuge y sus parientes por consanguinidad o afinidad hasta el tercer grado que figuren de alta en el Régimen Especial de Autónomos de la Seguridad Social, única y exclusivamente pueden conducir el vehículo adscrito a dicha licencia."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q003",
+    "numero": 3,
+    "pregunta": "Señala cuál de estas tres es la afirmación correcta.",
+    "opciones": {
+      "A": "Los conductores podrán llevar un cartel que indique la prohibición de fumar, el cual deberá ser visible desde el exterior del vehículo.",
+      "B": "Los usuarios del servicio tendrán derecho a seleccionar el recorrido a realizar para llegar a destino.",
+      "C": "Ambas son correctas."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q004",
+    "numero": 4,
+    "pregunta": "La no comunicación del cambio de domicilio por parte de los titulares de licencia de autotaxi y permisos municipales de taxista, supondrá…",
+    "opciones": {
+      "A": "Falta leve.",
+      "B": "Falta muy grave.",
+      "C": "Ninguna de las anteriores."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q005",
+    "numero": 5,
+    "pregunta": "Señala cuál de estas tres es la afirmación correcta.",
+    "opciones": {
+      "A": "Tendrá la consideración de falta grave la inadecuada estiba o colocación de la carga.",
+      "B": "La revisión del permiso municipal de taxista deberá solicitarse por el interesado al finalizar su vigencia y conlleva el pago de las tasas municipales establecidas.",
+      "C": "La revisión del permiso municipal de taxista deberá solicitarse por el interesado antes de finalizar su vigencia y conlleva el pago de las tasas municipales establecidas."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q006",
+    "numero": 6,
+    "pregunta": "Para aumentar el actual número de licencias de auto-taxi, fijado en el art. 4, se requerirá expediente previo en el que se acredite la adecuación de la oferta y la demanda, que quede justificada la rentabilidad del servicio y que no se supere el…",
+    "opciones": {
+      "A": "Uno por mil del total de la población de derecho de Palma de Mallorca vigente en el momento de iniciarse el expediente.",
+      "B": "Dos por mil del total de la población de derecho de Palma de Mallorca vigente en el momento de iniciarse el expediente.",
+      "C": "Ninguna de las anteriores."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q007",
+    "numero": 7,
+    "pregunta": "De las infracciones referidas al incumplimiento de las obligaciones impuestas en el Reglamento a los titulares de las licencias de auto-taxi, y a las condiciones y requisitos de los vehículos adscritos a las mismas, son responsables...",
+    "opciones": {
+      "A": "La persona que cometa la falta, ya sea el titular de la licencia o un conductor adscrito a la misma.",
+      "B": "Únicamente los titulares de la licencia de auto-taxi.",
+      "C": "Únicamente los conductores adscritos a la licencia de auto-taxi."
+    },
+    "correcta": "B",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q008",
+    "numero": 8,
+    "pregunta": "Señala la afirmación correcta.",
+    "opciones": {
+      "A": "En caso de atascos circulatorios durante la prestación del servicio, que impidan la fluidez de su prestación, el usuario podrá abonar la prestación del servicio hasta su finalización.",
+      "B": "En caso de atascos circulatorios durante la prestación del servicio, que impidan la fluidez de su prestación, el usuario podrá apearse del vehículo debiendo abonar el importe devengado hasta dicho momento.",
+      "C": "Ambas son correctas."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q009",
+    "numero": 9,
+    "pregunta": "Que el taxista no encienda la luz interior, por la noche, para facilitar la subida y bajada y el pago del servicio, supondrá…",
+    "opciones": {
+      "A": "Falta leve.",
+      "B": "Falta grave.",
+      "C": "Ninguna de las anteriores."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q010",
+    "numero": 10,
+    "pregunta": "¿Cuál es importe del suplemento “Bulto o Maletas” actualmente vigente?",
+    "opciones": {
+      "A": "0,65€.",
+      "B": "1,10€.",
+      "C": "Actualmente, no existe este suplemento en las tarifas vigentes."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q011",
+    "numero": 11,
+    "pregunta": "Un vehículo con una antigüedad de 12 años contados desde la fecha de primera matriculación, deberá pasar una revisión municipal ordinaria cada…",
+    "opciones": {
+      "A": "6 meses.",
+      "B": "1 año.",
+      "C": "2 años."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q012",
+    "numero": 12,
+    "pregunta": "Señala cuál de estas tres es la afirmación correcta. En caso de que un usuario del servicio abandone el vehículo transitoriamente, y nos diga que esperemos a su regreso, tendremos derecho a cobrarle…",
+    "opciones": {
+      "A": "el recorrido realizado, más media hora de espera en descampado.",
+      "B": "independientemente de donde se encuentre, el recorrido realizado más una hora de espera.",
+      "C": "el recorrido realizado, más media hora de espera en zona urbana."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q013",
+    "numero": 13,
+    "pregunta": "Indicar si puede ser rechazado por el taxista el transporte de un perro portado por un usuario, siendo un perro de reducido tamaño, y estando alojado en una jaula para el adecuado transporte del animal:",
+    "opciones": {
+      "A": "No puede ser rechazado el transporte del animal si se trata de un perro limpio, y por estar adecuadamente protegido, sin posibilidad de producir daños.",
+      "B": "Debe ser rechazado si no se trata de un perro guía para personas invidentes.",
+      "C": "Puede ser rechazado, pues los animales domésticos son admitidos a criterio del conductor."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q014",
+    "numero": 14,
+    "pregunta": "Si el conductor, una vez iniciado el servicio, hubiera olvidado poner en marcha el taxímetro…",
+    "opciones": {
+      "A": "podrá hacer una estimación del recorrido realizado hasta ese momento, para poder cobrar el servicio que se haya hecho realmente, incluyendo la bajada de bandera.",
+      "B": "será de su cargo exclusivo el importe devengado hasta el momento en que se percate de ello, sin poder cobrar la bajada de bandera.",
+      "C": "será de su cargo exclusivo el importe devengado hasta el momento en que se percate de ello. El único concepto que el taxista podría cobrar hasta ese momento, es la bajada de bandera."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q015",
+    "numero": 15,
+    "pregunta": "Señalar lo que son las permutas de turnos previstas en el art. 52 del Reglamento del servicio:",
+    "opciones": {
+      "A": "Autorizaciones especiales para prestar servicios limítrofes como Marratxí.",
+      "B": "Permutas entre las autorizaciones de transporte interurbano de ámbito nacional y licencias de transporte de la clase C.",
+      "C": "Intercambio de los turnos de trabajo previamente asignados a los taxistas, previamente solicitado por los interesados, por razones justificadas."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q016",
+    "numero": 16,
+    "pregunta": "La corporación municipal, siempre que existieran peticionarios que reúnan los requisitos exigidos en el Reglamento para ser titular de una licencia de auto-taxi, vendrá obligada a conceder las licencias en …",
+    "opciones": {
+      "A": "los 15 días naturales siguientes a la fecha de expiración del plazo de presentación de peticiones.",
+      "B": "los 3 meses siguientes a la fecha de expiración del plazo de presentación de peticiones.",
+      "C": "los 6 meses siguientes a la fecha de expiración del plazo de presentación de peticiones."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q017",
+    "numero": 17,
+    "pregunta": "Los vehículos autorizados para el empleo de combustible gaseoso por el sistema de botellas, deberán ir provistos de un maletero con capacidad para…",
+    "opciones": {
+      "A": "una maleta con un tamaño mínimo de 70x45x20 cm.",
+      "B": "2 maletas con un tamaño mínimo de 70x45x20 cm.",
+      "C": "Ninguna de las anteriores."
+    },
+    "correcta": "B",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q018",
+    "numero": 18,
+    "pregunta": "Señala cuál de estas tres es la afirmación correcta. Los aparatos de radio u otro medio de comunicación conectado a una emisora o centro de comunicaciones…",
+    "opciones": {
+      "A": "no podrán ser utilizados para tener conversaciones ajenas al servicio público mientras este se esté prestando.",
+      "B": "no podrán ser utilizados para tener conversaciones ajenas al servicio público mientras este se esté prestando, salvo que sean exclusivamente de índole familiar.",
+      "C": "podrán ser utilizados para tener conversaciones ajenas al servicio público mientras este se esté prestando."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q019",
+    "numero": 19,
+    "pregunta": "Durante la prestación del servicio de auto taxi, ¿Qué documentación no será preciso que el taxista tenga a disposición de los Agentes de la Autoridad?",
+    "opciones": {
+      "A": "Permiso de circulación.",
+      "B": "Póliza de seguro.",
+      "C": "Recibo del seguro."
+    },
+    "correcta": "B",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q020",
+    "numero": 20,
+    "pregunta": "Los conductores deberán abrir o cerrar los cristales a indicación de los usuarios. Su incumplimiento supondrá…",
+    "opciones": {
+      "A": "Falta leve.",
+      "B": "Falta grave.",
+      "C": "Este hecho no supone falta administrativa."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q021",
+    "numero": 21,
+    "pregunta": "Señala cuál de estas tres es la afirmación correcta.",
+    "opciones": {
+      "A": "En las reservas de estacionamiento para taxis, estos únicamente podrán tomar pasaje por riguroso turno de llegada a la reserva, salvo que los usuarios decidan escoger otro taxi de entre los que se encuentren estacionados en la citada reserva.",
+      "B": "En las reservas de estacionamiento para taxis, estos únicamente podrán tomar pasaje por riguroso turno de llegada a la reserva, estando los usuarios obligados a respetar dicho turno.",
+      "C": "En las reservas de estacionamiento para taxis, los usuarios siempre tendrán derecho a elegir el taxi que deseen de entre los que se encuentren estacionados en la citada reserva."
+    },
+    "correcta": "B",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q022",
+    "numero": 22,
+    "pregunta": "La negativa u obstrucción a la actuación de los servicios de inspección, así como la desobediencia ante las órdenes impartidas por estos, especialmente en los supuestos de inmovilización de vehículos, supondrá...",
+    "opciones": {
+      "A": "Falta leve.",
+      "B": "Falta grave.",
+      "C": "Falta muy grave."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q023",
+    "numero": 23,
+    "pregunta": "Señala cuál de estas tres es la afirmación correcta.",
+    "opciones": {
+      "A": "Los vehículos auto-taxi, en el panel de mandos llevarán fijada una placa en la que únicamente conste el número de la licencia municipal.",
+      "B": "Los vehículos auto-taxi serán denominados normalmente “tipo turismo”, salvo los expresamente autorizados para el transporte de personas con movilidad reducida.",
+      "C": "Ambas son correctas."
+    },
+    "correcta": "B",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q024",
+    "numero": 24,
+    "pregunta": "Según figura en el artículo 46 del Reglamento vigente, la prestación del servicio de auto-taxi está sujeta a tarifas que deberán ser aprobadas por…",
+    "opciones": {
+      "A": "el Alcalde.",
+      "B": "el Ayuntamiento Pleno.",
+      "C": "la Secció de Transports del Departament de Mobilitat."
+    },
+    "correcta": "B",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q025",
+    "numero": 25,
+    "pregunta": "La identificación de cada taxi vendrá determinada por el número de licencia. Este número irá grafiado en soportes adhesivos para ser colocados en el exterior de los vehículos. ¿Cuántas unidades de estos adhesivos deberá tener colocado cada vehículo auto taxi? ¿Dónde?",
+    "opciones": {
+      "A": "Cuatro unidades. Una en portón trasero, otra en capó delantero, y una en cada una de las dos puertas laterales delanteras.",
+      "B": "Tres unidades. Una en capó delantero, y una en cada una de las dos puertas laterales delanteras.",
+      "C": "Tres unidades. Una en portón trasero, y una en cada una de las dos puertas laterales delanteras."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q026",
+    "numero": 26,
+    "pregunta": "¿Qué opción sería compatible con vehículos catalogados como eco-taxis?",
+    "opciones": {
+      "A": "Vehículos con pila de hidrógeno y con motor de combustión inferior a 1000cc que supere la EURO-4.",
+      "B": "Vehículos con combustible GLP, independientemente del valor mínimo de emisiones de CO2/km.",
+      "C": "Vehículos híbridos, con emisiones inferiores a 140gr. CO2/km."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q027",
+    "numero": 27,
+    "pregunta": "Señala cuál de estas tres es la afirmación correcta.",
+    "opciones": {
+      "A": "La ruta 3 de taxi tour, tendrá tres horas de duración, y un importe de 60€.",
+      "B": "La ruta 3 de taxi tour, tendrá 3 horas de duración, y un importe de 120€.",
+      "C": "La ruta 3 de taxi tour, tendrá 2 horas de duración, y un importe de 120€."
+    },
+    "correcta": "B",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q028",
+    "numero": 28,
+    "pregunta": "La luz verde conectada al taxímetro tiene la siguiente función:",
+    "opciones": {
+      "A": "Para activarla en los semáforos y en el carril de transporte público preferente.",
+      "B": "Para prestar servicios interurbanos, cuando el taxi carece de visado de transportes.",
+      "C": "Para su activación o apagado según el vehículo esté en espera o en servicio."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q029",
+    "numero": 29,
+    "pregunta": "Señalar en qué caso el taxista puede negarse a prestar un servicio:",
+    "opciones": {
+      "A": "cuando sea requerido para prestar servicio por vías intransitables.",
+      "B": "cuando cualquiera de los viajeros se halle en manifiesta intoxicación por estupefacientes, existiendo peligro para su integridad física.",
+      "C": "Ambas opciones son correctas."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q030",
+    "numero": 30,
+    "pregunta": "¿Cuándo se aplicará la tarifa 2?",
+    "opciones": {
+      "A": "se aplicará los días laborables, desde las 21 hasta las 7 horas.",
+      "B": "se aplicará los sábados, los domingos, los festivos, los días 24 y 31 de diciembre, durante toda la jornada y, el resto de días, desde las 21 hasta las 7 horas.",
+      "C": "los días laborales (excepto los sábados), desde las 7 hasta las 21 horas."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+  "id": "30_01_25_Q031",
+  "numero": 31,
+  "pregunta": "¿Qué dos vías públicas (calle, camino, plaza, paseo, etc) tienen cruce, entrada o salida en calle Foners?",
+  "opciones": {
+    "A": "Antoni Maria Alcover y Caracas.",
+    "B": "General Ricardo Ortega y Andreu Torrens.",
+    "C": "Joan Alcover y Manuel Azaña."
+  },
+  "correcta": "C",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q032",
+  "numero": 32,
+  "pregunta": "¿Qué dos vías públicas (calle, camino, plaza, paseo, etc) tienen cruce, entrada o salida en la avenida Gabriel Alomar?",
+  "opciones": {
+    "A": "Escola Graduada y Antoni Pons.",
+    "B": "Barcelona y General Ricardo Ortega.",
+    "C": "Pérez Galdós y Porta del Camp."
+  },
+  "correcta": "C",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q033",
+  "numero": 33,
+  "pregunta": "¿Qué dos vías públicas (calle, camino, plaza, paseo, etc) tienen cruce, entrada o salida en la calle Reis Catòlics?",
+  "opciones": {
+    "A": "Rafael Rodríguez Méndez y Miquel Dolç.",
+    "B": "Benet Pons i Fàbregues y Aragó.",
+    "C": "Josep Darder Metge y Simó Ballester."
+  },
+  "correcta": "B",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q034",
+  "numero": 34,
+  "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Restaurante Can Pelut.",
+  "opciones": {
+    "A": "Reina Maria Cristina.",
+    "B": "Plaça Porta Santa Catalina.",
+    "C": "Gabriel Roca."
+  },
+  "correcta": "C",
+  "origen": "Examen 30.01.25 (R61 sustituyendo a la 34)"
+},
+{
+  "id": "30_01_25_Q035",
+  "numero": 35,
+  "pregunta": "¿Qué dos vías públicas (calle, camino, plaza, paseo, etc) tienen cruce, entrada o salida en la calle Espartero?",
+  "opciones": {
+    "A": "Pont y Progrés.",
+    "B": "Progrés y Argentina.",
+    "C": "Caro y Pont."
+  },
+  "correcta": "A",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q036",
+  "numero": 36,
+  "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Cementerio Municipal de Palma de Mallorca.",
+  "opciones": {
+    "A": "General Riera.",
+    "B": "Palau Reial.",
+    "C": "Camí de Jesús."
+  },
+  "correcta": "C",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q037",
+  "numero": 37,
+  "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Tanatorio Municipal I Son Valentí.",
+  "opciones": {
+    "A": "General Riera.",
+    "B": "Palau Reial.",
+    "C": "Camí de Jesús."
+  },
+  "correcta": "A",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q038",
+  "numero": 38,
+  "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial de la Cámara de Comercio (Mallorca).",
+  "opciones": {
+    "A": "Passeig Sagrera.",
+    "B": "Carrer de l'Estudi General.",
+    "C": "Drassana."
+  },
+  "correcta": "B",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q039",
+  "numero": 39,
+  "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial de la Llar de la Joventut.",
+  "opciones": {
+    "A": "Aragó.",
+    "B": "General Riera.",
+    "C": "Gabriel Alomar."
+  },
+  "correcta": "B",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q040",
+  "numero": 40,
+  "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial de la Llar de la Infància.",
+  "opciones": {
+    "A": "Passeig Sagrera.",
+    "B": "General Riera.",
+    "C": "Jesús."
+  },
+  "correcta": "B",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q041",
+  "numero": 41,
+  "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial de CaixaForum Palma.",
+  "opciones": {
+    "A": "Plaça de Weyler.",
+    "B": "Riera.",
+    "C": "Born."
+  },
+  "correcta": "A",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q042",
+  "numero": 42,
+  "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Teatro Municipal Xesc Forteza.",
+  "opciones": {
+    "A": "Madrid.",
+    "B": "Montreal.",
+    "C": "Calatrava."
+  },
+  "correcta": "C",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q043",
+  "numero": 43,
+  "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Teatro Municipal Catalina Valls.",
+  "opciones": {
+    "A": "Mallorca.",
+    "B": "Sant Magí.",
+    "C": "Ninguna de las anteriores."
+  },
+  "correcta": "A",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q044",
+  "numero": 44,
+  "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Teatro Municipal Mar i Terra.",
+  "opciones": {
+    "A": "Mallorca.",
+    "B": "Son Rapinya.",
+    "C": "Ninguna de las anteriores."
+  },
+  "correcta": "C",
+  "origen": "Examen 30.01.25"
+},
+{
+  "id": "30_01_25_Q045",
+  "numero": 45,
+  "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Hospital Sant Joan de Deu.",
+  "opciones": {
+    "A": "Manacor.",
+    "B": "Sant Joan de Deu.",
+    "C": "General Riera."
+  },
+  "correcta": "B",
+  "origen": "Examen 30.01.25"
+},
+ {
+    "id": "30_01_25_Q046",
+    "numero": 46,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Centro de Salud Can Pastilla.",
+    "opciones": {
+      "A": "Singladura.",
+      "B": "Gessamí.",
+      "C": "Joan Miró."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q047",
+    "numero": 47,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Centro de Salud Son Ferríol.",
+    "opciones": {
+      "A": "Company.",
+      "B": "Muntanya.",
+      "C": "Margalida Monlau."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q048",
+    "numero": 48,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Centro de Salud Son Cladera.",
+    "opciones": {
+      "A": "Son Cladera.",
+      "B": "Miquel Codolà.",
+      "C": "Massanella."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q049",
+    "numero": 49,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial de la Escuela Nacional de Vela Port Calanova.",
+    "opciones": {
+      "A": "Del Moll.",
+      "B": "Contramoll Mollet.",
+      "C": "Joan Miró."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q050",
+    "numero": 50,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Reial Club Nàutic de Palma.",
+    "opciones": {
+      "A": "Del Moll.",
+      "B": "Moll de Sant Pere.",
+      "C": "Contramoll Mollet."
+    },
+    "correcta": "B",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q051",
+    "numero": 51,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Club Nàutic Portitxol.",
+    "opciones": {
+      "A": "Contramoll Mollet.",
+      "B": "Bartomeu Barceló i Mir.",
+      "C": "Ninguna de las anteriores."
+    },
+    "correcta": "B",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q052",
+    "numero": 52,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial de Palma Sport & Tennis Club.",
+    "opciones": {
+      "A": "Joan Maria Thomàs.",
+      "B": "Can Valero.",
+      "C": "Ninguna de las anteriores."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q053",
+    "numero": 53,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Hotel Capuccino Palma.",
+    "opciones": {
+      "A": "Constitució.",
+      "B": "Born.",
+      "C": "Cort."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q054",
+    "numero": 54,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Hotel Continental.",
+    "opciones": {
+      "A": "Industria.",
+      "B": "Mallorca.",
+      "C": "Rambla."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q055",
+    "numero": 55,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Hotel Catalonia Majórica.",
+    "opciones": {
+      "A": "Garita.",
+      "B": "Francesc Vidal i Sureda.",
+      "C": "Ninguna de las anteriores."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q056",
+    "numero": 56,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Hotel Hesperia Ciudad de Mallorca.",
+    "opciones": {
+      "A": "Garita.",
+      "B": "Francesc Vidal i Sureda.",
+      "C": "Ninguna de las anteriores."
+    },
+    "correcta": "B",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q057",
+    "numero": 57,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Colegio La Purísima.",
+    "opciones": {
+      "A": "Sevilla.",
+      "B": "Cap Enderrocat.",
+      "C": "Adolf Vázquez Humasqué."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q058",
+    "numero": 58,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Colegio CIDE.",
+    "opciones": {
+      "A": "L´Arner.",
+      "B": "Germans Escalas.",
+      "C": "Can Cota."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q059",
+    "numero": 59,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Liceo Francés de Palma de Mallorca.",
+    "opciones": {
+      "A": "Illes Balears.",
+      "B": "Josep Costa i Ferrer.",
+      "C": "Mateu Enric Lladó."
+    },
+    "correcta": "A",
+    "origen": "Examen 30.01.25"
+  },
+  {
+    "id": "30_01_25_Q060",
+    "numero": 60,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se halle el acceso principal y oficial del Restaurante La Bóveda.",
+    "opciones": {
+      "A": "Mallorca.",
+      "B": "Sant Miquel.",
+      "C": "Ninguna de las anteriores."
+    },
+    "correcta": "C",
+    "origen": "Examen 30.01.25"
+  }
+]

@@ -1,0 +1,724 @@
+[
+  {
+    "id": "20_02_24_Q001",
+    "numero": 1,
+    "pregunta": "De acuerdo con el artículo 4 del Reglamento Municipal de los transportes públicos de viajeros y de las actividades auxiliares complementarias (en adelante, Reglamento municipal)",
+    "opciones": {
+      "A": "El número de licencias de auto-taxi establecidas puede variar previo cumplimiento de las prescripciones contenidas en el Reglamento municipal.",
+      "B": "El número de licencias de auto-taxi establecidas puede únicamente aumentar previo cumplimiento de las prescripciones contenidas en el Reglamento municipal.",
+      "C": "El número de licencias de auto-taxi establecidas puede únicamente disminuir previo cumplimiento de las prescripciones contenidas en el Reglamento municipal."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q002",
+    "numero": 2,
+    "pregunta": "Para aumentar el número de licencias de auto-taxi se requiere:",
+    "opciones": {
+      "A": "Acuerdo del Pleno municipal, previa tramitación de expediente en el que, oída la Comisión de Seguimiento, se acredite la adecuación de la oferta y la demanda, quede justificada la rentabilidad del servicio y que no se supere el tres por mil del total de la población de derecho de Palma vigente en el momento de iniciarse el expediente.",
+      "B": "Acuerdo del Pleno municipal, previa tramitación de expediente en el que, oída la Comisión de Seguimiento, se acredite la adecuación de la oferta y la demanda y quede justificada la rentabilidad del servicio.",
+      "C": "Decreto de Alcaldía, previa tramitación de expediente en el que, oída la Comisión de Seguimiento, se acredite la adecuación de la oferta y la demanda, quede justificada la rentabilidad del servicio y que no se supere el tres por mil del total de la población de derecho de Palma vigente en el momento de iniciarse el expediente."
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q003",
+    "numero": 3,
+    "pregunta": "Para el rescate de licencias municipales de auto-taxi se requiere:",
+    "opciones": {
+      "A": "Acuerdo del Pleno municipal, una vez oída la Comisión de Seguimiento.",
+      "B": "Acuerdo del Pleno municipal, una vez oída la Comisión de Seguimiento, previo informe técnico, acreditación de la rentabilidad del servicio y consulta al Consell Insular de Mallorca.",
+      "C": "Decreto de Alcaldía, previa acreditación de la rentabilidad del servicio."
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q004",
+    "numero": 4,
+    "pregunta": "En el supuesto de nueva creación de licencias de auto-taxi,",
+    "opciones": {
+      "A": "Las licencias de auto-taxi de nueva creación serán transmisibles.",
+      "B": "Las licencias de auto-taxi de nueva creación no serán transmisibles durante un periodo de 5 años.",
+      "C": "Las licencias de auto-taxi de nueva creación no serán transmisibles durante un periodo de 10 años."
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q005",
+    "numero": 5,
+    "pregunta": "Los vehículos con una antigüedad de 10 años o más, contados desde la fecha de primera matriculación, deben pasar una revisión municipal ordinaria cada:",
+    "opciones": {
+      "A": "12 meses.",
+      "B": "9 meses.",
+      "C": "6 meses."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q006",
+    "numero": 6,
+    "pregunta": "En los supuestos de transmisión de licencia de auto-taxi:",
+    "opciones": {
+      "A": "La transmisión se podrá realizar a una sola persona, que puede ser física o jurídica.",
+      "B": "El nuevo titular de la licencia deberá iniciar el servicio en el plazo de un mes.",
+      "C": "La transmisión debe ser autorizada por el Ayuntamiento de Palma y por el Departamento de Transporte del Govern Balear."
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q007",
+    "numero": 7,
+    "pregunta": "Respecto a los requisitos para ser titular de una licencia de auto-taxi,",
+    "opciones": {
+      "A": "Podrán ser titulares de una licencia de auto-taxi aquellos a los que se hayan impuesto cinco o más sanciones muy graves de las tipificadas en el Reglamento municipal.",
+      "B": "Podrán ser titulares de una licencia de auto-taxi quienes hayan sido condenados, por sentencia firme, por delitos dolosos de pena igual o superior a prisión menor.",
+      "C": "Podrán ser titulares de una licencia de auto-taxi quienes tengan deudas con la Agencia Tributaria con una antigüedad de 3 meses."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q008",
+    "numero": 8,
+    "pregunta": "El conductor que se solicite para realizar un servicio no se podrá negar sin causa justa. Tienen consideración de causa justa (indica la respuesta INCORRECTA):",
+    "opciones": {
+      "A": "Ser solicitado para transportar a un número de personas superior al de las plazas autorizadas por el vehículo.",
+      "B": "Cuando cualquiera de los viajeros se halle en estado de manifiesta embriaguez o intoxicación por estupefacientes u otros, excepto en los casos de peligro grave o inminente para su vida o integridad física.",
+      "C": "En cualquier caso, cuando el viajero lleve un animal."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q009",
+    "numero": 9,
+    "pregunta": "Para obtener el permiso municipal de taxista, el interesado deberá:",
+    "opciones": {
+      "A": "Poseer el permiso de conducción de la clase A2.",
+      "B": "Conocer, dentro del ámbito de la isla de Mallorca, las principales vías públicas, lugares de interés turístico, centros sanitarios, situación de locales de esparcimiento, oficinas públicas, centros oficiales, principales hoteles e itinerarios más directos para llegar al punto de destino.",
+      "C": "Tener conocimiento oral de la lengua catalana, propia de las Illes Balears que les permita comprender las peticiones que en dicha lengua puedan formularles los usuarios del servicio."
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q010",
+    "numero": 10,
+    "pregunta": "Los permisos municipales de taxista,",
+    "opciones": {
+      "A": "Tendrán una duración fija de 3 años.",
+      "B": "Serán revisados cada 15 años.",
+      "C": "Serán revisados cada 5 años, y pueden ser prorrogados por 5 años más."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q011",
+    "numero": 11,
+    "pregunta": "Respecto a los vehículos, el Reglamento dispone que:",
+    "opciones": {
+      "A": "Toda licencia de auto-taxi deberá tener adscritos dos vehículos de los cuales disponga el titular de la licencia.",
+      "B": "Deberán situar un adhesivo con el escudo institucional del Ajuntament de Palma en cada una de las puertas delanteras y traseras del vehículo.",
+      "C": "En el interior del vehículo, visibles para el usuario, se situarán las tarifas de aplicación y la tarjeta que, homologada por el Ayuntamiento, identifique las personas autorizadas para conducirlo."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q012",
+    "numero": 12,
+    "pregunta": "Respecto a los anuncios publicitarios en los vehículos auto-taxi, el Reglamento dispone que:",
+    "opciones": {
+      "A": "La publicidad sólo podrá estar situada en las puertas laterales delanteras y las dimensiones de la misma publicidad no excederán los 50 x 25 cm., ni su grosor 0,5 cm.",
+      "B": "La publicidad sólo podrá estar situada en las puertas laterales delanteras y las dimensiones de la misma publicidad no excederán los 25 x 25 cm., ni su grosor 1 cm.",
+      "C": "La publicidad sólo podrá estar situada en las puertas laterales traseras y las dimensiones de la misma publicidad no excederán los 50 x 25 cm., ni su grosor 0,5 cm."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q013",
+    "numero": 13,
+    "pregunta": "Respecto a las revisiones municipales se establece que (señalar la respuesta INCORRECTA)",
+    "opciones": {
+      "A": "Deberá acudir el titular de la licencia o conductor adscrito a la misma.",
+      "B": "Deberá aportar la tarjeta que, homologada por el Ayuntamiento, indique las personas autorizadas para conducir el vehículo.",
+      "C": "Todo vehículo que no supere cualquiera de las revisiones establecidas podrá prestar servicio de manera provisional durante 30 días antes de haber superado un nuevo reconocimiento."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q014",
+    "numero": 14,
+    "pregunta": "De acuerdo con el Reglamento municipal tendrá la consideración de falta leve:",
+    "opciones": {
+      "A": "No respetar los puntos de estacionamiento establecidos.",
+      "B": "No haber superado las revisiones municipales.",
+      "C": "Transportar mayor número de viajeros autorizados para el vehículo."
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q015",
+    "numero": 15,
+    "pregunta": "De acuerdo con el Reglamento municipal tendrá la consideración de falta grave:",
+    "opciones": {
+      "A": "No mantener el vehículo limpio y aseado.",
+      "B": "La negativa u obstrucción a la actuación de los Servicios de Inspección.",
+      "C": "No tener los calendarios, horarios, avisos y otros de obligada exhibición para conocimiento del viajero."
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+{
+    "id": "20_02_24_Q016",
+    "numero": 16,
+    "pregunta": "La espera en lugares de estacionamiento de duración limitada obliga al conductor a esperar al usuario...",
+    "opciones": {
+      "A": "Al menos dos horas.",
+      "B": "Al menos una hora.",
+      "C": "Al menos media hora."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q017",
+    "numero": 17,
+    "pregunta": "Si el usuario abandona transitoriamente el vehículo y el conductor debe esperar su regreso, deberá esperar...",
+    "opciones": {
+      "A": "Dos horas en zona urbana y tres en descampado.",
+      "B": "Una hora en todos los casos.",
+      "C": "Media hora en zona urbana y una hora en descampado."
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q018",
+    "numero": 18,
+    "pregunta": "Los usuarios podrán recabar del conductor el importe del recorrido efectuado más...",
+    "opciones": {
+      "A": "Media hora de espera en zona urbana y una hora en descampado.",
+      "B": "Media hora tanto en zona urbana como descampado.",
+      "C": "Una hora tanto en zona urbana como descampado."
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q019",
+    "numero": 19,
+    "pregunta": "La obligación de esperar al usuario NO será exigible cuando...",
+    "opciones": {
+      "A": "El servicio se realice en un día festivo.",
+      "B": "El usuario no haya abonado un anticipo.",
+      "C": "El conductor pueda realizar otro servicio simultáneamente."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q020",
+    "numero": 20,
+    "pregunta": "Si un usuario realiza actos que impidan el normal desarrollo del servicio...",
+    "opciones": {
+      "A": "El conductor podrá negarse a continuarlo.",
+      "B": "El conductor deberá finalizar el servicio igualmente.",
+      "C": "El usuario deberá pagar un recargo especial."
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q021",
+    "numero": 21,
+    "pregunta": "Si un usuario solicita detener el vehículo fuera de un lugar autorizado...",
+    "opciones": {
+      "A": "El conductor deberá acceder siempre.",
+      "B": "El conductor deberá negarse siempre.",
+      "C": "El conductor deberá valorar la seguridad antes de acceder."
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q022",
+    "numero": 22,
+    "pregunta": "Los conductores deberán mantener el vehículo...",
+    "opciones": {
+      "A": "Con climatizador apagado.",
+      "B": "Con uniforme oficial obligatorio.",
+      "C": "Limpio y aseado."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q023",
+    "numero": 23,
+    "pregunta": "Los conductores deberán abstenerse de...",
+    "opciones": {
+      "A": "Fumar durante la prestación del servicio.",
+      "B": "Realizar servicios interurbanos.",
+      "C": "Usar dispositivos electrónicos durante descansos."
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q024",
+    "numero": 24,
+    "pregunta": "El usuario deberá pagar el importe del servicio...",
+    "opciones": {
+      "A": "Antes de iniciar el trayecto.",
+      "B": "Cuando el conductor lo exija.",
+      "C": "Una vez finalizado el recorrido."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+
+  {
+    "id": "20_02_24_Q025",
+    "numero": 25,
+    "pregunta": "(Pregunta anulada)",
+    "opciones": {
+      "A": null,
+      "B": null,
+      "C": null
+    },
+    "correcta": null,
+    "origen": "Examen 20.02.24"
+  },
+
+  {
+    "id": "20_02_24_Q026",
+    "numero": 26,
+    "pregunta": "Los conductores deberán recoger al usuario...",
+    "opciones": {
+      "A": "En cualquier punto solicitado, incluso prohibidos.",
+      "B": "En lugares que no obstaculicen la circulación.",
+      "C": "Siempre en parada oficial."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q027",
+    "numero": 27,
+    "pregunta": "Si el usuario impide el normal funcionamiento del servicio...",
+    "opciones": {
+      "A": "El conductor deberá continuar igualmente.",
+      "B": "El conductor podrá solicitar ayuda policial.",
+      "C": "Se aplicará un recargo económico obligatorio."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q028",
+    "numero": 28,
+    "pregunta": "Los vehículos auto-taxi deberán someterse a revisión municipal...",
+    "opciones": {
+      "A": "Dos veces al año.",
+      "B": "Cuando el Ayuntamiento lo estime oportuno.",
+      "C": "Una vez al año."
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q029",
+    "numero": 29,
+    "pregunta": "Podrán ser titulares de licencia auto-taxi quienes...",
+    "opciones": {
+      "A": "No tengan deudas con la Agencia Tributaria.",
+      "B": "Hayan sido condenados por sentencia firme.",
+      "C": "Hayan sido sancionados más de cinco veces."
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q030",
+    "numero": 30,
+    "pregunta": "El número de licencias auto-taxi podrá...",
+    "opciones": {
+      "A": "Variar según las prescripciones del Reglamento Municipal.",
+      "B": "Aumentar sin restricciones.",
+      "C": "Disminuir libremente."
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q031",
+    "numero": 31,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Colegio Aixa-Llaut",
+    "opciones": {
+      "A": "L’Arner",
+      "B": "Pablo Iglesias",
+      "C": "Gregorio Mendel"
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q032",
+    "numero": 32,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Colegio Luis Vives",
+    "opciones": {
+      "A": "Sant Joan de la Salle",
+      "B": "Sant Joan de Déu",
+      "C": "Sant Antoni"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q033",
+    "numero": 33,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Centro de Salud Escola Graduada",
+    "opciones": {
+      "A": "Socors",
+      "B": "Joan Bauzà",
+      "C": "Pau Casals"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q034",
+    "numero": 34,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Centro de Salud Muntanya",
+    "opciones": {
+      "A": "Mestre Perosi",
+      "B": "Indalecio Prieto",
+      "C": "Muntanya"
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q035",
+    "numero": 35,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del hotel Abelay Palma",
+    "opciones": {
+      "A": "Bala Roja",
+      "B": "Pablo Iglesias",
+      "C": "Porta de Mar"
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q036",
+    "numero": 36,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Hotel INNSiDE by Meliá Palma Bosque",
+    "opciones": {
+      "A": "Lluis Fàbregas",
+      "B": "Camilo José Cela",
+      "C": "Federico Garcia Lorca"
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q037",
+    "numero": 37,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Hotel Summum Prime Boutique",
+    "opciones": {
+      "A": "Unió",
+      "B": "Palau Reial",
+      "C": "Concepció"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q038",
+    "numero": 38,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del polideportivo Antoni Servera",
+    "opciones": {
+      "A": "Ca na Gabriela",
+      "B": "Muntanya",
+      "C": "Vileta"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q039",
+    "numero": 39,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del polideportivo Son Hugo",
+    "opciones": {
+      "A": "Vileta",
+      "B": "Muntanya",
+      "C": "Concordia"
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q040",
+    "numero": 40,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del polideportivo Marga Crespí",
+    "opciones": {
+      "A": "Muntanya",
+      "B": "Ca na Gabriela",
+      "C": "Vileta"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q041",
+    "numero": 41,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Polideportivo Príncipes de España",
+    "opciones": {
+      "A": "Gremi de Boneters",
+      "B": "Gremi de Forners",
+      "C": "Gremi de Boters"
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q042",
+    "numero": 42,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del centro MegaSport",
+    "opciones": {
+      "A": "Fertilitzants",
+      "B": "Formentor",
+      "C": "Alimentació"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q043",
+    "numero": 43,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del café-bar Es Vaixell",
+    "opciones": {
+      "A": "Born del Molinar",
+      "B": "Fàbrica",
+      "C": "Vicari Joaquim Fuster"
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q044",
+    "numero": 44,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del restaurante Can Manolo Palma",
+    "opciones": {
+      "A": "Camilo José Cela",
+      "B": "Llorenç Villalonga",
+      "C": "Federico Garcia Lorca"
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q045",
+    "numero": 45,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del restaurante Caballito de Mar",
+    "opciones": {
+      "A": "Sagrera",
+      "B": "Vicari Joaquim Fuster",
+      "C": "Born del Molinar"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q046",
+    "numero": 46,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial de la Conselleria de Presidencia",
+    "opciones": {
+      "A": "Sagrera",
+      "B": "Palau Reial",
+      "C": "Conquistador"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q047",
+    "numero": 47,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial de la Escuela Oficial de Idiomas",
+    "opciones": {
+      "A": "Alemanya",
+      "B": "Aragó",
+      "C": "Llibertat"
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q048",
+    "numero": 48,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Instituto Mallorquín de Asuntos Sociales (oficinas de Palma)",
+    "opciones": {
+      "A": "General Riera",
+      "B": "Antoni Frontera",
+      "C": "Jesús"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q049",
+    "numero": 49,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial de la Abogacía del Estado",
+    "opciones": {
+      "A": "Sant Feliu",
+      "B": "Pare Bartomeu Pou",
+      "C": "Arquebisbe Aspàreg"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q050",
+    "numero": 50,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Tanatorio Municipal I Son Valentí",
+    "opciones": {
+      "A": "Camí dels Reis",
+      "B": "Camí de Gènova",
+      "C": "Camí de Jesús"
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q051",
+    "numero": 51,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Consulado General de la República Federal de Alemania",
+    "opciones": {
+      "A": "Jaume III",
+      "B": "Porto Pi",
+      "C": "Mallorca"
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q052",
+    "numero": 52,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Consulado Honorario del Perú",
+    "opciones": {
+      "A": "Jaume III",
+      "B": "Can Gater",
+      "C": "Sant Miquel"
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q053",
+    "numero": 53,
+    "pregunta": "Señala la opción que contenga el nombre de la vía pública donde se encuentra el acceso principal y oficial del Mercat de Pere Garau",
+    "opciones": {
+      "A": "Pere Garau",
+      "B": "Francesc Garcia i Orell",
+      "C": "Miquel Dolç"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q054",
+    "numero": 54,
+    "pregunta": "¿Qué dos vías públicas (calle, camino, plaza, paseo, etc) tienen cruce, entrada o salida a la calle de Ignasi Ferretjans?",
+    "opciones": {
+      "A": "Marques de la Fontsanta y Jaume III",
+      "B": "Arxiduc Lluis Salvador y Tomás de Villanueva Cortés",
+      "C": "Eusebi Estada y Concordia"
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q055",
+    "numero": 55,
+    "pregunta": "¿Qué dos vías públicas (calle, camino, plaza, paseo, etc) tienen cruce, entrada o salida a la avenida Gaspar Bennazar Arquitecte?",
+    "opciones": {
+      "A": "Eusebi Estada y Alexander Fleming",
+      "B": "Jaume Balmes y Aragó",
+      "C": "Arxiduc Lluis Salvador y Jacint Verdaguer"
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q056",
+    "numero": 56,
+    "pregunta": "¿Qué dos vías públicas (calle, camino, plaza, paseo, etc) tienen cruce, entrada o salida a la calle General Riera?",
+    "opciones": {
+      "A": "Blanquerna y Santa Pagesa",
+      "B": "Lluis Vives y Pare Bartomeu Pou",
+      "C": "Ausias March y Abú Yahya"
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q057",
+    "numero": 57,
+    "pregunta": "¿Qué dos vías públicas (calle, camino, plaza, paseo, etc) tienen cruce, entrada o salida a la calle Salvador Dalí?",
+    "opciones": {
+      "A": "Andreu Torrens y Balanguera",
+      "B": "Jesús y Vileta",
+      "C": "General Riera y Andreu Torrens"
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q058",
+    "numero": 58,
+    "pregunta": "¿Qué dos vías públicas (calle, camino, plaza, paseo, etc) tienen cruce, entrada o salida a la avenida Picasso?",
+    "opciones": {
+      "A": "Son Rapinya y Vileta",
+      "B": "Escola Graduada y Dragonera",
+      "C": "Llaç Blau y Andrea Doria"
+    },
+    "correcta": "C",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q059",
+    "numero": 59,
+    "pregunta": "¿Qué dos vías públicas (calle, camino, plaza, paseo, etc) tienen cruce, entrada o salida a la calle Aragó?",
+    "opciones": {
+      "A": "Josep Darder Metge y Antoni Maura",
+      "B": "Güell y Torcuato Luca de Tena",
+      "C": "Jaume Balmes y Jacint Verdaguer"
+    },
+    "correcta": "B",
+    "origen": "Examen 20.02.24"
+  },
+  {
+    "id": "20_02_24_Q060",
+    "numero": 60,
+    "pregunta": "¿Qué dos vías públicas (calle, camino, plaza, paseo, etc) tienen cruce, entrada o salida a la plaça Miquel Dolç?",
+    "opciones": {
+      "A": "Indalecio Prieto y Adrià Ferran",
+      "B": "Arquebisbe Aspàreg y Gabriel Llabrés",
+      "C": "Faust Morell y Aragó"
+    },
+    "correcta": "A",
+    "origen": "Examen 20.02.24"
+  }
+]

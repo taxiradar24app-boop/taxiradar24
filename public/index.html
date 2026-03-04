@@ -2,13 +2,128 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#f4d35e" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <meta name="theme-color" content="#343541" />
+
+    <!-- 🧭 SEO básico -->
+    <title>TaxiRadar24 | Seguimiento de vuelos y taxis en Palma de Mallorca</title>
+    <meta name="description" content="Consulta llegadas de vuelos al aeropuerto de Palma y coordina tu taxi con TaxiRadar24, la herramienta más rápida y segura para taxistas y viajeros.">
+
+    <link rel="canonical" href="https://taxiradar24.com/" />
+
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- 🖼️ Preload de la imagen crítica (LCP real y optimizada) -->
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/taxiRadar24_front-optimized.webp"
+      type="image/webp"
+      fetchpriority="high"
+      imagesrcset="/assets/taxiRadar24_front-optimized.webp 1x, /assets/taxiRadar24_front-optimized.webp 2x"
+      imagesizes="(max-width: 480px) 115px, 150px"
+    />
+
+    <!-- 🌐 Open Graph -->
+    <meta property="og:title" content="TaxiRadar24 - Rastreo de vuelos Palma de Mallorca" />
+    <meta
+      property="og:description"
+      content="Información en tiempo real sobre llegadas al aeropuerto de Palma de Mallorca (PMI)Herramienta para taxistas."
+    />
+    <meta property="og:image" content="https://taxiradar24.com/assets/taxiRadar24_front-optimized.webp" />
+    <meta property="og:url" content="https://taxiradar24.com/" />
+    <meta property="og:type" content="website" />
+
+    <!-- 🐦 Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="TaxiRadar24" />
+    <meta
+      name="twitter:description"
+      content="Rastrea vuelos que llegan a Palma de Mallorca (PMI) en tiempo real. Herramienta para taxistas."
+    />
+    <meta name="twitter:image" content="https://taxiradar24.com/assets/taxiRadar24_front-optimized.webp" />
+
+    <!-- 📱 Manifest & Favicon -->
     <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" href="/assets/favicon.png" />
-    <title>TaxiTip</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <!-- ✅ Verificación de Google -->
+    <meta name="google-site-verification" content="D-JEqLPydf0LBvCtapusQ1qoqGXmaTzjclVEp1sxElI" />
+
+    <!-- ⚡ DNS Prefetch & Preconnect -->
+    <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
+    <link rel="dns-prefetch" href="https://www.gstatic.com" />
+    <link rel="dns-prefetch" href="https://apis.google.com" />
+    <link rel="dns-prefetch" href="https://www.google.com" />
+    <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://apis.google.com" crossorigin />
+    <link rel="preconnect" href="https://www.google.com" crossorigin />
+
+    <!-- 🔒 Seguridad y rendimiento -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- 🎯 Estilo SEO oculto -->
+    <style>
+      .seo-hidden {
+        position: absolute;
+        left: -9999px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+    </style>
   </head>
+
   <body>
     <div id="root"></div>
+
+    <!-- 🧩 Contenido oculto para SEO -->
+    <h1 class="seo-hidden" aria-hidden="true">
+      TaxiRadar24: Rastreo de vuelos en Palma de Mallorca
+    </h1>
+    <p class="seo-hidden" aria-hidden="true">
+      TaxiRadar24 ayuda a los taxistas de Palma de Mallorca a organizar mejor sus recogidas
+      en el aeropuerto de Son Sant Joan (PMI), ofreciendo información precisa sobre vuelos
+      que están a punto de aterrizar. Nuestro objetivo es optimizar tiempo y recursos para
+      conductores y ofrecer a los pasajeros un transporte puntual y confiable.
+    </p>
+    <p class="seo-hidden" aria-hidden="true">
+      Además, ofrecemos recursos educativos para quienes desean obtener el
+      <strong>carnet de taxista en Palma</strong>, incluyendo normativa, seguridad vial
+      y preparación para el examen oficial en Baleares.
+    </p>
+
+    <noscript>Debes habilitar JavaScript para usar TaxiRadar24.</noscript>
+
+    <!-- ⚡ Scripts inyectados automáticamente por Webpack -->
+
+    <!-- 🚀 Diferir carga de Google Analytics -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const s = document.createElement("script");
+        s.src = "https://www.googletagmanager.com/gtag/js?id=G-PMNL95ESWN";
+        s.async = true;
+        document.body.appendChild(s);
+        s.onload = () => {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag("js", new Date());
+          gtag("config", "G-PMNL95ESWN");
+        };
+      });
+    </script>
   </body>
 </html>
+
+
+   

@@ -1,0 +1,17 @@
+// src/services/firebaseApp.js
+import { initializeApp, getApps } from "firebase/app";
+
+// 🔹 Configuración del proyecto Firebase
+export const firebaseConfig = {
+  apiKey: "AIzaSyBA6MEcmuci9c8uFhvRwkasG5ot8BeiRHM",
+  authDomain: "taxiradar24db.firebaseapp.com",
+  projectId: "taxiradar24db",
+  storageBucket: "taxiradar24db.appspot.com",
+  messagingSenderId: "829274808088",
+  appId: "1:829274808088:web:db5ed97be1d89146d1086d",
+  measurementId: "G-PMNL95ESWN",
+};
+
+// 🔹 Inicializar app si no existe
+export const app =
+  getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];

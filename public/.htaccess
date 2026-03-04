@@ -1,0 +1,79 @@
+# ===============================
+# 🌐 TAXIRADAR24 - OPTIMIZACIÓN HTTP
+# ===============================
+
+# 1) Redirección ÚNICA a HTTPS y sin "www"
+RewriteEngine On
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\.taxiradar24\.com$ [NC]
+RewriteRule ^(.*)$ https://taxiradar24.com/$1 [L,R=301]
+
+# 2) COMPRESIÓN (Brotli / Gzip) — se aplica si el módulo existe
+<IfModule mod_brotli.c>
+  BrotliCompressionQuality 6
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/javascript application/javascript application/json application/xml image/svg+xml
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json application/xml image/svg+xml
+</IfModule>
+
+# 3) CACHÉ EFICIENTE
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # HTML: sin caché para reflejar cambios inmediatos
+  ExpiresByType text/html "access plus 0 seconds"
+
+  # Service Worker: sin caché (que se actualice siempre)
+  <FilesMatch "service-worker\.js$">
+    ExpiresActive Off
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+  </FilesMatch>
+
+  # Estáticos fingerprinted (JS/CSS/Imagen/Fonts): 1 año + immutable
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/avif "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType font/woff  "access plus 1 year"
+  ExpiresByType application/json "access plus 1 year"
+</IfModule>
+
+# Refuerza Cache-Control para estáticos
+<IfModule mod_headers.c>
+  # Archivos estáticos (hash en nombre) → caché agresiva
+  <FilesMatch "\.(?:js|css|png|jpg|jpeg|gif|webp|avif|svg|ico|woff2?|ttf|json|xml)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # HTML y root docs → sin caché
+  <FilesMatch "\.(?:html)$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+  </FilesMatch>
+
+  # CORS solo para fuentes (evita 403 en algunos navegadores)
+  <FilesMatch "\.(?:woff2?|ttf|otf)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+
+  # Seguridad básica (no rompe tu app)
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # HSTS (solo si TODO el sitio va por HTTPS)
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# Evita validación doble por ETag
+FileETag None
+
+# 4) SPA fallback: sirve index.html cuando no existe el recurso
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]

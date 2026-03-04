@@ -1,21 +1,52 @@
 {
-  "short_name": "TaxiTip",
-  "name": "TaxiTip.org",
+  "name": "TaxiRadar24",
+  "short_name": "TaxiRadar24",
+  "description": "TaxiRadar24 - Rastreo de vuelos en tiempo real en Palma de Mallorca (PMI). Información para pasajeros y taxistas, academia para carnet de taxi y movilidad.",
   "start_url": "/",
   "display": "standalone",
+  "background_color": "#0a1a3d",
+  "theme_color": "#343541",
   "orientation": "portrait",
-  "background_color": "#ffffff",
-  "theme_color": "#f4d35e",
-  "description": "TaxiTip.org – herramientas para taxistas",
   "icons": [
     {
-      "src": "./assets/icon.png",
+      "src": "/assets/logo192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "./assets/icon.png",
+      "src": "/assets/logo512.png",
       "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/logo192.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "/assets/logo512.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    },
+    {
+      "src": "/assets/maskable-icon.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/apple-touch-icon.webp",
+      "sizes": "180x180",
+      "type": "image/webp"
+    },
+    {
+      "src": "/assets/favicon-32x32.png",
+      "sizes": "32x32",
       "type": "image/png"
     }
   ]

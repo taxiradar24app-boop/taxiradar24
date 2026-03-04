@@ -1,69 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { db } from './../services/firebaseConfig';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { Container, LogoImage, Title } from './../Styles/homeStyles';
-import { GoogleButton } from './../Styles/Buttons';
-import styled from 'styled-components';
-import logo from './../../assets/Moneda_digital_TaxiTip1.png';
+// src/Screens/LoginScreen.js
+import React, { useEffect } from "react";
+import UserRegistration from "./../hooks/UserRegistration";
+import BotonGoogle from "./../components/BotonGoogle";
+import styled from "styled-components";
+import { useAuth } from "./../context/AuthContext";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSmartNavigation } from "@/utils/SmartNavigation";
 
-const AnimatedTitle = styled(Title)`
-  opacity: ${(props) => props.opacity};
-  transition: opacity 1.5s ease-in-out;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #0b1f3b;
+  color: #f4d35e;
+  text-align: center;
 `;
 
 export default function LoginScreen() {
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const [opacity, setOpacity] = useState(0);
+  const location = useLocation();
+  const { getDefaultEntryPoint } = useSmartNavigation();
 
+  const fromDemo = location.state?.from === "demo-simulador";
+  const redirectTo = location.state?.redirectTo || getDefaultEntryPoint() || "/";
+
+  // ✅ Si el usuario ya está logueado, volver al destino correcto (no siempre "/")
   useEffect(() => {
-    const timer = setTimeout(() => setOpacity(1), 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleGoogleLogin = async () => {
-    try {
-      const auth = getAuth();
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      const userRef = doc(db, 'usersorg', user.uid);
-      const userSnap = await getDoc(userRef);
-
-      if (!userSnap.exists()) {
-        await setDoc(userRef, {
-          uid: user.uid,
-          displayName: user.displayName,
-          email: user.email,
-          createdAt: new Date().toISOString(),
-        });
-        navigate('/verify');
-        return;
-      }
-
-      const userData = userSnap.data();
-      if (userData.phoneNumber) {
-        navigate('/');
-      } else {
-        navigate('/verify');
-      }
-    } catch (error) {
-      console.error('❌ Error en autenticación:', error.message);
+    if (user) {
+      navigate(redirectTo, { replace: true });
     }
-  };
+  }, [user, navigate, redirectTo]);
 
   return (
     <Container>
-      <LogoImage src={logo} alt="TaxiTip Logo" />
-      <AnimatedTitle opacity={opacity}>
-        Sign in to <span style={{ fontWeight: 'bold', color: '#f4d35e' }}>TaxiTip</span>
-      </AnimatedTitle>
+      <h1>Iniciar sesión</h1>
+      <p>Accede con tu cuenta o utiliza tu cuenta de Google.</p>
 
-      <GoogleButton onClick={handleGoogleLogin}>
-        Continuar con Google
-      </GoogleButton>
+      <BotonGoogle />
+      <UserRegistration mode="login" />
     </Container>
   );
 }

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://taxiradar24.com/sitemap.xml
