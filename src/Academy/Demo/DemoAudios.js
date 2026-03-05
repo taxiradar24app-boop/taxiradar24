@@ -121,10 +121,16 @@ return ( <PageWrapper> <PageContainer>
             </AudioDescription>
 
             {isUnlocked ? (
-              <AudioPlayer controls>
-                <source src={audio.file} type="audio/mpeg" />
-                Tu navegador no soporta audio HTML5.
-              </AudioPlayer>
+                <AudioPlayer
+                  controls
+                  preload="metadata"
+                  controlsList="nodownload"
+                  disablePictureInPicture
+                  onContextMenu={(e) => e.preventDefault()}
+                >
+                  <source src={audio.file} type="audio/mpeg" />
+                  Tu navegador no soporta audio HTML5.
+                </AudioPlayer>
             ) : (
               <>
                 <LockedOverlay />
