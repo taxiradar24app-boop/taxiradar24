@@ -124,7 +124,7 @@ return ( <PageWrapper> <PageContainer>
                 <AudioPlayer
                   controls
                   preload="metadata"
-                  controlsList="nodownload"
+                  controlsList="nodownload noplaybackrate"
                   disablePictureInPicture
                   onContextMenu={(e) => e.preventDefault()}
                 >
