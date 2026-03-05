@@ -30,7 +30,9 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# local env files
+# env (secrets)
+.env
+.env.local
 .env*.local
 opensky-proxy/.env
 
