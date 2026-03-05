@@ -29,7 +29,7 @@ module.exports = {
   // 📦 Salida de compilación
   // ===========================================
   output: {
-    path: path.resolve(__dirname, "dist/public_html"),
+    path: path.resolve(__dirname, "dist"),
     filename: "[name].[contenthash].js",
     publicPath: "/",
     clean: true,

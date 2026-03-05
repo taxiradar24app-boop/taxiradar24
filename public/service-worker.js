@@ -1,4 +1,4 @@
-const CACHE_NAME = "taxiradar24-cache-v17"; // ✅ nueva versión
+const CACHE_NAME = "taxiradar24-cache-v18"; // ✅ nueva versión
 const urlsToCache = [
   "/",
   "/index.html",
