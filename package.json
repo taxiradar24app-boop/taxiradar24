@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "webpack serve --mode development",
-    "build": "webpack --mode production && copyfiles -u 1 assets/**/* dist/assets && copyfiles -f public/_redirects dist",
+    "build": "webpack --mode production && copyfiles -u 1 assets/**/* dist/assets && copyfiles -f public/_redirects dist && copyfiles -u 1 public/audios/**/* dist/audios",
     "analyze": "webpack --mode production --analyze"
   },
   "dependencies": {
