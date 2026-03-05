@@ -1,6 +1,7 @@
 // src/navigator/navigator.js
 import React, { Suspense, useEffect, useMemo, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
 
 import PublicLayout from "./layouts/PublicLayout";
 import ToolsLayout from "./layouts/ToolsLayout";
@@ -9,6 +10,9 @@ import RequirePlan from "@/navigator/sections/auth/RequirePlan";
 // ✅ Shell (ligero)
 import HomeScreen from "@/Screens/HomeScreen";
 import LoginScreen from "@/Screens/LoginScreen";
+
+// ✅ Firebase
+import { getAuth } from "@/services/firebaseConfig";
 
 // ✅ Lazy screens (pesados / verticales)
 const SuccessPage = React.lazy(() => import("@/Academy/upgrade/SuccessPage"));
@@ -25,10 +29,12 @@ const TableAdboxScreen = React.lazy(() =>
   import("@/Tools/Flights/TableAdboxScreen")
 );
 
+const auth = getAuth();
+
 // -------------------------------------------------------
 // Loader mínimo (puedes sustituir por tu Loader corporativo)
 // -------------------------------------------------------
-function AppLoader() {
+function AppLoader({ text = "Cargando…" }) {
   return (
     <div
       style={{
@@ -38,9 +44,41 @@ function AppLoader() {
         padding: 24,
       }}
     >
-      <div style={{ opacity: 0.7, fontWeight: 600 }}>Cargando…</div>
+      <div style={{ opacity: 0.75, fontWeight: 650 }}>{text}</div>
     </div>
   );
+}
+
+// -------------------------------------------------------
+// ✅ /verify robusto (evita pantalla en blanco)
+// - si NO hay usuario -> /login
+// - si hay usuario -> /perfil/pro-check (flujo teléfono/email)
+// -------------------------------------------------------
+function VerifyScreen() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let mounted = true;
+
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (!mounted) return;
+
+      if (!user) {
+        navigate("/login", { replace: true });
+        return;
+      }
+
+      // Siempre mandamos a onboarding PRO-check (ahí decides qué falta)
+      navigate("/perfil/pro-check", { replace: true });
+    });
+
+    return () => {
+      mounted = false;
+      unsub();
+    };
+  }, [navigate]);
+
+  return <AppLoader text="Verificando sesión…" />;
 }
 
 // -------------------------------------------------------
@@ -109,8 +147,8 @@ export default function Navigator() {
           element={<div style={{ padding: 24 }}>Pago cancelado</div>}
         />
 
-        {/* ✅ COMPAT: si algo te manda a /verify, lo llevamos a Perfil */}
-        <Route path="verify" element={<Navigate to="/perfil" replace />} />
+        {/* ✅ /verify ya NO queda en blanco */}
+        <Route path="verify" element={<VerifyScreen />} />
 
         {/* 🔐 PERFIL PRO ONBOARDING */}
         <Route path="perfil/pro-check" element={<ProfileProCheck />} />
