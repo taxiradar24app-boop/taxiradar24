@@ -93,7 +93,7 @@ export function useSmartNavigation() {
 
     if (!isLogged)
       return navigate("/login", { state: { redirectTo: "/tools" } });
-    return navigate("/tools");
+    return navigate("/herramientas");
   };
 
   const goFlights = () => {
