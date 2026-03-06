@@ -4,14 +4,20 @@
 // ============================================================
 
 import { getDb } from "./../../../../services/firebaseConfig";
-const db = getDb();
-
-import { collection, doc, getDoc, setDoc, updateDoc, addDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  addDoc,
+} from "firebase/firestore";
 
 // ==============================
 // Helpers
 // ==============================
-const clamp = (n, min = 0, max = 100) => Math.max(min, Math.min(max, Number(n) || 0));
+const clamp = (n, min = 0, max = 100) =>
+  Math.max(min, Math.min(max, Number(n) || 0));
 
 const safeNum = (v, fallback = 0) => {
   const n = Number(v);
@@ -53,19 +59,37 @@ const compactAudiosMap = (audiosMap, limit = 24) => {
 const computeGlobal = (audiosMap, totalAudios) => {
   const entries = Object.values(audiosMap || {});
 
-  const totalListened = entries.reduce((acc, e) => acc + safeNum(e.listenedSeconds, 0), 0);
-  const totalDuration = entries.reduce((acc, e) => acc + safeNum(e.durationSeconds, 0), 0);
-  const completedCount = entries.reduce((acc, e) => acc + (e.completed ? 1 : 0), 0);
+  const totalListened = entries.reduce(
+    (acc, e) => acc + safeNum(e.listenedSeconds, 0),
+    0
+  );
+  const totalDuration = entries.reduce(
+    (acc, e) => acc + safeNum(e.durationSeconds, 0),
+    0
+  );
+  const completedCount = entries.reduce(
+    (acc, e) => acc + (e.completed ? 1 : 0),
+    0
+  );
 
   const safeTotalAudios = Math.max(1, safeNum(totalAudios, 1));
 
   const coverage = clamp(Math.round((completedCount / safeTotalAudios) * 100));
   const minutesScore =
-    totalDuration > 0 ? clamp(Math.round((totalListened / totalDuration) * 100)) : 0;
+    totalDuration > 0
+      ? clamp(Math.round((totalListened / totalDuration) * 100))
+      : 0;
 
   const progress = clamp(Math.round(0.8 * coverage + 0.2 * minutesScore));
 
-  return { totalListened, totalDuration, completedCount, coverage, minutesScore, progress };
+  return {
+    totalListened,
+    totalDuration,
+    completedCount,
+    coverage,
+    minutesScore,
+    progress,
+  };
 };
 
 /**
@@ -83,17 +107,23 @@ export async function saveAudioProgress({
   completeThreshold = 90,
   trackEvents = false,
   maxAudiosStored = 24,
-  playbackRate, // ✅ NUEVO (opcional)
+  playbackRate,
 }) {
   try {
+    const db = await getDb(); // ✅ CORREGIDO
+
     if (!userId) throw new Error("saveAudioProgress: userId requerido");
-    if (audioId === undefined || audioId === null) throw new Error("saveAudioProgress: audioId requerido");
+    if (audioId === undefined || audioId === null) {
+      throw new Error("saveAudioProgress: audioId requerido");
+    }
 
     const safeListened = safeNum(listenedSeconds, 0);
     const safeDuration = safeNum(durationSeconds, 0);
+
     if (!Number.isFinite(safeListened) || safeListened < 0) {
       throw new Error("saveAudioProgress: listenedSeconds inválido");
     }
+
     if (!Number.isFinite(safeDuration) || safeDuration <= 0) return;
 
     const audioKey = `audio_${audioId}`;
@@ -105,10 +135,14 @@ export async function saveAudioProgress({
     const prevAudiosMap = prevAudio.audios || {};
     const prevEntry = prevAudiosMap[audioKey] || {};
 
-    // ✅ no retroceder: guardamos el máximo escuchado
-    const mergedListenedSeconds = Math.max(safeNum(prevEntry.listenedSeconds, 0), safeListened);
+    const mergedListenedSeconds = Math.max(
+      safeNum(prevEntry.listenedSeconds, 0),
+      safeListened
+    );
 
-    const percent = clamp(Math.round((mergedListenedSeconds / safeDuration) * 100));
+    const percent = clamp(
+      Math.round((mergedListenedSeconds / safeDuration) * 100)
+    );
     const completed = percent >= completeThreshold;
 
     const iso = nowISO();
@@ -122,30 +156,27 @@ export async function saveAudioProgress({
       percent,
       completed,
       lastListenAt: iso,
-      completedAt: completed && !prevEntry.completed ? iso : (prevEntry.completedAt || null),
+      completedAt:
+        completed && !prevEntry.completed
+          ? iso
+          : prevEntry.completedAt || null,
     };
 
-    // 1) Actualizamos map
     const nextFullMap = {
       ...prevAudiosMap,
       [audioKey]: newEntry,
     };
 
-    // ✅ Compactamos para que NO crezca infinito
     const nextAudiosMap = compactAudiosMap(nextFullMap, maxAudiosStored);
 
-    // 2) Recalculamos global con map compactado
     const g = computeGlobal(nextAudiosMap, totalAudios);
     const totalMinutes = Math.round(g.totalListened / 60);
 
-    // ✅ settings ligeros
     const safeRate = safeNum(playbackRate, 0);
-    const nextSettings =
-      [1, 1.25, 1.5].includes(safeRate)
-        ? { ...(prevAudio.settings || {}), playbackRate: safeRate }
-        : (prevAudio.settings || {});
+    const nextSettings = [1, 1.25, 1.5].includes(safeRate)
+      ? { ...(prevAudio.settings || {}), playbackRate: safeRate }
+      : prevAudio.settings || {};
 
-    // 3) Payload resumen (ligero)
     const payload = {
       audio: {
         minutes: totalMinutes,
@@ -153,7 +184,6 @@ export async function saveAudioProgress({
         totalAudios: Math.max(1, safeNum(totalAudios, 1)),
         completed: g.completedCount,
         lastActivityAt: iso,
-
         settings: nextSettings,
         audios: nextAudiosMap,
       },
@@ -166,7 +196,6 @@ export async function saveAudioProgress({
       await updateDoc(progressRef, payload);
     }
 
-    // 4) (Opcional) evento detallado en subcolección (paginable)
     if (trackEvents) {
       const eventsCol = collection(db, "progress", userId, "audioEvents");
       await addDoc(eventsCol, {

@@ -1,8 +1,3 @@
-// ======================================================
-// 🗺️ useDemoCallejero.js
-// Control de DEMO Callejero (registro + límite)
-// ======================================================
-
 import { useEffect, useState } from "react";
 import {
   doc,
@@ -15,9 +10,6 @@ import {
 
 import { getDb } from "@/services/firebaseConfig";
 
-const db = getDb();
-
-// ✅ Máximo de intentos DEMO permitidos
 const DEMO_MAX_ATTEMPTS = 3;
 
 export default function useDemoCallejero(uid) {
@@ -25,15 +17,13 @@ export default function useDemoCallejero(uid) {
   const [demoAttempts, setDemoAttempts] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
 
-  // ======================================================
-  // 🔄 Cargar estado DEMO desde Firestore
-  // ======================================================
   useEffect(() => {
     let mounted = true;
 
     async function load() {
       try {
-        // 🔓 Usuario NO logueado → DEMO visual, sin tracking
+        const db = await getDb();
+
         if (!uid) {
           if (!mounted) return;
           setDemoAttempts(0);
@@ -51,7 +41,6 @@ export default function useDemoCallejero(uid) {
           const data = snap.data() || {};
           attempts = data?.callejero?.demoAttempts || 0;
         } else {
-          // Crear documento mínimo si no existe
           await setDoc(
             ref,
             {
@@ -65,7 +54,6 @@ export default function useDemoCallejero(uid) {
             },
             { merge: true }
           );
-          attempts = 0;
         }
 
         if (!mounted) return;
@@ -81,51 +69,35 @@ export default function useDemoCallejero(uid) {
     }
 
     load();
+
     return () => {
       mounted = false;
     };
   }, [uid]);
 
-  // ======================================================
-  // 🏁 Registrar intento DEMO (al finalizar ejercicio)
-  // ======================================================
   const registerAttempt = async () => {
     if (!uid) return { ok: false, reason: "NO_UID" };
+
+    const db = await getDb();
 
     const ref = doc(db, "progress", uid);
     const snap = await getDoc(ref);
 
-    let currentAttempts = 0;
+    let currentAttempts = snap.data()?.callejero?.demoAttempts || 0;
 
-    if (snap.exists()) {
-      currentAttempts = snap.data()?.callejero?.demoAttempts || 0;
-    } else {
-      await setDoc(
-        ref,
-        {
-          userId: uid,
-          createdAt: serverTimestamp(),
-          callejero: { demoAttempts: 0 },
-        },
-        { merge: true }
-      );
-      currentAttempts = 0;
-    }
-
-    // 🚫 Límite alcanzado
     if (currentAttempts >= DEMO_MAX_ATTEMPTS) {
       setDemoAttempts(currentAttempts);
       setIsLocked(true);
       return { ok: false, reason: "LOCKED" };
     }
 
-    // ✅ Incrementar intento
     await updateDoc(ref, {
       "callejero.demoAttempts": increment(1),
       "callejero.lastDemoAt": serverTimestamp(),
     });
 
     const newAttempts = currentAttempts + 1;
+
     setDemoAttempts(newAttempts);
     setIsLocked(newAttempts >= DEMO_MAX_ATTEMPTS);
 

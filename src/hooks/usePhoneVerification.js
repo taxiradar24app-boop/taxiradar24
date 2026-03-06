@@ -1,18 +1,20 @@
-// src/hooks/usePhoneVerification.js
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useAuth } from "./../context/AuthContext";
-import { markPhoneAsVerified } from "./userIDService";
+import { useAuth } from "@/context/AuthContext";
+import { markPhoneAsVerified, normalizePhoneNumber } from "./userIDService";
 import { usePhoneAuth } from "./usePhoneAuth";
-import {
-  PhoneContainer,
-  PhoneCard,
-  Input,
-  Button,
-} from "./../Styles/PhoneVerificationStyled";
-import { validatePhone } from "./../utils/utilsForm";
+
+import AuthLayout from "@/components/UI/Auth/AuthLayout";
+import AuthCard from "@/components/UI/Auth/AuthCard";
+import AuthInput from "@/components/UI/Auth/AuthInput";
+import AuthButton from "@/components/UI/Auth/AuthButton";
+import AuthMessage from "@/components/UI/Auth/AuthMessage";
+
+import { validatePhone } from "@/utils/utilsForm";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+
+import logoTaxiRadar from "./../../assets/Logo_taxiredar24_optimizado.svg";
 
 const Form = styled.form`
   display: flex;
@@ -21,9 +23,35 @@ const Form = styled.form`
   width: 100%;
 `;
 
+const LogoWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 18px;
+`;
+
+const LogoImage = styled.img`
+  display: block;
+  width: clamp(110px, 14vw, 160px);
+  height: auto;
+  object-fit: contain;
+
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.25));
+`;
+
 export default function PhoneVerification() {
   const navigate = useNavigate();
-  const { user, markPhoneSaved } = useAuth();
+
+  const {
+    user,
+    userData,
+    phoneVerified,
+    hasIdentityConflict,
+    markPhoneSaved,
+    refreshUserDocs,
+  } = useAuth();
+
   const { sendVerificationCode, confirmVerificationCode, loading, error } =
     usePhoneAuth();
 
@@ -31,45 +59,93 @@ export default function PhoneVerification() {
   const [code, setCode] = useState("");
   const [step, setStep] = useState(1);
   const [busy, setBusy] = useState(false);
-
-  // ---------------------------------------------------
-  // ✅ Anti-flicker (pantallazo):
-  // - mientras phoneVerified aún no está cargado => no renderizamos
-  // - si ya está verificado => redirigimos y no mostramos nada
-  // ---------------------------------------------------
-  const phoneVerified = user?.phoneVerified;
+  const [uiError, setUiError] = useState("");
+  const [uiSuccess, setUiSuccess] = useState("");
 
   useEffect(() => {
-    if (phoneVerified === true) {
-      navigate("/", { replace: true });
+    if (phoneVerified === true && !hasIdentityConflict) {
+      navigate("/academia/demo", { replace: true });
     }
-  }, [phoneVerified, navigate]);
+  }, [phoneVerified, hasIdentityConflict, navigate]);
 
-  // Si no hay sesión aún o está cargando el campo => NO mostramos el card
-  if (!user?.uid) return null;
-  if (phoneVerified === undefined) return null;
-  if (phoneVerified === true) return null;
+  useEffect(() => {
+    if (hasIdentityConflict) {
+      setUiError(
+        "Este número ya está asociado a otra cuenta.\nInicia sesión con la cuenta original o contacta soporte."
+      );
+    }
+  }, [hasIdentityConflict]);
 
-  const normalizePhone = (raw) => {
-    let formatted = (raw || "").trim();
-    if (!formatted) return "";
-    if (!formatted.startsWith("+")) formatted = `+34${formatted}`;
-    return formatted;
+  if (!user?.uid) {
+    return (
+      <AuthLayout>
+        <AuthCard>
+          <p>Cargando usuario...</p>
+        </AuthCard>
+      </AuthLayout>
+    );
+  }
+
+  if (phoneVerified === undefined) {
+    return (
+      <AuthLayout>
+        <AuthCard>
+          <p>Cargando verificación del teléfono...</p>
+        </AuthCard>
+      </AuthLayout>
+    );
+  }
+
+  if (phoneVerified === true && !hasIdentityConflict) return null;
+
+  const buildConflictMessage = () =>
+    "Este número ya está asociado a otra cuenta.\nInicia sesión con la cuenta original o contacta soporte.";
+
+  const clearMessages = () => {
+    setUiError("");
+    setUiSuccess("");
+  };
+
+  const handlePhoneClaimResult = async (result, formattedPhone) => {
+    if (!result) {
+      setUiError("No se pudo validar el teléfono. Inténtalo de nuevo.");
+      return false;
+    }
+
+    if (result.ok && !result.conflict) {
+      markPhoneSaved(formattedPhone);
+      await refreshUserDocs?.();
+      setUiSuccess("Teléfono verificado correctamente.");
+      navigate("/academia/demo", { replace: true });
+      return true;
+    }
+
+    if (result.conflict) {
+      await refreshUserDocs?.();
+      setUiError(buildConflictMessage());
+      return false;
+    }
+
+    setUiError("No se pudo validar el teléfono. Inténtalo de nuevo.");
+    return false;
   };
 
   const handleSendCode = async (e) => {
     e.preventDefault();
+    clearMessages();
 
     const authUser = getAuth().currentUser;
+
     if (!authUser?.uid || !user?.uid) {
-      alert("No hay sesión activa. Vuelve a iniciar sesión.");
+      setUiError("No hay sesión activa. Vuelve a iniciar sesión.");
       navigate("/login", { replace: true });
       return;
     }
 
-    const formatted = normalizePhone(phone);
+    const formatted = normalizePhoneNumber(phone.trim());
+
     if (!validatePhone(formatted)) {
-      alert("Introduce un teléfono válido (+34...)");
+      setUiError("Introduce un teléfono válido (+34...)");
       return;
     }
 
@@ -77,22 +153,23 @@ export default function PhoneVerification() {
 
     const result = await sendVerificationCode(formatted);
 
-    // ✅ Si ya estaba linkeado (provider-already-linked) => cerramos flujo aquí
     if (result?.ok && result?.alreadyLinked) {
-      const canonicalUid = user?.uid || authUser.uid;
-
-      await markPhoneAsVerified(canonicalUid, formatted);
-      markPhoneSaved(formatted);
+      const claimResult = await markPhoneAsVerified(user.uid, formatted, {
+        email: authUser.email || userData?.email || null,
+        displayName: authUser.displayName || userData?.displayName || null,
+        provider:
+          authUser.providerData?.map((p) => p.providerId).filter(Boolean) || [],
+      });
 
       setBusy(false);
-      navigate("/", { replace: true });
+      await handlePhoneClaimResult(claimResult, formatted);
       return;
     }
 
-    // ✅ Flujo normal: SMS enviado, vamos al paso 2
     if (result?.ok) {
       setPhone(formatted);
       setStep(2);
+      setUiSuccess("Código SMS enviado correctamente.");
     }
 
     setBusy(false);
@@ -100,15 +177,17 @@ export default function PhoneVerification() {
 
   const handleConfirmCode = async (e) => {
     e.preventDefault();
+    clearMessages();
 
     if (!code || code.length < 6) {
-      alert("Código SMS de 6 dígitos.");
+      setUiError("Código SMS de 6 dígitos.");
       return;
     }
 
     const authUserBefore = getAuth().currentUser;
+
     if (!authUserBefore?.uid || !user?.uid) {
-      alert("No hay sesión activa. Vuelve a iniciar sesión.");
+      setUiError("No hay sesión activa. Vuelve a iniciar sesión.");
       navigate("/login", { replace: true });
       return;
     }
@@ -123,13 +202,15 @@ export default function PhoneVerification() {
       return;
     }
 
-    const canonicalUid = user?.uid || authUserAfter.uid;
-
-    await markPhoneAsVerified(canonicalUid, phone);
-    markPhoneSaved(phone);
+    const claimResult = await markPhoneAsVerified(user.uid, phone, {
+      email: authUserAfter.email || userData?.email || null,
+      displayName: authUserAfter.displayName || userData?.displayName || null,
+      provider:
+        authUserAfter.providerData?.map((p) => p.providerId).filter(Boolean) || [],
+    });
 
     setBusy(false);
-    navigate("/", { replace: true });
+    await handlePhoneClaimResult(claimResult, phone);
   };
 
   const handleRestart = async () => {
@@ -145,57 +226,60 @@ export default function PhoneVerification() {
   };
 
   return (
-    <PhoneContainer>
-      <PhoneCard>
+    <AuthLayout>
+      <AuthCard>
+        <LogoWrap>
+          <LogoImage src={logoTaxiRadar} alt="Logo TaxiRadar24" />
+        </LogoWrap>
+
         <Form>
-          <p style={{ color: "#cbd5e1", marginBottom: 12 }}>
+          <p style={{ marginBottom: 12 }}>
             {step === 1
-              ? "Falta completar tu teléfono para continuar"
+              ? "Completa tu número de teléfono para continuar"
               : "Introduce el código SMS que recibiste"}
           </p>
 
           {step === 1 ? (
             <>
-              <Input
+              <AuthInput
                 type="tel"
                 placeholder="Ej: +34612345678"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
-              <Button onClick={handleSendCode} disabled={busy || loading}>
+              <AuthButton onClick={handleSendCode} disabled={busy || loading}>
                 {busy || loading ? "Enviando…" : "Enviar código SMS"}
-              </Button>
+              </AuthButton>
             </>
           ) : (
             <>
-              <Input
+              <AuthInput
                 type="text"
                 placeholder="Código de 6 dígitos"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
               />
-              <Button onClick={handleConfirmCode} disabled={busy || loading}>
+              <AuthButton onClick={handleConfirmCode} disabled={busy || loading}>
                 {busy || loading ? "Verificando…" : "Confirmar código"}
-              </Button>
+              </AuthButton>
             </>
           )}
 
-          <Button
-            onClick={handleRestart}
-            style={{ marginTop: 12, background: "#f45b69" }}
-          >
+          <AuthButton onClick={handleRestart} $variant="danger">
             Volver y reiniciar
-          </Button>
+          </AuthButton>
 
-          {error && (
-            <p style={{ color: "red", marginTop: 12, fontSize: "14px" }}>
-              {error}
-            </p>
+          {!!uiSuccess && <AuthMessage type="success">{uiSuccess}</AuthMessage>}
+          {!!uiError && (
+            <AuthMessage type="error" style={{ whiteSpace: "pre-line" }}>
+              {uiError}
+            </AuthMessage>
           )}
+          {error && <AuthMessage type="error">{error}</AuthMessage>}
         </Form>
 
         <div id="recaptcha-container"></div>
-      </PhoneCard>
-    </PhoneContainer>
+      </AuthCard>
+    </AuthLayout>
   );
 }

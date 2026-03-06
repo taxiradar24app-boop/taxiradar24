@@ -26,10 +26,8 @@ import { doc, onSnapshot } from "firebase/firestore";
 
 import { useSmartNavigation } from "@/utils/SmartNavigation";
 import { getDb } from "@/services/firebaseConfig";
-import { createCheckoutSession } from "./../../services/stripeService";
+import { createCheckoutSession } from "@/services/stripeService";
 import { useAuth } from "@/context/AuthContext";
-
-const db = getDb();
 
 export default function UpgradePage() {
   const { goAcademyPro, goDemo } = useSmartNavigation();
@@ -39,50 +37,53 @@ export default function UpgradePage() {
   const [checkingPro, setCheckingPro] = useState(true);
   const [payingPlan, setPayingPlan] = useState(null); // "monthly" | "3m" | "6m" | null
 
-  // =====================================================
-  // ✅ AUTO-DETECT: si en Firebase Console pones PRO,
-  // esta pantalla te saca automáticamente a PRO.
-  // =====================================================
   useEffect(() => {
     if (loading) return;
 
-    if (!user) {
-      navigate("/login");
-      return;
-    }
+    let unsub = null;
 
-    const ref = doc(db, "users", user.uid);
+    async function init() {
+      if (!user) {
+        navigate("/login");
+        return;
+      }
 
-    const unsub = onSnapshot(
-      ref,
-      (snap) => {
-        const plan = (snap.data()?.subscription || "").trim().toUpperCase();
+      try {
+        const db = await getDb();
+        const ref = doc(db, "users", user.uid);
 
-        // Si ya eres PRO, fuera de Upgrade
-        if (snap.exists() && plan === "PRO") {
-          goAcademyPro();
-          return;
-        }
+        unsub = onSnapshot(
+          ref,
+          (snap) => {
+            const plan = (snap.data()?.subscription || "").trim().toUpperCase();
 
-        setCheckingPro(false);
-      },
-      () => {
-        // si hay error, al menos desbloqueamos UI
+            if (snap.exists() && plan === "PRO") {
+              goAcademyPro();
+              return;
+            }
+
+            setCheckingPro(false);
+          },
+          () => {
+            setCheckingPro(false);
+          }
+        );
+      } catch (error) {
+        console.error("UpgradePage Firestore error:", error);
         setCheckingPro(false);
       }
-    );
+    }
 
-    return () => unsub();
+    init();
+
+    return () => {
+      if (unsub) unsub();
+    };
   }, [user, loading, navigate, goAcademyPro]);
 
-  // =====================================================
-  // 💳 LÓGICA DE ELECCIÓN DE PLAN (Stripe)
-  // =====================================================
   const choosePlan = async (months) => {
-    // Mientras validamos PRO (onSnapshot), evitamos clicks
     if (checkingPro) return;
 
-    // 12 meses aún no está creado en Stripe (temporal)
     if (months === 12) {
       goAcademyPro();
       return;
@@ -97,8 +98,6 @@ export default function UpgradePage() {
       setPayingPlan(plan);
 
       const url = await createCheckoutSession(plan);
-
-      // Redirección Stripe Checkout
       window.location.href = url;
     } catch (error) {
       console.error("Stripe checkout error:", error);
@@ -109,7 +108,6 @@ export default function UpgradePage() {
 
   return (
     <UpgradeWrapper>
-      {/* HERO DE IMPACTO */}
       <HeroTag>Acceso PRO — TaxiRadar24</HeroTag>
 
       <HeroTitle>Elige tu plan PRO y desbloquea TODO el contenido</HeroTitle>
@@ -120,14 +118,12 @@ export default function UpgradePage() {
         Taxista.
       </HeroSubtitle>
 
-      {/* Mensaje mini (opcional) mientras valida */}
       {checkingPro && (
         <div style={{ marginTop: "1rem", opacity: 0.8 }}>
           Verificando acceso…
         </div>
       )}
 
-      {/* GRID DE PLANES */}
       <PlansGrid>
         <PlanCard>
           <PlanTitle>1 mes</PlanTitle>
@@ -162,27 +158,35 @@ export default function UpgradePage() {
           </PlanButton>
         </PlanCard>
 
+        <PlanCard>
+          <PlanTitle>12 meses</PlanTitle>
+          <PlanPrice>Próximamente</PlanPrice>
+          <PlanButton
+            disabled={checkingPro || payingPlan !== null}
+            onClick={() => choosePlan(12)}
+          >
+            Acceso manual
+          </PlanButton>
+        </PlanCard>
       </PlansGrid>
 
-      {/* CTA seguir gratis */}
-      <div style={{ marginTop: "3rem", textAlign: "center" }}>
-        <PlanButton
-          style={{ width: "280px" }}
-          onClick={goDemo}
-          disabled={payingPlan !== null}
-        >
-          Seguir en versión DEMO
-        </PlanButton>
-      </div>
-
-      {/* GARANTÍA */}
       <GuaranteeBox>
-        <GuaranteeTitle>Garantía TaxiRadar24</GuaranteeTitle>
+        <GuaranteeTitle>¿Qué desbloqueas con PRO?</GuaranteeTitle>
         <GuaranteeText>
-          Si estudias con nuestros audios, realizas los simuladores y completas
-          los ejercicios, llegarás al examen con la mejor preparación posible.
-          Miles de preguntas y todos los artículos explicados paso a paso.
+          Acceso completo a los módulos, simuladores, callejero, audiolectura y
+          herramientas avanzadas para preparar el examen con una metodología
+          clara, progresiva y profesional.
         </GuaranteeText>
+
+        <div style={{ marginTop: "1rem" }}>
+          <PlanButton
+            style={{ maxWidth: 280 }}
+            disabled={checkingPro || payingPlan !== null}
+            onClick={goDemo}
+          >
+            Volver a DEMO
+          </PlanButton>
+        </div>
       </GuaranteeBox>
     </UpgradeWrapper>
   );

@@ -2,15 +2,24 @@
 // 🌍 AuthContext.js — TaxiRadar24 (Enterprise Lazy)
 // ===========================================
 
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+} from "react";
 
-import { getAuth } from "@/services/firebaseConfig";
-import { getDb } from "@/services/firebaseConfig";
+import { getAuth, getDb } from "@/services/firebaseConfig";
 
 import usePWAInstallPrompt from "./../hooks/usePWAInstallPrompt";
-import InstallBanner from "./../components/IU/PWA/InstallBanner";
+import InstallBanner from "./../components/UI/PWA/InstallBanner";
 
-import { fetchMySubscription, isSubscriptionActive } from "./../services/subscriptionService";
+import {
+  fetchMySubscription,
+  isSubscriptionActive,
+} from "./../services/subscriptionService";
 
 export const AuthContext = createContext(null);
 
@@ -25,13 +34,14 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
 
-  const { canShowPrompt, promptInstall, setCanShowPrompt } = usePWAInstallPrompt();
+  const { canShowPrompt, promptInstall, setCanShowPrompt } =
+    usePWAInstallPrompt();
 
   // =========================================================
   // Helpers
   // =========================================================
-  const refreshUserDocs = async (u) => {
-    if (!u) return;
+  const refreshUserDocs = useCallback(async (u) => {
+    if (!u?.uid) return;
 
     const db = await getDb();
     const { doc, getDoc } = await import("firebase/firestore");
@@ -43,9 +53,9 @@ export function AuthProvider({ children }) {
     const progressRef = doc(db, "progress", u.uid);
     const progressSnap = await getDoc(progressRef);
     setProgressData(progressSnap.exists() ? progressSnap.data() : null);
-  };
+  }, []);
 
-  const refreshSubscription = async (u) => {
+  const refreshSubscription = useCallback(async (u) => {
     if (!u) {
       setSubscription(null);
       return;
@@ -61,7 +71,30 @@ export function AuthProvider({ children }) {
     } finally {
       setSubscriptionLoading(false);
     }
-  };
+  }, []);
+
+  // ✅ Actualiza el estado local tras verificar/guardar teléfono
+  const markPhoneSaved = useCallback((phoneNumber) => {
+    setUserData((prev) => ({
+      ...(prev || {}),
+      phoneNumber: phoneNumber || prev?.phoneNumber || null,
+      canonicalPhone: phoneNumber || prev?.canonicalPhone || null,
+      phoneVerified: true,
+      phoneVerifiedAt: new Date().toISOString(),
+      needsMerge: false,
+      mergeCandidates: [],
+      mergeReason: null,
+    }));
+  }, []);
+
+  const setIdentityConflict = useCallback((payload = {}) => {
+    setUserData((prev) => ({
+      ...(prev || {}),
+      needsMerge: true,
+      mergeCandidates: payload.mergeCandidates || prev?.mergeCandidates || [],
+      mergeReason: payload.mergeReason || "PHONE_ALREADY_CLAIMED",
+    }));
+  }, []);
 
   // =========================================================
   // 🔐 Auth state (Lazy)
@@ -83,6 +116,7 @@ export function AuthProvider({ children }) {
           return;
         }
 
+        setLoading(true);
         setUser(u);
 
         await refreshUserDocs(u);
@@ -96,13 +130,12 @@ export function AuthProvider({ children }) {
     initAuth();
 
     return () => unsub && unsub();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canShowPrompt]);
+  }, [canShowPrompt, refreshSubscription, refreshUserDocs]);
 
   // =========================================================
   // 🚪 Logout
   // =========================================================
-  const logout = async () => {
+  const logout = useCallback(async () => {
     const auth = await getAuth();
     const { signOut } = await import("firebase/auth");
 
@@ -114,7 +147,7 @@ export function AuthProvider({ children }) {
     setSubscription(null);
 
     window.location.href = "/";
-  };
+  }, []);
 
   // =========================================================
   // PWA Banner
@@ -150,8 +183,14 @@ export function AuthProvider({ children }) {
       refreshUserDocs: () => refreshUserDocs(user),
       refreshSubscription: () => refreshSubscription(user),
 
+      markPhoneSaved,
+      setIdentityConflict,
+
       isLogged: !!user,
       hasIdentityConflict: !!userData?.needsMerge,
+      identityConflictMessage: userData?.needsMerge
+        ? "Este número ya está asociado a otra cuenta. Inicia sesión con la cuenta original o contacta soporte."
+        : "",
 
       isPro: proActive,
       isFree: !proActive,
@@ -163,7 +202,19 @@ export function AuthProvider({ children }) {
 
       hasProgress: !!progressData,
     };
-  }, [user, userData, progressData, subscription, subscriptionLoading, loading]);
+  }, [
+    user,
+    userData,
+    progressData,
+    subscription,
+    subscriptionLoading,
+    loading,
+    logout,
+    refreshUserDocs,
+    refreshSubscription,
+    markPhoneSaved,
+    setIdentityConflict,
+  ]);
 
   return (
     <AuthContext.Provider value={value}>

@@ -1,14 +1,24 @@
 // src/hooks/userIDService.js
 // ✅ Enterprise Lazy Firebase (sin romper lógica)
+// ✅ userIDService centrado en auth / identidad básica
+// ✅ accountLinkingService resuelve conflictos y cuenta canónica
 
 import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { getDb } from "./../services/firebaseConfig";
+import { claimPhoneForUid } from "./../services/accountLinkingService";
 
 // --------------------------------------------------
 // Helpers internos (lazy imports)
 // --------------------------------------------------
 async function fs() {
   return await import("firebase/firestore");
+}
+
+export function normalizePhoneNumber(raw) {
+  let formatted = String(raw || "").trim().replace(/\s+/g, "");
+  if (!formatted) return "";
+  if (!formatted.startsWith("+")) formatted = `+34${formatted}`;
+  return formatted;
 }
 
 // --------------------------------------------------
@@ -32,8 +42,7 @@ async function createInitialProgress(userId) {
 }
 
 // --------------------------------------------------
-// ✅ Identity Guard (Enterprise)
-// Si el teléfono ya existe en OTRO user doc => needsMerge
+// Identity Guard
 // --------------------------------------------------
 async function identityGuardPhone(uid, phoneNumber) {
   try {
@@ -56,7 +65,6 @@ async function identityGuardPhone(uid, phoneNumber) {
     });
 
     if (others.length > 0) {
-      // Marcamos SOLO en el canónico (y guardamos referencia)
       await updateDoc(doc(db, "users", uid), {
         needsMerge: true,
         mergeCandidates: others,
@@ -64,7 +72,6 @@ async function identityGuardPhone(uid, phoneNumber) {
         mergeDetectedAt: serverTimestamp(),
       });
     } else {
-      // Limpieza (por si antes se marcó y ya no aplica)
       await updateDoc(doc(db, "users", uid), {
         needsMerge: false,
         mergeCandidates: [],
@@ -73,7 +80,6 @@ async function identityGuardPhone(uid, phoneNumber) {
     }
   } catch (e) {
     console.warn("Identity Guard (phone) error:", e);
-    // No rompemos flujo principal
   }
 }
 
@@ -95,10 +101,20 @@ export async function registerWithEmail(name, email, password, phoneNumber) {
     uid: user.uid,
     displayName: name,
     email,
-    phoneNumber: phoneNumber || null,
+    phoneNumber: phoneNumber ? normalizePhoneNumber(phoneNumber) : null,
+    canonicalPhone: phoneNumber ? normalizePhoneNumber(phoneNumber) : null,
+    canonicalUid: user.uid,
     phoneVerified: false,
     phoneVerifiedAt: null,
+    needsMerge: false,
+    mergeCandidates: [],
+    mergeReason: null,
+    linkingStatus: "none",
+    linkCandidateUid: null,
+    identityRiskLevel: "low",
+    providers: ["password"],
     createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   });
 
   await createInitialProgress(user.uid);
@@ -178,13 +194,19 @@ export async function loginWithGoogle() {
       displayName: user.displayName || "",
       email: user.email || null,
       phoneNumber: null,
+      canonicalPhone: null,
+      canonicalUid: user.uid,
       phoneVerified: false,
       phoneVerifiedAt: null,
-      // ✅ Identity guard fields
       needsMerge: false,
       mergeCandidates: [],
       mergeReason: null,
+      linkingStatus: "none",
+      linkCandidateUid: null,
+      identityRiskLevel: "low",
+      providers: ["google.com"],
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     });
 
     await createInitialProgress(user.uid);
@@ -201,32 +223,29 @@ export async function loginWithGoogle() {
 // --------------------------------------------------
 export async function savePhoneNumber(uid, phoneNumber) {
   const db = await getDb();
-  const { doc, updateDoc } = await fs();
+  const { doc, updateDoc, serverTimestamp } = await fs();
+  const normalizedPhone = normalizePhoneNumber(phoneNumber);
 
   await updateDoc(doc(db, "users", uid), {
-    phoneNumber,
+    phoneNumber: normalizedPhone,
+    canonicalPhone: normalizedPhone,
     phoneVerified: false,
+    updatedAt: serverTimestamp(),
   });
 
-  // ✅ Identity Guard
-  await identityGuardPhone(uid, phoneNumber);
+  await identityGuardPhone(uid, normalizedPhone);
 }
 
 // --------------------------------------------------
-// 🔐 Marcar teléfono verificado (Enterprise)
-// - SIEMPRE en users/{uidCanónico}
-// - Identity Guard duplicados
+// Marcar teléfono verificado
 // --------------------------------------------------
-export async function markPhoneAsVerified(uid, phoneNumber) {
-  const db = await getDb();
-  const { doc, updateDoc, serverTimestamp } = await fs();
+export async function markPhoneAsVerified(uid, phoneNumber, meta = {}) {
+  const normalizedPhone = normalizePhoneNumber(phoneNumber);
+  const result = await claimPhoneForUid(uid, normalizedPhone, meta);
 
-  await updateDoc(doc(db, "users", uid), {
-    phoneNumber,
-    phoneVerified: true,
-    phoneVerifiedAt: serverTimestamp(),
-  });
+  if (result?.status === "ok" && !result.conflict) {
+    await identityGuardPhone(uid, result.phoneNumber);
+  }
 
-  // ✅ Identity Guard
-  await identityGuardPhone(uid, phoneNumber);
+  return result;
 }

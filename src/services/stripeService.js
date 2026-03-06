@@ -1,7 +1,7 @@
 // src/services/stripeService.js
 import { getAuth } from "./firebaseConfig";
 
-const WORKER_URL = "https://lively-resonance-ed49.taxiradar24audio.workers.dev";
+const WORKER_URL = process.env.REACT_APP_API_BASE;
 
 export async function createCheckoutSession(plan) {
   const auth = await getAuth();

@@ -150,7 +150,7 @@ export function useSmartNavigation() {
     if (isDriver) return "/tools";
 
     // Usuario normal -> Academia (landing)
-    return "/academia";
+    return "/academia/demo";
   };
 
   return {

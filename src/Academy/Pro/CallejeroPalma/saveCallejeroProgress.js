@@ -24,7 +24,11 @@ import {
 
 import { getDb } from "./../../../services/firebaseConfig";
 
-const db = getDb();
+async function load() {
+  const db = await getDb();
+
+  const ref = doc(db, "users", uid);
+}
 
 // ==============================
 // Helpers

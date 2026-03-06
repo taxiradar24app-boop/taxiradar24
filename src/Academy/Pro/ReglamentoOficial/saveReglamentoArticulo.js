@@ -1,19 +1,11 @@
 // src/Academy/Pro/ReglamentoOficial/saveReglamentoArticulo.js
 // ======================================================================
 // 💾 saveReglamentoArticulo.js — PRODUCCIÓN (OPTIMIZADO & RENTABLE)
-// ✅ Separa la lógica de guardado fuera del componente
-// ✅ Mantiene tu estructura en: progress/{uid}.reglamento
-// ✅ Optimiza espacio:
-//    - Guarda resumen global compacto
-//    - Guarda detalle por artículo MINIMAL (sin texto largo)
-//    - Media global incremental (no depende de historial)
-//    - No guarda arrays crecientes
 // ======================================================================
 
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
-import { getDb } from  "./../../../services/firebaseConfig";
+import { getDb } from "./../../../services/firebaseConfig";
 
-const db = getDb();
 function n(v, fallback = 0) {
   const x = Number(v);
   return Number.isFinite(x) ? x : fallback;
@@ -28,11 +20,13 @@ function clampNum(v, min = 0, max = 100) {
 export default async function saveReglamentoArticulo({
   uid,
   articleId,
-  articuloMeta = {}, // { rango, title? }
-  result = {}, // { total, correct, wrong, score, passed, minToPass, finishedAt }
+  articuloMeta = {},
+  result = {},
   totalArticles = 0,
 }) {
   try {
+    const db = await getDb(); // ✅ CORREGIDO
+
     if (!uid) return { ok: false, error: "Missing uid" };
     if (!articleId) return { ok: false, error: "Missing articleId" };
 
@@ -72,7 +66,6 @@ export default async function saveReglamentoArticulo({
 
       const nextAttempts = prevAttempts + 1;
 
-      // ✅ Media incremental (barata)
       const nextAvg =
         nextAttempts > 0
           ? Math.round((prevAvg * prevAttempts + score) / nextAttempts)
@@ -84,27 +77,20 @@ export default async function saveReglamentoArticulo({
       const prevArticleAttempts = n(prevArticle?.attempts ?? 0);
       const nextArticleAttempts = prevArticleAttempts + 1;
 
-      // ✅ Guardado minimal por artículo (sin title largo)
       const articlePatch = {
         id: String(articleId),
         rango: articuloMeta?.rango ?? "",
-
         passed,
         lastScore: score,
         bestScore: nextBest,
         attempts: nextArticleAttempts,
-
         correct: n(result?.correct ?? 0),
         wrong: n(result?.wrong ?? 0),
         total: n(result?.total ?? 0),
         minToPass: n(result?.minToPass ?? 0),
-
         lastAttemptAt: serverTimestamp(),
         finishedAt: result?.finishedAt ?? null,
       };
-
-      // (Opcional) title: desactivado para ahorrar espacio
-      // if (articuloMeta?.title) articlePatch.title = articuloMeta.title;
 
       tx.set(
         ref,

@@ -17,7 +17,6 @@ import { saveAudioProgress } from "./logic/saveAudioProgress";
 import { getDb } from "./../../../services/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 
-const db = getDb();
 
 /* ===============================
    🔐 PRO Signed URLs (Worker)
@@ -114,35 +113,37 @@ export default function AudioScreen() {
   // ==========================================
   // 1) Cargar progreso al entrar (reanudar)
   // ==========================================
-  useEffect(() => {
-    if (!userId) return;
+ useEffect(() => {
+  if (!userId) return;
 
-    (async () => {
-      try {
-        const ref = doc(db, "progress", userId);
-        const snap = await getDoc(ref);
-        if (!snap.exists()) {
-          setSavedMap({});
-          return;
-        }
+  (async () => {
+    try {
+      const db = await getDb();
 
-        const data = snap.data() || {};
-        const audio = data.audio || {};
-        const map = audio.audios || {};
+      const ref = doc(db, "progress", userId);
+      const snap = await getDoc(ref);
 
-        // ✅ si guardamos playbackRate en Firestore, lo aplicamos (sin obligar)
-        const savedRate = safeNum(audio?.settings?.playbackRate, 0);
-        if ([1, 1.25, 1.5].includes(savedRate)) {
-          setPlaybackRate(savedRate);
-          localStorage.setItem(RATE_STORAGE_KEY, String(savedRate));
-        }
-
-        setSavedMap(map);
-      } catch (e) {
-        console.error("AudioScreen load progress error:", e);
+      if (!snap.exists()) {
+        setSavedMap({});
+        return;
       }
-    })();
-  }, [userId]);
+
+      const data = snap.data() || {};
+      const audio = data.audio || {};
+      const map = audio.audios || {};
+
+      const savedRate = safeNum(audio?.settings?.playbackRate, 0);
+      if ([1, 1.25, 1.5].includes(savedRate)) {
+        setPlaybackRate(savedRate);
+        localStorage.setItem(RATE_STORAGE_KEY, String(savedRate));
+      }
+
+      setSavedMap(map);
+    } catch (e) {
+      console.error("AudioScreen load progress error:", e);
+    }
+  })();
+}, [userId]);
 
   // ==========================================
   // 2) Guardar progreso (suave)

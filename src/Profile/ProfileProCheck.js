@@ -58,7 +58,13 @@ export default function ProfileProCheck() {
   const [emailMessage, setEmailMessage] = useState("");
 
   // ✅ Anti-flicker durante logout / transición
-  if (loading) return null;
+  if (loading) {
+  return (
+    <div style={{ color: "#fff", padding: "40px" }}>
+      Cargando verificación...
+    </div>
+  );
+}
 
   if (!user) return <Navigate to="/login" replace />;
 
@@ -139,17 +145,22 @@ export default function ProfileProCheck() {
           </div>
         )}
       </Section>
+        {ready && (
+          <>
+            <Button
+              onClick={() =>
+                navigate("/academia/pro", { replace: true })
+              }
+              style={{ marginTop: 24 }}
+            >
+              Entrar a Academia PRO
+            </Button>
 
-      {ready && (
-        <Button
-          onClick={() =>
-            navigate("/academia/pro", { replace: true })
-          }
-          style={{ marginTop: 24 }}
-        >
-          Entrar a Academia PRO
-        </Button>
-      )}
+            <Status style={{ marginTop: 14 }}>
+              Tu acceso PRO ya está activado. Puedes entrar ahora a la Academia.
+            </Status>
+          </>
+        )}
     </Container>
   );
 }
