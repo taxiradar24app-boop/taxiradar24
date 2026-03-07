@@ -1,22 +1,18 @@
-// src/services/subscriptionService.js
-
 function normalizeBase(url) {
   if (!url) return "";
   return url.replace(/\/$/, "");
 }
 
 export function getApiBase() {
-  // CRA / Webpack
-  const envBase = process.env.REACT_APP_API_BASE;
-
-  // fallback por seguridad (producción)
-  const fallback = "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
+  const envBase = import.meta.env.VITE_API_BASE;
+  const fallback =
+    "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
 
   const base = normalizeBase(envBase || fallback);
 
   if (!envBase) {
     console.warn(
-      "⚠️ REACT_APP_API_BASE no definido, usando fallback:",
+      "⚠️ VITE_API_BASE no definido en subscriptionService, usando fallback:",
       fallback
     );
   }
@@ -28,7 +24,6 @@ export async function fetchMySubscription(firebaseUser) {
   if (!firebaseUser) throw new Error("No user");
 
   const token = await firebaseUser.getIdToken();
-
   const apiBase = getApiBase();
 
   const res = await fetch(`${apiBase}/academy/subscription/me`, {
@@ -47,7 +42,7 @@ export async function fetchMySubscription(firebaseUser) {
     throw new Error(msg);
   }
 
-  return data; // { ok, uid, plan, status, expires_at }
+  return data;
 }
 
 export function isSubscriptionActive(sub) {

@@ -1,17 +1,43 @@
-// src/services/stripeService.js
 import { getAuth } from "./firebaseConfig";
 
-const WORKER_URL = process.env.REACT_APP_API_BASE;
+function normalizeBase(url) {
+  if (!url) return "";
+  return url.replace(/\/$/, "");
+}
+
+export function getApiBase() {
+  const envBase = import.meta.env.VITE_API_BASE;
+  const fallback =
+    "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
+
+  const base = normalizeBase(envBase || fallback);
+
+  if (!envBase) {
+    console.warn(
+      "⚠️ VITE_API_BASE no definido en stripeService, usando fallback:",
+      fallback
+    );
+  }
+
+  return base;
+}
 
 export async function createCheckoutSession(plan) {
   const auth = await getAuth();
-
   const user = auth.currentUser;
-  if (!user) throw new Error("User not authenticated");
+
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
 
   const token = await user.getIdToken();
+  const apiBase = getApiBase();
 
-  const response = await fetch(`${WORKER_URL}/stripe/create-checkout-session`, {
+  if (!apiBase) {
+    throw new Error("API base no disponible para Stripe");
+  }
+
+  const response = await fetch(`${apiBase}/stripe/create-checkout-session`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -24,6 +50,10 @@ export async function createCheckoutSession(plan) {
 
   if (!response.ok) {
     throw new Error(data?.message || data?.error || "Stripe error");
+  }
+
+  if (!data?.url) {
+    throw new Error("Stripe checkout URL not returned by API");
   }
 
   return data.url;
