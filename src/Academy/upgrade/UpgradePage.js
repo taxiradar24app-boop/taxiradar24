@@ -158,7 +158,7 @@ export default function UpgradePage() {
           </PlanButton>
         </PlanCard>
 
-        <PlanCard>
+        {/* <PlanCard>
           <PlanTitle>12 meses</PlanTitle>
           <PlanPrice>Próximamente</PlanPrice>
           <PlanButton
@@ -167,7 +167,7 @@ export default function UpgradePage() {
           >
             Acceso manual
           </PlanButton>
-        </PlanCard>
+        </PlanCard> */}
       </PlansGrid>
 
       <GuaranteeBox>
