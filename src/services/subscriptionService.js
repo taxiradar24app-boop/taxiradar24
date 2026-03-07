@@ -1,22 +1,35 @@
 // src/services/subscriptionService.js
 
+function normalizeBase(url) {
+  if (!url) return "";
+  return url.replace(/\/$/, "");
+}
+
 export function getApiBase() {
   // CRA / Webpack
-  const base = process.env.REACT_APP_API_BASE;
-  if (!base) return "";
-  return base.replace(/\/$/, "");
+  const envBase = process.env.REACT_APP_API_BASE;
+
+  // fallback por seguridad (producción)
+  const fallback = "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
+
+  const base = normalizeBase(envBase || fallback);
+
+  if (!envBase) {
+    console.warn(
+      "⚠️ REACT_APP_API_BASE no definido, usando fallback:",
+      fallback
+    );
+  }
+
+  return base;
 }
 
 export async function fetchMySubscription(firebaseUser) {
   if (!firebaseUser) throw new Error("No user");
+
   const token = await firebaseUser.getIdToken();
 
   const apiBase = getApiBase();
-  if (!apiBase) {
-    throw new Error(
-      "REACT_APP_API_BASE no está definido. Debe apuntar a tu Worker (API)."
-    );
-  }
 
   const res = await fetch(`${apiBase}/academy/subscription/me`, {
     method: "GET",
@@ -29,7 +42,8 @@ export async function fetchMySubscription(firebaseUser) {
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
-    const msg = data?.error || data?.message || "Error consultando suscripción";
+    const msg =
+      data?.error || data?.message || "Error consultando suscripción";
     throw new Error(msg);
   }
 
