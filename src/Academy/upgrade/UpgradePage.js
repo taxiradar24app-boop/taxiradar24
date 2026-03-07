@@ -161,12 +161,12 @@ export default function UpgradePage() {
         <PlanCard>
           <PlanTitle>12 meses</PlanTitle>
           <PlanPrice>Todos los planes incluyen acceso a todas las funciones PRO</PlanPrice>
-          {/* <PlanButton
+          <PlanButton
             disabled={checkingPro || payingPlan !== null}
             onClick={() => choosePlan(12)}
           >
             Acceso manual
-          </PlanButton> */}
+          </PlanButton>
         </PlanCard>
       </PlansGrid>
 
