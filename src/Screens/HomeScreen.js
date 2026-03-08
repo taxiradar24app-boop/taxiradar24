@@ -1,6 +1,9 @@
 // ======================================================================
-// 🏠 HOME SCREEN — Versión Enterprise limpia
-// (Solo SmartNavigation, sin lógica manual)
+// 🏠 HOME SCREEN — UX optimizada
+// Portal principal del ecosistema TaxiRadar24
+// - Mantiene SmartNavigation
+// - Reduce repetición de mensaje
+// - Refuerza Academia + Herramientas
 // ======================================================================
 
 import React, { useEffect, useRef } from "react";
@@ -57,7 +60,7 @@ import {
 
 /* =========================
    Hook para animación FadeIn
-   ========================= */
+========================= */
 function useScrollFadeIn() {
   const ref = useRef(null);
 
@@ -74,7 +77,7 @@ function useScrollFadeIn() {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.18 }
     );
 
     observer.observe(node);
@@ -86,19 +89,17 @@ function useScrollFadeIn() {
 
 /* =========================
    HOME SCREEN
-   ========================= */
-
+========================= */
 export default function HomeScreen() {
   const { goAcademy, goTools } = useSmartNavigation();
 
-  // Animaciones
-  const learnRef = useScrollFadeIn();
+  const overviewRef = useScrollFadeIn();
   const stepsRef = useScrollFadeIn();
   const testimonialsRef = useScrollFadeIn();
 
   return (
     <Container>
-      {/* HERO PRINCIPAL FULL HEIGHT */}
+      {/* HERO PRINCIPAL */}
       <HeroSection>
         <HeroContent>
           <HeroTag>Academia online para taxistas de Baleares</HeroTag>
@@ -106,15 +107,15 @@ export default function HomeScreen() {
           <HeroTitle>
             Academia TaxiRadar24:
             <br />
-            Formación Oficial para
+            Formación oficial para tu
             <br />
-            tu Permiso Municipal de Taxista
+            Permiso Municipal de Taxista
           </HeroTitle>
 
           <HeroSubtitle>
-            Formación práctica, audios guiados y simuladores de examen diseñados
-            por y para taxistas de Palma. Estudia a tu ritmo, desde cualquier
-            dispositivo.
+            Estudia con una ruta clara: Reglamento explicado, audios guiados,
+            simuladores y callejero de Palma en una sola plataforma, desde
+            móvil o PWA.
           </HeroSubtitle>
 
           <HeroCTA>
@@ -132,10 +133,12 @@ export default function HomeScreen() {
               <HeroStatNumber>15</HeroStatNumber>
               <HeroStatLabel>audios del Reglamento</HeroStatLabel>
             </HeroStat>
+
             <HeroStat>
               <HeroStatNumber>+600</HeroStatNumber>
               <HeroStatLabel>preguntas de examen</HeroStatLabel>
             </HeroStat>
+
             <HeroStat>
               <HeroStatNumber>24/7</HeroStatNumber>
               <HeroStatLabel>acceso desde móvil y PWA</HeroStatLabel>
@@ -145,167 +148,137 @@ export default function HomeScreen() {
 
         <HeroSideCard>
           <HeroSideBadge>Próximas convocatorias</HeroSideBadge>
+
           <HeroSideTitle>
-            Llega al examen con todo el temario controlado
+            Una academia pensada para estudiar con foco real
           </HeroSideTitle>
+
           <HeroSideText>
-            Sigue la ruta de estudio recomendada, escucha los audios, responde
-            los test y repasa las preguntas clave que ya han salido en
-            convocatorias anteriores.
+            Entra, sigue la ruta recomendada y practica con contenido orientado
+            al examen municipal de Palma.
           </HeroSideText>
 
           <HeroSideList>
-            <HeroSideItem>✔ Audios 1–15 del Reglamento</HeroSideItem>
-            <HeroSideItem>✔ Simuladores oficiales de examen</HeroSideItem>
-            <HeroSideItem>✔ Ejercicios callejero 10 calles en 10 minutos</HeroSideItem>
-            <HeroSideItem>✔ Acceso desde taxi, casa o academia</HeroSideItem>
+            <HeroSideItem>✔ Reglamento explicado en lenguaje claro</HeroSideItem>
+            <HeroSideItem>✔ Audios para estudiar en cualquier momento</HeroSideItem>
+            <HeroSideItem>✔ Simuladores con preguntas reales</HeroSideItem>
+            <HeroSideItem>✔ Callejero y práctica oficial de Palma</HeroSideItem>
           </HeroSideList>
         </HeroSideCard>
       </HeroSection>
 
-      {/* LO QUE APRENDERÁS */}
-      <FadeInSection ref={learnRef}>
+      {/* DOS PILARES */}
+      <FadeInSection ref={overviewRef}>
         <Section>
           <SectionHeader>
-            <SectionTag>Lo que aprenderás</SectionTag>
+            <SectionTag>Qué encontrarás en TaxiRadar24</SectionTag>
             <SectionTitle>
-              Todo lo que necesitas para aprobar el permiso municipal de Palma
+              Dos caminos claros dentro de una misma plataforma
             </SectionTitle>
             <SectionSubtitle>
-              La Academia TaxiRadar24 reúne el Reglamento, el Callejero, los
-              exámenes oficiales y ejercicios guiados para que estudies con
-              foco en lo que realmente cae en la prueba.
+              Si quieres sacarte el permiso, entra en la Academia. Si ya trabajas
+              en el taxi, accede a herramientas pensadas para el día a día.
             </SectionSubtitle>
           </SectionHeader>
 
           <FeatureGrid>
             <FeatureCard>
+              <FeatureIcon>🎓</FeatureIcon>
+              <h3>Academia TaxiRadar24</h3>
+              <p>
+                Preparación guiada para el permiso municipal de taxista con una
+                metodología clara y práctica.
+              </p>
+              <PillList>
+                <Pill>Reglamento</Pill>
+                <Pill>Audios</Pill>
+                <Pill>Simuladores</Pill>
+                <Pill>Callejero</Pill>
+              </PillList>
+            </FeatureCard>
+
+            <FeatureCard>
+              <FeatureIcon>✈️</FeatureIcon>
+              <h3>Herramientas para taxistas</h3>
+              <p>
+                Radar de llegadas y utilidades profesionales para trabajar con
+                más contexto y mejor preparación.
+              </p>
+              <PillList>
+                <Pill>Radar vuelos</Pill>
+                <Pill>Panel profesional</Pill>
+                <Pill>Uso desde móvil</Pill>
+              </PillList>
+            </FeatureCard>
+
+            <FeatureCard>
               <FeatureIcon>📘</FeatureIcon>
-              <h3>Texto oficial del Reglamento del Taxi, explicado para aprobar.</h3>
-
+              <h3>Contenido orientado al examen real</h3>
               <p>
-                Cada artículo en versión oficial y en lenguaje claro de academia, con puntos clave,
-                ejemplos reales y preguntas típicas de examen.
-                            </p>
-                            <p>
-                <strong>Aquí no memorizas:</strong> entiendes, practicas y avanzas con seguridad
-                hasta tu carnet de taxista.
+                Estudia con bloques pensados para entender qué cae en la prueba
+                y cómo responder con seguridad.
               </p>
-
               <PillList>
-                <Pill>Art. 1 a 88</Pill>
-                <Pill>Resúmenes activos</Pill>
+                <Pill>Temario guiado</Pill>
+                <Pill>Ejemplos</Pill>
+                <Pill>Preguntas reales</Pill>
               </PillList>
             </FeatureCard>
 
             <FeatureCard>
-              <FeatureIcon>🎧</FeatureIcon>
-              <h3>Audios para estudiar donde quieras</h3>
+              <FeatureIcon>📱</FeatureIcon>
+              <h3>Acceso flexible</h3>
               <p>
-                Escucha las lecciones mientras conduces, entrenas o descansas.
-                Tú eliges el momento, la Academia se adapta a tu ritmo.
-              </p>
-              <p>
-                  <strong>Tú marcas el ritmo</strong>, la Academia te acompaña.
-              </p>
-              <p>
-                 <strong>Estudias a tu ritmo,</strong> sin parar tu vida.
-              </p>
-                <PillList>
-                <Pill>Modo audio</Pill>
-                <Pill>Repetición ilimitada</Pill>
-              </PillList>
-            </FeatureCard>
-
-            <FeatureCard>
-
-              <FeatureIcon>📝</FeatureIcon>
-              <h3>Simuladores con preguntas reales</h3>
-
-              <p>
-                Practica como en el examen: eliges el número de preguntas, trabajas con
-                temporizador y revisas los resultados al final. 
-                
-              </p>
-              <p>
-                <strong>Cada simulacro se genera </strong>con preguntas reales de exámenes oficiales anteriores.
-              </p>
-              <p>
-                <strong>Te entrenas con mentalidad de examen</strong>, con preguntas reales.
+                Puedes estudiar y consultar la plataforma desde casa, academia,
+                taxi o cualquier dispositivo.
               </p>
               <PillList>
-                <Pill>Exámenes</Pill>
-                <Pill>Corrección inmediata</Pill>
-              </PillList>
-            </FeatureCard>
-
-            <FeatureCard>
-              <FeatureIcon>🗺️</FeatureIcon>
-              <h3>Callejero de Palma</h3>
-
-              <p>
-                Ejercicios y mini-retos para dominar planos, cuadrículas y calles clave
-                que aparecen en el examen municipal.
-              </p>
-
-              <p>
-                <strong>El callejero puntúa hasta 10 puntos</strong> y exige precisión total:
-                plano, letra y número correctos.
-              </p>
-
-              <p>
-                <strong>Aprendes a responder en formato oficial</strong>, como en el examen,
-                sin perder puntos por errores incompletos.
-              </p>
-
-              <PillList>
-                <Pill>Planos oficiales</Pill>
-                <Pill>Ejercicios 10x10</Pill>
+                <Pill>PWA</Pill>
+                <Pill>Móvil</Pill>
+                <Pill>24/7</Pill>
               </PillList>
             </FeatureCard>
           </FeatureGrid>
         </Section>
       </FadeInSection>
 
-      {/* CÓMO FUNCIONA TU RUTA */}
+      {/* RUTA DE USO */}
       <FadeInSection ref={stepsRef}>
         <Section background="alt">
           <SectionHeader>
-            <SectionTag>Tu camino dentro de la Academia</SectionTag>
-            <SectionTitle>Así es la ruta para aprobar con seguridad</SectionTitle>
+            <SectionTag>Cómo funciona</SectionTag>
+            <SectionTitle>Una ruta simple para avanzar con seguridad</SectionTitle>
             <SectionSubtitle>
-              La plataforma está pensada para acompañarte desde el primer
-              contacto con el temario hasta el día del examen.
+              TaxiRadar24 está pensado para que entiendas rápido qué hacer
+              primero, cómo practicar y cómo continuar después.
             </SectionSubtitle>
           </SectionHeader>
 
           <StepsWrapper>
             <StepItem>
               <StepNumber>1</StepNumber>
-              <StepTitle>Escucha y entiende</StepTitle>
+              <StepTitle>Entra y ubica tu camino</StepTitle>
               <StepText>
-                Empieza por los audios del Reglamento, capítulo a capítulo.
-                Tienes explicaciones claras, ejemplos y resúmenes para fijar las
-                ideas clave.
+                Accede a la Academia si te preparas para el examen o entra en
+                Herramientas si ya trabajas como taxista.
               </StepText>
             </StepItem>
 
             <StepItem>
               <StepNumber>2</StepNumber>
-              <StepTitle>Practica con test reales</StepTitle>
+              <StepTitle>Estudia o practica con foco</StepTitle>
               <StepText>
-                Realiza simuladores de exámenes oficiales, detecta tus puntos
-                débiles y repasa justo los artículos que más fallas.
+                Sigue el contenido principal, escucha audios, haz simuladores y
+                entrena el callejero con una estructura clara.
               </StepText>
             </StepItem>
 
             <StepItem>
               <StepNumber>3</StepNumber>
-              <StepTitle>Llega preparado al examen</StepTitle>
+              <StepTitle>Avanza con continuidad</StepTitle>
               <StepText>
-                Repasa los bloques finales, afina el Callejero y llega al día de
-                la prueba con confianza, sabiendo qué tipo de preguntas te vas a
-                encontrar.
+                Mantén una rutina, repasa lo importante y utiliza la plataforma
+                como espacio central de preparación y trabajo.
               </StepText>
             </StepItem>
           </StepsWrapper>
@@ -318,19 +291,19 @@ export default function HomeScreen() {
           <SectionHeader>
             <SectionTag>Experiencias de alumnos</SectionTag>
             <SectionTitle>
-              Una academia creada con la realidad del taxi en mente
+              Una plataforma creada con la realidad del taxi en mente
             </SectionTitle>
             <SectionSubtitle>
-              Comentarios de personas que, como tú, querían aprobar el permiso
-              municipal y contar con una herramienta útil para su trabajo.
+              Pensada para personas que quieren aprobar el permiso municipal y
+              avanzar con un sistema claro, directo y útil.
             </SectionSubtitle>
           </SectionHeader>
 
           <TestimonialsWrapper>
             <TestimonialCard>
               <TestimonialQuote>
-                “Con los audios pude estudiar mientras trabajaba. Llegué al
-                examen con el Reglamento muy fresco.”
+                “Los audios me ayudaron a estudiar en ratos muertos sin perder el
+                ritmo de trabajo.”
               </TestimonialQuote>
               <TestimonialName>María R.</TestimonialName>
               <TestimonialRole>Aspirante a taxista en Palma</TestimonialRole>
@@ -338,8 +311,8 @@ export default function HomeScreen() {
 
             <TestimonialCard>
               <TestimonialQuote>
-                “Los simuladores con preguntas reales me ayudaron a perder el
-                miedo. Muchas cayeron casi iguales.”
+                “Con los simuladores entendí mucho mejor cómo me iban a preguntar
+                en el examen.”
               </TestimonialQuote>
               <TestimonialName>Carlos M.</TestimonialName>
               <TestimonialRole>Taxista novel</TestimonialRole>
@@ -347,8 +320,8 @@ export default function HomeScreen() {
 
             <TestimonialCard>
               <TestimonialQuote>
-                “Me gusta que en una misma web tenga academia y radar de vuelos.
-                Es una herramienta completa para el taxi.”
+                “Me gusta que todo esté ordenado y que academia y herramientas
+                vivan dentro del mismo proyecto.”
               </TestimonialQuote>
               <TestimonialName>Laura G.</TestimonialName>
               <TestimonialRole>Futura conductora de taxi</TestimonialRole>
@@ -360,17 +333,17 @@ export default function HomeScreen() {
       {/* CTA FINAL */}
       <FinalCTASection>
         <FinalCTATitle>
-          ¿Listo para empezar tu camino en TaxiRadar24?
+          Empieza por el camino que necesitas hoy
         </FinalCTATitle>
+
         <FinalCTAText>
-          Crea tu rutina, escucha los audios, practica los test y usa las
-          herramientas de radar para vivir el taxi con más seguridad y
-          confianza.
+          Accede a la Academia para prepararte para el examen o entra en
+          Herramientas si buscas utilidades profesionales para tu trabajo diario.
         </FinalCTAText>
 
         <HeroCTA>
           <PrimaryButton onClick={goAcademy}>
-            Empezar ahora con la Academia
+            Ir a la Academia
           </PrimaryButton>
 
           <SecondaryButton onClick={goTools}>

@@ -31,144 +31,209 @@ import {
 import { useSmartNavigation } from "@/utils/SmartNavigation";
 
 export default function AcademiaDemo() {
+
   const navigate = useNavigate();
   const { goAcademyPro, goTools } = useSmartNavigation();
 
   const goDemoPath = (path) => {
-    // ✅ React Router navigation (respeta HashRouter si lo usas)
     navigate(path);
   };
 
   return (
     <DemoWrapper>
       <DemoContainer>
+
+        {/* =====================================================
+            HERO DEMO
+        ====================================================== */}
+
         <DemoHeader>
+
           <div>
+
             <DemoTagline>
-              <span>Academia online para taxistas de Baleares</span>
+              Academia online para taxistas de Baleares
             </DemoTagline>
 
             <DemoBread>
-              <span>Versión demo</span>
+              Versión DEMO
             </DemoBread>
 
             <DemoTitle>
-              Academia TaxiRadar24{" "}
-              <DemoHighlight>
-                preparación oficial para tu permiso municipal de taxista
-              </DemoHighlight>
+              Prueba la <DemoHighlight>Academia TaxiRadar24</DemoHighlight>
             </DemoTitle>
 
             <DemoSubtitle>
-              Formación práctica, audios guiados, callejero y simuladores de
-              examen diseñados por taxistas profesionales. Estudia a tu ritmo
-              desde cualquier dispositivo.
+              Esta es una versión gratuita para que puedas explorar
+              cómo funciona la plataforma antes de acceder a la
+              formación completa.
             </DemoSubtitle>
 
             <StatsRow>
+
               <StatItem>
                 <span className="stat-number">15</span>
                 <span className="stat-label">Audios</span>
               </StatItem>
+
               <StatItem>
                 <span className="stat-number">+600</span>
-                <span className="stat-label">Preguntas reales</span>
+                <span className="stat-label">Preguntas</span>
               </StatItem>
+
               <StatItem>
                 <span className="stat-number">24/7</span>
                 <span className="stat-label">Acceso móvil</span>
               </StatItem>
+
             </StatsRow>
 
             <CTAGroup>
+
               <PrimaryButton onClick={goAcademyPro}>
-                Entrar a la Academia
+                Desbloquear Academia PRO
               </PrimaryButton>
+
               <SecondaryButton onClick={goTools}>
-                Herramientas para taxistas
+                Herramientas taxi
               </SecondaryButton>
+
             </CTAGroup>
+
           </div>
 
+
+          {/* CARD DERECHA */}
+
           <HeroRightCard>
-            <h3>Próximas convocatorias</h3>
-            <h4>Llega al examen con todo el temario controlado</h4>
+
+            <h3>Cómo funciona la academia</h3>
+
+            <h4>Estudia con una ruta clara</h4>
+
             <ul>
-              <li>Ruta de estudio recomendada por capítulos.</li>
-              <li>Audio lectura completa del Reglamento.</li>
-              <li>Simuladores por fecha de examen.</li>
-              <li>Ejercicios especiales de Callejero de Palma.</li>
+              <li>Lectura guiada del Reglamento.</li>
+              <li>Audio explicación de los artículos.</li>
+              <li>Simuladores basados en exámenes reales.</li>
+              <li>Ejercicios prácticos de callejero.</li>
             </ul>
+
             <small>
-              En la Academia PRO desbloqueas todas las clases, exámenes
-              completos y estadísticas de progreso.
+              En la versión PRO desbloqueas todo el contenido,
+              estadísticas de progreso y simuladores completos.
             </small>
+
           </HeroRightCard>
+
         </DemoHeader>
 
+
+        {/* =====================================================
+            SECCIÓN DEMO
+        ====================================================== */}
+
         <SectionTitleBlock>
-          <h2>Prueba gratuita</h2>
-          <p>Explora cómo funciona la Academia antes de registrarte.</p>
+
+          <h2>Explora la versión DEMO</h2>
+
+          <p>
+            Estos módulos te permiten probar cómo funciona la
+            academia antes de acceder a todo el contenido.
+          </p>
+
         </SectionTitleBlock>
 
+
+        {/* =====================================================
+            MÓDULOS DEMO
+        ====================================================== */}
+
         <ModulesGrid>
+
           <ModuleCard onClick={() => goDemoPath("/academia/demo/reglamento")}>
+
             <header>
               <Emoji>📘</Emoji>
               <h3>Reglamento oficial</h3>
             </header>
+
             <p>
-              Texto oficial en PDF explicado en lenguaje de Academia, con
-              ejemplos prácticos, preguntas típicas de examen y resumen final.
+              Lectura guiada del reglamento con explicación clara
+              y ejemplos prácticos.
             </p>
+
             <Pill>3 bloques accesibles</Pill>
+
           </ModuleCard>
+
 
           <ModuleCard onClick={() => goDemoPath("/academia/demo/audios")}>
+
             <header>
               <Emoji>🎧</Emoji>
-              <h3>Audio lectura del Reglamento</h3>
+              <h3>Audios del Reglamento</h3>
             </header>
+
             <p>
-              Escucha un ejemplo real de cómo explicamos cada artículo del
-              Reglamento.
+              Escucha un ejemplo de cómo se explican los artículos
+              más importantes.
             </p>
-            <Pill>3 audios de ejemplo</Pill>
+
+            <Pill>3 audios</Pill>
+
           </ModuleCard>
+
 
           <ModuleCard onClick={() => goDemoPath("/academia/demo/simulador")}>
+
             <header>
               <Emoji>🧠</Emoji>
-              <h3>Simulador de examen</h3>
+              <h3>Simulador DEMO</h3>
             </header>
+
             <p>
-              Responde un mini examen DEMO con preguntas reales de convocatorias
-              anteriores.
+              Responde un mini examen basado en preguntas reales.
             </p>
-            <Pill>1 simulador DEMO</Pill>
+
+            <Pill>1 simulador</Pill>
+
           </ModuleCard>
 
+
           <ModuleCard onClick={() => goDemoPath("/academia/demo/callejero")}>
+
             <header>
               <Emoji>🗺️</Emoji>
               <h3>Callejero de Palma</h3>
             </header>
+
             <p>
-              Practica un ejercicio real tipo 10x10 incluido en el examen
-              municipal.
+              Practica un ejercicio tipo 10x10 del examen municipal.
             </p>
+
             <Pill>1 ejercicio</Pill>
+
           </ModuleCard>
+
         </ModulesGrid>
 
+
+        {/* =====================================================
+            LIMITACIÓN DEMO
+        ====================================================== */}
+
         <DemoStrip>
-          <strong>En la versión DEMO:</strong>
+
+          <strong>La DEMO incluye:</strong>
+
           <DemoDotList>
-            <li>1 audio de ejemplo del Reglamento</li>
-            <li>1 mini simulador de examen</li>
-            <li>1 ejercicio 10x10 de Callejero</li>
+            <li>Audios de ejemplo del Reglamento</li>
+            <li>Mini simulador de examen</li>
+            <li>Ejercicio básico de callejero</li>
           </DemoDotList>
+
         </DemoStrip>
+
       </DemoContainer>
     </DemoWrapper>
   );

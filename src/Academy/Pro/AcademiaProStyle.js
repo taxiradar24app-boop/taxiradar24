@@ -78,27 +78,21 @@ export const TopRight = styled.div`
 /* ===== GREETING / HERO ===== */
 
 export const GreetingSection = styled.section`
-  display: grid;
-  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.5fr);
-  gap: 32px;
-  margin-bottom: 40px;
-
-  @media (max-width: 960px) {
-    grid-template-columns: minmax(0, 1fr);
-  }
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
 `;
 
 export const GreetingText = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 18px;
+  align-items: center;
 `;
 
 export const GreetingTitle = styled.h1`
-  font-size: clamp(2.1rem, 3vw + 1rem, 2.6rem);
-  line-height: 1.1;
-  font-weight: 800;
-  color : ${({ theme }) => getColor(theme, "colors.yellow", "#ffffff")}
+  font-size: clamp(1.5rem, 1.5vw + 0.8rem, 1.7rem);
+  font-weight: 600;
+  color: ${({ theme }) => getColor(theme, "colors.greylight", "#cbd5f5")};
 `;
 
 export const Highlight = styled.span`
@@ -248,46 +242,59 @@ export const StatHint = styled.div`
 /* ===== PROGRESS SECTION ===== */
 
 export const ProgressSection = styled.section`
-  margin: 40px 0 32px;
-  padding: 16px 18px 18px;
-  border-radius: 18px;
+  margin: 20px 0 24px;
+  padding: 14px 16px 16px;
+  border-radius: 16px;
   background: radial-gradient(
     circle at top left,
-    rgba(74, 222, 128, 0.22),
+    rgba(74, 222, 128, 0.14),
     rgba(15, 23, 42, 0.96)
   );
-  border: 1px solid rgba(74, 222, 128, 0.6);
-  box-shadow: 0 20px 45px rgba(22, 163, 74, 0.35);
+  border: 1px solid rgba(74, 222, 128, 0.38);
+  box-shadow: 0 12px 28px rgba(22, 163, 74, 0.18);
+
+  @media (max-width: 640px) {
+    margin: 16px 0 20px;
+    padding: 14px 14px 15px;
+    border-radius: 14px;
+  }
 `;
 
 export const ProgressHeader = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 12px;
+  gap: 4px;
+  margin-bottom: 10px;
 `;
 
 export const ProgressText = styled.p`
-  font-size: 0.85rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
   max-width: 560px;
   color: ${({ theme }) => getColor(theme, "colors.textSecondary", "#e5e7eb")};
+
+  strong {
+    color: ${({ theme }) => getColor(theme, "colors.white", "#ffffff")};
+    font-weight: 700;
+  }
 `;
 
 export const ProgressBarTrack = styled.div`
   position: relative;
   width: 100%;
-  height: 10px;
+  height: 8px;
   border-radius: 999px;
   background: rgba(15, 23, 42, 0.9);
   overflow: hidden;
-  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.28);
 `;
 
 export const ProgressBarFill = styled.div`
   height: 100%;
   border-radius: 999px;
   background: linear-gradient(90deg, #22c55e, #a3e635);
-  box-shadow: 0 0 16px rgba(34, 197, 94, 0.8);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.45);
+  transition: width 0.3s ease;
 `;
 
 /* ===== MODULES GRID ===== */
@@ -301,8 +308,9 @@ export const SectionHeader = styled.div`
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: 1.4rem;
+  font-size: 1.18rem;
   font-weight: 700;
+  line-height: 1.2;
 `;
 
 export const SectionSubtitle = styled.p`

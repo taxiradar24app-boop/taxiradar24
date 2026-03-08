@@ -1,10 +1,9 @@
 // ======================================================================
-// 🎓 ACADEMIA SHOP — Versión Enterprise con SmartNavigation
-// (navegación centralizada, diseño intacto)
+// 🎓 ACADEMIA SHOP — UX optimizada
+// Respeta SmartNavigation, rutas y arquitectura existente
 // ======================================================================
 
 import React from "react";
-import { HeadphonesIcon } from "@/components/icons";
 import {
   PageWrapper,
   HeroSection,
@@ -33,7 +32,7 @@ import {
   GuaranteeBox,
   GuaranteeTitle,
   GuaranteeText,
-} from "./academiaShopStyles"; // estilos intactos
+} from "./academiaShopStyles";
 
 import {
   PrimaryButton,
@@ -44,12 +43,7 @@ import {
 import { useSmartNavigation } from "@/utils/SmartNavigation";
 
 export default function AcademiaShop() {
-  const {
-    goAcademyPro,
-    goDemo,
-    goUpgrade,
-  } = useSmartNavigation();
-  
+  const { goAcademyPro, goDemo } = useSmartNavigation();
 
   return (
     <PageWrapper>
@@ -57,23 +51,25 @@ export default function AcademiaShop() {
       {/* =====================================================
           HERO PRINCIPAL
       ====================================================== */}
+
       <HeroSection>
         <HeroContent>
-          <HeroTag>Academia Online de TaxiRadar24</HeroTag>
+
+          <HeroTag>Academia TaxiRadar24</HeroTag>
 
           <HeroTitle>
-            Prepárate para el Permiso Municipal de Taxista  
-            <br />  
-            con un método claro y práctico
+            La plataforma para preparar el  
+            Permiso Municipal de Taxista
           </HeroTitle>
 
           <HeroSubtitle>
-            Audios guiados, simuladores reales, ejercicios de Callejero  
-            y todo el Reglamento explicado paso a paso.  
-            Estudia desde tu móvil o computadora, descargarte de la App/PWA.
+            Estudia con un sistema claro: reglamento explicado,
+            audios guiados, simuladores reales y ejercicios
+            de callejero de Palma.
           </HeroSubtitle>
 
           <HeroCTA>
+
             <PrimaryButton onClick={goDemo}>
               Probar DEMO Gratis
             </PrimaryButton>
@@ -81,98 +77,159 @@ export default function AcademiaShop() {
             <SecondaryButton onClick={goAcademyPro}>
               Acceder a versión PRO
             </SecondaryButton>
+
           </HeroCTA>
+
         </HeroContent>
       </HeroSection>
 
+
       {/* =====================================================
-          SECCIÓN QUÉ INCLUYE
+          QUÉ INCLUYE LA ACADEMIA
       ====================================================== */}
+
       <FeaturesSection>
+
         <SectionHeader>
-          <SectionTag>Qué incluye</SectionTag>
+
+          <SectionTag>Contenido de la Academia</SectionTag>
+
           <SectionTitle>
-            La formación más completa para aprobar el examen municipal
+            Todo lo necesario para preparar el examen municipal
           </SectionTitle>
+
           <SectionSubtitle>
-            Diseñada con el contenido que realmente aparece en la prueba.
+            El contenido está organizado para que avances paso a paso
+            con lo que realmente aparece en la prueba.
           </SectionSubtitle>
+
         </SectionHeader>
 
         <FeatureGrid>
+
           <FeatureCard>
             <FeatureIcon>📘</FeatureIcon>
+
             <h3>Reglamento completo</h3>
-            <p>Artículos 1-88 explicados con ejemplos y resúmenes aplicados.</p>
+
+            <p>
+              Artículos explicados en lenguaje claro con ejemplos
+              aplicados al trabajo real del taxi.
+            </p>
           </FeatureCard>
 
           <FeatureCard>
-             <FeatureIcon>🎧</FeatureIcon>
-            <h3>Audios 1–15 del Reglamento</h3>
-            <p>Explicación clara y guiada de todos los artículos importantes.</p>
+            <FeatureIcon>🎧</FeatureIcon>
+
+            <h3>Audios del Reglamento</h3>
+
+            <p>
+              Escucha la explicación de los artículos importantes
+              mientras conduces o estudias.
+            </p>
           </FeatureCard>
 
           <FeatureCard>
             <FeatureIcon>📝</FeatureIcon>
-            <h3>Simuladores con preguntas reales</h3>
-            <p>Test por convocatoria, revisión inmediata y estadísticas.</p>
+
+            <h3>Simuladores de examen</h3>
+
+            <p>
+              Practica con preguntas reales y revisa tus resultados
+              inmediatamente.
+            </p>
           </FeatureCard>
 
           <FeatureCard>
             <FeatureIcon>🗺️</FeatureIcon>
+
             <h3>Callejero de Palma</h3>
-            <p>Ejercicios de memoria, mapas 10x10 y zonas clave del examen.</p>
+
+            <p>
+              Ejercicios de memoria, zonas clave y práctica
+              para el bloque más exigente del examen.
+            </p>
           </FeatureCard>
+
         </FeatureGrid>
+
       </FeaturesSection>
+
 
       {/* =====================================================
           PLANES
       ====================================================== */}
+
       <PlanSection>
+
         <SectionHeader>
-          <SectionTag>Planes</SectionTag>
-          <SectionTitle>Elige cómo quieres estudiar</SectionTitle>
+
+          <SectionTag>Planes de estudio</SectionTag>
+
+          <SectionTitle>
+            Empieza gratis o accede a la formación completa
+          </SectionTitle>
+
           <SectionSubtitle>
-            La versión DEMO es gratis y la PRO incluye todo.
+            Puedes probar primero la versión DEMO o entrar
+            directamente en la Academia PRO.
           </SectionSubtitle>
+
         </SectionHeader>
 
         <PlanGrid>
-          {/* PLAN DEMO */}
+
+          {/* DEMO */}
+
           <PlanCard>
+
             <PlanTitle>DEMO</PlanTitle>
+
             <PlanPrice>0€</PlanPrice>
 
             <PlanList>
               <PlanItem>• Audios 1 y 2</PlanItem>
               <PlanItem>• 1 simulador de examen</PlanItem>
-              <PlanItem>• 10 ejercicios de callejero</PlanItem>
-              <PlanItem>• Sin registro obligatorio</PlanItem>
+              <PlanItem>• Ejercicios básicos de callejero</PlanItem>
+              <PlanItem>• Acceso inmediato</PlanItem>
             </PlanList>
 
-            <CardButton onClick={goDemo}>Entrar a DEMO</CardButton>
+            <CardButton onClick={goDemo}>
+              Entrar a DEMO
+            </CardButton>
+
           </PlanCard>
 
-          {/* PLAN PRO */}
+
+          {/* PRO MENSUAL */}
+
           <PlanCard pro>
+
             <PlanTitle>PRO</PlanTitle>
+
             <PlanPrice>9,99€ / mes</PlanPrice>
 
             <PlanList>
               <PlanItem>✔ Audios 1–15 completos</PlanItem>
               <PlanItem>✔ Simuladores ilimitados</PlanItem>
               <PlanItem>✔ Callejero completo</PlanItem>
-              <PlanItem>✔ Estadísticas y progreso</PlanItem>
-              <PlanItem>✔ Acceso 24/7 desde móvil y PWA</PlanItem>
+              <PlanItem>✔ Seguimiento de progreso</PlanItem>
+              <PlanItem>✔ Acceso 24/7 desde móvil o PWA</PlanItem>
             </PlanList>
 
-            <SecondaryButton onClick={goAcademyPro}>Acceder</SecondaryButton>
+            <SecondaryButton onClick={goAcademyPro}>
+              Acceder
+            </SecondaryButton>
+
           </PlanCard>
 
-          {/* PLAN 3 MESES */}
+
+          {/* PRO 3 MESES */}
+
           <PlanCard pro>
+
             <PlanTitle>PRO 3 meses</PlanTitle>
+
             <PlanPrice>24,99€</PlanPrice>
 
             <PlanList>
@@ -180,12 +237,19 @@ export default function AcademiaShop() {
               <PlanItem>✔ Ahorra 20%</PlanItem>
             </PlanList>
 
-            <PrimaryButton onClick={goAcademyPro}>Comprar</PrimaryButton>
+            <PrimaryButton onClick={goAcademyPro}>
+              Comprar
+            </PrimaryButton>
+
           </PlanCard>
 
-          {/* PLAN 6 MESES */}
+
+          {/* PRO 6 MESES */}
+
           <PlanCard pro>
+
             <PlanTitle>PRO 6 meses</PlanTitle>
+
             <PlanPrice>39,99€</PlanPrice>
 
             <PlanList>
@@ -193,31 +257,50 @@ export default function AcademiaShop() {
               <PlanItem>✔ Ahorra 33%</PlanItem>
             </PlanList>
 
-            <PrimaryButton onClick={goAcademyPro}>Comprar</PrimaryButton>
+            <PrimaryButton onClick={goAcademyPro}>
+              Comprar
+            </PrimaryButton>
+
           </PlanCard>
+
         </PlanGrid>
+
       </PlanSection>
+
 
       {/* =====================================================
           GARANTÍA
       ====================================================== */}
+
       <GuaranteeBox>
-        <GuaranteeTitle>Garantía TaxiRadar24</GuaranteeTitle>
+
+        <GuaranteeTitle>
+          Garantía TaxiRadar24
+        </GuaranteeTitle>
+
         <GuaranteeText>
-          Si estudias con nuestros audios, realizas los simuladores y completas
-          los ejercicios, llegarás al examen con seguridad real.
+          Si completas los audios, realizas simuladores
+          y practicas el callejero, llegarás al examen
+          con una preparación sólida.
         </GuaranteeText>
+
       </GuaranteeBox>
+
 
       {/* =====================================================
           CTA FINAL
       ====================================================== */}
+
       <CTASection>
-        <CTAHeader>¿Listo para empezar a estudiar?</CTAHeader>
+
+        <CTAHeader>
+          Empieza hoy tu preparación
+        </CTAHeader>
 
         <SecondaryButton onClick={goAcademyPro}>
           Entrar a la Academia PRO
         </SecondaryButton>
+
       </CTASection>
 
     </PageWrapper>

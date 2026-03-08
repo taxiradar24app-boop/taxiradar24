@@ -27,6 +27,14 @@ import {
   MiniStat,
   MiniStatLabel,
   MiniStatValue,
+  ModuleProgressPanel,
+  ModuleProgressRow,
+  ModuleProgressInfo,
+  ModuleProgressName,
+  ModuleProgressMeta,
+  ModuleProgressPercent,
+  ModuleProgressTrack,
+  ModuleProgressFill,
 } from "./ProgressLayoutStyle";
 import UserProgressCard from "./UserProgressCard";
 
@@ -37,10 +45,16 @@ function clamp(n, min = 0, max = 100) {
 
 function computeOverall(progress) {
   const reglamento = clamp(progress?.reglamento?.progress ?? 0);
+
   const simulador = clamp(
     progress?.simulador?.avgPercent ?? progress?.simulador?.avgScore ?? 0
   );
-  const callejero = clamp(progress?.callejero?.avgScore ?? 0);
+
+  // Callejero puede venir en porcentaje o en nota /10
+  const callejeroRaw = Number(progress?.callejero?.avgScore ?? 0);
+  const callejero = clamp(
+    callejeroRaw <= 10 ? Math.round(callejeroRaw * 10) : callejeroRaw
+  );
 
   const audioProgress =
     progress?.audio?.progress !== undefined
@@ -82,7 +96,13 @@ function computeOverall(progress) {
     level,
     attemptsTotal,
     avgCore,
-    module: { reglamento, simulador, callejero, audioProgress, tarifas },
+    module: {
+      reglamento,
+      simulador,
+      callejero,
+      audioProgress,
+      tarifas,
+    },
   };
 }
 
@@ -110,7 +130,6 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
   const userData = auth?.userData || null;
   const progressFromContext = auth?.progressData || null;
 
-  // ✅ Suscripción REAL (Cloudflare D1)
   const subscription = auth?.subscription || null;
   const plan = subscription?.plan || null;
   const status = subscription?.status || "none";
@@ -123,21 +142,53 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
     status === "active" &&
     (!expiresDate || expiresDate.getTime() > now.getTime());
 
-  // ✅ Puente temporal: si aún te llega basic_monthly, también cuenta como PRO
   const planKey = String(plan || "").toUpperCase();
-  const isPro = isActive && (planKey === "ACADEMIA_PRO" || planKey === "BASIC_MONTHLY");
+  const isPro =
+    isActive &&
+    (planKey === "ACADEMIA_PRO" || planKey === "BASIC_MONTHLY");
 
   const effectiveProgress = progressFromContext || progress;
 
   const displayName = userData?.displayName || user?.displayName || "Alumno";
   const email = userData?.email || user?.email || "";
-
   const createdAt = userData?.createdAt || user?.createdAt;
 
   const overall = useMemo(
     () => computeOverall(effectiveProgress),
     [effectiveProgress]
   );
+
+  const moduleRows = [
+    {
+      name: "Reglamento",
+      percent: overall.module.reglamento,
+      meta: `${effectiveProgress?.reglamento?.completed ?? 0}/${
+        effectiveProgress?.reglamento?.total ?? 0
+      } artículos`,
+    },
+    {
+      name: "Simulador",
+      percent: overall.module.simulador,
+      meta: `${effectiveProgress?.simulador?.attempts ?? 0} intentos`,
+    },
+    {
+      name: "Callejero",
+      percent: overall.module.callejero,
+      meta: `Mejor: ${effectiveProgress?.callejero?.bestScore ?? 0}/10`,
+    },
+    {
+      name: "Audios",
+      percent: overall.module.audioProgress,
+      meta: `${effectiveProgress?.audio?.minutes ?? 0} min escuchados`,
+    },
+    {
+      name: "Tarifas",
+      percent: overall.module.tarifas,
+      meta: effectiveProgress?.tarifas?.completed
+        ? "Completado"
+        : "Pendiente",
+    },
+  ];
 
   return (
     <>
@@ -158,7 +209,9 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
 
         <DatesRow>
           {createdAt && <span>Alta: {toDateLabel(createdAt)}</span>}
-          {isPro && expiresAt && <span>Activo hasta: {toDateLabel(expiresAt)}</span>}
+          {isPro && expiresAt && (
+            <span>Activo hasta: {toDateLabel(expiresAt)}</span>
+          )}
         </DatesRow>
 
         <Section>
@@ -170,6 +223,7 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
                 <GeneralProgressTitle>
                   Preparación global: <strong>{overall.level}</strong>
                 </GeneralProgressTitle>
+
                 <GeneralProgressSub>
                   Aquí verás tu evolución real: aciertos, intentos y progreso por módulos.
                 </GeneralProgressSub>
@@ -202,6 +256,34 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
         </Section>
 
         <Section>
+          <SectionTitle>Progreso por módulo</SectionTitle>
+
+          <ModuleProgressPanel>
+            {moduleRows.map((item) => (
+              <ModuleProgressRow key={item.name}>
+                <ModuleProgressInfo>
+                  <ModuleProgressName>{item.name}</ModuleProgressName>
+                  <ModuleProgressMeta>{item.meta}</ModuleProgressMeta>
+                </ModuleProgressInfo>
+
+                <ModuleProgressPercent>{item.percent}%</ModuleProgressPercent>
+
+                <ModuleProgressTrack>
+                  <ModuleProgressFill style={{ width: `${item.percent}%` }} />
+                </ModuleProgressTrack>
+              </ModuleProgressRow>
+            ))}
+          </ModuleProgressPanel>
+
+          {!isPro && (
+            <UpgradeHint>
+              En DEMO el panel muestra una vista limitada. El seguimiento completo
+              se activa al pasar a <strong>Academia PRO</strong>.
+            </UpgradeHint>
+          )}
+        </Section>
+
+        <Section>
           <SectionTitle>Seguimiento académico</SectionTitle>
 
           <CardsGrid>
@@ -213,7 +295,9 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
               }`}
               meta={`Última actividad: ${
                 effectiveProgress?.reglamento?.lastAttemptAt
-                  ? new Date(effectiveProgress.reglamento.lastAttemptAt).toLocaleDateString()
+                  ? new Date(
+                      effectiveProgress.reglamento.lastAttemptAt
+                    ).toLocaleDateString()
                   : "—"
               }`}
               enabled={isPro}
@@ -225,7 +309,9 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
               subtitle={`Progreso: ${effectiveProgress?.audio?.progress ?? 0}%`}
               meta={`Último: ${
                 effectiveProgress?.audio?.lastListenAt
-                  ? new Date(effectiveProgress.audio.lastListenAt).toLocaleDateString()
+                  ? new Date(
+                      effectiveProgress.audio.lastListenAt
+                    ).toLocaleDateString()
                   : "—"
               }`}
               enabled={isPro}
@@ -237,7 +323,9 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
               subtitle={`Intentos: ${effectiveProgress?.simulador?.attempts ?? 0} · Mejor: ${
                 effectiveProgress?.simulador?.bestPercent ?? 0
               }% · Promedio: ${effectiveProgress?.simulador?.avgPercent ?? 0}%`}
-              meta={`Apto: ${effectiveProgress?.simulador?.passed ? "Sí" : "No"} · Estado: ${
+              meta={`Apto: ${
+                effectiveProgress?.simulador?.passed ? "Sí" : "No"
+              } · Estado: ${
                 effectiveProgress?.simulador?.bandLabel ?? "—"
               } · Preparación: ${
                 effectiveProgress?.simulador?.readyForOfficialExam
@@ -255,18 +343,14 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
               } / 10`}
               meta={`Último: ${
                 toJSDate(effectiveProgress?.callejero?.lastAttemptAt)
-                  ? toJSDate(effectiveProgress?.callejero?.lastAttemptAt).toLocaleDateString()
+                  ? toJSDate(
+                      effectiveProgress?.callejero?.lastAttemptAt
+                    ).toLocaleDateString()
                   : "—"
               }`}
               enabled={isPro}
             />
           </CardsGrid>
-
-          {!isPro && (
-            <UpgradeHint>
-              El seguimiento completo se activa al pasar a <strong>Academia PRO</strong>.
-            </UpgradeHint>
-          )}
         </Section>
       </PageWrapper>
     </>

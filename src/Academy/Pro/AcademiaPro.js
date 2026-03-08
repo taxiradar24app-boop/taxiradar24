@@ -1,17 +1,11 @@
 // ======================================================================
-// 🎓 ACADEMIA PRO — Dark Mode Fijo
+// 🎓 ACADEMIA PRO — Panel de estudio
 // ======================================================================
 
 import React, { useMemo } from "react";
 
-// Control acceso PRO (activaremos permisos más adelante)
-import useAccessControl from "./hooks/useAccessControl";
-
-// Navegación central
-import { useSmartNavigation } from "@/utils/SmartNavigation";
 import { useAuth } from "@/context/AuthContext";
 
-// Estilos PRO (ya en dark mode fijo)
 import {
   PageWrapper,
   InnerWrapper,
@@ -24,18 +18,7 @@ import {
   GreetingText,
   GreetingTitle,
   Highlight,
-  GreetingSubtitle,
-  GreetingPillRow,
-  GreetingPill,
-  GreetingPillAccent,
-  ActionsRow,
-  ActionButton,
-  GhostButton,
   StatsRow,
-  StatCard,
-  StatNumber,
-  StatLabel,
-  StatHint,
   ModulesSection,
   SectionHeader,
   SectionTitle,
@@ -54,9 +37,11 @@ import {
   ProgressBarFill,
 } from "./AcademiaProStyle";
 
+
 // =====================================================
-// 📦 DEFINICIÓN DE MÓDULOS
+// 📦 MÓDULOS ACADEMIA
 // =====================================================
+
 const MODULES = [
   {
     id: "reglamento",
@@ -115,34 +100,37 @@ const MODULES = [
   },
 ];
 
+
 // =====================================================
-// Helpers progreso (mismo criterio que Perfil, pero ligero)
+// Helpers progreso
 // =====================================================
+
 function clamp(n, min = 0, max = 100) {
   const v = Number.isFinite(Number(n)) ? Number(n) : 0;
   return Math.max(min, Math.min(max, v));
 }
 
 function computeOverall(progress) {
-  // Normalizamos inputs (0-100)
+
   const reglamento = clamp(progress?.reglamento?.progress ?? 0);
 
   const simulador = clamp(
     progress?.simulador?.avgPercent ?? progress?.simulador?.avgScore ?? 0
   );
 
-  // Callejero está en /10 -> lo pasamos a %
   const callejeroRaw = Number(progress?.callejero?.avgScore ?? 0);
-  const callejero = clamp(Math.round((Number.isFinite(callejeroRaw) ? callejeroRaw : 0) * 10));
+
+  const callejero = clamp(
+    Math.round((Number.isFinite(callejeroRaw) ? callejeroRaw : 0) * 10)
+  );
 
   const audioProgress =
     progress?.audio?.progress !== undefined
       ? clamp(progress?.audio?.progress)
-      : clamp((progress?.audio?.minutes ?? 0) * 2); // 50 min -> 100%
+      : clamp((progress?.audio?.minutes ?? 0) * 2);
 
   const tarifas = progress?.tarifas?.completed ? 100 : 0;
 
-  // Pesos (ajustables)
   const weights = {
     reglamento: 0.35,
     simulador: 0.35,
@@ -161,24 +149,22 @@ function computeOverall(progress) {
   const score = clamp(Math.round(overall));
 
   let level = "Explorando";
+
   if (score >= 75) level = "Nivel examen";
   else if (score >= 40) level = "En progreso";
 
   return { score, level };
 }
 
+
 // ======================================================================
-// 🎓 ACADEMIA PRO — UI PRINCIPAL
+// 🎓 UI PRINCIPAL
 // ======================================================================
+
 export default function AcademiaPro() {
-  // 🔐 Modo desarrollador — ignoramos restricciones por ahora
-  // const { userData } = useAccessControl(true);
 
-  // Navegación
-  const { goTools } = useSmartNavigation();
-
-  // Usuario + progreso (desde AuthContext)
   const auth = useAuth();
+
   const user = auth?.user || null;
   const progressData = auth?.progressData || null;
 
@@ -186,103 +172,59 @@ export default function AcademiaPro() {
     user?.displayName ||
     (user?.email ? user.email.split("@")[0] : "taxista PRO");
 
-  // ✅ Progreso real (no placeholder)
-  const overall = useMemo(() => computeOverall(progressData || {}), [progressData]);
+  const overall = useMemo(
+    () => computeOverall(progressData || {}),
+    [progressData]
+  );
+
   const overallProgress = overall.score;
 
   return (
     <PageWrapper>
+
       <InnerWrapper>
-        {/* =====================================================
-            TOP BAR
-        ====================================================== */}
+
+        {/* TOP BAR */}
+
         <TopBar>
+
           <TopBarLeft>
             <Badge>Academia TaxiRadar24 PRO</Badge>
-            <TopTitle> - Tu panel de estudio oficial</TopTitle>
+            <TopTitle>Tu panel de estudio oficial</TopTitle>
           </TopBarLeft>
+
           <TopRight />
+
         </TopBar>
 
-        {/* =====================================================
-            GREETING SECTION
-        ====================================================== */}
+
+        {/* GREETING */}
+
         <GreetingSection>
+
           <GreetingText>
+
             <GreetingTitle>
               Hola, <Highlight>{displayName}</Highlight> 👋
             </GreetingTitle>
 
-            <GreetingSubtitle>
-              Bienvenido a tu espacio de estudio. Aquí tienes todo lo necesario
-              para preparar el <Highlight>Permiso Municipal de Taxista</Highlight>{" "}
-              con un método claro, práctico y totalmente optimizado.
-            </GreetingSubtitle>
-
-            <GreetingPillRow>
-              <GreetingPill>🎧 Audios completos del Reglamento</GreetingPill>
-              <GreetingPill>📝 Simuladores de examen oficiales</GreetingPill>
-              <GreetingPillAccent>
-                🗺️ Callejero Palma + Ejercicios reales
-              </GreetingPillAccent>
-            </GreetingPillRow>
-
-            <ActionsRow>
-              <ActionButton
-                onClick={() =>
-                  (window.location.href = "/academia/pro/reglamento")
-                }
-              >
-                Continuar con el Reglamento
-              </ActionButton>
-
-              <GhostButton
-                onClick={() => (window.location.href = "/academia/pro/audios")}
-              >
-                Ver todos los audios que incluye la Academia
-              </GhostButton>
-
-              <GhostButton onClick={goTools}>Herramientas para taxistas</GhostButton>
-            </ActionsRow>
           </GreetingText>
 
-          {/* =====================================================
-              STATS
-          ====================================================== */}
-          <StatsRow>
-            <StatCard>
-              <StatNumber>15</StatNumber>
-              <StatLabel>Audios del Reglamento</StatLabel>
-              <StatHint>Escúchalos las veces que quieras.</StatHint>
-            </StatCard>
+          <StatsRow />
 
-            <StatCard>
-              <StatNumber>+600</StatNumber>
-              <StatLabel>Preguntas de examen</StatLabel>
-              <StatHint>Basadas en convocatorias reales.</StatHint>
-            </StatCard>
-
-            <StatCard>
-              <StatNumber>24/7</StatNumber>
-              <StatLabel>Acceso total desde móvil y PWA</StatLabel>
-              <StatHint>Estudia cuando quieras.</StatHint>
-            </StatCard>
-          </StatsRow>
         </GreetingSection>
 
-        {/* =====================================================
-            PROGRESS SECTION
-        ====================================================== */}
+
+        {/* PROGRESS */}
+
         <ProgressSection>
           <ProgressHeader>
             <SectionTitle>Tu progreso general</SectionTitle>
 
             <ProgressText>
-              Preparación global: <strong>{overall.level}</strong> ·{" "}
+              Preparación global:
+              <strong> {overall.level}</strong> ·{" "}
               <strong>{overallProgress}%</strong>
-              <br />
-              Ver estadísticas reales: aciertos por bloque,
-              módulos completados y seguimiento semanal.
             </ProgressText>
           </ProgressHeader>
 
@@ -291,36 +233,63 @@ export default function AcademiaPro() {
           </ProgressBarTrack>
         </ProgressSection>
 
-        {/* =====================================================
-            MODULES GRID
-        ====================================================== */}
+
+        {/* MODULES */}
+
         <ModulesSection>
+
           <SectionHeader>
-            <SectionTitle>Elige por dónde quieres continuar hoy</SectionTitle>
+
+            <SectionTitle>
+              Elige por dónde quieres continuar hoy
+            </SectionTitle>
+
             <SectionSubtitle>
-              Refuerza lo que necesitas: Reglamento, simuladores, callejero o
-              tarifas.
+              Reglamento, simuladores, callejero o tarifas.
             </SectionSubtitle>
+
           </SectionHeader>
 
+
           <ModulesGrid>
+
             {MODULES.map((m) => (
+
               <ModuleCard
                 key={m.id}
                 onClick={() => (window.location.href = m.path)}
               >
-                <ModuleBadge>{m.badge}</ModuleBadge>
-                <ModuleTitle>{m.title}</ModuleTitle>
-                <ModuleDescription>{m.description}</ModuleDescription>
+
+                <ModuleBadge>
+                  {m.badge}
+                </ModuleBadge>
+
+                <ModuleTitle>
+                  {m.title}
+                </ModuleTitle>
+
+                <ModuleDescription>
+                  {m.description}
+                </ModuleDescription>
 
                 <ModuleFooter>
-                  <ModuleCTA>{m.cta} →</ModuleCTA>
+
+                  <ModuleCTA>
+                    {m.cta}
+                  </ModuleCTA>
+
                 </ModuleFooter>
+
               </ModuleCard>
+
             ))}
+
           </ModulesGrid>
+
         </ModulesSection>
+
       </InnerWrapper>
+
     </PageWrapper>
   );
 }
