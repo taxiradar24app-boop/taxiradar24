@@ -36,7 +36,7 @@ const Subtitle = styled.p`
 `;
 
 export default function LoginScreen() {
-  const { user } = useAuth();
+  const { user, subscription } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { getDefaultEntryPoint } = useSmartNavigation();
@@ -45,10 +45,20 @@ export default function LoginScreen() {
     location.state?.redirectTo || getDefaultEntryPoint() || "/";
 
   useEffect(() => {
-    if (user) {
-      navigate(redirectTo, { replace: true });
+    if (!user) return;
+
+    const isPro = subscription?.status === "active";
+
+    // ✅ usuario PRO → siempre PRO
+    if (isPro) {
+      navigate("/academia/pro", { replace: true });
+      return;
     }
-  }, [user, navigate, redirectTo]);
+
+    // usuario normal
+    navigate(redirectTo, { replace: true });
+
+  }, [user, subscription, navigate, redirectTo]);
 
   return (
     <AuthLayout>
