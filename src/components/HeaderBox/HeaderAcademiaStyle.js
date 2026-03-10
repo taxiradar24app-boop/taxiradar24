@@ -23,6 +23,7 @@ export const HeaderInner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 `;
 
 export const Logo = styled.div`
@@ -30,6 +31,7 @@ export const Logo = styled.div`
   font-weight: 800;
   cursor: pointer;
   color: #10a37f;
+  white-space: nowrap;
 `;
 
 /* ================= NAV ================= */
@@ -37,6 +39,7 @@ export const Logo = styled.div`
 export const Nav = styled.nav`
   display: flex;
   gap: 26px;
+  align-items: center;
 
   @media (max-width: 780px) {
     display: none;
@@ -47,6 +50,7 @@ export const NavItem = styled.div`
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
+  line-height: 1.35;
 
   color: ${({ active }) =>
     active ? "#58e63d" : "rgba(255,255,255,0.85)"};
@@ -58,6 +62,17 @@ export const NavItem = styled.div`
   &:hover {
     color: #58e63d;
   }
+
+  @media (max-width: 780px) {
+    width: 100%;
+    border-bottom: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: left;
+  }
 `;
 
 /* ================= USER ================= */
@@ -66,6 +81,7 @@ export const UserSection = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
+  position: relative;
 
   @media (max-width: 780px) {
     display: none;
@@ -79,40 +95,67 @@ export const AvatarButton = styled.div`
   cursor: pointer;
   font-weight: 600;
   color: #ffffff;
+  user-select: none;
 `;
 
 export const UserMenu = styled.div`
   position: absolute;
-  top: 64px;
-  right: 32px;
+  top: 54px;
+  right: 0;
   background: #0f1d36;
   border-radius: 12px;
-  width: 180px;
+  width: 190px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
 `;
 
 export const UserMenuItem = styled.div`
-  padding: 10px 16px;
+  padding: 12px 16px;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
 
   &:hover {
     background: rgba(255, 255, 255, 0.08);
+  }
+
+  @media (max-width: 780px) {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.85);
+    text-align: left;
+    background: transparent;
   }
 `;
 
 /* ================= CTA ================= */
 
 export const CTAButton = styled.button`
+  width: 100%;
+  border: none;
+  outline: none;
   background: linear-gradient(135deg, #58e63d, #10a37f);
   color: #0a1528;
-  font-weight: 700;
-  padding: 8px 18px;
+  font-weight: 800;
+  padding: 12px 18px;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   cursor: pointer;
+  box-shadow: 3px 4px 0 #020814;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 
   &:hover {
     transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 2px 3px 0 #020814;
   }
 `;
 
@@ -123,13 +166,13 @@ export const MobileButton = styled.div`
   font-size: 1.8rem;
   cursor: pointer;
   color: #ffffff;
+  user-select: none;
 
   @media (max-width: 780px) {
     display: block;
   }
 `;
 
-/* ✅ Overlay para cerrar tocando fuera + bloquear “sensación” de fondo */
 export const DrawerOverlay = styled.div`
   position: fixed;
   inset: 0;
@@ -146,11 +189,12 @@ export const MobileDrawer = styled.div`
   position: fixed;
   top: 0;
   right: 0;
-  width: min(85vw, 320px);
+  width: min(85vw, 340px);
   height: 100vh;
   background: #0f1d36;
   padding-top: 80px;
   z-index: 99999;
+  overflow-y: auto;
 
   transform: translateX(${({ open }) => (open ? "0%" : "100%")});
   transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -160,15 +204,45 @@ export const MobileDrawer = styled.div`
 export const DrawerContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 0 24px;
+  gap: 22px;
+  padding: 0 36px 32px;
 `;
 
 export const DrawerClose = styled.div`
   position: absolute;
   top: 20px;
   right: 20px;
-  font-size: 1.6rem;
+  font-size: 1.9rem;
+  line-height: 1;
   cursor: pointer;
   color: #ffffff;
+  user-select: none;
+`;
+
+export const DrawerDivider = styled.hr`
+  width: 100%;
+  border: none;
+  height: 1px;
+  margin: 2px 0 0;
+  background: rgba(255, 255, 255, 0.12);
+`;
+
+export const DemoInfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+  padding: 6px 8px 2px;
+`;
+
+export const DemoInfoTitle = styled.div`
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.92);
+`;
+
+export const DemoInfoText = styled.div`
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.74);
 `;

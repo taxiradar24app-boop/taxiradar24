@@ -1,6 +1,6 @@
 // src/components/HeaderBox/HeaderAcademia.js
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { resolveNavigation } from "@/navigator/navigationConfig";
 import { useAuth } from "@/navigator/sections/auth/useAuth";
@@ -21,6 +21,10 @@ import {
   DrawerContent,
   DrawerClose,
   CTAButton,
+  DrawerDivider,
+  DemoInfoBox,
+  DemoInfoTitle,
+  DemoInfoText,
 } from "./HeaderAcademiaStyle";
 
 export default function HeaderAcademia() {
@@ -37,36 +41,54 @@ export default function HeaderAcademia() {
   const isProSub = subscription?.status === "active";
   const basePath = isProSub ? "/academia/pro" : "/academia/demo";
 
-  const go = (path) => {
-    navigate(path);
-    setOpenMenu(false);
-    setOpenDrawer(false);
-  };
-
-  const isActive = (path) => location.pathname.startsWith(path);
-  const normalizeSlug = (id) => id.replace(/^demo-/, "").replace(/^pro-/, "");
-
   const userLabel =
     user?.displayName || user?.email?.split("@")[0] || "Invitado";
 
   const profilePath = needsProOnboarding ? "/perfil/pro-check" : "/perfil";
   const progressPath = needsProOnboarding ? "/perfil/pro-check" : "/progreso";
 
-  const baseItems = academy.map((item) => {
-    const slug = normalizeSlug(item.id);
-    return { ...item, path: `${basePath}/${slug}` };
-  });
+  const go = (path) => {
+    if (!path) return;
+    navigate(path);
+    setOpenMenu(false);
+    setOpenDrawer(false);
+  };
 
-  const proExtraItems = isProSub
-    ? [
-        { id: "vias-principales", label: "Vías", path: "/academia/pro/vias-principales" },
-        { id: "tarifas", label: "Tarifas", path: "/academia/pro/tarifas" },
-      ]
-    : [];
+  const isActive = (path) => location.pathname.startsWith(path);
 
-  const navItems = [...baseItems, ...proExtraItems];
+  const normalizeSlug = (id = "") =>
+    id.replace(/^demo-/, "").replace(/^pro-/, "");
 
-  // ✅ Bloquear scroll del fondo cuando el drawer está abierto
+  const navItems = useMemo(() => {
+    const mappedAcademyItems = (academy || []).map((item) => {
+      const slug = normalizeSlug(item.id);
+      return {
+        ...item,
+        path: `${basePath}/${slug}`,
+      };
+    });
+
+    const extraItems = [
+      {
+        id: "vias-principales",
+        label: "Vías Principales",
+        path: `${basePath}/vias-principales`,
+      },
+      {
+        id: "tarifas",
+        label: "Tarifas",
+        path: `${basePath}/tarifas`,
+      },
+    ];
+
+    const merged = [...mappedAcademyItems, ...extraItems];
+
+    return merged.filter(
+      (item, index, arr) =>
+        arr.findIndex((entry) => entry.path === item.path) === index
+    );
+  }, [academy, basePath]);
+
   useEffect(() => {
     if (!openDrawer) return;
 
@@ -82,7 +104,6 @@ export default function HeaderAcademia() {
     };
   }, [openDrawer]);
 
-  // ✅ Cerrar con ESC
   useEffect(() => {
     if (!openDrawer) return;
 
@@ -93,6 +114,20 @@ export default function HeaderAcademia() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [openDrawer]);
+
+  useEffect(() => {
+    if (!openMenu) return;
+
+    const handleOutsideClick = (e) => {
+      const userMenuRoot = document.getElementById("academy-user-menu-root");
+      if (userMenuRoot && !userMenuRoot.contains(e.target)) {
+        setOpenMenu(false);
+      }
+    };
+
+    window.addEventListener("mousedown", handleOutsideClick);
+    return () => window.removeEventListener("mousedown", handleOutsideClick);
+  }, [openMenu]);
 
   return (
     <>
@@ -114,29 +149,37 @@ export default function HeaderAcademia() {
             ))}
 
             {user && (
-              <NavItem active={isActive(progressPath)} onClick={() => go(progressPath)}>
+              <NavItem
+                active={isActive(progressPath)}
+                onClick={() => go(progressPath)}
+              >
                 Progreso
               </NavItem>
             )}
           </Nav>
 
-          {showUpgradeCTA && !isProSub && (
-            <CTAButton onClick={() => go("/academia/upgrade")}>
-              Desbloquear PRO
-            </CTAButton>
-          )}
-
           {user && (
-            <UserSection>
-              <AvatarButton onClick={() => setOpenMenu((v) => !v)}>
+            <UserSection id="academy-user-menu-root">
+              <AvatarButton onClick={() => setOpenMenu((prev) => !prev)}>
                 {userLabel}
               </AvatarButton>
 
               {openMenu && (
                 <UserMenu>
-                  <UserMenuItem onClick={() => go(profilePath)}>Perfil</UserMenuItem>
-                  <UserMenuItem onClick={() => go(progressPath)}>Progreso</UserMenuItem>
-                  <UserMenuItem onClick={logout}>Cerrar sesión</UserMenuItem>
+                  <UserMenuItem onClick={() => go(profilePath)}>
+                    Perfil
+                  </UserMenuItem>
+                  <UserMenuItem onClick={() => go(progressPath)}>
+                    Progreso
+                  </UserMenuItem>
+                  <UserMenuItem
+                    onClick={() => {
+                      logout();
+                      setOpenMenu(false);
+                    }}
+                  >
+                    Cerrar sesión
+                  </UserMenuItem>
                 </UserMenu>
               )}
             </UserSection>
@@ -146,7 +189,6 @@ export default function HeaderAcademia() {
         </HeaderInner>
       </HeaderWrapper>
 
-      {/* ✅ Overlay: cierra al tocar fuera */}
       <DrawerOverlay open={openDrawer} onClick={() => setOpenDrawer(false)} />
 
       <MobileDrawer open={openDrawer}>
@@ -154,24 +196,39 @@ export default function HeaderAcademia() {
 
         <DrawerContent>
           {navItems.map((item) => (
-            <NavItem key={item.id} onClick={() => go(item.path)}>
+            <NavItem
+              key={item.id}
+              active={isActive(item.path)}
+              onClick={() => go(item.path)}
+            >
               {item.label}
             </NavItem>
           ))}
 
-          {user && <NavItem onClick={() => go(progressPath)}>Progreso</NavItem>}
-
           {showUpgradeCTA && !isProSub && (
-            <CTAButton onClick={() => go("/academia/upgrade")}>
-              Desbloquear PRO
-            </CTAButton>
+            <>
+              <DrawerDivider />
+
+              <DemoInfoBox>
+                <DemoInfoTitle>Versión DEMO</DemoInfoTitle>
+                <DemoInfoText>
+                  Explora la academia y desbloquea todo con PRO
+                </DemoInfoText>
+              </DemoInfoBox>
+
+              <CTAButton onClick={() => go("/academia/upgrade")}>
+                Desbloquear PRO
+              </CTAButton>
+            </>
           )}
 
           {user && (
             <>
-              <hr />
+              <DrawerDivider />
               <UserMenuItem onClick={() => go(profilePath)}>Perfil</UserMenuItem>
-              <UserMenuItem onClick={() => go(progressPath)}>Progreso</UserMenuItem>
+              <UserMenuItem onClick={() => go(progressPath)}>
+                Progreso
+              </UserMenuItem>
               <UserMenuItem
                 onClick={() => {
                   logout();

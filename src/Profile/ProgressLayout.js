@@ -171,23 +171,18 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
       percent: overall.module.simulador,
       meta: `${effectiveProgress?.simulador?.attempts ?? 0} intentos`,
     },
-    {
-      name: "Callejero",
-      percent: overall.module.callejero,
-      meta: `Mejor: ${effectiveProgress?.callejero?.bestScore ?? 0}/10`,
-    },
-    {
+      {
       name: "Audios",
       percent: overall.module.audioProgress,
       meta: `${effectiveProgress?.audio?.minutes ?? 0} min escuchados`,
     },
     {
-      name: "Tarifas",
-      percent: overall.module.tarifas,
-      meta: effectiveProgress?.tarifas?.completed
-        ? "Completado"
-        : "Pendiente",
+      name: "Callejero",
+      percent: overall.module.callejero,
+      meta: `Mejor: ${effectiveProgress?.callejero?.bestScore ?? 0}/10`,
     },
+  
+
   ];
 
   return (
@@ -302,22 +297,7 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
               }`}
               enabled={isPro}
             />
-
-            <UserProgressCard
-              title="Audios"
-              value={isPro ? `${effectiveProgress?.audio?.minutes ?? 0} min` : "—"}
-              subtitle={`Progreso: ${effectiveProgress?.audio?.progress ?? 0}%`}
-              meta={`Último: ${
-                effectiveProgress?.audio?.lastListenAt
-                  ? new Date(
-                      effectiveProgress.audio.lastListenAt
-                    ).toLocaleDateString()
-                  : "—"
-              }`}
-              enabled={isPro}
-            />
-
-            <UserProgressCard
+                 <UserProgressCard
               title="Simulador"
               value={isPro ? `${effectiveProgress?.simulador?.avgPercent ?? 0}%` : "—"}
               subtitle={`Intentos: ${effectiveProgress?.simulador?.attempts ?? 0} · Mejor: ${
@@ -334,6 +314,22 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
               }`}
               enabled={isPro}
             />
+
+            <UserProgressCard
+              title="Audios"
+              value={isPro ? `${effectiveProgress?.audio?.minutes ?? 0} min` : "—"}
+              subtitle={`Progreso: ${effectiveProgress?.audio?.progress ?? 0}%`}
+              meta={`Último: ${
+                effectiveProgress?.audio?.lastListenAt
+                  ? new Date(
+                      effectiveProgress.audio.lastListenAt
+                    ).toLocaleDateString()
+                  : "—"
+              }`}
+              enabled={isPro}
+            />
+
+       
 
             <UserProgressCard
               title="Callejero"

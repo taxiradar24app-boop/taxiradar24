@@ -25,6 +25,8 @@ import reglamentoDemoRoutes from "./rutasDemo/reglamentoDemoRoutes";
 import audiosDemoRoutes from "./rutasDemo/audiosDemoRoutes";
 import simuladorDemoRoutes from "./rutasDemo/simuladorDemoRoutes";
 import callejeroDemoRoutes from "./rutasDemo/callejeroDemoRoutes";
+import viasDemoRoutes from "./rutasDemo/viasDemoRoutes";
+import tarifasDemoRoutes from "./rutasDemo/tarifasDemoRoutes";
 
 /* =========================
    PRO (LAZY)
@@ -60,6 +62,8 @@ const academyRoutes = [
       ...audiosDemoRoutes,
       ...simuladorDemoRoutes,
       ...callejeroDemoRoutes,
+      ...viasDemoRoutes,
+      ...tarifasDemoRoutes,
     ],
   },
   {
