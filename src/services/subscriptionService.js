@@ -1,10 +1,31 @@
 function normalizeBase(url) {
   if (!url) return "";
-  return url.replace(/\/$/, "");
+  return String(url).replace(/\/$/, "");
+}
+
+function readEnvValue(key) {
+  if (
+    typeof process !== "undefined" &&
+    process.env &&
+    typeof process.env[key] !== "undefined"
+  ) {
+    return process.env[key];
+  }
+
+  if (
+    typeof window !== "undefined" &&
+    window.__ENV__ &&
+    typeof window.__ENV__[key] !== "undefined"
+  ) {
+    return window.__ENV__[key];
+  }
+
+  return undefined;
 }
 
 export function getApiBase() {
-  const envBase = import.meta.env.VITE_API_BASE;
+  const envBase =
+    readEnvValue("REACT_APP_API_BASE") || readEnvValue("API_BASE");
   const fallback =
     "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
 
@@ -12,7 +33,7 @@ export function getApiBase() {
 
   if (!envBase) {
     console.warn(
-      "⚠️ VITE_API_BASE no definido en subscriptionService, usando fallback:",
+      "⚠️ API base no definida en subscriptionService, usando fallback:",
       fallback
     );
   }
@@ -21,16 +42,23 @@ export function getApiBase() {
 }
 
 export async function fetchMySubscription(firebaseUser) {
-  if (!firebaseUser) throw new Error("No user");
+  if (!firebaseUser) {
+    throw new Error("No user");
+  }
 
-  const token = await firebaseUser.getIdToken();
+  const token = await firebaseUser.getIdToken(true);
   const apiBase = getApiBase();
+
+  if (!apiBase) {
+    throw new Error("API base no disponible");
+  }
 
   const res = await fetch(`${apiBase}/academy/subscription/me`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
+      "Cache-Control": "no-store",
     },
   });
 
@@ -46,5 +74,8 @@ export async function fetchMySubscription(firebaseUser) {
 }
 
 export function isSubscriptionActive(sub) {
-  return sub?.status === "active";
+  if (!sub) return false;
+
+  const status = String(sub.status || "").toLowerCase();
+  return status === "active" || status === "trialing";
 }

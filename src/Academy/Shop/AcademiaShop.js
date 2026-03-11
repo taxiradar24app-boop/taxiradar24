@@ -58,8 +58,8 @@ export default function AcademiaShop() {
           <HeroTag>Academia TaxiRadar24</HeroTag>
 
           <HeroTitle>
-            La plataforma para preparar el  
-            Permiso Municipal de Taxista
+            La plataforma para preparar el{" "}
+            <span>Permiso Municipal de Taxista</span>
           </HeroTitle>
 
           <HeroSubtitle>

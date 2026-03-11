@@ -33,7 +33,7 @@ import { useSmartNavigation } from "@/utils/SmartNavigation";
 export default function AcademiaDemo() {
 
   const navigate = useNavigate();
-  const { goAcademyPro, goTools } = useSmartNavigation();
+  const { goAcademyPro, goTools,  } = useSmartNavigation();
 
   const goDemoPath = (path) => {
     navigate(path);

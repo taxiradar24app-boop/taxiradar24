@@ -1,12 +1,9 @@
-// src/Academy/upgrade/SuccessPage.js
-
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 
 import { getAuth } from "./../../services/firebaseConfig";
 
-// ✅ Worker actual desplegado
 const WORKER_URL =
   "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
 
@@ -38,16 +35,14 @@ export default function SuccessPage() {
         unsubscribe = onAuthStateChanged(auth, async (user) => {
           try {
             if (didVerify) return;
-            didVerify = true;
-
-            setError("");
 
             if (!user) {
-              setStatus("❌ No se pudo verificar el pago");
-              setError("Usuario no autenticado");
+              console.log("[Stripe Verify] esperando sesión Firebase...");
               return;
             }
 
+            didVerify = true;
+            setError("");
             setStatus("Verificando sesión con Stripe...");
 
             const token = await user.getIdToken(true);
@@ -92,6 +87,8 @@ export default function SuccessPage() {
               navigate("/perfil/pro-check", { replace: true });
             }, 900);
           } catch (err) {
+            if (err?.name === "AbortError") return;
+
             console.error("[Stripe Verify] ERROR:", err);
             setStatus("❌ No se pudo verificar el pago");
             setError(err?.message || "Error inesperado");
@@ -114,7 +111,7 @@ export default function SuccessPage() {
   }, [params, navigate]);
 
   return (
-    <div style={{ padding: 24 }}>
+    <div style={{ padding: 24, color: "#ffffff" }}>
       <h2>Resultado del pago</h2>
       <p>{status}</p>
       {error && <p style={{ marginTop: 12, color: "#ff6b6b" }}>{error}</p>}

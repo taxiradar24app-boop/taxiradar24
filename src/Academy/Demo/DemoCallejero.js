@@ -8,9 +8,24 @@ import {
   PageWrapper,
   SectionHeader,
   SectionTitle,
-  DemoBadge,
   AttemptsInfo,
   Timer,
+  IntroCard,
+  IntroTop,
+  DemoBadge,
+  IntroTitle,
+  IntroLead,
+  IntroGrid,
+  IntroColumn,
+  IntroBlock,
+  IntroBlockTitle,
+  IntroText,
+  IntroList,
+  IntroListItem,
+  IntroExamples,
+  IntroExampleTitle,
+  IntroHint,
+  IntroFooter,
   MainGrid,
   ExamColumn,
   CalleCard,
@@ -48,17 +63,16 @@ export default function DemoCallejero() {
 
   const bloqueado = isLocked;
 
-  /* ⏱️ Tiempo */
   const minutos = useMemo(
     () => Math.floor(tiempoRestante / 60),
     [tiempoRestante]
   );
+
   const segundos = useMemo(
     () => String(tiempoRestante % 60).padStart(2, "0"),
     [tiempoRestante]
   );
 
-  /* ▶️ Iniciar DEMO (NO registra intento) */
   const handleStartDemo = () => {
     if (!user) {
       navigate("/login", {
@@ -72,7 +86,6 @@ export default function DemoCallejero() {
     setHasStarted(true);
   };
 
-  /* ✏️ Inputs */
   const handleChange = (id, field, value) => {
     setRespuestas((prev) => ({
       ...prev,
@@ -80,7 +93,6 @@ export default function DemoCallejero() {
     }));
   };
 
-  /* ✅ Corrección */
   const corregir = () => {
     const resultados = (calles || []).map((c) => {
       const r = respuestas[c.id] || {};
@@ -99,7 +111,6 @@ export default function DemoCallejero() {
     setResultado({ lista: resultados, aciertos, nota });
   };
 
-  /* 🧠 Finalizar intento → AQUÍ suma demoAttempts +1 */
   const finalizarFlujo = async () => {
     if (!user || bloqueado || resultado) return;
 
@@ -107,7 +118,6 @@ export default function DemoCallejero() {
     await registerAttempt();
   };
 
-  /* ⏱️ Cronómetro */
   useEffect(() => {
     if (!hasStarted) return;
     if (resultado) return;
@@ -128,7 +138,6 @@ export default function DemoCallejero() {
     return () => clearInterval(timer);
   }, [hasStarted, resultado, loading, error, loadingDemo, bloqueado]);
 
-  /* 🔁 Reintentar */
   const handleRetry = async () => {
     if (remainingAttempts <= 0) return;
 
@@ -144,25 +153,122 @@ export default function DemoCallejero() {
   return (
     <PageWrapper>
       <SectionHeader>
-        <SectionTitle>🗺️ Callejero de Palma (DEMO)</SectionTitle>
+      
+        <SectionTitle>🗺️ Callejero de Palma</SectionTitle>
 
         {!hasStarted && (
-          <DemoUnlockBar
-            attemptsLeft={remainingAttempts}
-            onStart={handleStartDemo}
-          />
+          <>
+            <IntroCard>
+              <IntroTop>
+                <DemoBadge>DEMO GRATUITO</DemoBadge>
+              </IntroTop>
+
+              <IntroTitle>Ejercicio oficial · 3 intentos disponibles</IntroTitle>
+
+              <IntroLead>
+                Este ejercicio reproduce el formato real del examen municipal de
+                callejero de Palma.
+              </IntroLead>
+
+              <IntroGrid>
+                <IntroColumn>
+                  <IntroBlock>
+                    <IntroBlockTitle>Antes de comenzar</IntroBlockTitle>
+
+                    <IntroText>
+                      Antes de empezar te pediremos iniciar sesión o crear una
+                      cuenta gratuita.
+                    </IntroText>
+
+                    <IntroText>
+                      Esto nos permite guardar tus intentos, mostrar tu progreso
+                      y ofrecerte una experiencia de aprendizaje más completa.
+                    </IntroText>
+
+                    <IntroHint>
+                      💡 Ten tu callejero oficial de Palma a mano antes de pulsar
+                      el botón. El intento empezará cuando comiences el ejercicio.
+                    </IntroHint>
+                  </IntroBlock>
+                </IntroColumn>
+
+                <IntroColumn>
+                  <IntroBlock>
+                    <IntroBlockTitle>
+                      📍 Formato de respuesta obligatorio
+                    </IntroBlockTitle>
+
+                    <IntroText>
+                      Para que una respuesta sea considerada correcta, debes
+                      indicar los tres datos completos del callejero oficial:
+                    </IntroText>
+
+                    <IntroList>
+                      <IntroListItem>Plano (número)</IntroListItem>
+                      <IntroListItem>Letra de la cuadrícula</IntroListItem>
+                      <IntroListItem>Número de la cuadrícula</IntroListItem>
+                    </IntroList>
+
+                    <IntroExamples>
+                      <IntroExampleTitle>Ejemplos válidos (1 punto)</IntroExampleTitle>
+                      <IntroText>
+                        Carrer Nuredduna nº 3 → <strong>25 – D1</strong>
+                        <br />
+                        Carrer Nuredduna nº 3 → <strong>P25 – D1</strong>
+                      </IntroText>
+                    </IntroExamples>
+
+                    <IntroExamples>
+                      <IntroExampleTitle>
+                        Ejemplos incorrectos (0 puntos)
+                      </IntroExampleTitle>
+                      <IntroText>
+                        • Solo cuadrícula (<em>D1</em>)
+                        <br />
+                        • Solo plano (<em>25</em>)
+                        <br />
+                        • Datos incompletos o incorrectos
+                      </IntroText>
+                    </IntroExamples>
+
+                    <IntroHint>
+                      ⚠️ Cualquier dato incompleto o erróneo supone 0 puntos,
+                      aunque parte de la respuesta sea correcta.
+                    </IntroHint>
+                  </IntroBlock>
+                </IntroColumn>
+              </IntroGrid>
+
+              <IntroFooter>
+                <DemoUnlockBar
+                  attemptsLeft={remainingAttempts}
+                  onStart={handleStartDemo}
+                />
+              </IntroFooter>
+            </IntroCard>
+
+            <AttemptsInfo>
+              Intentos disponibles:{" "}
+              <strong>{loadingDemo ? "..." : remainingAttempts}</strong> de{" "}
+              {maxAttempts}
+            </AttemptsInfo>
+          </>
         )}
 
-        <AttemptsInfo>
-          Intentos disponibles:{" "}
-          <strong>{loadingDemo ? "..." : remainingAttempts}</strong> /{" "}
-          {maxAttempts}
-        </AttemptsInfo>
+        {hasStarted && (
+          <>
+            <AttemptsInfo>
+              Intentos disponibles:{" "}
+              <strong>{loadingDemo ? "..." : remainingAttempts}</strong> de{" "}
+              {maxAttempts}
+            </AttemptsInfo>
 
-        {hasStarted && !bloqueado && !resultado && (
-          <Timer>
-            ⏳ Tiempo restante: {minutos}:{segundos}
-          </Timer>
+            {!bloqueado && !resultado && (
+              <Timer>
+                ⏳ Tiempo restante: {minutos}:{segundos}
+              </Timer>
+            )}
+          </>
         )}
       </SectionHeader>
 
@@ -231,9 +337,7 @@ export default function DemoCallejero() {
                 <p>🏆 Nota: {resultado.nota} / 10</p>
 
                 {remainingAttempts > 0 && (
-                  <RetryButton onClick={handleRetry}>
-                    🔁 Reintentar
-                  </RetryButton>
+                  <RetryButton onClick={handleRetry}>🔁 Reintentar</RetryButton>
                 )}
               </ResultBox>
             )}
@@ -243,39 +347,33 @@ export default function DemoCallejero() {
             <SidebarTitle>Callejero – Ejercicio oficial</SidebarTitle>
 
             <SidebarText>
-              <strong>📍 Formato de respuesta obligatorio</strong>
+              Este ejercicio sigue el formato del examen oficial y puntúa como en
+              la prueba real.
             </SidebarText>
 
             <SidebarText>
-              Para que una respuesta sea considerada <strong>correcta</strong>, es
-              obligatorio indicar <strong>los tres datos completos</strong> del
-              callejero oficial:
+              <strong>📍 Para acertar, debes escribir:</strong>
+              <br />• Plano
+              <br />• Letra
+              <br />• Número
             </SidebarText>
 
             <SidebarText>
-              • <strong>Plano</strong> (número)
-              <br />• <strong>Letra</strong> de la cuadrícula
-              <br />• <strong>Número</strong> de la cuadrícula
-            </SidebarText>
-
-            <SidebarText>
-              <strong>Ejemplos válidos (1 punto):</strong>
+              <strong>Ejemplo correcto:</strong>
               <br />
               Carrer Nuredduna nº 3 → <strong>25 – D1</strong>
+            </SidebarText>
+
+            <SidebarText>
+              <strong>⚠️ Importante:</strong>
               <br />
-              Carrer Nuredduna nº 3 → <strong>P25 – D1</strong>
+              Si falta un dato o es incorrecto, la respuesta se considera
+              incorrecta.
             </SidebarText>
 
             <SidebarText>
-              <strong>Ejemplos incorrectos (0 puntos):</strong>
-              <br />• Solo cuadrícula (<em>D1</em>)
-              <br />• Solo plano (<em>25</em>)
-              <br />• Datos incompletos o incorrectos
-            </SidebarText>
-
-            <SidebarText>
-              ⚠️ <strong>Cualquier dato incompleto o erróneo supone 0 puntos</strong>,
-              aunque parte de la respuesta sea correcta.
+              Consejo: responde con calma, revisa bien cada dato y apóyate en el
+              callejero oficial.
             </SidebarText>
           </Sidebar>
         </MainGrid>

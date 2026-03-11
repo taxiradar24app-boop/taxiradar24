@@ -1,115 +1,86 @@
-// ======================================================
-// 🟡 DemoUnlockBar
-// Barra previa al ejercicio DEMO
-// NO descuenta intento
-// Activa el ejercicio solo al confirmar
-// ======================================================
-
 import React from "react";
 import styled from "styled-components";
 
-// ================== STYLES ==================
+export default function DemoUnlockBar({ attemptsLeft, onStart }) {
+  const disabled = attemptsLeft <= 0;
 
-const BarWrapper = styled.div`
-  width: 100%;
-  max-width: 760px;
-  margin: 0 auto 32px;
-  padding: 20px 24px;
+  return (
+    <Wrapper>
+      <StartButton onClick={onStart} disabled={disabled}>
+        {disabled
+          ? "Intentos DEMO agotados"
+          : "Comenzar ejercicio de callejero"}
+      </StartButton>
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+      <AttemptsText>
+        Intentos disponibles: <strong>{attemptsLeft}</strong> de 3
+      </AttemptsText>
 
-  border-radius: 16px;
-  background: linear-gradient(
-    135deg,
-    rgba(244, 211, 94, 0.15),
-    rgba(16, 163, 127, 0.12)
+      {!disabled && (
+        <InfoText>
+          Tu progreso quedará guardado en tu cuenta gratuita.
+        </InfoText>
+      )}
+    </Wrapper>
   );
+}
 
-  border: 1px solid rgba(244, 211, 94, 0.35);
-  backdrop-filter: blur(6px);
-`;
+/* =========================
+   STYLES
+========================= */
 
-const Info = styled.div`
+const Wrapper = styled.div`
+  width: 100%;
+  max-width: 420px;
+
   display: flex;
   flex-direction: column;
-  gap: 12px;
-`;
-
-const Badge = styled.span`
-  align-self: flex-start;
-  padding: 4px 10px;
-  border-radius: 999px;
-
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-
-  background: ${({ theme }) => theme.pro?.yellow || "#f4d35e"};
-  color: #111;
-`;
-
-const Title = styled.p`
-  font-size: 1rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.grey || "#e8edf3"};
-`;
-
-const Subtitle = styled.p`
-  font-size: 0.85rem;
-  color: ${({ theme }) => theme.muted || "rgba(232,237,243,0.7)"};
-  line-height: 1.4;
+  align-items: center;
+  gap: 10px;
 `;
 
 const StartButton = styled.button`
-  flex-shrink: 0;
-  padding: 12px 20px;
-  border-radius: 999px;
+  width: 100%;
+  padding: 16px 20px;
 
-  background: ${({ theme }) => theme.pro?.green || "#10a37f"};
-  color: #0b1c16;
-
-  font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-
+  border-radius: 16px;
   border: none;
-  box-shadow: 0 0 0 rgba(16, 163, 127, 0);
 
+  font-weight: 900;
+  font-size: 1rem;
+
+  background: linear-gradient(135deg, #10a37f, #0ea98a);
+  color: #081325;
+
+  cursor: pointer;
   transition: all 0.2s ease;
 
+  box-shadow: 0 12px 28px rgba(16, 163, 127, 0.35);
+
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(16, 163, 127, 0.35);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.6);
+    box-shadow: none;
+    cursor: not-allowed;
   }
 `;
 
-// ================== COMPONENT ==================
+const AttemptsText = styled.div`
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
 
-export default function DemoUnlockBar({
-  attemptsLeft = 3,
-  onStart,
-}) {
-  return (
-    <BarWrapper>
-      <Info>
-        <Badge>DEMO GRATUITO</Badge>
+  strong {
+    color: #ffffff;
+  }
+`;
 
-        <Title>
-          Ejercicio oficial · {attemptsLeft} intentos disponibles
-        </Title>
-
-        <Subtitle>
-          Este ejercicio replica el formato del examen oficial.
-          El intento solo se contará cuando empieces.
-        </Subtitle>
-      </Info>
-
-      <StartButton onClick={onStart}>
-        Empezar ejercicio DEMO
-      </StartButton>
-    </BarWrapper>
-  );
-}
+const InfoText = styled.div`
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-align: center;
+  max-width: 340px;
+`;

@@ -52,7 +52,7 @@ export default function DemoReglamento() {
         <Page>
           <HeaderDemo>
             <TagDemo>VERSIÓN DEMO</TagDemo>
-            <Title>Reglamento Oficial</Title>
+            <Title>📘Reglamento Oficial</Title>
             <Subtitle>Todos los bloques visibles. Algunos desbloqueados para prueba.</Subtitle>
             <SubInfo>3 bloques accesibles</SubInfo>
           </HeaderDemo>

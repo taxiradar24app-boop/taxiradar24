@@ -1,9 +1,4 @@
-// ======================================================================
-// 🎓 UPGRADE PAGE — Versión Enterprise con SmartNavigation
-// (diseño intacto, navegación centralizada)
-// + Auto-detect PRO en Firestore (modo manual consola)
-// + Stripe Checkout (1m / 3m / 6m)
-// ======================================================================
+// src/Academy/upgrade/UpgradePage.js
 
 import React, { useEffect, useState } from "react";
 import {
@@ -11,15 +6,27 @@ import {
   HeroTag,
   HeroTitle,
   HeroSubtitle,
+  PlansSection,
+  PlansContainer,
   PlansGrid,
   PlanCard,
   PlanTitle,
   PlanPrice,
-  PlanButton,
-  GuaranteeBox,
-  GuaranteeTitle,
-  GuaranteeText,
+  PlanList,
+  PlanItem,
+  PlanButtonWrap,
+  ClosingBox,
+  ClosingTag,
+  ClosingTitle,
+  ClosingText,
+  ClosingButtons,
 } from "./UpgradeStyles";
+
+import {
+  PrimaryButton,
+  SecondaryButton,
+  CardButton,
+} from "@/components/Buttons/ButtonsAcademia";
 
 import { useNavigate } from "react-router-dom";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -30,24 +37,24 @@ import { createCheckoutSession } from "@/services/stripeService";
 import { useAuth } from "@/context/AuthContext";
 
 export default function UpgradePage() {
-  const { goAcademyPro, goDemo } = useSmartNavigation();
+  const { goAcademyPro, goDemo, goHome } = useSmartNavigation();
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   const [checkingPro, setCheckingPro] = useState(true);
-  const [payingPlan, setPayingPlan] = useState(null); // "monthly" | "3m" | "6m" | null
+  const [payingPlan, setPayingPlan] = useState(null);
 
   useEffect(() => {
     if (loading) return;
 
+    if (!user) {
+      setCheckingPro(false);
+      return;
+    }
+
     let unsub = null;
 
     async function init() {
-      if (!user) {
-        navigate("/login");
-        return;
-      }
-
       try {
         const db = await getDb();
         const ref = doc(db, "users", user.uid);
@@ -79,13 +86,13 @@ export default function UpgradePage() {
     return () => {
       if (unsub) unsub();
     };
-  }, [user, loading, navigate, goAcademyPro]);
+  }, [user, loading, goAcademyPro]);
 
   const choosePlan = async (months) => {
     if (checkingPro) return;
 
-    if (months === 12) {
-      goAcademyPro();
+    if (!user) {
+      navigate("/login");
       return;
     }
 
@@ -108,86 +115,125 @@ export default function UpgradePage() {
 
   return (
     <UpgradeWrapper>
-      <HeroTag>Acceso PRO — TaxiRadar24</HeroTag>
+      <HeroTag>PLANES DE ESTUDIO</HeroTag>
 
-      <HeroTitle>Elige tu plan PRO y desbloquea TODO el contenido</HeroTitle>
+      <HeroTitle>
+        Empieza gratis o accede a la formación completa
+      </HeroTitle>
 
       <HeroSubtitle>
-        Estudia con audios guiados, simuladores oficiales, Callejero completo y
-        la preparación más clara y directa para aprobar el Permiso Municipal de
-        Taxista.
+        Puedes probar primero la versión DEMO o entrar directamente en la
+        Academia PRO.
       </HeroSubtitle>
 
-      {checkingPro && (
-        <div style={{ marginTop: "1rem", opacity: 0.8 }}>
-          Verificando acceso…
-        </div>
-      )}
+      <PlansSection>
+        <PlansContainer>
+          <PlansGrid>
+            <PlanCard>
+              <PlanTitle>DEMO</PlanTitle>
+              <PlanPrice>0€</PlanPrice>
 
-      <PlansGrid>
-        <PlanCard>
-          <PlanTitle>1 mes</PlanTitle>
-          <PlanPrice>9,99€</PlanPrice>
-          <PlanButton
-            disabled={checkingPro || payingPlan !== null}
-            onClick={() => choosePlan(1)}
-          >
-            {payingPlan === "monthly" ? "Redirigiendo…" : "Elegir plan"}
-          </PlanButton>
-        </PlanCard>
+              <PlanList>
+                <PlanItem>• Audios 1 y 2</PlanItem>
+                <PlanItem>• 1 simulador de examen</PlanItem>
+                <PlanItem>• Ejercicios básicos de callejero</PlanItem>
+                <PlanItem>• Acceso inmediato</PlanItem>
+              </PlanList>
 
-        <PlanCard>
-          <PlanTitle>3 meses</PlanTitle>
-          <PlanPrice>24,99€</PlanPrice>
-          <PlanButton
-            disabled={checkingPro || payingPlan !== null}
-            onClick={() => choosePlan(3)}
-          >
-            {payingPlan === "3m" ? "Redirigiendo…" : "Elegir plan"}
-          </PlanButton>
-        </PlanCard>
+              <PlanButtonWrap>
+                <CardButton type="button" onClick={goDemo}>
+                  Entrar a DEMO
+                </CardButton>
+              </PlanButtonWrap>
+            </PlanCard>
 
-        <PlanCard>
-          <PlanTitle>6 meses</PlanTitle>
-          <PlanPrice>39,99€</PlanPrice>
-          <PlanButton
-            disabled={checkingPro || payingPlan !== null}
-            onClick={() => choosePlan(6)}
-          >
-            {payingPlan === "6m" ? "Redirigiendo…" : "Elegir plan"}
-          </PlanButton>
-        </PlanCard>
+            <PlanCard pro>
+              <PlanTitle>PRO</PlanTitle>
+              <PlanPrice>9,99€ / mes</PlanPrice>
 
-        {/* <PlanCard>
-          <PlanTitle>12 meses</PlanTitle>
-          <PlanPrice>Todos los planes incluyen acceso a todas las funciones PRO</PlanPrice>
-          <PlanButton
-            disabled={checkingPro || payingPlan !== null}
-            onClick={() => choosePlan(12)}
-          >
-            Acceso manual
-          </PlanButton>
-        </PlanCard> */}
-      </PlansGrid>
+              <PlanList>
+                <PlanItem>✔ Audios 1–15 completos</PlanItem>
+                <PlanItem>✔ Simuladores ilimitados</PlanItem>
+                <PlanItem>✔ Callejero completo</PlanItem>
+                <PlanItem>✔ Seguimiento de progreso</PlanItem>
+                <PlanItem>✔ Acceso 24/7 desde móvil o PWA</PlanItem>
+              </PlanList>
 
-      <GuaranteeBox>
-        <GuaranteeTitle>¿Qué desbloqueas con PRO?</GuaranteeTitle>
-        <GuaranteeText>
-          Acceso completo a los módulos, simuladores, callejero, audiolectura y
-          herramientas avanzadas para preparar el examen con una metodología
-          clara, progresiva y profesional.
-        </GuaranteeText>
+              <PlanButtonWrap>
+                <SecondaryButton
+                  type="button"
+                  disabled={checkingPro || payingPlan !== null}
+                  onClick={() => choosePlan(1)}
+                >
+                  {payingPlan === "monthly" ? "Redirigiendo…" : "Acceder"}
+                </SecondaryButton>
+              </PlanButtonWrap>
+            </PlanCard>
 
-        <div style={{ marginTop: "1rem" }}>
-          <PlanButton
-            style={{ maxWidth: 280 }}
-            disabled={checkingPro || payingPlan !== null}
-            onClick={goDemo}
-          >
-            Volver a DEMO
-          </PlanButton>
-        </div>
-      </GuaranteeBox>
+            <PlanCard pro>
+              <PlanTitle>PRO 3 meses</PlanTitle>
+              <PlanPrice>24,99€</PlanPrice>
+
+              <PlanList>
+                <PlanItem>✔ Contenido completo</PlanItem>
+                <PlanItem>✔ Ahorra 20%</PlanItem>
+              </PlanList>
+
+              <PlanButtonWrap>
+                <PrimaryButton
+                  type="button"
+                  disabled={checkingPro || payingPlan !== null}
+                  onClick={() => choosePlan(3)}
+                >
+                  {payingPlan === "3m" ? "Redirigiendo…" : "Comprar"}
+                </PrimaryButton>
+              </PlanButtonWrap>
+            </PlanCard>
+
+            <PlanCard pro>
+              <PlanTitle>PRO 6 meses</PlanTitle>
+              <PlanPrice>39,99€</PlanPrice>
+
+              <PlanList>
+                <PlanItem>✔ Contenido completo</PlanItem>
+                <PlanItem>✔ Ahorra 33%</PlanItem>
+              </PlanList>
+
+              <PlanButtonWrap>
+                <PrimaryButton
+                  type="button"
+                  disabled={checkingPro || payingPlan !== null}
+                  onClick={() => choosePlan(6)}
+                >
+                  {payingPlan === "6m" ? "Redirigiendo…" : "Comprar"}
+                </PrimaryButton>
+              </PlanButtonWrap>
+            </PlanCard>
+          </PlansGrid>
+        </PlansContainer>
+      </PlansSection>
+
+      <ClosingBox>
+        <ClosingTag>TaxiRadar24</ClosingTag>
+
+        <ClosingTitle>Elige cómo quieres empezar</ClosingTitle>
+
+        <ClosingText>
+          Puedes entrar ahora mismo en la versión DEMO para conocer la
+          experiencia, o pasar directamente a PRO si ya quieres desbloquear todo
+          el contenido y avanzar con una preparación más seria.
+        </ClosingText>
+
+        <ClosingButtons>
+          <PrimaryButton type="button" onClick={goDemo}>
+            Ir a /academia/demo
+          </PrimaryButton>
+
+          <SecondaryButton type="button" onClick={goHome}>
+            Seguir explorando la Academia
+          </SecondaryButton>
+        </ClosingButtons>
+      </ClosingBox>
     </UpgradeWrapper>
   );
 }

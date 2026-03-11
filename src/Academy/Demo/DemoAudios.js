@@ -1,6 +1,7 @@
 import React from "react";
 import {
 PageWrapper,
+Title,
 PageContainer,
 AudioGrid,
 AudioCard,
@@ -98,11 +99,15 @@ title: "15: Artículo 82 – Régimen Sancionador",
 export default function DemoAudios() {
 const navigate = useNavigate();
 
-return ( <PageWrapper> <PageContainer>
-<h1 style={{ color: "#10a37f", marginBottom: "0.6rem" }}>
-🎧 Audios del Reglamento (DEMO) </h1>
+  return (
+    <PageWrapper>
+      <PageContainer>
 
-```
+
+    <Title>
+      🎧 Audios del Reglamento (DEMO)
+    </Title>
+
     <p style={{ marginBottom: "2.2rem", color: "#cbd5e1" }}>
       Escucha ejemplos reales del Reglamento Municipal del Taxi.
       En la versión DEMO puedes acceder a una muestra.

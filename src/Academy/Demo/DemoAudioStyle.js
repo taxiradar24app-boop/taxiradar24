@@ -8,11 +8,18 @@ export const PageWrapper = styled.div`
   background: ${({ theme }) => theme.pro?.blueDeep || "rgba(15, 23, 42, 0.85)"};
   padding: 40px 0;
 `;
+export const Title = styled.h1`
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  line-height: 1.08;
+  font-weight: 900;
+  color: #f4c44e;
+  margin: 0 0 22px;
+`;
 
 export const PageContainer = styled.div`
   max-width: 1350px;
   margin: 0 auto;
-  padding: 24px 40px;
+
   color: #f1f5f9;
 
   @media (max-width: 950px) {
@@ -41,6 +48,8 @@ export const AudioCard = styled.div`
   opacity: ${({ locked }) => (locked ? 0.55 : 1)};
   pointer-events: ${({ locked }) => (locked ? "none" : "auto")};
 `;
+
+
 
 export const AudioTitle = styled.h3`
   font-size: 1.05rem;

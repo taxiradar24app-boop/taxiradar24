@@ -9,7 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 
 import useDemoSimulador from "./../../hooks/UseDemoSimulador";
 import getExamQuestions from "./../Pro/SimuladorExamen/logic/getModuleQuestions";
-
+import DemoUnlockBar from "./DemoUnlockBar";
 import {
   Page,
   Shell,
@@ -29,7 +29,6 @@ import {
   CTAButton,
 } from "./DemoSimuladorStyle";
 
-
 const DEMO_LIMIT = 15;
 
 export default function DemoSimulador() {
@@ -37,7 +36,6 @@ export default function DemoSimulador() {
   const { user } = useAuth();
   const uid = user?.uid || null;
 
-  // 🔑 Hook DEMO con uid (CLAVE)
   const {
     remainingAttempts,
     maxAttempts,
@@ -51,9 +49,6 @@ export default function DemoSimulador() {
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState({});
 
-  // ======================================================
-  // 📊 Score
-  // ======================================================
   const score = useMemo(() => {
     let ok = 0;
     questions.forEach((q) => {
@@ -62,47 +57,39 @@ export default function DemoSimulador() {
     return ok;
   }, [answers, questions]);
 
-  // ======================================================
-  // ▶️ Iniciar DEMO
-  // ======================================================
   const startDemo = () => {
-  // 🔐 1. Si NO hay usuario → pedir registro/login
-  if (!user) {
-    navigate("/login", {
-      state: {
-        from: "/academia/demo/simulador",
-        reason: "demo",
-      },
-    });
-    return;
-  }
+    if (!user) {
+      navigate("/login", {
+        state: {
+          from: "/academia/demo/simulador",
+          reason: "demo",
+        },
+      });
+      return;
+    }
 
-  // 🔒 2. Si alcanzó el límite DEMO
-  if (isLocked) {
-    setStep("locked");
-    return;
-  }
+    if (isLocked || remainingAttempts <= 0) {
+      setStep("locked");
+      return;
+    }
 
-  // ▶️ 3. Usuario FREE (o PRO) → iniciar DEMO
-  const qs = getExamQuestions(DEMO_LIMIT);
-
-  setQuestions(qs);
-  setAnswers({});
-  setCurrent(0);
-  setStep("exam");
-};
-
-
-  // ======================================================
-  // 📝 Responder
-  // ======================================================
-  const currentQ = questions[current];
+    const qs = getExamQuestions(DEMO_LIMIT);
+    setQuestions(qs);
+    setAnswers({});
+    setCurrent(0);
+    setStep("exam");
+  };
 
   const choose = (qid, letter) => {
     setAnswers((prev) => ({
       ...prev,
       [qid]: letter,
     }));
+  };
+
+  const finishDemo = async () => {
+    await registerAttempt();
+    setStep("result");
   };
 
   const next = () => {
@@ -113,14 +100,6 @@ export default function DemoSimulador() {
     }
   };
 
-  // ======================================================
-  // 🏁 Finalizar DEMO (AQUÍ se cuenta el intento)
-  // ======================================================
-  const finishDemo = async () => {
-    await registerAttempt();
-    setStep("result");
-  };
-
   const resetDemo = () => {
     setQuestions([]);
     setAnswers({});
@@ -128,17 +107,18 @@ export default function DemoSimulador() {
     setStep("select");
   };
 
+  const currentQ = questions[current];
+
   if (loadingDemo) return null;
 
   return (
     <Page>
       <Shell>
         <Content>
-
-          {/* ================= BLOQUEADO ================= */}
           {step === "locked" && (
             <>
               <Title>Simulador DEMO</Title>
+
               <Subtitle>
                 Ya has completado los intentos disponibles del simulador DEMO.
               </Subtitle>
@@ -156,10 +136,9 @@ export default function DemoSimulador() {
             </>
           )}
 
-          {/* ================= SELECT ================= */}
           {step === "select" && (
             <>
-              <Title>Simulador de examen (DEMO)</Title>
+              <Title>📝 Simulador de examen</Title>
 
               <Subtitle>
                 Entrena con un simulador real basado en preguntas oficiales del
@@ -168,17 +147,31 @@ export default function DemoSimulador() {
 
               <Card>
                 <p style={{ lineHeight: 1.6 }}>
-                  🔹 Practicar exámenes <strong>por bloques de preguntas</strong>{" "}
-                  es una de las mejores formas de afianzar conceptos y detectar
-                  errores habituales.
-                  <br /><br />
-                  🔹 En la <strong>Academia PRO</strong> podrás realizar exámenes
-                  completos con <strong>tiempo limitado</strong>, como en el
-                  examen oficial.
-                  <br /><br />
-                  🔹 Preguntas basadas en{" "}
-                  <strong>exámenes reales de convocatorias anteriores</strong>,
-                  revisadas y actualizadas.
+                  🔹 Practicar con simuladores es una de las formas más eficaces
+                  de preparar el examen municipal de taxi.
+                  <br />
+                  <br />
+                  🔹 En esta versión DEMO podrás realizar un simulador de{" "}
+                  <strong>15 preguntas reales</strong> basadas en convocatorias
+                  anteriores.
+                  <br />
+                  <br />
+                  🔹 Para ofrecerte una experiencia completa, te pediremos{" "}
+                  <strong>crear una cuenta gratuita</strong>.
+                  <br />
+                  <br />
+                  Esto nos permite:
+                  <br />
+                  • Guardar tus resultados
+                  <br />
+                  • Ofrecerte hasta <strong>{maxAttempts} intentos</strong> de
+                  práctica
+                  <br />
+                  • Mostrar tu progreso de aprendizaje
+                  <br />
+                  <br />
+                  Así podrás ver cómo mejoras antes de presentarte al examen
+                  real.
                 </p>
               </Card>
 
@@ -191,62 +184,61 @@ export default function DemoSimulador() {
                 </Row>
 
                 <Footer>
-                  <CTAButton onClick={startDemo}>
-                    Comenzar simulador DEMO
-                  </CTAButton>
+                  <DemoUnlockBar
+                    attemptsLeft={remainingAttempts}
+                    totalAttempts={maxAttempts}
+                    onStart={startDemo}
+                    buttonText="Empezar simulador gratuito"
+                    infoText="Tu progreso quedará guardado en tu cuenta gratuita."
+                  />
                 </Footer>
               </Card>
             </>
           )}
 
-{/* ================= EXAM ================= */}
-{step === "exam" && currentQ && (
-  <QuestionBox>
+          {step === "exam" && currentQ && (
+            <QuestionBox>
+              {!isLocked && (
+                <div
+                  style={{
+                    marginBottom: "6px",
+                    fontSize: "0.85rem",
+                    fontWeight: 900,
+                    color: "#10a37f",
+                  }}
+                >
+                  Te quedan {remainingAttempts} intentos DEMO
+                </div>
+              )}
 
-    {!isLocked && (
-      <div
-        style={{
-          marginBottom: "6px",
-          fontSize: "0.85rem",
-          fontWeight: 1000,
-          color: "blueDeep",
-        }}
-      >
-        Te quedan - {remainingAttempts} - intentos DEMO
-      </div>
-    )}
+              <QuestionIndex>
+                Pregunta {current + 1} / {questions.length}
+              </QuestionIndex>
 
-    <QuestionIndex>
-      Pregunta {current + 1} / {questions.length}
-    </QuestionIndex>
+              <QuestionText>{currentQ.pregunta}</QuestionText>
 
-    <QuestionText>{currentQ.pregunta}</QuestionText>
+              <Options>
+                {["A", "B", "C"].map((l) => (
+                  <Option
+                    key={l}
+                    selected={answers[currentQ.id] === l}
+                    onClick={() => choose(currentQ.id, l)}
+                  >
+                    <strong>{l}.</strong> {currentQ.opciones[l]}
+                  </Option>
+                ))}
+              </Options>
 
-    <Options>
-      {["A", "B", "C"].map((l) => (
-        <Option
-          key={l}
-          selected={answers[currentQ.id] === l}
-          onClick={() => choose(currentQ.id, l)}
-        >
-          <strong>{l}.</strong> {currentQ.opciones[l]}
-        </Option>
-      ))}
-    </Options>
+              <Footer>
+                <CTAButton onClick={next}>
+                  {current < questions.length - 1
+                    ? "Siguiente"
+                    : "Finalizar examen"}
+                </CTAButton>
+              </Footer>
+            </QuestionBox>
+          )}
 
-    <Footer>
-      <CTAButton onClick={next}>
-        {current < questions.length - 1
-          ? "Siguiente"
-          : "Finalizar examen"}
-      </CTAButton>
-    </Footer>
-
-  </QuestionBox>
-)}
-
-
-          {/* ================= RESULT ================= */}
           {step === "result" && (
             <>
               <Title>Resultado DEMO</Title>
@@ -257,7 +249,9 @@ export default function DemoSimulador() {
               </Subtitle>
 
               <CTABox>
-                <p>En la versión <strong>Academia PRO</strong> podrás:</p>
+                <p>
+                  En la versión <strong>Academia PRO</strong> podrás:
+                </p>
 
                 <ul>
                   <li>✔ Exámenes de 30, 45 y 60 preguntas</li>
@@ -265,6 +259,16 @@ export default function DemoSimulador() {
                   <li>✔ Cronómetro real de examen</li>
                   <li>✔ Seguimiento de progreso</li>
                 </ul>
+
+                {remainingAttempts > 0 && (
+                  <DemoUnlockBar
+                    attemptsLeft={remainingAttempts}
+                    totalAttempts={maxAttempts}
+                    onStart={startDemo}
+                    buttonText="Volver a intentar simulador DEMO"
+                    infoText="Aún te quedan intentos para seguir practicando."
+                  />
+                )}
 
                 <CTAButton onClick={() => navigate("/academia/upgrade")}>
                   Desbloquear Academia PRO
@@ -276,10 +280,8 @@ export default function DemoSimulador() {
               </CTABox>
             </>
           )}
-
         </Content>
       </Shell>
     </Page>
   );
 }
-

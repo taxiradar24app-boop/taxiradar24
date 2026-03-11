@@ -39,14 +39,11 @@ export const TagDemo = styled.span`
 `;
 
 export const Title = styled.h1`
-  margin-top: 0.8rem;
-  font-size: ${({ theme }) => theme.fontSizes.hero};
-  color: ${({ theme }) => theme.pro.text};
-  font-weight: 800;
-
-  @media (max-width: 768px) {
-    font-size: 2.2rem;
-  }
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  line-height: 1.08;
+  font-weight: 900;
+  color: #f4c44e;
+  margin: 0 0 22px;
 `;
 
 export const Subtitle = styled.p`

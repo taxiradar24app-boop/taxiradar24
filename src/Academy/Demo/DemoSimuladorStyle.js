@@ -20,7 +20,7 @@ export const Title = styled.h1`
 
 export const Subtitle = styled.p`
   color: rgba(255, 255, 255, 0.86);
-  font-size: 1.05rem;
+  font-size: 0.7rem;
   margin-bottom: 22px;
   line-height: 1.5;
 `;
@@ -138,9 +138,13 @@ export const Option = styled.button`
 
 
 export const Footer = styled.div`
-  margin-top: 16px;
+  width: 100%;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 18px;
 `;
 
 export const CTABox = styled.div`
@@ -197,10 +201,20 @@ export const CTAButton = styled.button`
 `;
 
 export const AttemptInfo = styled.div`
-  margin-top: 10px;
-  font-weight: 800;
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.82);
+  width: 100%;
+  margin-top: 12px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.75);
+
+  text-align: center;
+  line-height: 1.4;
+
+  opacity: 0.9;
 `;
 
 export const LockInfo = styled.div`
