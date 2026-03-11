@@ -1,9 +1,8 @@
-// src/components/HeaderBox/HeaderAcademia.js
-
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { resolveNavigation } from "@/navigator/navigationConfig";
 import { useAuth } from "@/navigator/sections/auth/useAuth";
+import UserMenu from "@/components/UserMenu/UserMenu";
 
 import {
   HeaderWrapper,
@@ -11,10 +10,8 @@ import {
   Logo,
   Nav,
   NavItem,
-  UserSection,
-  UserMenu,
-  UserMenuItem,
-  AvatarButton,
+  HeaderRightDesktop,
+  HeaderRightMobile,
   MobileButton,
   MobileDrawer,
   DrawerOverlay,
@@ -31,9 +28,7 @@ export default function HeaderAcademia() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { user, subscription, needsProOnboarding, logout } = useAuth();
-
-  const [openMenu, setOpenMenu] = useState(false);
+  const { user, subscription } = useAuth();
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const { academy, showUpgradeCTA } = resolveNavigation({ user, subscription });
@@ -41,16 +36,9 @@ export default function HeaderAcademia() {
   const isProSub = subscription?.status === "active";
   const basePath = isProSub ? "/academia/pro" : "/academia/demo";
 
-  const userLabel =
-    user?.displayName || user?.email?.split("@")[0] || "Invitado";
-
-  const profilePath = needsProOnboarding ? "/perfil/pro-check" : "/perfil";
-  const progressPath = needsProOnboarding ? "/perfil/pro-check" : "/progreso";
-
   const go = (path) => {
     if (!path) return;
     navigate(path);
-    setOpenMenu(false);
     setOpenDrawer(false);
   };
 
@@ -115,26 +103,12 @@ export default function HeaderAcademia() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [openDrawer]);
 
-  useEffect(() => {
-    if (!openMenu) return;
-
-    const handleOutsideClick = (e) => {
-      const userMenuRoot = document.getElementById("academy-user-menu-root");
-      if (userMenuRoot && !userMenuRoot.contains(e.target)) {
-        setOpenMenu(false);
-      }
-    };
-
-    window.addEventListener("mousedown", handleOutsideClick);
-    return () => window.removeEventListener("mousedown", handleOutsideClick);
-  }, [openMenu]);
-
   return (
     <>
       <HeaderWrapper>
         <HeaderInner>
           <Logo onClick={() => go(isProSub ? "/academia/pro" : "/academia/demo")}>
-            {isProSub ? "PRO home" : "DEMO home"}
+            {isProSub ? "PRO" : "DEMO"}
           </Logo>
 
           <Nav>
@@ -147,45 +121,16 @@ export default function HeaderAcademia() {
                 {item.label}
               </NavItem>
             ))}
-
-            {user && (
-              <NavItem
-                active={isActive(progressPath)}
-                onClick={() => go(progressPath)}
-              >
-                Progreso
-              </NavItem>
-            )}
           </Nav>
 
-          {user && (
-            <UserSection id="academy-user-menu-root">
-              <AvatarButton onClick={() => setOpenMenu((prev) => !prev)}>
-                {userLabel}
-              </AvatarButton>
+          <HeaderRightDesktop>
+            {user && <UserMenu />}
+          </HeaderRightDesktop>
 
-              {openMenu && (
-                <UserMenu>
-                  <UserMenuItem onClick={() => go(profilePath)}>
-                    Perfil
-                  </UserMenuItem>
-                  <UserMenuItem onClick={() => go(progressPath)}>
-                    Progreso
-                  </UserMenuItem>
-                  <UserMenuItem
-                    onClick={() => {
-                      logout();
-                      setOpenMenu(false);
-                    }}
-                  >
-                    Cerrar sesión
-                  </UserMenuItem>
-                </UserMenu>
-              )}
-            </UserSection>
-          )}
-
-          <MobileButton onClick={() => setOpenDrawer(true)}>☰</MobileButton>
+          <HeaderRightMobile>
+            {user && <UserMenu mobile onAction={() => setOpenDrawer(false)} />}
+            <MobileButton onClick={() => setOpenDrawer(true)}>☰</MobileButton>
+          </HeaderRightMobile>
         </HeaderInner>
       </HeaderWrapper>
 
@@ -219,24 +164,6 @@ export default function HeaderAcademia() {
               <CTAButton onClick={() => go("/academia/upgrade")}>
                 Desbloquear PRO
               </CTAButton>
-            </>
-          )}
-
-          {user && (
-            <>
-              <DrawerDivider />
-              <UserMenuItem onClick={() => go(profilePath)}>Perfil</UserMenuItem>
-              <UserMenuItem onClick={() => go(progressPath)}>
-                Progreso
-              </UserMenuItem>
-              <UserMenuItem
-                onClick={() => {
-                  logout();
-                  setOpenDrawer(false);
-                }}
-              >
-                Cerrar sesión
-              </UserMenuItem>
             </>
           )}
         </DrawerContent>

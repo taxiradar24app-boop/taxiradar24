@@ -39,6 +39,10 @@ export default function AcademiaDemo() {
     navigate(path);
   };
 
+  const goUpgrade = () => {
+    navigate("/academia/upgrade");
+  };
+
   return (
     <DemoWrapper>
       <DemoContainer>
@@ -90,8 +94,8 @@ export default function AcademiaDemo() {
 
             <CTAGroup>
 
-              <PrimaryButton onClick={goAcademyPro}>
-                Desbloquear Academia PRO
+              <PrimaryButton onClick={goUpgrade}>
+                Ver planes PRO
               </PrimaryButton>
 
               <SecondaryButton onClick={goTools}>

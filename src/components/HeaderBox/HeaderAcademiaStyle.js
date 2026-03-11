@@ -1,5 +1,3 @@
-// src/components/HeaderBox/HeaderAcademiaStyle.js
-
 import styled from "styled-components";
 
 /* ================= HEADER ================= */
@@ -19,11 +17,14 @@ export const HeaderInner = styled.div`
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 24px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+
+  @media (max-width: 780px) {
+    padding: 0 18px;
+  }
 `;
 
 export const Logo = styled.div`
@@ -32,6 +33,10 @@ export const Logo = styled.div`
   cursor: pointer;
   color: #10a37f;
   white-space: nowrap;
+
+  @media (max-width: 780px) {
+    font-size: 1.12rem;
+  }
 `;
 
 /* ================= NAV ================= */
@@ -40,6 +45,10 @@ export const Nav = styled.nav`
   display: flex;
   gap: 26px;
   align-items: center;
+
+  @media (max-width: 980px) {
+    gap: 18px;
+  }
 
   @media (max-width: 780px) {
     display: none;
@@ -51,10 +60,8 @@ export const NavItem = styled.div`
   font-weight: 600;
   cursor: pointer;
   line-height: 1.35;
-
   color: ${({ active }) =>
     active ? "#58e63d" : "rgba(255,255,255,0.85)"};
-
   padding-bottom: 4px;
   border-bottom: 2px solid
     ${({ active }) => (active ? "#58e63d" : "transparent")};
@@ -75,61 +82,27 @@ export const NavItem = styled.div`
   }
 `;
 
-/* ================= USER ================= */
+/* ================= RIGHT ZONES ================= */
 
-export const UserSection = styled.div`
+export const HeaderRightDesktop = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-  position: relative;
+  flex-shrink: 0;
 
   @media (max-width: 780px) {
     display: none;
   }
 `;
 
-export const AvatarButton = styled.div`
-  background: rgba(255, 255, 255, 0.06);
-  padding: 8px 14px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  color: #ffffff;
-  user-select: none;
-`;
-
-export const UserMenu = styled.div`
-  position: absolute;
-  top: 54px;
-  right: 0;
-  background: #0f1d36;
-  border-radius: 12px;
-  width: 190px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
-`;
-
-export const UserMenuItem = styled.div`
-  padding: 12px 16px;
-  cursor: pointer;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-  }
+export const HeaderRightMobile = styled.div`
+  display: none;
 
   @media (max-width: 780px) {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.35;
-    color: rgba(255, 255, 255, 0.85);
-    text-align: left;
-    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
   }
 `;
 
@@ -161,15 +134,29 @@ export const CTAButton = styled.button`
 
 /* ================= MOBILE ================= */
 
-export const MobileButton = styled.div`
+export const MobileButton = styled.button`
   display: none;
-  font-size: 1.8rem;
+  width: 42px;
+  height: 42px;
+  border: none;
+  outline: none;
+  border-radius: 12px;
   cursor: pointer;
+  background: transparent;
   color: #ffffff;
+  font-size: 1.85rem;
+  line-height: 1;
   user-select: none;
+  transition: background 0.18s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
 
   @media (max-width: 780px) {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -179,7 +166,6 @@ export const DrawerOverlay = styled.div`
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(4px);
   z-index: 99998;
-
   opacity: ${({ open }) => (open ? 1 : 0)};
   pointer-events: ${({ open }) => (open ? "auto" : "none")};
   transition: opacity 220ms ease;
@@ -195,7 +181,6 @@ export const MobileDrawer = styled.div`
   padding-top: 80px;
   z-index: 99999;
   overflow-y: auto;
-
   transform: translateX(${({ open }) => (open ? "0%" : "100%")});
   transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform;
