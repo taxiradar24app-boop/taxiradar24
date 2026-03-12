@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const PrimaryButton = styled.button`
-  padding: 0.9rem 1.9rem;
+  padding: 0.90rem 1.9rem;
   border-radius: 999px;
   border: none;
   cursor: pointer;

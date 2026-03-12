@@ -63,20 +63,55 @@ export const HeroTag = styled.div`
 `;
 
 export const HeroTitle = styled.h1`
-  font-size: clamp(2.1rem, 3vw + 1.4rem, 3.15rem);
-  line-height: 1.08;
+  font-size: clamp(2rem, 2.5vw + 1.4rem, 3.15rem);
+  line-height: 1.04;
   font-weight: 800;
   color: ${({ theme }) => theme.colors.yellow};
-  margin-bottom: 0.9rem;
-  max-width: 13ch;
+  margin-bottom: 0.30rem;
+  max-width: 30ch;
+`;
+
+export const SubTitle = styled.span`
+  display: block;
+  font-size: clamp(1.15rem, 1vw + 1rem, 2rem);
+  line-height: 1.08;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.grey};
+  max-width: 24ch;
+  margin-top: 0.15rem;
+`;
+
+export const Title2 = styled.h2`
+  font-size: clamp(1.65rem, 1.2vw + 1rem, 2.6rem);
+  line-height: 1.08;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.yellow};
+  max-width: 20ch;
+  margin: 0.8rem 0 0.5rem 0;
+
+  @media (max-width: 768px) {
+    margin: 0.95rem 0 0.4rem 0;
+    max-width: 18ch;
+  }
+
+  @media (max-width: 480px) {
+    margin: 0.8rem 0 0.20rem 0;
+    font-size: clamp(1.5rem, 5.8vw, 2.15rem);
+    max-width: 18ch;
+  }
 `;
 
 export const HeroSubtitle = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.sm};
-  line-height: 1.62;
+  line-height: 1.58;
   color: ${({ theme }) => theme.colors.grey};
-  max-width: 36rem;
-  margin-bottom: 1.55rem;
+  max-width: 34rem;
+  margin-bottom:0.0.5rem;
+
+  @media (max-width: 768px) {
+    line-height: 1.56;
+    max-width: 30rem;
+  }
 `;
 
 export const HeroCTA = styled.div`

@@ -33,7 +33,7 @@ import { useSmartNavigation } from "@/utils/SmartNavigation";
 export default function AcademiaDemo() {
 
   const navigate = useNavigate();
-  const { goAcademyPro, goTools,  } = useSmartNavigation();
+  const { goHome  } = useSmartNavigation();
 
   const goDemoPath = (path) => {
     navigate(path);
@@ -97,9 +97,8 @@ export default function AcademiaDemo() {
               <PrimaryButton onClick={goUpgrade}>
                 Ver planes PRO
               </PrimaryButton>
-
-              <SecondaryButton onClick={goTools}>
-                Herramientas taxi
+              <SecondaryButton onClick={goHome}>
+                ← Volver al inicio
               </SecondaryButton>
 
             </CTAGroup>

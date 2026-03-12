@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { resolveNavigation } from "@/navigator/navigationConfig";
 import { useAuth } from "@/navigator/sections/auth/useAuth";
 import UserMenu from "@/components/UserMenu/UserMenu";
-
 import {
   HeaderWrapper,
   HeaderInner,

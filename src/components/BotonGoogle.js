@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { loginWithGoogle } from "../hooks/userIDService";
+import { loginWithGoogle } from "./../hooks/userIDService";
 
 import AuthButton from "@/components/UI/Auth/AuthButton";
 
@@ -20,7 +20,10 @@ const MiniText = styled.div`
 
 export default function BotonGoogle() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
+
+  const redirectTo = location.state?.redirectTo || "/";
 
   const handleGoogleLogin = async () => {
     if (loading) return;
@@ -29,11 +32,19 @@ export default function BotonGoogle() {
       setLoading(true);
 
       const { user, needsPhone } = await loginWithGoogle();
+
       console.log("✅ Google login:", user?.uid);
 
-      navigate(needsPhone ? "/verify" : "/academia/demo", {
-        replace: true,
-      });
+      // 🚀 SI necesita teléfono
+      if (needsPhone) {
+        return navigate("/verify", {
+          state: { redirectTo },
+          replace: true,
+        });
+      }
+
+      // 🚀 REDIRECCIÓN INTELIGENTE
+      navigate(redirectTo, { replace: true });
 
     } catch (error) {
       console.error("❌ Error en autenticación:", error?.message || error);

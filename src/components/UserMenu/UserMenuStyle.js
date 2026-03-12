@@ -33,11 +33,17 @@ export const UserIconButton = styled.button`
 `;
 
 export const UserIconGlyph = styled.span`
-  font-size: ${({ mobile }) => (mobile ? "1.22rem" : "1.18rem")};
-  line-height: 1;
-  filter: saturate(1.05);
-`;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
+  img {
+    width: ${({ mobile }) => (mobile ? "40px" : "42px")};
+    height: ${({ mobile }) => (mobile ? "40px" : "42px")};
+    object-fit: contain;
+    filter: brightness(1.2);
+  }
+`;
 export const UserDropdown = styled.div`
   position: absolute;
   top: ${({ mobile }) => (mobile ? "52px" : "54px")};

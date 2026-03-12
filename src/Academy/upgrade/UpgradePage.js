@@ -229,9 +229,9 @@ export default function UpgradePage() {
             Ir a /academia/demo
           </PrimaryButton>
 
-          <SecondaryButton type="button" onClick={goHome}>
-            Seguir explorando la Academia
-          </SecondaryButton>
+            <SecondaryButton onClick={goHome}>
+                    ← Volver al inicio
+            </SecondaryButton>
         </ClosingButtons>
       </ClosingBox>
     </UpgradeWrapper>

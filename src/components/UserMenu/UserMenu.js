@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/navigator/sections/auth/useAuth";
-
+import iconoUsuario from "./../../../assets/iconoUsuario.png";
 import {
   UserMenuRoot,
   UserIconButton,
@@ -61,7 +61,9 @@ export default function UserMenu({ mobile = false, onAction = () => {} }) {
         aria-label="Abrir menú de usuario"
         onClick={() => setOpen((prev) => !prev)}
       >
-        <UserIconGlyph mobile={mobile}>👤</UserIconGlyph>
+        <UserIconGlyph mobile={mobile}>
+        <img src={iconoUsuario} alt="Usuario" />
+      </UserIconGlyph>
       </UserIconButton>
 
       {open && (

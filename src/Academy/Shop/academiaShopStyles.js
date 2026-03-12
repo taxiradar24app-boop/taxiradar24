@@ -126,83 +126,8 @@ export const FeatureIcon = styled.div`
 `;
 
 /* ======================================================
-   PLANES
+   CTA FINAL
 ====================================================== */
-export const PlansSection = styled.section`
-  width: 100%;
-  margin-top: 4rem;
-`;
-
-export const PlanSection = PlansSection;
-
-export const PlanGrid = styled.div`
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(4, 1fr);
-  align-items: stretch;
-
-  @media (max-width: 960px) {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-export const PlanCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 420px;
-  background: ${({ pro }) =>
-    pro ? "rgba(16, 163, 127, 0.2)" : "rgba(15, 23, 42, 0.8)"};
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  padding: 1.6rem;
-  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.35);
-
-  @media (max-width: 600px) {
-    min-height: auto;
-  }
-`;
-
-export const PlanTitle = styled.h3`
-  color: #e2e8f0;
-  margin: 0;
-`;
-
-export const PlanPrice = styled.div`
-  color: #a3e635;
-  font-size: 1.6rem;
-  margin: 0.6rem 0 1rem;
-  font-weight: 800;
-`;
-
-export const PlanList = styled.div`
-  margin-bottom: 1rem;
-`;
-
-export const PlanItem = styled.div`
-  color: #cfd8ee;
-  margin-bottom: 0.4rem;
-  line-height: 1.45;
-`;
-
-export const PlanButtonWrap = styled.div`
-  margin-top: auto;
-  padding-top: 1rem;
-
-  & > * {
-    width: 100%;
-    justify-content: center;
-  }
-`;
-
-/* ======================================================
-   CTA FINAL DE PLANES
-====================================================== */
-
 export const CTASection = styled.section`
   margin-top: 3rem;
   text-align: center;
@@ -216,7 +141,6 @@ export const CTAHeader = styled.h2`
 /* ======================================================
    GARANTÍA
 ====================================================== */
-
 export const GuaranteeBox = styled.div`
   margin-top: 4rem;
   padding: 2rem;
@@ -226,9 +150,8 @@ export const GuaranteeBox = styled.div`
   box-shadow: 0 12px 18px rgba(0, 0, 0, 0.35);
   text-align: center;
 `;
-
 export const GuaranteeTitle = styled.h3`
-  color: #f9fafb;
+  color: #10a37f;
   margin-bottom: 0.6rem;
 `;
 

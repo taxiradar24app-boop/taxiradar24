@@ -11,8 +11,6 @@ import {
   AttemptsInfo,
   Timer,
   IntroCard,
-  IntroTop,
-  DemoBadge,
   IntroTitle,
   IntroLead,
   IntroGrid,
@@ -63,10 +61,7 @@ export default function DemoCallejero() {
 
   const bloqueado = isLocked;
 
-  const minutos = useMemo(
-    () => Math.floor(tiempoRestante / 60),
-    [tiempoRestante]
-  );
+  const minutos = useMemo(() => Math.floor(tiempoRestante / 60), [tiempoRestante]);
 
   const segundos = useMemo(
     () => String(tiempoRestante % 60).padStart(2, "0"),
@@ -153,15 +148,11 @@ export default function DemoCallejero() {
   return (
     <PageWrapper>
       <SectionHeader>
-      
         <SectionTitle>🗺️ Callejero de Palma</SectionTitle>
 
         {!hasStarted && (
           <>
             <IntroCard>
-              <IntroTop>
-                <DemoBadge>DEMO GRATUITO</DemoBadge>
-              </IntroTop>
 
               <IntroTitle>Ejercicio oficial · 3 intentos disponibles</IntroTitle>
 
@@ -279,7 +270,8 @@ export default function DemoCallejero() {
           Accede a <strong>Academia PRO</strong> para entrenar sin límites.
         </LockBox>
       ) : !hasStarted ? null : (
-        <MainGrid>
+          <MainGrid>
+            
           <ExamColumn>
             {!resultado ? (
               <form
@@ -288,7 +280,7 @@ export default function DemoCallejero() {
                   await finalizarFlujo();
                 }}
               >
-                {calles.map((c) => (
+                {(calles || []).map((c) => (
                   <CalleCard key={c.id}>
                     <CalleTitle>
                       {c.tipo} {c.nombre} Nº {c.numero}
@@ -337,14 +329,16 @@ export default function DemoCallejero() {
                 <p>🏆 Nota: {resultado.nota} / 10</p>
 
                 {remainingAttempts > 0 && (
-                  <RetryButton onClick={handleRetry}>🔁 Reintentar</RetryButton>
+                  <RetryButton type="button" onClick={handleRetry}>
+                    🔁 Reintentar
+                  </RetryButton>
                 )}
               </ResultBox>
             )}
           </ExamColumn>
 
           <Sidebar>
-            <SidebarTitle>Callejero – Ejercicio oficial</SidebarTitle>
+            <SidebarTitle>Reglas – Ejercicio oficial</SidebarTitle>
 
             <SidebarText>
               Este ejercicio sigue el formato del examen oficial y puntúa como en

@@ -20,7 +20,9 @@ import {
   HeroContent,
   HeroTag,
   HeroTitle,
+  Title2,
   HeroSubtitle,
+  SubTitle,
   HeroCTA,
   HeroStatsRow,
   HeroStat,
@@ -104,28 +106,24 @@ export default function HomeScreen() {
         <HeroContent>
           <HeroTag>Academia online para taxistas de Baleares</HeroTag>
 
-          <HeroTitle>
-            Academia TaxiRadar24:
-            <br />
-            Formación oficial para tu
-            <br />
-            Permiso Municipal de Taxista
-          </HeroTitle>
+<HeroTitle>
+  Academia TaxiRadar24:
+  <SubTitle>Formación con PDF oficial del reglamento en vigor.</SubTitle>
+</HeroTitle>
 
-          <HeroSubtitle>
-            Estudia con una ruta clara: Reglamento explicado, audios guiados,
-            simuladores y callejero de Palma en una sola plataforma, desde
-            móvil o PWA.
-          </HeroSubtitle>
+<Title2>Permiso Municipal de Taxista</Title2>
+
+<HeroSubtitle>
+  Estudia con una ruta clara: Reglamento explicado, audios guiados,
+  simuladores y callejero de Palma en una sola plataforma, desde móvil o PWA.
+</HeroSubtitle>
 
           <HeroCTA>
             <PrimaryButton onClick={goAcademy}>
               Entrar a la Academia
             </PrimaryButton>
 
-            <SecondaryButton onClick={goTools}>
-              Ver herramientas para taxistas
-            </SecondaryButton>
+           
           </HeroCTA>
 
           <HeroStatsRow>
@@ -170,15 +168,22 @@ export default function HomeScreen() {
       {/* DOS PILARES */}
       <FadeInSection ref={overviewRef}>
         <Section>
+        
           <SectionHeader>
+            
             <SectionTag>Qué encontrarás en TaxiRadar24</SectionTag>
             <SectionTitle>
               Dos caminos claros dentro de una misma plataforma
             </SectionTitle>
+            
             <SectionSubtitle>
               Si quieres sacarte el permiso, entra en la Academia. Si ya trabajas
               en el taxi, accede a herramientas pensadas para el día a día.
             </SectionSubtitle>
+                      
+           <SecondaryButton onClick={goTools}>
+              Ver herramientas para taxistas
+          </SecondaryButton>
           </SectionHeader>
 
           <FeatureGrid>
@@ -286,7 +291,7 @@ export default function HomeScreen() {
       </FadeInSection>
 
       {/* TESTIMONIOS */}
-      <FadeInSection ref={testimonialsRef}>
+      {/* <FadeInSection ref={testimonialsRef}>
         <Section>
           <SectionHeader>
             <SectionTag>Experiencias de alumnos</SectionTag>
@@ -328,7 +333,7 @@ export default function HomeScreen() {
             </TestimonialCard>
           </TestimonialsWrapper>
         </Section>
-      </FadeInSection>
+      </FadeInSection> */}
 
       {/* CTA FINAL */}
       <FinalCTASection>
@@ -342,9 +347,9 @@ export default function HomeScreen() {
         </FinalCTAText>
 
         <HeroCTA>
-          <PrimaryButton onClick={goAcademy}>
-            Ir a la Academia
-          </PrimaryButton>
+            <PrimaryButton onClick={goAcademy}>
+              Entrar a la Academia
+            </PrimaryButton>
 
           <SecondaryButton onClick={goTools}>
             Ver herramientas para taxistas

@@ -26,6 +26,7 @@ function readEnvValue(key) {
 export function getApiBase() {
   const envBase =
     readEnvValue("REACT_APP_API_BASE") || readEnvValue("API_BASE");
+
   const fallback =
     "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
 
@@ -58,7 +59,6 @@ export async function fetchMySubscription(firebaseUser) {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
-      "Cache-Control": "no-store",
     },
   });
 
@@ -78,4 +78,11 @@ export function isSubscriptionActive(sub) {
 
   const status = String(sub.status || "").toLowerCase();
   return status === "active" || status === "trialing";
+}
+
+export function isAcademiaPro(sub) {
+  if (!sub) return false;
+
+  const plan = String(sub.plan || "").toUpperCase();
+  return plan === "ACADEMIA_PRO" && isSubscriptionActive(sub);
 }
