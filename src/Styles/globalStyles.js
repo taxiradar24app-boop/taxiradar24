@@ -34,9 +34,16 @@ const GlobalStyles = createGlobalStyle`
   }
 
 body {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+  color: ${({ theme }) => theme.pro?.text || theme.text};
+  background-color: ${({ theme }) => theme.pageBg || "#081325"};
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 

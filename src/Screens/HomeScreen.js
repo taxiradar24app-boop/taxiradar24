@@ -106,17 +106,17 @@ export default function HomeScreen() {
         <HeroContent>
           <HeroTag>Academia online para taxistas de Baleares</HeroTag>
 
-<HeroTitle>
-  Academia TaxiRadar24:
-  <SubTitle>Formación con PDF oficial del reglamento en vigor.</SubTitle>
-</HeroTitle>
+          <HeroTitle>
+            Academia TaxiRadar24:
+            <SubTitle>Formación con PDF oficial del reglamento en vigor.</SubTitle>
+          </HeroTitle>
 
-<Title2>Permiso Municipal de Taxista</Title2>
+          <Title2>Permiso Municipal de Taxista</Title2>
 
-<HeroSubtitle>
-  Estudia con una ruta clara: Reglamento explicado, audios guiados,
-  simuladores y callejero de Palma en una sola plataforma, desde móvil o PWA.
-</HeroSubtitle>
+          <HeroSubtitle>
+            Estudia con una ruta clara: Reglamento explicado, audios guiados,
+            simuladores y callejero de Palma en una sola plataforma, desde móvil o PWA.
+          </HeroSubtitle>
 
           <HeroCTA>
             <PrimaryButton onClick={goAcademy}>
