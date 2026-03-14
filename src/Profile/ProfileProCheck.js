@@ -14,6 +14,10 @@ const Container = styled.div`
   background: #0f172a;
   border-radius: 16px;
   color: white;
+
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
 const Section = styled.div`
@@ -21,6 +25,10 @@ const Section = styled.div`
   padding: 16px;
   background: #1e293b;
   border-radius: 12px;
+
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
 const Button = styled.button`
@@ -31,6 +39,11 @@ const Button = styled.button`
   color: white;
   cursor: pointer;
 
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: 1.2;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -39,7 +52,12 @@ const Button = styled.button`
 
 const Status = styled.p`
   margin-top: 8px;
-  font-size: 14px;
+
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+
   opacity: 0.85;
 `;
 

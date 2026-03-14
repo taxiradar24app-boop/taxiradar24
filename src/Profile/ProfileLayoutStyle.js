@@ -5,6 +5,10 @@ export const PageWrapper = styled.div`
   max-width: 1040px;
   margin: 0 auto;
   color: #e9f1ff;
+
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
 export const HeaderSection = styled.div`
@@ -35,26 +39,37 @@ export const Avatar = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.15rem;
-  font-weight: 900;
+
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: ${({ theme }) => theme.fontWeights.heavy};
+  line-height: 1;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
+
   color: #071425;
 `;
 
 export const UserName = styled.div`
-  font-size: 1.15rem;
-  font-weight: 900;
-  letter-spacing: 0.2px;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.title};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
 `;
 
 export const UserEmail = styled.div`
-  font-size: 0.9rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.72;
   margin-top: 2px;
 `;
 
 export const DatesRow = styled.div`
   margin-top: 8px;
-  font-size: 0.82rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.6;
   display: flex;
   gap: 14px;
@@ -64,8 +79,10 @@ export const DatesRow = styled.div`
 export const PlanBadge = styled.div`
   padding: 7px 14px;
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 900;
+
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: 1.2;
   letter-spacing: 0.05em;
 
   background: ${({ $pro }) =>
@@ -83,13 +100,18 @@ export const Section = styled.section`
 
 export const SectionTitle = styled.h2`
   margin: 0 0 12px 0;
-  font-size: 1.25rem;
-  font-weight: 900;
-  letter-spacing: 0.2px;
+
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.heading};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
 `;
 
 export const SectionSub = styled.div`
-  font-size: 0.92rem;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.68;
   margin-bottom: 14px;
 `;
@@ -120,25 +142,33 @@ export const SettingsRow = styled.div`
 `;
 
 export const RowLabel = styled.div`
-  font-size: 0.92rem;
-  font-weight: 800;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: ${({ theme }) => theme.lineHeights.title};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.9;
 `;
 
 export const RowValue = styled.div`
-  font-size: 0.95rem;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.78;
-  line-height: 1.35;
 `;
 
 export const RowValueStrong = styled.div`
-  font-size: 1.02rem;
-  font-weight: 900;
-  letter-spacing: 0.2px;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.title};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
 `;
 
 export const RowHint = styled.div`
-  font-size: 0.82rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.6;
   margin-top: 2px;
 `;
@@ -159,8 +189,12 @@ export const Button = styled.button`
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.06);
   color: #e9f1ff;
-  font-weight: 900;
-  font-size: 0.85rem;
+
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: 1.2;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+
   cursor: pointer;
   transition: 0.2s ease;
 
@@ -182,8 +216,10 @@ export const StatusPill = styled.span`
   gap: 8px;
   padding: 6px 10px;
   border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 900;
+
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: 1.2;
   letter-spacing: 0.03em;
 
   background: ${({ $ok }) =>
@@ -209,26 +245,36 @@ export const Card = styled.div`
 `;
 
 export const CardTitle = styled.div`
-  font-size: 0.9rem;
-  font-weight: 800;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: ${({ theme }) => theme.lineHeights.title};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.75;
   margin-bottom: 8px;
 `;
 
 export const CardValue = styled.div`
-  font-size: 1.3rem;
-  font-weight: 900;
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  font-weight: ${({ theme }) => theme.fontWeights.heavy};
+  line-height: 1.1;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   margin-bottom: 6px;
 `;
 
 export const CardSubtitle = styled.div`
-  font-size: 0.85rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.65;
   margin-bottom: 6px;
 `;
 
 export const CardMeta = styled.div`
-  font-size: 0.78rem;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.55;
 `;
 
@@ -240,8 +286,10 @@ export const LockedOverlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 900;
+
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: 1.2;
   color: #58e63d;
   text-transform: uppercase;
   letter-spacing: 0.05em;

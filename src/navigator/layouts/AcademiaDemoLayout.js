@@ -8,8 +8,8 @@ const DemoBanner = styled.div`
   width: 100%;
   background: #0f172a;
   color: #a3e635;
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
   letter-spacing: 0.02em;
   padding: 14px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);

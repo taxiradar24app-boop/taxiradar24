@@ -53,7 +53,9 @@ export const HeroTag = styled.div`
   width: fit-content;
   padding: 0.3rem 0.9rem;
   border-radius: 999px;
-  font-size: 0.78rem;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  line-height: 1.2;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: ${({ theme }) => theme.colors.grey};
@@ -65,9 +67,10 @@ export const HeroTag = styled.div`
 export const HeroTitle = styled.h1`
   font-size: clamp(2rem, 2.5vw + 1.4rem, 3.15rem);
   line-height: 1.04;
-  font-weight: 800;
+  font-weight: ${({ theme }) => theme.fontWeights.heavy};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tighter};
   color: ${({ theme }) => theme.colors.yellow};
-  margin-bottom: 0.30rem;
+  margin-bottom: 0.3rem;
   max-width: 30ch;
 `;
 
@@ -75,7 +78,8 @@ export const SubTitle = styled.span`
   display: block;
   font-size: clamp(1.15rem, 1vw + 1rem, 2rem);
   line-height: 1.08;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   color: ${({ theme }) => theme.colors.grey};
   max-width: 24ch;
   margin-top: 0.15rem;
@@ -84,7 +88,8 @@ export const SubTitle = styled.span`
 export const Title2 = styled.h2`
   font-size: clamp(1.65rem, 1.2vw + 1rem, 2.6rem);
   line-height: 1.08;
-  font-weight: 700;
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   color: ${({ theme }) => theme.colors.yellow};
   max-width: 20ch;
   margin: 0.8rem 0 0.5rem 0;
@@ -95,21 +100,24 @@ export const Title2 = styled.h2`
   }
 
   @media (max-width: 480px) {
-    margin: 0.8rem 0 0.20rem 0;
+    margin: 0.8rem 0 0.2rem 0;
     font-size: clamp(1.5rem, 5.8vw, 2.15rem);
     max-width: 18ch;
   }
 `;
 
 export const HeroSubtitle = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  line-height: 1.58;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: ${({ theme }) => theme.colors.grey};
   max-width: 34rem;
-  margin-bottom:0.0.5rem;
+  margin-bottom: 0.5rem;
 
   @media (max-width: 768px) {
-    line-height: 1.56;
+    font-size: ${({ theme }) => theme.fontSizes.md};
+    line-height: 1.6;
     max-width: 30rem;
   }
 `;
@@ -135,14 +143,19 @@ export const HeroStat = styled.div`
 `;
 
 export const HeroStatNumber = styled.div`
-  font-size: 1.45rem;
-  font-weight: 800;
+  font-size: clamp(1.45rem, 1vw + 1rem, 2rem);
+  font-weight: ${({ theme }) => theme.fontWeights.heavy};
+  line-height: 1;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   color: ${({ theme }) => theme.colors.grey};
+  margin-bottom: 0.2rem;
 `;
 
 export const HeroStatLabel = styled.div`
-  font-size: 0.82rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
   line-height: 1.35;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: ${({ theme }) => theme.colors.grey};
   max-width: 9rem;
 `;
@@ -169,7 +182,9 @@ export const HeroSideBadge = styled.div`
   width: fit-content;
   padding: 0.28rem 0.8rem;
   border-radius: 999px;
-  font-size: 0.78rem;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  line-height: 1.2;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   background: rgba(22, 163, 74, 0.18);
@@ -179,16 +194,19 @@ export const HeroSideBadge = styled.div`
 `;
 
 export const HeroSideTitle = styled.h2`
-  font-size: 1.18rem;
-  line-height: 1.25;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  line-height: ${({ theme }) => theme.lineHeights.heading};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   color: #e5e7eb;
   margin-bottom: 0.65rem;
 `;
 
 export const HeroSideText = styled.p`
-  font-size: 0.92rem;
-  line-height: 1.6;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: #d1fae5;
   margin-bottom: 0.75rem;
 `;
@@ -200,8 +218,10 @@ export const HeroSideList = styled.ul`
 `;
 
 export const HeroSideItem = styled.li`
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: 1.55;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: #c7d2fe;
   margin-bottom: 0.4rem;
 `;
@@ -233,7 +253,9 @@ export const SectionHeader = styled.div`
 `;
 
 export const SectionTag = styled.div`
-  font-size: 0.8rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  line-height: 1.2;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #a5b4fc;
@@ -243,14 +265,17 @@ export const SectionTag = styled.div`
 export const SectionTitle = styled.h2`
   font-size: clamp(1.55rem, 1vw + 1.2rem, 2.15rem);
   line-height: 1.18;
-  font-weight: 750;
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   margin-bottom: 0.65rem;
   color: #f9fafb;
 `;
 
 export const SectionSubtitle = styled.p`
-  font-size: 0.97rem;
-  line-height: 1.65;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: #9ca3af;
 `;
 
@@ -293,16 +318,19 @@ export const FeatureCard = styled.div`
   }
 
   h3 {
-    font-size: 1rem;
-    line-height: 1.3;
-    font-weight: 650;
+    font-size: ${({ theme }) => theme.fontSizes.lg};
+    line-height: ${({ theme }) => theme.lineHeights.title};
+    font-weight: ${({ theme }) => theme.fontWeights.semibold};
+    letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
     color: #e5e7eb;
     margin-bottom: 0.45rem;
   }
 
   p {
-    font-size: 0.89rem;
-    line-height: 1.58;
+    font-size: ${({ theme }) => theme.fontSizes.md};
+    font-weight: ${({ theme }) => theme.fontWeights.regular};
+    line-height: ${({ theme }) => theme.lineHeights.body};
+    letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
     color: #9ca3af;
     margin-bottom: 0.8rem;
   }
@@ -320,7 +348,10 @@ export const PillList = styled.div`
 `;
 
 export const Pill = styled.span`
-  font-size: 0.75rem;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  line-height: 1.2;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   padding: 0.16rem 0.62rem;
   border-radius: 999px;
   background: rgba(15, 23, 42, 0.9);
@@ -356,8 +387,8 @@ export const StepNumber = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 0.9rem;
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
   background: rgba(34, 197, 94, 0.15);
   color: #bbf7d0;
   border: 1px solid rgba(34, 197, 94, 0.7);
@@ -365,15 +396,19 @@ export const StepNumber = styled.div`
 `;
 
 export const StepTitle = styled.h3`
-  font-size: 0.99rem;
-  font-weight: 650;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: ${({ theme }) => theme.lineHeights.title};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   color: #e5e7eb;
   margin-bottom: 0.42rem;
 `;
 
 export const StepText = styled.p`
-  font-size: 0.87rem;
-  line-height: 1.58;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: #9ca3af;
 `;
 
@@ -399,20 +434,22 @@ export const TestimonialCard = styled.div`
 `;
 
 export const TestimonialQuote = styled.p`
-  font-size: 0.91rem;
-  line-height: 1.58;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: #e5e7eb;
   margin-bottom: 0.82rem;
 `;
 
 export const TestimonialName = styled.div`
-  font-size: 0.87rem;
-  font-weight: 650;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
   color: #d1fae5;
 `;
 
 export const TestimonialRole = styled.div`
-  font-size: 0.79rem;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
   color: #9ca3af;
 `;
 
@@ -424,7 +461,7 @@ export const SeoCard = styled.section`
   padding: 2rem;
   max-width: 900px;
   margin: 3rem auto 0;
-  line-height: 1.7;
+  line-height: ${({ theme }) => theme.lineHeights.relaxed};
   text-align: left;
   background: rgba(0, 0, 0, 0.15);
   border-radius: 12px;
@@ -433,27 +470,40 @@ export const SeoCard = styled.section`
     color: #f4d35e;
     margin-bottom: 1.5rem;
     text-align: center;
+    font-size: clamp(1.7rem, 1vw + 1.2rem, 2.3rem);
+    font-weight: ${({ theme }) => theme.fontWeights.heavy};
+    line-height: ${({ theme }) => theme.lineHeights.heading};
+    letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   }
 
   h2 {
     color: #f4d35e;
     margin-top: 2rem;
     margin-bottom: 0.6rem;
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    line-height: ${({ theme }) => theme.lineHeights.heading};
   }
 
   h3 {
     margin-top: 1.8rem;
     color: #2ce3b5;
+    font-size: ${({ theme }) => theme.fontSizes.lg};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    line-height: ${({ theme }) => theme.lineHeights.title};
   }
 
   p {
     margin-bottom: 1.3rem;
-    font-size: 1rem;
+    font-size: ${({ theme }) => theme.fontSizes.md};
+    font-weight: ${({ theme }) => theme.fontWeights.regular};
+    line-height: ${({ theme }) => theme.lineHeights.body};
+    letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
     opacity: 0.95;
   }
 
   strong {
-    color: #f1f1f1f1;
+    color: #f1f1f1;
   }
 `;
 
@@ -484,14 +534,17 @@ export const FinalCTASection = styled.section`
 export const FinalCTATitle = styled.h2`
   font-size: clamp(1.55rem, 1vw + 1.2rem, 2rem);
   line-height: 1.18;
-  font-weight: 750;
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   margin-bottom: 0.55rem;
   color: #f9fafb;
 `;
 
 export const FinalCTAText = styled.p`
-  font-size: 0.96rem;
-  line-height: 1.65;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: #9ca3af;
   max-width: 42rem;
   margin-bottom: 1.55rem;

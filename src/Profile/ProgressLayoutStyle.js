@@ -18,6 +18,10 @@ export const PageWrapper = styled.div`
   border-radius: 16px;
   color: #e9f1ff;
 
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+
   @media (max-width: 768px) {
     padding: 20px 16px;
     border-radius: 14px;
@@ -59,19 +63,26 @@ export const Avatar = styled.div`
   align-items: center;
   justify-content: center;
 
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.heavy};
+  line-height: 1;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
+
   color: #061426;
 `;
 
 export const UserName = styled.div`
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
   line-height: 1.2;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
 export const UserEmail = styled.div`
-  font-size: 0.78rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.65;
   margin-top: 2px;
 `;
@@ -79,8 +90,10 @@ export const UserEmail = styled.div`
 export const PlanBadge = styled.div`
   padding: 6px 14px;
   border-radius: 999px;
-  font-size: 0.74rem;
-  font-weight: 700;
+
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: 1.2;
   letter-spacing: 0.05em;
 
   background: ${({ $pro }) =>
@@ -93,7 +106,10 @@ export const PlanBadge = styled.div`
 
 export const DatesRow = styled.div`
   margin-bottom: 16px;
-  font-size: 0.78rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.6;
   display: flex;
   gap: 14px;
@@ -110,9 +126,11 @@ export const Section = styled.section`
 
 export const SectionTitle = styled.h3`
   margin-bottom: 12px;
-  font-size: 0.98rem;
-  font-weight: 700;
-  line-height: 1.2;
+
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.title};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
 `;
 
 /* ================================
@@ -145,24 +163,28 @@ export const GeneralProgressTop = styled.div`
 `;
 
 export const GeneralProgressTitle = styled.div`
-  font-size: 0.96rem;
-  font-weight: 700;
-  line-height: 1.35;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
 export const GeneralProgressSub = styled.div`
-  font-size: 0.82rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
   opacity: 0.72;
   margin-top: 4px;
-  line-height: 1.45;
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   max-width: 540px;
 `;
 
 export const GeneralProgressValue = styled.div`
-  font-size: 1.45rem;
-  font-weight: 800;
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  font-weight: ${({ theme }) => theme.fontWeights.heavy};
   opacity: 0.92;
   line-height: 1;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
 `;
 
 /* ================================
@@ -202,14 +224,19 @@ export const MiniStat = styled.div`
 `;
 
 export const MiniStatLabel = styled.div`
-  font-size: 0.72rem;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: 1.25;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.6;
   margin-bottom: 3px;
 `;
 
 export const MiniStatValue = styled.div`
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: ${({ theme }) => theme.lineHeights.title};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
 /* ================================
@@ -243,21 +270,27 @@ export const ModuleProgressInfo = styled.div`
 `;
 
 export const ModuleProgressName = styled.div`
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.title};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: #f3f7ff;
 `;
 
 export const ModuleProgressMeta = styled.div`
-  font-size: 0.78rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
   opacity: 0.68;
   margin-top: 2px;
-  line-height: 1.35;
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
 export const ModuleProgressPercent = styled.div`
-  font-size: 0.88rem;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: 1.2;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: #b8ffd2;
   min-width: 46px;
   text-align: right;
@@ -295,7 +328,9 @@ export const CardsGrid = styled.div`
 
 export const UpgradeHint = styled.div`
   margin-top: 14px;
-  font-size: 0.84rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   opacity: 0.85;
-  // line-height: 1.45;
 `;

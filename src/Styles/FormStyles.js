@@ -22,11 +22,17 @@ export const Input = styled.input`
   width: 100%;
   min-height: 58px;
   padding: 0 18px;
-  font-size: 1rem;
+
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+
   border-radius: 16px;
   border: 1px solid rgba(148, 163, 184, 0.22);
   background: rgba(15, 23, 42, 0.84);
   color: #f8fafc;
+
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
@@ -35,6 +41,7 @@ export const Input = styled.input`
   &::placeholder {
     color: #9fb1c8;
     opacity: 0.82;
+    font-size: ${({ theme }) => theme.fontSizes.md};
   }
 
   &:focus {
@@ -44,17 +51,20 @@ export const Input = styled.input`
     background: rgba(15, 23, 42, 0.96);
   }
 `;
-
 export const Button = styled.button`
   width: 100%;
   min-height: 58px;
   border: none;
   border-radius: 16px;
   padding: 14px 18px;
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: 0.01em;
+
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: 1.2;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+
   cursor: pointer;
+
   transition:
     transform 0.14s ease,
     background 0.22s ease,
@@ -86,10 +96,16 @@ export const Button = styled.button`
 
 export const TextLink = styled.span`
   color: #59a8ff;
-  font-size: 0.98rem;
+
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+
   cursor: pointer;
   text-align: center;
   margin-top: 6px;
+
   transition: color 0.2s ease, opacity 0.2s ease;
 
   &:hover {

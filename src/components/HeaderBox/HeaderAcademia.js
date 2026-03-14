@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { resolveNavigation } from "@/navigator/navigationConfig";
 import { useAuth } from "@/navigator/sections/auth/useAuth";
-import UserMenu from "@/components/UserMenu/UserMenu";
+import iconoUsuario from "./../../../assets/iconoUsuario.png";
 import {
   HeaderWrapper,
   HeaderInner,
@@ -27,7 +27,7 @@ export default function HeaderAcademia() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { user, subscription } = useAuth();
+  const { user, subscription, needsProOnboarding, logout } = useAuth();
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const { academy, showUpgradeCTA } = resolveNavigation({ user, subscription });
@@ -35,10 +35,21 @@ export default function HeaderAcademia() {
   const isProSub = subscription?.status === "active";
   const basePath = isProSub ? "/academia/pro" : "/academia/demo";
 
+  const profilePath = needsProOnboarding ? "/perfil/pro-check" : "/perfil";
+  const progressPath = needsProOnboarding ? "/perfil/pro-check" : "/progreso";
+
   const go = (path) => {
     if (!path) return;
     navigate(path);
     setOpenDrawer(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      setOpenDrawer(false);
+    }
   };
 
   const isActive = (path) => location.pathname.startsWith(path);
@@ -123,12 +134,22 @@ export default function HeaderAcademia() {
           </Nav>
 
           <HeaderRightDesktop>
-            {user && <UserMenu />}
+            {user && (
+              <>
+                <NavItem onClick={() => go(profilePath)}>Perfil</NavItem>
+                <NavItem onClick={() => go(progressPath)}>Progreso</NavItem>
+              </>
+            )}
           </HeaderRightDesktop>
 
           <HeaderRightMobile>
-            {user && <UserMenu mobile onAction={() => setOpenDrawer(false)} />}
-            <MobileButton onClick={() => setOpenDrawer(true)}>☰</MobileButton>
+            <MobileButton
+              type="button"
+              aria-label="Abrir menú"
+              onClick={() => setOpenDrawer(true)}
+            >
+               <img src={iconoUsuario} alt="Usuario" />
+            </MobileButton>
           </HeaderRightMobile>
         </HeaderInner>
       </HeaderWrapper>
@@ -139,6 +160,14 @@ export default function HeaderAcademia() {
         <DrawerClose onClick={() => setOpenDrawer(false)}>✕</DrawerClose>
 
         <DrawerContent>
+          {user && (
+            <>
+              <NavItem onClick={() => go(profilePath)}>Perfil</NavItem>
+              <NavItem onClick={() => go(progressPath)}>Progreso</NavItem>
+              <DrawerDivider />
+            </>
+          )}
+
           {navItems.map((item) => (
             <NavItem
               key={item.id}
@@ -163,6 +192,13 @@ export default function HeaderAcademia() {
               <CTAButton onClick={() => go("/academia/upgrade")}>
                 Desbloquear PRO
               </CTAButton>
+            </>
+          )}
+
+          {user && (
+            <>
+              <DrawerDivider />
+              <NavItem onClick={handleLogout}>Cerrar sesión</NavItem>
             </>
           )}
         </DrawerContent>

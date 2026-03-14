@@ -1,4 +1,3 @@
-// src/Styles/academiaShopStyles.js
 import styled from "styled-components";
 
 /* ======================================================
@@ -23,7 +22,10 @@ export const HeroContent = styled.div`
 `;
 
 export const HeroTag = styled.div`
-  font-size: 0.85rem;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  line-height: 1.2;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #a3e635;
   margin-bottom: 0.7rem;
@@ -31,21 +33,30 @@ export const HeroTag = styled.div`
 
 export const HeroTitle = styled.h1`
   font-size: clamp(1.6rem, 4vw, 3.4rem);
-  line-height: 1.2;
+  line-height: 1.12;
+  font-weight: ${({ theme }) => theme.fontWeights.heavy};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   color: #f9fafb;
   margin-bottom: 1rem;
 
   span {
     color: #10a37f;
-    font-weight: 700;
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
   }
 `;
 
 export const HeroSubtitle = styled.p`
   color: #cbd5f5;
   margin-bottom: 1.4rem;
-  font-size: 1.05rem;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   max-width: 520px;
+
+  @media (max-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
 `;
 
 export const HeroCTA = styled.div`
@@ -69,19 +80,28 @@ export const SectionHeader = styled.div`
 export const SectionTag = styled.div`
   color: #a3e635;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  line-height: 1.2;
+  letter-spacing: 0.08em;
   margin-bottom: 0.4rem;
 `;
 
 export const SectionTitle = styled.h2`
   color: #f9fafb;
-  font-size: 1.7rem;
-  font-weight: 700;
+  font-size: clamp(1.7rem, 2vw, 2.2rem);
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.heading};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   margin-bottom: 0.6rem;
 `;
 
 export const SectionSubtitle = styled.p`
   color: #9ca3af;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
 export const FeatureGrid = styled.div`
@@ -113,10 +133,20 @@ export const FeatureCard = styled.div`
 
   h3 {
     color: white;
+    margin: 0 0 0.55rem 0;
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    line-height: ${({ theme }) => theme.lineHeights.title};
+    letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   }
 
   p {
     color: #c3d1f3;
+    margin: 0;
+    font-size: ${({ theme }) => theme.fontSizes.md};
+    font-weight: ${({ theme }) => theme.fontWeights.regular};
+    line-height: ${({ theme }) => theme.lineHeights.body};
+    letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   }
 `;
 
@@ -136,6 +166,10 @@ export const CTASection = styled.section`
 export const CTAHeader = styled.h2`
   color: white;
   margin-bottom: 1rem;
+  font-size: clamp(1.45rem, 2vw, 2rem);
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.heading};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
 `;
 
 /* ======================================================
@@ -150,11 +184,20 @@ export const GuaranteeBox = styled.div`
   box-shadow: 0 12px 18px rgba(0, 0, 0, 0.35);
   text-align: center;
 `;
+
 export const GuaranteeTitle = styled.h3`
   color: #10a37f;
   margin-bottom: 0.6rem;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.title};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
 `;
 
 export const GuaranteeText = styled.p`
   color: #cbd5f5;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
