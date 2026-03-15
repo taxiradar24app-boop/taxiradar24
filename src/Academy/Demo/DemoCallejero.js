@@ -148,6 +148,7 @@ export default function DemoCallejero() {
   return (
     <PageWrapper>
       <SectionHeader>
+        
         <SectionTitle>🗺️ Callejero de Palma</SectionTitle>
 
         {!hasStarted && (

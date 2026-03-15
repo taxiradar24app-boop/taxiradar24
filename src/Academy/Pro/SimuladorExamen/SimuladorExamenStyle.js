@@ -10,10 +10,20 @@ export const Page = styled.div`
   width: 100%;
   min-height: 100vh;
   background: ${({ theme }) => theme.pro.pageBg};
-  padding: ${({ theme }) => theme.spacing.lg};
+
+  padding: clamp(10px, 4vw, ${({ theme }) => theme.spacing.lg});
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 768px) {
+    padding: ${({ theme }) => theme.spacing.md};
+  }
+
+  @media (max-width: 480px) {
+    padding: ${({ theme }) => theme.spacing.sm};
+  }
 `;
 
 export const Shell = styled.div`
@@ -24,36 +34,6 @@ export const Shell = styled.div`
   border-radius: 20px;
   box-shadow: ${({ theme }) => theme.shadows.card};
   overflow: hidden;
-`;
-
-export const TopBar = styled.div`
-  padding: 16px 18px;
-  background: ${({ theme }) => theme.pro.topbar};
-  border-bottom: 1px solid ${({ theme }) => theme.pro.border};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-`;
-
-export const BrandTitle = styled.div`
-  color: ${({ theme }) => theme.pro.text};
-  font-weight: 600;
-  font-size: 1.02rem;
-  letter-spacing: -0.1px;
-`;
-
-export const TimerPill = styled.div`
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: ${({ theme }) => theme.pro.cardAlt};
-  border: 1px solid ${({ theme }) => theme.pro.border};
-  color: ${({ theme }) => theme.pro.text};
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  min-width: 110px;
-  text-align: center;
-  font-size: 0.98rem;
 `;
 
 export const Content = styled.div`
@@ -70,27 +50,36 @@ export const Content = styled.div`
 
 export const HeroTitle = styled.h1`
   margin: 0 0 8px;
-  color: ${({ theme }) => theme.pro.text};
-  font-size: 2.05rem;
-  letter-spacing: -0.35px;
-  font-weight: 700;
-  line-height: 1.15;
-
+  color: #FFC83D;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: clamp(
+    1.9rem,
+    3vw,
+    ${({ theme }) => theme.fontSizes?.hero || "2.75rem"}
+  );
+  letter-spacing: ${({ theme }) => theme.letterSpacings?.tighter || "-0.03em"};
+  font-weight: ${({ theme }) => theme.fontWeights?.heavy || 800};
+  line-height: 1.08;
   @media (max-width: 768px) {
-    font-size: 1.7rem;
+    font-size: 1.75rem;
   }
 `;
 
 export const HeroSub = styled.p`
   margin: 0 0 18px;
   color: ${({ theme }) => theme.pro.textSoft};
-  font-size: 1rem;
-  line-height: 1.65;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
+  font-weight: ${({ theme }) => theme.fontWeights?.regular || 400};
+  line-height: ${({ theme }) => theme.lineHeights?.body || 1.65};
+  letter-spacing: ${({ theme }) => theme.letterSpacings?.normal || "-0.01em"};
   max-width: 980px;
 
   @media (max-width: 768px) {
-    font-size: 0.98rem;
-    line-height: 1.6;
+    font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
+    line-height: ${({ theme }) => theme.lineHeights?.body || 1.65};
   }
 `;
 
@@ -101,7 +90,7 @@ export const Card = styled.div`
   padding: 18px;
 
   @media (max-width: 768px) {
-    padding: 16px;
+    padding: 9px;
   }
 `;
 
@@ -119,8 +108,12 @@ export const Chip = styled.button`
   background: ${({ active, theme }) =>
     active ? theme.colors.green : theme.pro.cardAlt};
   color: ${({ active, theme }) => (active ? "#0a1528" : theme.pro.text)};
-  font-weight: 700;
-  font-size: 0.98rem;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-weight: ${({ theme }) => theme.fontWeights?.bold || 700};
+  font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
+  line-height: 1.2;
+  letter-spacing: ${({ theme }) => theme.letterSpacings?.normal || "-0.01em"};
   cursor: pointer;
   transition: 0.2s ease;
 
@@ -136,8 +129,12 @@ export const CTA = styled.button`
   border: 0;
   background: ${({ theme }) => theme.colors.green};
   color: #0a1528;
-  font-weight: 800;
-  font-size: 0.98rem;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-weight: ${({ theme }) => theme.fontWeights?.bold || 700};
+  font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
+  line-height: 1.2;
+  letter-spacing: ${({ theme }) => theme.letterSpacings?.normal || "-0.01em"};
   cursor: pointer;
   transition: 0.2s ease;
 
@@ -159,8 +156,12 @@ export const Ghost = styled.button`
   border: 1px solid ${({ theme }) => theme.pro.border};
   background: ${({ theme }) => theme.pro.cardAlt};
   color: ${({ theme }) => theme.pro.text};
-  font-weight: 700;
-  font-size: 0.98rem;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};
+  font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
+  line-height: 1.2;
+  letter-spacing: ${({ theme }) => theme.letterSpacings?.normal || "-0.01em"};
   cursor: pointer;
   transition: 0.2s ease;
 
@@ -196,30 +197,39 @@ export const QMeta = styled.div`
 
 export const QIndex = styled.div`
   color: ${({ theme }) => theme.colors.yellow};
-  font-weight: 600;
-  font-size: 0.9rem;
-  letter-spacing: 0.3px;
-  opacity: 0.9;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-weight: ${({ theme }) => theme.fontWeights?.bold || 700};
+  font-size: ${({ theme }) => theme.fontSizes?.sm || "0.9375rem"};
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  opacity: 0.95;
 `;
 
 export const QMetaRight = styled.div`
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  opacity: 0.75;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: ${({ theme }) => theme.fontSizes?.sm || "0.9375rem"};
+  font-weight: ${({ theme }) => theme.fontWeights?.medium || 500};
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  opacity: 0.8;
   color: ${({ theme }) => theme.pro.textSoft};
 `;
 
 export const QText = styled.div`
   color: ${({ theme }) => theme.pro.text};
-  font-size: 1.1rem;
-  font-weight: 600;
-  line-height: 1.6;
-  letter-spacing: -0.1px;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 1.25rem;
+  font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};
+  line-height: ${({ theme }) => theme.lineHeights?.body || 1.65};
+  letter-spacing: ${({ theme }) => theme.letterSpacings?.tight || "-0.02em"};
+  max-width: 720px;
 
-  @media (max-width: 768px) {
-    font-size: 1.05rem;
-    line-height: 1.6;
+  @media (max-width: 720px) {
+    font-size: 1.12rem;
+    line-height: ${({ theme }) => theme.lineHeights?.body || 1.65};
   }
 `;
 
@@ -240,14 +250,17 @@ export const Option = styled.button`
   border: 1px solid ${({ theme }) => theme.pro.border};
   background: ${({ theme }) => theme.pro.cardAlt};
   color: ${({ theme }) => theme.pro.text};
-  font-weight: 600;
-  font-size: 0.96rem;
-  line-height: 1.6;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-weight: ${({ theme }) => theme.fontWeights?.medium || 500};
+  font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
+  line-height: ${({ theme }) => theme.lineHeights?.body || 1.65};
+  letter-spacing: ${({ theme }) => theme.letterSpacings?.normal || "-0.01em"};
   cursor: pointer;
   transition: 0.2s ease;
 
   strong {
-    font-weight: 800;
+    font-weight: ${({ theme }) => theme.fontWeights?.heavy || 800};
   }
 
   ${({ selected, theme }) =>

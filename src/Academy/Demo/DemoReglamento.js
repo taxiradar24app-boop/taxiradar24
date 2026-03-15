@@ -14,7 +14,6 @@ import articulosIndex from "@/Academy/Pro/ReglamentoOficial/data/articulos/artic
 import {
   Page,
   HeaderDemo,
-  TagDemo,
   Title,
   Subtitle,
   SubInfo,
@@ -51,10 +50,10 @@ export default function DemoReglamento() {
       ) : (
         <Page>
           <HeaderDemo>
-            <TagDemo>VERSIÓN DEMO</TagDemo>
+            
             <Title>📘Reglamento Oficial</Title>
-            <Subtitle>Todos los bloques visibles. Algunos desbloqueados para prueba.</Subtitle>
-            <SubInfo>3 bloques accesibles</SubInfo>
+              <Subtitle>Todos los bloques visibles. Algunos desbloqueados para prueba.</Subtitle>
+
           </HeaderDemo>
 
           <GridLayout>

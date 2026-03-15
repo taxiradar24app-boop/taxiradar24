@@ -58,7 +58,7 @@ export default function ReglamentoMenu() {
         <HeaderDemo>
           <TagDemo>CURSO OFICIAL</TagDemo>
 
-          <Title>Reglamento Oficial del Taxi</Title>
+          <Title>📚 Reglamento Oficial del Taxi</Title>
 
           <Subtitle>
             Aprende cada bloque del Reglamento Municipal con explicaciones claras,

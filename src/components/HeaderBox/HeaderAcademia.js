@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { resolveNavigation } from "@/navigator/navigationConfig";
 import { useAuth } from "@/navigator/sections/auth/useAuth";
 import iconoUsuario from "./../../../assets/iconoUsuario.png";
+
 import {
   HeaderWrapper,
   HeaderInner,
@@ -21,6 +22,12 @@ import {
   DemoInfoBox,
   DemoInfoTitle,
   DemoInfoText,
+  DesktopUserButton,
+  DesktopUserImage,
+  DesktopMenuWrap,
+  DesktopDropdown,
+  DesktopDropdownItem,
+  DesktopDropdownDivider,
 } from "./HeaderAcademiaStyle";
 
 export default function HeaderAcademia() {
@@ -28,7 +35,11 @@ export default function HeaderAcademia() {
   const location = useLocation();
 
   const { user, subscription, needsProOnboarding, logout } = useAuth();
+
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openDesktopMenu, setOpenDesktopMenu] = useState(false);
+
+  const desktopMenuRef = useRef(null);
 
   const { academy, showUpgradeCTA } = resolveNavigation({ user, subscription });
 
@@ -42,6 +53,7 @@ export default function HeaderAcademia() {
     if (!path) return;
     navigate(path);
     setOpenDrawer(false);
+    setOpenDesktopMenu(false);
   };
 
   const handleLogout = async () => {
@@ -49,6 +61,7 @@ export default function HeaderAcademia() {
       await logout();
     } finally {
       setOpenDrawer(false);
+      setOpenDesktopMenu(false);
     }
   };
 
@@ -77,6 +90,11 @@ export default function HeaderAcademia() {
         label: "Tarifas",
         path: `${basePath}/tarifas`,
       },
+      {
+        id: "progreso",
+        label: "Progreso",
+        path: progressPath,
+      },
     ];
 
     const merged = [...mappedAcademyItems, ...extraItems];
@@ -85,7 +103,7 @@ export default function HeaderAcademia() {
       (item, index, arr) =>
         arr.findIndex((entry) => entry.path === item.path) === index
     );
-  }, [academy, basePath]);
+  }, [academy, basePath, progressPath]);
 
   useEffect(() => {
     if (!openDrawer) return;
@@ -103,15 +121,30 @@ export default function HeaderAcademia() {
   }, [openDrawer]);
 
   useEffect(() => {
-    if (!openDrawer) return;
-
     const onKeyDown = (e) => {
-      if (e.key === "Escape") setOpenDrawer(false);
+      if (e.key === "Escape") {
+        setOpenDrawer(false);
+        setOpenDesktopMenu(false);
+      }
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [openDrawer]);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        desktopMenuRef.current &&
+        !desktopMenuRef.current.contains(event.target)
+      ) {
+        setOpenDesktopMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -135,10 +168,27 @@ export default function HeaderAcademia() {
 
           <HeaderRightDesktop>
             {user && (
-              <>
-                <NavItem onClick={() => go(profilePath)}>Perfil</NavItem>
-                <NavItem onClick={() => go(progressPath)}>Progreso</NavItem>
-              </>
+              <DesktopMenuWrap ref={desktopMenuRef}>
+                <DesktopUserButton
+                  type="button"
+                  aria-label="Abrir menú de usuario"
+                  onClick={() => setOpenDesktopMenu((prev) => !prev)}
+                >
+                  <DesktopUserImage src={iconoUsuario} alt="Usuario" />
+                </DesktopUserButton>
+
+                <DesktopDropdown open={openDesktopMenu}>
+                  <DesktopDropdownItem onClick={() => go(profilePath)}>
+                    Perfil
+                  </DesktopDropdownItem>
+
+                  <DesktopDropdownDivider />
+
+                  <DesktopDropdownItem danger onClick={handleLogout}>
+                    Cerrar sesión
+                  </DesktopDropdownItem>
+                </DesktopDropdown>
+              </DesktopMenuWrap>
             )}
           </HeaderRightDesktop>
 
@@ -148,7 +198,7 @@ export default function HeaderAcademia() {
               aria-label="Abrir menú"
               onClick={() => setOpenDrawer(true)}
             >
-               <img src={iconoUsuario} alt="Usuario" />
+              <img src={iconoUsuario} alt="Usuario" />
             </MobileButton>
           </HeaderRightMobile>
         </HeaderInner>
@@ -168,15 +218,17 @@ export default function HeaderAcademia() {
             </>
           )}
 
-          {navItems.map((item) => (
-            <NavItem
-              key={item.id}
-              active={isActive(item.path)}
-              onClick={() => go(item.path)}
-            >
-              {item.label}
-            </NavItem>
-          ))}
+          {navItems
+            .filter((item) => item.id !== "progreso")
+            .map((item) => (
+              <NavItem
+                key={item.id}
+                active={isActive(item.path)}
+                onClick={() => go(item.path)}
+              >
+                {item.label}
+              </NavItem>
+            ))}
 
           {showUpgradeCTA && !isProSub && (
             <>

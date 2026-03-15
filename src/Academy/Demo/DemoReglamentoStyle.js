@@ -28,21 +28,11 @@ export const HeaderDemo = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.lg};
 `;
 
-export const TagDemo = styled.span`
-  display: inline-block;
-  padding: 6px 12px;
-  background: ${({ theme }) => theme.colors.green}33;
-  color: ${({ theme }) => theme.colors.greenLight};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  font-weight: 700;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-`;
-
 export const Title = styled.h1`
   font-size: clamp(2rem, 3.2vw, 2.8rem);
   line-height: 1.08;
   font-weight: 900;
-  color: #f4c44e;
+  color: #FFC83D;
   margin: 0 0 22px;
 `;
 

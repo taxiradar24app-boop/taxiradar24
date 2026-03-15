@@ -2,61 +2,108 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <meta name="theme-color" content="#343541" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#081325" />
+    <meta name="application-name" content="TaxiRadar24 Academy" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="TaxiRadar24" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- 🧭 SEO básico -->
-    <title>TaxiRadar24 | Seguimiento de vuelos y taxis en Palma de Mallorca</title>
-    <meta name="description" content="Consulta llegadas de vuelos al aeropuerto de Palma y coordina tu taxi con TaxiRadar24, la herramienta más rápida y segura para taxistas y viajeros.">
-
+    <!-- SEO principal -->
+    <title>TaxiRadar24 Academy | Preparar el Permiso Municipal de Taxista en Palma</title>
+    <meta
+      name="description"
+      content="TaxiRadar24 Academy es la plataforma profesional para preparar el Permiso Municipal de Taxista en Palma de Mallorca. Estudia reglamento oficial, callejero, audios explicativos y simulador de examen con una formación clara, práctica y pensada para aprobar."
+    />
+    <meta
+      name="keywords"
+      content="TaxiRadar24 Academy, permiso municipal de taxista, examen taxi Palma, academia taxista Palma de Mallorca, reglamento taxi Palma, callejero taxi Palma, simulador examen taxi, carnet taxista Mallorca"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://taxiradar24.com/" />
 
-    <!-- Google Fonts - Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
 
-    <!-- 🖼️ Preload de la imagen crítica (LCP real y optimizada) -->
+    <!-- Imagen crítica -->
     <link
       rel="preload"
       as="image"
       href="/assets/taxiRadar24_front-optimized.webp"
       type="image/webp"
       fetchpriority="high"
-      imagesrcset="/assets/taxiRadar24_front-optimized.webp 1x, /assets/taxiRadar24_front-optimized.webp 2x"
-      imagesizes="(max-width: 480px) 115px, 150px"
     />
 
-    <!-- 🌐 Open Graph -->
-    <meta property="og:title" content="TaxiRadar24 - Rastreo de vuelos Palma de Mallorca" />
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="TaxiRadar24 Academy | Preparar el Permiso Municipal de Taxista en Palma"
+    />
     <meta
       property="og:description"
-      content="Información en tiempo real sobre llegadas al aeropuerto de Palma de Mallorca (PMI)Herramienta para taxistas."
+      content="Academia profesional para preparar el examen de taxista en Palma de Mallorca. Aprende reglamento, domina el callejero, estudia con audios y practica con simulador."
     />
-    <meta property="og:image" content="https://taxiradar24.com/assets/taxiRadar24_front-optimized.webp" />
     <meta property="og:url" content="https://taxiradar24.com/" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="TaxiRadar24 Academy" />
+    <meta property="og:locale" content="es_ES" />
+    <meta
+      property="og:image"
+      content="https://taxiradar24.com/assets/og-image.png"
+    />
+    <meta property="og:image:secure_url" content="https://taxiradar24.com/assets/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="TaxiRadar24 Academy - Academia para preparar el Permiso Municipal de Taxista en Palma de Mallorca"
+    />
 
-    <!-- 🐦 Twitter Card -->
+    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="TaxiRadar24" />
+    <meta
+      name="twitter:title"
+      content="TaxiRadar24 Academy | Preparar el Permiso Municipal de Taxista en Palma"
+    />
     <meta
       name="twitter:description"
-      content="Rastrea vuelos que llegan a Palma de Mallorca (PMI) en tiempo real. Herramienta para taxistas."
+      content="Formación profesional para futuros taxistas en Palma de Mallorca: reglamento, callejero, audios y simulador de examen."
     />
-    <meta name="twitter:image" content="https://taxiradar24.com/assets/taxiRadar24_front-optimized.webp" />
+    <meta
+      name="twitter:image"
+      content="https://taxiradar24.com/assets/twitter-card.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="TaxiRadar24 Academy - Plataforma para preparar el examen de taxista en Palma"
+    />
 
-    <!-- 📱 Manifest & Favicon -->
+    <!-- Manifest + iconos -->
     <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/assets/maskable-icon.png" color="#10a37f" />
 
-    <!-- ✅ Verificación de Google -->
-    <meta name="google-site-verification" content="D-JEqLPydf0LBvCtapusQ1qoqGXmaTzjclVEp1sxElI" />
+    <!-- Google verification -->
+    <meta
+      name="google-site-verification"
+      content="D-JEqLPydf0LBvCtapusQ1qoqGXmaTzjclVEp1sxElI"
+    />
 
-    <!-- ⚡ DNS Prefetch & Preconnect -->
+    <!-- Performance -->
     <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
     <link rel="dns-prefetch" href="https://www.gstatic.com" />
     <link rel="dns-prefetch" href="https://apis.google.com" />
@@ -66,10 +113,6 @@
     <link rel="preconnect" href="https://apis.google.com" crossorigin />
     <link rel="preconnect" href="https://www.google.com" crossorigin />
 
-    <!-- 🔒 Seguridad y rendimiento -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-    <!-- 🎯 Estilo SEO oculto -->
     <style>
       .seo-hidden {
         position: absolute;
@@ -85,27 +128,27 @@
   <body>
     <div id="root"></div>
 
-    <!-- 🧩 Contenido oculto para SEO -->
+    <!-- SEO de apoyo -->
     <h1 class="seo-hidden" aria-hidden="true">
-      TaxiRadar24: Rastreo de vuelos en Palma de Mallorca
+      TaxiRadar24 Academy - Academia para preparar el Permiso Municipal de Taxista en Palma de Mallorca
     </h1>
+
     <p class="seo-hidden" aria-hidden="true">
-      TaxiRadar24 ayuda a los taxistas de Palma de Mallorca a organizar mejor sus recogidas
-      en el aeropuerto de Son Sant Joan (PMI), ofreciendo información precisa sobre vuelos
-      que están a punto de aterrizar. Nuestro objetivo es optimizar tiempo y recursos para
-      conductores y ofrecer a los pasajeros un transporte puntual y confiable.
-    </p>
-    <p class="seo-hidden" aria-hidden="true">
-      Además, ofrecemos recursos educativos para quienes desean obtener el
-      <strong>carnet de taxista en Palma</strong>, incluyendo normativa, seguridad vial
-      y preparación para el examen oficial en Baleares.
+      TaxiRadar24 Academy es una plataforma de formación diseñada para preparar el
+      Permiso Municipal de Taxista en Palma de Mallorca. La academia incluye el
+      estudio del reglamento oficial del taxi, ejercicios prácticos de callejero,
+      audios explicativos y simulador de examen para facilitar un aprendizaje
+      claro, progresivo y profesional.
     </p>
 
-    <noscript>Debes habilitar JavaScript para usar TaxiRadar24.</noscript>
+    <p class="seo-hidden" aria-hidden="true">
+      Nuestro objetivo es ayudar a futuros taxistas a comprender la normativa,
+      dominar la ciudad, mejorar su preparación y afrontar el examen oficial con
+      más seguridad, orden y confianza.
+    </p>
 
-    <!-- ⚡ Scripts inyectados automáticamente por Webpack -->
+    <noscript>Debes habilitar JavaScript para usar TaxiRadar24 Academy.</noscript>
 
-    <!-- 🚀 Diferir carga de Google Analytics -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const s = document.createElement("script");
@@ -124,6 +167,3 @@
     </script>
   </body>
 </html>
-
-
-   

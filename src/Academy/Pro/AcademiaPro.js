@@ -3,6 +3,7 @@
 // ======================================================================
 
 import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/context/AuthContext";
 
@@ -36,7 +37,6 @@ import {
   ProgressBarTrack,
   ProgressBarFill,
 } from "./AcademiaProStyle";
-
 
 // =====================================================
 // 📦 MÓDULOS ACADEMIA
@@ -96,10 +96,9 @@ const MODULES = [
     description:
       "Aprende a aplicar tarifas, suplementos y casos especiales sin dudas.",
     path: "/academia/pro/tarifas",
-    cta: "Revisar tarifas",
+    cta: "Revisar tarifas →",
   },
 ];
-
 
 // =====================================================
 // Helpers progreso
@@ -111,7 +110,6 @@ function clamp(n, min = 0, max = 100) {
 }
 
 function computeOverall(progress) {
-
   const reglamento = clamp(progress?.reglamento?.progress ?? 0);
 
   const simulador = clamp(
@@ -156,13 +154,12 @@ function computeOverall(progress) {
   return { score, level };
 }
 
-
 // ======================================================================
 // 🎓 UI PRINCIPAL
 // ======================================================================
 
 export default function AcademiaPro() {
-
+  const navigate = useNavigate();
   const auth = useAuth();
 
   const user = auth?.user || null;
@@ -179,44 +176,35 @@ export default function AcademiaPro() {
 
   const overallProgress = overall.score;
 
+  const handleModuleNavigation = (path) => {
+    navigate(path);
+  };
+
   return (
     <PageWrapper>
-
       <InnerWrapper>
-
         {/* TOP BAR */}
-
         <TopBar>
-
           <TopBarLeft>
             <Badge>Academia TaxiRadar24 PRO</Badge>
             <TopTitle>Tu panel de estudio oficial</TopTitle>
           </TopBarLeft>
 
           <TopRight />
-
         </TopBar>
 
-
         {/* GREETING */}
-
         <GreetingSection>
-
           <GreetingText>
-
             <GreetingTitle>
               Hola, <Highlight>{displayName}</Highlight> 👋
             </GreetingTitle>
-
           </GreetingText>
 
           <StatsRow />
-
         </GreetingSection>
 
-
         {/* PROGRESS */}
-
         <ProgressSection>
           <ProgressHeader>
             <SectionTitle>Tu progreso general</SectionTitle>
@@ -233,13 +221,9 @@ export default function AcademiaPro() {
           </ProgressBarTrack>
         </ProgressSection>
 
-
         {/* MODULES */}
-
         <ModulesSection>
-
           <SectionHeader>
-
             <SectionTitle>
               Elige por dónde quieres continuar hoy
             </SectionTitle>
@@ -247,49 +231,30 @@ export default function AcademiaPro() {
             <SectionSubtitle>
               Reglamento, simuladores, callejero o tarifas.
             </SectionSubtitle>
-
           </SectionHeader>
 
-
           <ModulesGrid>
-
             {MODULES.map((m) => (
-
               <ModuleCard
                 key={m.id}
-                onClick={() => (window.location.href = m.path)}
+                type="button"
+                onClick={() => handleModuleNavigation(m.path)}
+                aria-label={`Abrir ${m.title}`}
               >
+                <ModuleBadge>{m.badge}</ModuleBadge>
 
-                <ModuleBadge>
-                  {m.badge}
-                </ModuleBadge>
+                <ModuleTitle>{m.title}</ModuleTitle>
 
-                <ModuleTitle>
-                  {m.title}
-                </ModuleTitle>
-
-                <ModuleDescription>
-                  {m.description}
-                </ModuleDescription>
+                <ModuleDescription>{m.description}</ModuleDescription>
 
                 <ModuleFooter>
-
-                  <ModuleCTA>
-                    {m.cta}
-                  </ModuleCTA>
-
+                  <ModuleCTA>{m.cta}</ModuleCTA>
                 </ModuleFooter>
-
               </ModuleCard>
-
             ))}
-
           </ModulesGrid>
-
         </ModulesSection>
-
       </InnerWrapper>
-
     </PageWrapper>
   );
 }

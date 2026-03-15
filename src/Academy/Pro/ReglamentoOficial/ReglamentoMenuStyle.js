@@ -42,7 +42,7 @@ export const TagDemo = styled.span`
 export const Title = styled.h1`
   margin-top: 0.8rem;
   font-size: ${({ theme }) => theme.fontSizes.hero};
-  color: ${({ theme }) => theme.pro.text};
+  color: ${({ theme }) => theme.colors.yellow};
   font-weight: 800;
 
   @media (max-width: 768px) {
