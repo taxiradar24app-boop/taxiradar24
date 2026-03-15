@@ -345,7 +345,7 @@ export const ModuleCard = styled.button`
   border-radius: 18px;
   padding: 16px 16px 14px;
   cursor: pointer;
-  border: 1px solid rgba(30, 64, 175, 0.5);
+  border: 1.5px solid rgba(30, 64, 175, 0.5);
   box-shadow: 0 18px 45px rgba(15, 23, 42, 0.85);
   display: flex;
   flex-direction: column;
@@ -372,8 +372,9 @@ export const ModuleCard = styled.button`
 export const ModuleBadge = styled.span`
   display: inline-flex;
   align-items: center;
-  font-size: 0.75rem;
-  padding: 4px 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 10px;
   border-radius: 999px;
   background: rgba(15, 23, 42, 0.9);
   border: 1px solid rgba(148, 163, 184, 0.45);
@@ -393,10 +394,10 @@ export const ModuleDescription = styled.p`
 `;
 
 export const ModuleFooter = styled.div`
-  margin-top: 6px;
+  margin-top: 10px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 
 export const ModuleCTA = styled.span`

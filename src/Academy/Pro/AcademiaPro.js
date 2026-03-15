@@ -50,7 +50,7 @@ const MODULES = [
     description:
       "Lecturas guiadas, resúmenes aplicados y ejemplos reales para cada artículo.",
     path: "/academia/pro/reglamento",
-    cta: "Ir al Reglamento",
+    cta: "Ir al Reglamento →",
   },
   {
     id: "audios",
@@ -59,7 +59,7 @@ const MODULES = [
     description:
       "Escucha el Reglamento mientras conduces o descansas. Ideal para memorizar.",
     path: "/academia/pro/audios",
-    cta: "Escuchar audios",
+    cta: "Escuchar audios →",
   },
   {
     id: "simulador",
@@ -68,7 +68,7 @@ const MODULES = [
     description:
       "Simulaciones reales de examen con cronómetro y corrección inmediata.",
     path: "/academia/pro/simulador",
-    cta: "Entrar al simulador",
+    cta: "Entrar al simulador →",
   },
   {
     id: "callejero",
@@ -77,7 +77,7 @@ const MODULES = [
     description:
       "Rutas, zonas y ejercicios interactivos para dominar el callejero de Palma.",
     path: "/academia/pro/callejero",
-    cta: "Practicar callejero",
+    cta: "Practicar callejero →",
   },
   {
     id: "vias-principales",
