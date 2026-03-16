@@ -26,8 +26,8 @@ export const HeaderInner = styled.div`
   gap: 16px;
 
   @media (max-width: 780px) {
-    padding: 12px 18px;
-    min-height: 64px;
+    padding: 8px 18px;
+    min-height: 56px;
   }
 `;
 
@@ -282,8 +282,8 @@ export const MobileDrawer = styled.div`
   background: #0f1d36;
   padding-top: ${({ $withSafeTop }) =>
     $withSafeTop
-      ? "calc(env(safe-area-inset-top, 0px) + 80px)"
-      : "80px"};
+      ? "calc(env(safe-area-inset-top, 0px) + 68px)"
+      : "68px"};
   z-index: 99999;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;

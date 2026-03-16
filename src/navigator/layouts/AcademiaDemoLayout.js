@@ -15,7 +15,7 @@ const DemoBanner = styled.div`
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
   /* SAFE AREA SOLO AQUÍ, porque este banner es el elemento más alto */
-  padding-top: calc(env(safe-area-inset-top, 0px) + 14px);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
 `;
 
 const LayoutWrap = styled.div`
