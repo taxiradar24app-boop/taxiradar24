@@ -6,11 +6,15 @@ const Main = styled.main`
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100dvh;
 
-  /* SAFE AREA PARA IPHONE / PWA */
-  padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
+  /* El top safe-area lo debe gestionar el header correspondiente */
+  padding-top: 0;
+
+  /* Safe areas útiles para el resto de la app */
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
 `;
 
 export default function AppLayout() {

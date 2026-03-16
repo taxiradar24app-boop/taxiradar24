@@ -6,24 +6,28 @@ export const HeaderWrapper = styled.header`
   width: 100%;
   background: rgba(10, 21, 40, 0.92);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 14px 0;
   position: sticky;
   top: 0;
   z-index: 5000;
   backdrop-filter: blur(12px);
+
+  padding-top: ${({ $withSafeTop }) =>
+    $withSafeTop ? "env(safe-area-inset-top, 0px)" : "0px"};
 `;
 
 export const HeaderInner = styled.div`
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 14px 24px;
+  min-height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 
   @media (max-width: 780px) {
-    padding: 0 18px;
+    padding: 12px 18px;
+    min-height: 64px;
   }
 `;
 
@@ -274,11 +278,15 @@ export const MobileDrawer = styled.div`
   top: 0;
   right: 0;
   width: min(85vw, 340px);
-  height: 100vh;
+  height: 100dvh;
   background: #0f1d36;
-  padding-top: 80px;
+  padding-top: ${({ $withSafeTop }) =>
+    $withSafeTop
+      ? "calc(env(safe-area-inset-top, 0px) + 80px)"
+      : "80px"};
   z-index: 99999;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   transform: translateX(${({ open }) => (open ? "0%" : "100%")});
   transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
 `;
@@ -292,7 +300,10 @@ export const DrawerContent = styled.div`
 
 export const DrawerClose = styled.div`
   position: absolute;
-  top: 20px;
+  top: ${({ $withSafeTop }) =>
+    $withSafeTop
+      ? "calc(env(safe-area-inset-top, 0px) + 20px)"
+      : "20px"};
   right: 20px;
   font-size: 1.9rem;
   line-height: 1;

@@ -30,7 +30,7 @@ import {
   DesktopDropdownDivider,
 } from "./HeaderAcademiaStyle";
 
-export default function HeaderAcademia() {
+export default function HeaderAcademia({ withSafeTop = true }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -148,7 +148,7 @@ export default function HeaderAcademia() {
 
   return (
     <>
-      <HeaderWrapper>
+      <HeaderWrapper $withSafeTop={withSafeTop}>
         <HeaderInner>
           <Logo onClick={() => go(isProSub ? "/academia/pro" : "/academia/demo")}>
             {isProSub ? "PRO" : "DEMO"}
@@ -206,8 +206,13 @@ export default function HeaderAcademia() {
 
       <DrawerOverlay open={openDrawer} onClick={() => setOpenDrawer(false)} />
 
-      <MobileDrawer open={openDrawer}>
-        <DrawerClose onClick={() => setOpenDrawer(false)}>✕</DrawerClose>
+      <MobileDrawer open={openDrawer} $withSafeTop={withSafeTop}>
+        <DrawerClose
+          $withSafeTop={withSafeTop}
+          onClick={() => setOpenDrawer(false)}
+        >
+          ✕
+        </DrawerClose>
 
         <DrawerContent>
           {user && (

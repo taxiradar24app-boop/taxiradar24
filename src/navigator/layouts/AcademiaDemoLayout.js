@@ -13,6 +13,9 @@ const DemoBanner = styled.div`
   letter-spacing: 0.02em;
   padding: 14px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* SAFE AREA SOLO AQUÍ, porque este banner es el elemento más alto */
+  padding-top: calc(env(safe-area-inset-top, 0px) + 14px);
 `;
 
 const LayoutWrap = styled.div`
@@ -32,7 +35,6 @@ export default function AcademiaDemoLayout() {
 
   if (loading || subscriptionLoading) return null;
 
-  // ✅ Usuario PRO no puede permanecer en DEMO
   if (isPro) {
     return <Navigate to="/academia/pro" replace state={{ from: location }} />;
   }
@@ -40,7 +42,7 @@ export default function AcademiaDemoLayout() {
   return (
     <LayoutWrap>
       <DemoBanner>ESTÁS EN LA VERSIÓN DEMO</DemoBanner>
-      <HeaderAcademia />
+      <HeaderAcademia withSafeTop={false} />
       <Main>
         <Outlet />
       </Main>

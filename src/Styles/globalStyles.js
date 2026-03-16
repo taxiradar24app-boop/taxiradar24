@@ -5,7 +5,8 @@ import { createGlobalStyle } from "styled-components";
 ===========================================================
 🌐 GLOBAL STYLES — TaxiRadar24 (Versión PRO)
 Limpio, optimizado, 100% Theme-driven
-Incluye bloqueo anti-descarga de audio y soporte SEO
+Incluye bloqueo anti-descarga de audio, soporte SEO
+y mejoras para iPhone / PWA / Safe Areas
 ===========================================================
 */
 
@@ -18,39 +19,78 @@ const GlobalStyles = createGlobalStyle`
     --body-bg: ${({ theme }) => theme.colors?.body || "#081325"};
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
-    
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
   }
 
   /* =============================
      🔧 RESET + BASE HTML
   ============================== */
-  html, body, #root {
+  html,
+  body,
+  #root {
     margin: 0;
     padding: 0;
-    height: 100%;
     width: 100%;
+    height: 100%;
+    min-height: 100dvh;
 
     background-color: var(--body-bg);
     overflow-x: hidden;
     scroll-behavior: smooth;
   }
 
-body {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  font-weight: ${({ theme }) => theme.fontWeights.regular};
-  line-height: ${({ theme }) => theme.lineHeights.body};
-  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
-  color: ${({ theme }) => theme.pro?.text || theme.text};
-  background-color: ${({ theme }) => theme.pageBg || "#081325"};
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    background-color: var(--body-bg);
+  }
 
+  body {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: ${({ theme }) => theme.fontSizes.md};
+    font-weight: ${({ theme }) => theme.fontWeights.regular};
+    line-height: ${({ theme }) => theme.lineHeights.body};
+    letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+    color: ${({ theme }) => theme.pro?.text || theme.text};
+    background-color: ${({ theme }) => theme.pageBg || "#081325"};
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+
+    /* =============================
+       📱 SAFE AREAS GLOBALES
+    ============================== */
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+  }
 
   *, *::before, *::after {
     box-sizing: border-box;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
   }
 
   /* =============================
@@ -115,10 +155,6 @@ body {
     -webkit-user-select: none;
     user-select: none;
     -webkit-touch-callout: none;
-  }
-
-  /* Bloquear menú contextual */
-  audio {
     pointer-events: auto;
   }
 
