@@ -6,6 +6,7 @@ import styled from "styled-components";
 ====================================================== */
 export const Container = styled.div`
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -13,7 +14,7 @@ export const Container = styled.div`
   justify-content: flex-start;
   background:
     linear-gradient(rgba(10, 15, 30, 0.28), rgba(10, 15, 30, 0.28)),
-    url(${props => props.bg}) no-repeat center center;
+    url(${(props) => props.bg}) no-repeat center center;
   background-size: cover;
   margin: 0;
   padding: 0 0 3rem 0;
@@ -37,14 +38,26 @@ export const HeroSection = styled.section`
 
   @media (max-width: 960px) {
     grid-template-columns: 1fr;
-    padding: 1.5rem 1.25rem 0.5rem;
+    padding:
+      calc(env(safe-area-inset-top, 0px) + 1.15rem)
+      1.25rem
+      0.5rem;
     gap: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    padding:
+      calc(env(safe-area-inset-top, 0px) + 1rem)
+      1rem
+      0.4rem;
+    gap: 1.15rem;
   }
 `;
 
 export const HeroContent = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 0;
 `;
 
 export const HeroTag = styled.div`
@@ -52,6 +65,7 @@ export const HeroTag = styled.div`
   align-items: center;
   gap: 0.35rem;
   width: fit-content;
+  max-width: 100%;
   padding: 0.3rem 0.9rem;
   border-radius: 999px;
   font-size: ${({ theme }) => theme.fontSizes.xs};
@@ -63,6 +77,16 @@ export const HeroTag = styled.div`
   background: rgba(15, 23, 42, 0.8);
   border: 1px solid rgba(148, 163, 184, 0.55);
   margin-bottom: 0.95rem;
+
+  @media (max-width: 640px) {
+    padding: 0.42rem 0.8rem;
+    font-size: 0.74rem;
+    line-height: 1.25;
+    letter-spacing: 0.06em;
+    white-space: normal;
+    word-break: break-word;
+    max-width: min(100%, 92vw);
+  }
 `;
 
 export const HeroTitle = styled.h1`
@@ -71,8 +95,15 @@ export const HeroTitle = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeights.heavy};
   letter-spacing: ${({ theme }) => theme.letterSpacings.tighter};
   color: ${({ theme }) => theme.colors.yellow};
-  margin-bottom: 0.3rem;
+  margin: 0 0 0.3rem 0;
   max-width: 30ch;
+
+  @media (max-width: 640px) {
+    font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 1.05;
+    max-width: 11ch;
+    margin-bottom: 0.4rem;
+  }
 `;
 
 export const SubTitle = styled.span`
@@ -84,6 +115,13 @@ export const SubTitle = styled.span`
   color: ${({ theme }) => theme.colors.grey};
   max-width: 24ch;
   margin-top: 0.15rem;
+
+  @media (max-width: 640px) {
+    font-size: clamp(1.05rem, 5vw, 1.45rem);
+    line-height: 1.12;
+    max-width: 13ch;
+    margin-top: 0.2rem;
+  }
 `;
 
 export const Title2 = styled.h2`
@@ -103,7 +141,8 @@ export const Title2 = styled.h2`
   @media (max-width: 480px) {
     margin: 0.8rem 0 0.2rem 0;
     font-size: clamp(1.5rem, 5.8vw, 2.15rem);
-    max-width: 18ch;
+    max-width: 11ch;
+    line-height: 1.1;
   }
 `;
 
@@ -114,12 +153,19 @@ export const HeroSubtitle = styled.p`
   letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: ${({ theme }) => theme.colors.grey};
   max-width: 34rem;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem 0;
 
   @media (max-width: 768px) {
     font-size: ${({ theme }) => theme.fontSizes.md};
     line-height: 1.6;
     max-width: 30rem;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1rem;
+    line-height: 1.58;
+    max-width: 100%;
+    margin-bottom: 0.35rem;
   }
 `;
 
@@ -128,6 +174,17 @@ export const HeroCTA = styled.div`
   flex-wrap: wrap;
   gap: 0.9rem;
   margin-bottom: 1.55rem;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    gap: 0.8rem;
+    margin-bottom: 1.35rem;
+
+    & > * {
+      width: 100%;
+      justify-content: center;
+    }
+  }
 `;
 
 /* ======================================================
@@ -137,10 +194,21 @@ export const HeroStatsRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
+
+  @media (max-width: 640px) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.25rem;
+    width: 100%;
+  }
 `;
 
 export const HeroStat = styled.div`
   min-width: 7rem;
+
+  @media (max-width: 640px) {
+    min-width: 0;
+  }
 `;
 
 export const HeroStatNumber = styled.div`
@@ -159,6 +227,10 @@ export const HeroStatLabel = styled.div`
   letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: ${({ theme }) => theme.colors.grey};
   max-width: 9rem;
+
+  @media (max-width: 640px) {
+    max-width: 100%;
+  }
 `;
 
 /* ======================================================
@@ -176,11 +248,17 @@ export const HeroSideCard = styled.aside`
   @media (max-width: 960px) {
     max-width: 100%;
   }
+
+  @media (max-width: 640px) {
+    padding: 1.15rem 1rem 1.2rem;
+    border-radius: 1.25rem;
+  }
 `;
 
 export const HeroSideBadge = styled.div`
   display: inline-flex;
   width: fit-content;
+  max-width: 100%;
   padding: 0.28rem 0.8rem;
   border-radius: 999px;
   font-size: ${({ theme }) => theme.fontSizes.xs};
@@ -192,6 +270,12 @@ export const HeroSideBadge = styled.div`
   color: #bbf7d0;
   border: 1px solid rgba(34, 197, 94, 0.5);
   margin-bottom: 0.9rem;
+
+  @media (max-width: 640px) {
+    white-space: normal;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+  }
 `;
 
 export const HeroSideTitle = styled.h2`
@@ -200,7 +284,12 @@ export const HeroSideTitle = styled.h2`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   color: #e5e7eb;
-  margin-bottom: 0.65rem;
+  margin: 0 0 0.65rem 0;
+
+  @media (max-width: 640px) {
+    font-size: clamp(1.8rem, 7vw, 2.4rem);
+    line-height: 1.12;
+  }
 `;
 
 export const HeroSideText = styled.p`
@@ -209,7 +298,11 @@ export const HeroSideText = styled.p`
   line-height: ${({ theme }) => theme.lineHeights.body};
   letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: #d1fae5;
-  margin-bottom: 0.75rem;
+  margin: 0 0 0.75rem 0;
+
+  @media (max-width: 640px) {
+    line-height: 1.6;
+  }
 `;
 
 export const HeroSideList = styled.ul`
@@ -246,6 +339,10 @@ export const Section = styled.section`
   @media (max-width: 960px) {
     padding: 2.2rem 1.25rem 0;
   }
+
+  @media (max-width: 640px) {
+    padding: 2rem 1rem 0;
+  }
 `;
 
 export const SectionHeader = styled.div`
@@ -268,7 +365,7 @@ export const SectionTitle = styled.h2`
   line-height: 1.18;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
-  margin-bottom: 0.65rem;
+  margin: 0 0 0.65rem 0;
   color: #f9fafb;
 `;
 
@@ -535,6 +632,10 @@ export const FinalCTASection = styled.section`
   width: 100%;
   max-width: 1200px;
   padding: 3rem 1.5rem 0;
+
+  @media (max-width: 640px) {
+    padding: 2.4rem 1rem 0;
+  }
 `;
 
 export const FinalCTATitle = styled.h2`
