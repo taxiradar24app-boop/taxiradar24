@@ -4,13 +4,12 @@ import { getAuth } from "@/services/firebaseConfig";
 import useCallejeroPalma from "./useCallejeroPalma";
 import saveCallejeroProgress from "./saveCallejeroProgress";
 
-const auth = getAuth();
-
 import {
   PageWrapper,
   SectionHeader,
   SectionTitle,
   Timer,
+  StartButton,
   MainGrid,
   ExamColumn,
   CalleCard,
@@ -32,11 +31,13 @@ export default function CallejeroPalmaScreen() {
   const [resultado, setResultado] = useState(null);
   const [tiempoRestante, setTiempoRestante] = useState(600);
   const [finalizado, setFinalizado] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   const auth = getAuth();
 
   useEffect(() => {
-    if (resultado || loading || error) return;
+    if (!hasStarted) return;
+    if (resultado || loading || error || finalizado) return;
 
     const timer = setInterval(() => {
       setTiempoRestante((prev) => {
@@ -50,10 +51,15 @@ export default function CallejeroPalmaScreen() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [resultado, loading, error]);
+  }, [hasStarted, resultado, loading, error, finalizado]);
 
   const minutos = Math.floor(tiempoRestante / 60);
   const segundos = String(tiempoRestante % 60).padStart(2, "0");
+
+  const handleStart = () => {
+    if (loading || error || resultado || finalizado) return;
+    setHasStarted(true);
+  };
 
   const handleChange = (id, field, value) => {
     setRespuestas((prev) => ({
@@ -62,33 +68,32 @@ export default function CallejeroPalmaScreen() {
     }));
   };
 
-  // ✅ Corrección OFICIAL (plano + letra + número)
   const handleFinalizar = async () => {
     if (finalizado) return;
 
-      const resultados = calles.map((c) => {
-        const r = respuestas[c.id] || {};
+    const resultados = calles.map((c) => {
+      const r = respuestas[c.id] || {};
 
-        const letraUser = (r.plano_letra || "").trim().toUpperCase();
-        const letraOk = String(c.plano_letra || "").trim().toUpperCase();
+      const letraUser = (r.plano_letra || "").trim().toUpperCase();
+      const letraOk = String(c.plano_letra || "").trim().toUpperCase();
 
-        const numUser = Number(String(r.plano_numero || "").trim());
-        const numOk = Number(c.plano_numero);
+      const numUser = Number(String(r.plano_numero || "").trim());
+      const numOk = Number(c.plano_numero);
 
-        const planoUser = Number(String(r.plano_num || "").trim());
-        const planoOk = Number(c.plano_num);
+      const planoUser = Number(String(r.plano_num || "").trim());
+      const planoOk = Number(c.plano_num);
 
-        const correcto =
-          planoUser === planoOk &&
-          letraUser === letraOk &&
-          numUser === numOk;
+      const correcto =
+        planoUser === planoOk &&
+        letraUser === letraOk &&
+        numUser === numOk;
 
-        return {
-          ...c,
-          user: r,
-          correcto,
-        };
-      });
+      return {
+        ...c,
+        user: r,
+        correcto,
+      };
+    });
 
     const aciertos = resultados.filter((r) => r.correcto).length;
     const nota = ((aciertos / calles.length) * 10).toFixed(1);
@@ -96,10 +101,8 @@ export default function CallejeroPalmaScreen() {
     setResultado({ lista: resultados, aciertos, nota });
     setFinalizado(true);
 
-    // 🔥 GUARDAR PROGRESO EN FIRESTORE (progress/{uid}.callejero)
     const user = auth.currentUser;
 
-    // ✅ Log para verificar si estás logueado realmente
     console.log("[CALLEJERO] auth.currentUser =>", user?.uid);
 
     if (user) {
@@ -132,6 +135,15 @@ export default function CallejeroPalmaScreen() {
     }
   };
 
+  const handleRetry = async () => {
+    setResultado(null);
+    setFinalizado(false);
+    setHasStarted(false);
+    setTiempoRestante(600);
+    setRespuestas({});
+    await refetch();
+  };
+
   if (loading) return <p>Cargando calles...</p>;
   if (error) return <p>Error al cargar el ejercicio.</p>;
 
@@ -139,9 +151,20 @@ export default function CallejeroPalmaScreen() {
     <PageWrapper>
       <SectionHeader>
         <SectionTitle>🗺️ Ejercicio: Callejero de Palma</SectionTitle>
-        <Timer>
-          ⏳ Tiempo restante: {minutos}:{segundos}
-        </Timer>
+
+        {!resultado && (
+          <>
+            <Timer>
+              ⏳ Tiempo restante: {minutos}:{segundos}
+            </Timer>
+
+            {!hasStarted && (
+              <StartButton type="button" onClick={handleStart}>
+                Iniciar tiempo
+              </StartButton>
+            )}
+          </>
+        )}
       </SectionHeader>
 
       <MainGrid>
@@ -160,30 +183,38 @@ export default function CallejeroPalmaScreen() {
                   </CalleTitle>
 
                   <InputsRow>
-                   <CalleInput
-                        type="number"
-                        placeholder="Plano"
-                        value={respuestas[c.id]?.plano_num ?? ""}
-                        onChange={(e) => handleChange(c.id, "plano_num", e.target.value)}
-                      />
+                    <CalleInput
+                      type="number"
+                      placeholder="Plano"
+                      value={respuestas[c.id]?.plano_num ?? ""}
+                      onChange={(e) =>
+                        handleChange(c.id, "plano_num", e.target.value)
+                      }
+                    />
                     <CalleInput
                       type="text"
                       placeholder="Letra"
                       maxLength={1}
                       value={respuestas[c.id]?.plano_letra ?? ""}
-                      onChange={(e) => handleChange(c.id, "plano_letra", e.target.value)}
+                      onChange={(e) =>
+                        handleChange(c.id, "plano_letra", e.target.value)
+                      }
                     />
                     <CalleInput
                       type="number"
                       placeholder="Nº"
                       value={respuestas[c.id]?.plano_numero ?? ""}
-                      onChange={(e) => handleChange(c.id, "plano_numero", e.target.value)}
+                      onChange={(e) =>
+                        handleChange(c.id, "plano_numero", e.target.value)
+                      }
                     />
                   </InputsRow>
                 </CalleCard>
               ))}
 
-              <SubmitButton type="submit">Enviar respuestas</SubmitButton>
+              <SubmitButton type="submit">
+                {hasStarted ? "Enviar respuestas" : "Enviar igualmente"}
+              </SubmitButton>
             </form>
           ) : (
             <ResultBox>
@@ -193,7 +224,6 @@ export default function CallejeroPalmaScreen() {
               </p>
               <p>🏆 Nota final: {resultado.nota} / 10</p>
 
-              {/* ✅ DETALLE como antes: qué falló y qué acertó */}
               {resultado.lista.map((r) => (
                 <p key={r.id}>
                   {r.tipo} {r.nombre} — {r.correcto ? "✅ Correcto" : "❌ Error"}
@@ -207,15 +237,7 @@ export default function CallejeroPalmaScreen() {
                 </p>
               ))}
 
-              <RetryButton
-                onClick={async () => {
-                  setResultado(null);
-                  setFinalizado(false);
-                  setTiempoRestante(600);
-                  setRespuestas({});
-                  await refetch();
-                }}
-              >
+              <RetryButton onClick={handleRetry}>
                 🔁 Reintentar
               </RetryButton>
             </ResultBox>

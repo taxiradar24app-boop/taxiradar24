@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import useDemoCallejero from "@/hooks/UseDemoCallejero";
 import DemoUnlockBar from "./DemoUnlockBar";
+
 import {
   PageWrapper,
   SectionHeader,
   SectionTitle,
   AttemptsInfo,
   Timer,
+  StartButton,
   IntroCard,
   IntroTitle,
   IntroLead,
@@ -61,7 +63,10 @@ export default function DemoCallejero() {
 
   const bloqueado = isLocked;
 
-  const minutos = useMemo(() => Math.floor(tiempoRestante / 60), [tiempoRestante]);
+  const minutos = useMemo(
+    () => Math.floor(tiempoRestante / 60),
+    [tiempoRestante]
+  );
 
   const segundos = useMemo(
     () => String(tiempoRestante % 60).padStart(2, "0"),
@@ -139,6 +144,7 @@ export default function DemoCallejero() {
     setResultado(null);
     setTiempoRestante(600);
     setRespuestas({});
+    setHasStarted(false);
     await refetch();
   };
 
@@ -148,117 +154,23 @@ export default function DemoCallejero() {
   return (
     <PageWrapper>
       <SectionHeader>
-        
         <SectionTitle>🗺️ Callejero de Palma</SectionTitle>
 
-        {!hasStarted && (
+        <AttemptsInfo>
+          Intentos disponibles: <strong>{loadingDemo ? "..." : remainingAttempts}</strong> de{" "}
+          {maxAttempts}
+        </AttemptsInfo>
+
+        {!bloqueado && !resultado && (
           <>
-            <IntroCard>
+            <Timer>
+              ⏳ Tiempo restante: {minutos}:{segundos}
+            </Timer>
 
-              <IntroTitle>Ejercicio oficial · 3 intentos disponibles</IntroTitle>
-
-              <IntroLead>
-                Este ejercicio reproduce el formato real del examen municipal de
-                callejero de Palma.
-              </IntroLead>
-
-              <IntroGrid>
-                <IntroColumn>
-                  <IntroBlock>
-                    <IntroBlockTitle>Antes de comenzar</IntroBlockTitle>
-
-                    <IntroText>
-                      Antes de empezar te pediremos iniciar sesión o crear una
-                      cuenta gratuita.
-                    </IntroText>
-
-                    <IntroText>
-                      Esto nos permite guardar tus intentos, mostrar tu progreso
-                      y ofrecerte una experiencia de aprendizaje más completa.
-                    </IntroText>
-
-                    <IntroHint>
-                      💡 Ten tu callejero oficial de Palma a mano antes de pulsar
-                      el botón. El intento empezará cuando comiences el ejercicio.
-                    </IntroHint>
-                  </IntroBlock>
-                </IntroColumn>
-
-                <IntroColumn>
-                  <IntroBlock>
-                    <IntroBlockTitle>
-                      📍 Formato de respuesta obligatorio
-                    </IntroBlockTitle>
-
-                    <IntroText>
-                      Para que una respuesta sea considerada correcta, debes
-                      indicar los tres datos completos del callejero oficial:
-                    </IntroText>
-
-                    <IntroList>
-                      <IntroListItem>Plano (número)</IntroListItem>
-                      <IntroListItem>Letra de la cuadrícula</IntroListItem>
-                      <IntroListItem>Número de la cuadrícula</IntroListItem>
-                    </IntroList>
-
-                    <IntroExamples>
-                      <IntroExampleTitle>Ejemplos válidos (1 punto)</IntroExampleTitle>
-                      <IntroText>
-                        Carrer Nuredduna nº 3 → <strong>25 – D1</strong>
-                        <br />
-                        Carrer Nuredduna nº 3 → <strong>P25 – D1</strong>
-                      </IntroText>
-                    </IntroExamples>
-
-                    <IntroExamples>
-                      <IntroExampleTitle>
-                        Ejemplos incorrectos (0 puntos)
-                      </IntroExampleTitle>
-                      <IntroText>
-                        • Solo cuadrícula (<em>D1</em>)
-                        <br />
-                        • Solo plano (<em>25</em>)
-                        <br />
-                        • Datos incompletos o incorrectos
-                      </IntroText>
-                    </IntroExamples>
-
-                    <IntroHint>
-                      ⚠️ Cualquier dato incompleto o erróneo supone 0 puntos,
-                      aunque parte de la respuesta sea correcta.
-                    </IntroHint>
-                  </IntroBlock>
-                </IntroColumn>
-              </IntroGrid>
-
-              <IntroFooter>
-                <DemoUnlockBar
-                  attemptsLeft={remainingAttempts}
-                  onStart={handleStartDemo}
-                />
-              </IntroFooter>
-            </IntroCard>
-
-            <AttemptsInfo>
-              Intentos disponibles:{" "}
-              <strong>{loadingDemo ? "..." : remainingAttempts}</strong> de{" "}
-              {maxAttempts}
-            </AttemptsInfo>
-          </>
-        )}
-
-        {hasStarted && (
-          <>
-            <AttemptsInfo>
-              Intentos disponibles:{" "}
-              <strong>{loadingDemo ? "..." : remainingAttempts}</strong> de{" "}
-              {maxAttempts}
-            </AttemptsInfo>
-
-            {!bloqueado && !resultado && (
-              <Timer>
-                ⏳ Tiempo restante: {minutos}:{segundos}
-              </Timer>
+            {!hasStarted && (
+              <StartButton type="button" onClick={handleStartDemo}>
+                Iniciar tiempo
+              </StartButton>
             )}
           </>
         )}
@@ -270,9 +182,88 @@ export default function DemoCallejero() {
           <br />
           Accede a <strong>Academia PRO</strong> para entrenar sin límites.
         </LockBox>
-      ) : !hasStarted ? null : (
-          <MainGrid>
-            
+      ) : !hasStarted ? (
+        <IntroCard>
+          <IntroTitle>Ejercicio oficial · 3 intentos disponibles</IntroTitle>
+
+          <IntroLead>
+            Este ejercicio reproduce el formato real del examen municipal de
+            callejero de Palma.
+          </IntroLead>
+
+          <IntroGrid>
+            <IntroColumn>
+              <IntroBlock>
+                <IntroBlockTitle>Antes de comenzar</IntroBlockTitle>
+
+                <IntroText>
+                  Antes de empezar te pediremos iniciar sesión o crear una cuenta
+                  gratuita.
+                </IntroText>
+
+                <IntroText>
+                  Esto nos permite guardar tus intentos, mostrar tu progreso y
+                  ofrecerte una experiencia de aprendizaje más completa.
+                </IntroText>
+
+                <IntroHint>
+                  💡 Ten tu callejero oficial de Palma a mano antes de pulsar el
+                  botón. El intento empezará cuando comiences el ejercicio.
+                </IntroHint>
+              </IntroBlock>
+            </IntroColumn>
+
+            <IntroColumn>
+              <IntroBlock>
+                <IntroBlockTitle>📍 Formato de respuesta obligatorio</IntroBlockTitle>
+
+                <IntroText>
+                  Para que una respuesta sea considerada correcta, debes indicar
+                  los tres datos completos del callejero oficial:
+                </IntroText>
+
+                <IntroList>
+                  <IntroListItem>Plano (número)</IntroListItem>
+                  <IntroListItem>Letra de la cuadrícula</IntroListItem>
+                  <IntroListItem>Número de la cuadrícula</IntroListItem>
+                </IntroList>
+
+                <IntroExamples>
+                  <IntroExampleTitle>Ejemplos válidos (1 punto)</IntroExampleTitle>
+                  <IntroText>
+                    Carrer Nuredduna nº 3 → <strong>25 – D1</strong>
+                    <br />
+                    Carrer Nuredduna nº 3 → <strong>P25 – D1</strong>
+                  </IntroText>
+                </IntroExamples>
+
+                <IntroExamples>
+                  <IntroExampleTitle>Ejemplos incorrectos (0 puntos)</IntroExampleTitle>
+                  <IntroText>
+                    • Solo cuadrícula (<em>D1</em>)
+                    <br />
+                    • Solo plano (<em>25</em>)
+                    <br />
+                    • Datos incompletos o incorrectos
+                  </IntroText>
+                </IntroExamples>
+
+                <IntroHint>
+                  ⚠️ Cualquier dato incompleto o erróneo supone 0 puntos, aunque
+                  parte de la respuesta sea correcta.
+                </IntroHint>
+              </IntroBlock>
+            </IntroColumn>
+          </IntroGrid>
+
+      <IntroFooter>
+  <StartButton type="button" onClick={handleStartDemo}>
+    Iniciar tiempo
+  </StartButton>
+</IntroFooter>
+        </IntroCard>
+      ) : (
+        <MainGrid>
           <ExamColumn>
             {!resultado ? (
               <form

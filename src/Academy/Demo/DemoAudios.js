@@ -15,7 +15,7 @@ import {
   CTABox,
   CTAText,
   CTAButton,
-} from "../Pro/AudioLectura/AudioStyle";
+} from "./../Pro/AudioLectura/AudioStyle";
 
 import { AUDIO_LIST, buildDemoAudioUrl } from "../share/audioData";
 

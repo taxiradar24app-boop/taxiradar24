@@ -1,18 +1,16 @@
 // src/Academy/Pro/ReglamentoOficial/ReglamentoArticulo.js
 // ======================================================================
-// 📘 ReglamentoArticulo.js — ENTERPRISE FINAL (PRODUCCIÓN)
-// ✅ Separa guardado a saveReglamentoArticulo.js
-// ✅ Respeta contenido, UI y lógica existente
-// ✅ Elimina el bloque duplicado antiguo de Firestore (evita doble escritura)
+// 📘 ReglamentoArticulo.js — ENTERPRISE FINAL
+// ✅ Sin botón Sol/Luna
+// ✅ Sidebar arriba en móvil (controlado por estilos)
+// ✅ Respeta guardado de progreso y lógica actual
 // ======================================================================
 
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import SidebarProAcademia from "./../../componentsAcademy/SidebarProAcademia";
-
 import articulosContenido from "./data/articulos/articulosContenido";
-
 import saveReglamentoArticulo from "./saveReglamentoArticulo";
 
 import {
@@ -27,20 +25,14 @@ import {
   Divider,
   ExampleBox,
   FAQItem,
-  TopBar,
-  TopBarCenter,
 } from "./ReglamentoArticuloStyle";
 
 import ReglamentoQuiz from "./ReglamentoQuiz";
-
-import BackButton from "@/components/Buttons/BackButton";
 import ScrollBoton from "@/components/Buttons/ScrollBoton";
-import BotonSolLuna from "@/components/BotonSolLuna";
-
 import { useAuth } from "./../../../navigator/sections/auth/useAuth";
 
 // ======================================================
-// 🔧 UTILIDADES DE TEXTO (ORIGINALES)
+// 🔧 UTILIDADES DE TEXTO
 // ======================================================
 
 function parseBold(text) {
@@ -70,7 +62,7 @@ function parseMarkdown(mdText) {
 }
 
 // ======================================================
-// 🧠 BLOQUE DE TEXTO EXPANDIBLE (INLINE ORIGINAL)
+// 🧠 BLOQUE DE TEXTO EXPANDIBLE
 // ======================================================
 
 function ExpandableText({ html, maxChars = 700 }) {
@@ -117,20 +109,22 @@ function ExpandableText({ html, maxChars = 700 }) {
 
 export default function ReglamentoArticulo({ mode = "pro" }) {
   const { id } = useParams();
-  const navigate = useNavigate();
   const isDemo = mode === "demo";
 
   const { user, progressData } = useAuth();
-
   const articulo = articulosContenido[id];
 
-  // ------------------------------
-  // ❌ ARTÍCULO NO EXISTE
-  // ------------------------------
   if (!articulo) {
     return (
       <Page>
         <Layout>
+          {!isDemo && (
+            <SidebarProAcademia
+              currentArticleId={id}
+              progressData={progressData}
+            />
+          )}
+
           <MainColumn id="scroll-root">
             <Title>Artículo no encontrado</Title>
             <Paragraph>
@@ -138,39 +132,25 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
             </Paragraph>
           </MainColumn>
 
-          {!isDemo && (
-            <SidebarProAcademia currentArticleId={id} progressData={progressData} />
-          )}
+          <ScrollBoton bottom="16px" />
         </Layout>
       </Page>
     );
   }
 
-  // ------------------------------
-  // ✔ RENDER PRINCIPAL
-  // ------------------------------
   return (
     <Page>
       <Layout>
-        {/* COLUMNA IZQUIERDA — CONTENIDO */}
+        {!isDemo && (
+          <SidebarProAcademia
+            currentArticleId={id}
+            progressData={progressData}
+          />
+        )}
+
         <MainColumn id="scroll-root">
-          <TopBar>
-            <BackButton
-              onClick={() =>
-                navigate(
-                  isDemo ? "/academia/demo/reglamento" : "/academia/pro/reglamento"
-                )
-              }
-            />
-            
-            <TopBarCenter>{articulo.rango}</TopBarCenter>
-
-            {!isDemo && <BotonSolLuna />}
-          </TopBar>
-
           <Title>{articulo.title}</Title>
 
-          {/* INTRODUCCIÓN */}
           {articulo.introduccion && (
             <Section>
               <SectionTitle>Introducción</SectionTitle>
@@ -182,7 +162,6 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
             </Section>
           )}
 
-          {/* PUNTOS CLAVE */}
           {articulo.puntosClave?.length > 0 && (
             <Section>
               <SectionTitle>Puntos clave</SectionTitle>
@@ -193,9 +172,9 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
               </List>
             </Section>
           )}
+
           <Divider />
 
-          {/* CONTENIDO */}
           {articulo.contenido.map((bloque, index) => (
             <Section key={index}>
               <SectionTitle>{bloque.titulo}</SectionTitle>
@@ -205,7 +184,6 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
 
           <Divider />
 
-          {/* EJEMPLOS */}
           {articulo.ejemplos?.length > 0 && (
             <Section>
               <SectionTitle>Ejemplos prácticos</SectionTitle>
@@ -224,7 +202,6 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
 
           <Divider />
 
-          {/* FAQ */}
           {articulo.faq?.length > 0 && (
             <Section>
               <SectionTitle>Preguntas típicas de examen</SectionTitle>
@@ -239,7 +216,6 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
 
           <Divider />
 
-          {/* RESUMEN */}
           {articulo.resumen && (
             <Section>
               <SectionTitle>Resumen final</SectionTitle>
@@ -251,7 +227,6 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
             </Section>
           )}
 
-          {/* QUIZ — PRO y DEMO (comportamiento distinto) */}
           {articulo.quiz && (
             <ReglamentoQuiz
               quiz={articulo.quiz}
@@ -272,7 +247,6 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
                     articleId: id,
                     articuloMeta: {
                       rango: articulo?.rango ?? "",
-                      // title: articulo?.title ?? "", // opcional, desactivado para ahorrar espacio
                     },
                     result,
                     totalArticles,
@@ -285,12 +259,7 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
           )}
         </MainColumn>
 
-        {/* SIDEBAR DERECHA — SOLO PRO */}
-        {!isDemo && (
-          <SidebarProAcademia currentArticleId={id} progressData={progressData} />
-        )}
-        {/* Botón flotante volver arriba */}
-      <ScrollBoton bottom="16px" />
+        <ScrollBoton bottom="16px" />
       </Layout>
     </Page>
   );

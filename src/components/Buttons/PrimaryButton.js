@@ -33,6 +33,11 @@ const PrimaryButton = styled.button`
   &:active {
     transform: scale(0.98);
   }
+
+  /* SOLO VERSION WEB */
+  @media (min-width: 641px) {
+    min-width: 280px;
+  }
 `;
 
 export default PrimaryButton;

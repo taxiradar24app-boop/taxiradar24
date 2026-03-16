@@ -46,7 +46,7 @@ const MODULES = [
   {
     id: "reglamento",
     badge: "Reglamento oficial",
-    title: "Artículos 1–82 explicados",
+    title: "📚 Artículos 1–82 explicados",
     description:
       "Lecturas guiadas, resúmenes aplicados y ejemplos reales para cada artículo.",
     path: "/academia/pro/reglamento",
@@ -54,7 +54,7 @@ const MODULES = [
   },
   {
     id: "audios",
-    badge: "AudioLectura",
+    badge: "🎧 AudioLectura",
     title: "Audios guiados completos",
     description:
       "Escucha el Reglamento mientras conduces o descansas. Ideal para memorizar.",
@@ -63,7 +63,7 @@ const MODULES = [
   },
   {
     id: "simulador",
-    badge: "Simulador examen",
+    badge: "📝 Simulador examen",
     title: "Simuladores oficiales",
     description:
       "Simulaciones reales de examen con cronómetro y corrección inmediata.",
@@ -72,7 +72,7 @@ const MODULES = [
   },
   {
     id: "callejero",
-    badge: "Callejero Palma",
+    badge: "🗺️ Callejero Palma",
     title: "Ejercicios: 10 calles en 10 minutos",
     description:
       "Rutas, zonas y ejercicios interactivos para dominar el callejero de Palma.",

@@ -35,16 +35,15 @@ export const PageWrapper = styled.div`
 export const SectionHeader = styled.div`
   width: 100%;
   max-width: 980px;
-  margin: 0 auto;
   text-align: center;
+  margin: 24px 0 36px;
 `;
 
 export const SectionTitle = styled.h1`
-  font-size: clamp(2rem, 3.2vw, 2.8rem);
-  line-height: 1.08;
-  font-weight: 900;
-  color: #f4c44e;
-  margin: 0 0 22px;
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #ffc83d;
+  margin-bottom: 6px;
 `;
 
 /* ======================================================
@@ -63,10 +62,47 @@ export const AttemptsInfo = styled.div`
 `;
 
 export const Timer = styled.div`
-  margin-top: 10px;
-  font-size: 0.98rem;
+  font-size: 0.95rem;
+  color: #10a37f;
+  font-weight: 600;
+  margin-top: 8px;
+`;
+
+export const StartButton = styled.button`
+  margin-top: 14px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 200, 61, 0.32);
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 200, 61, 0.16),
+    rgba(255, 200, 61, 0.08)
+  );
+
+  color: #ffc83d;
+  font-size: 0.96rem;
   font-weight: 800;
-  color: #34d399;
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(255, 200, 61, 0.14);
+    border-color: rgba(255, 200, 61, 0.52);
+  }
+
+  &:disabled {
+    opacity: 0.58;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
 `;
 
 /* ======================================================
@@ -134,10 +170,6 @@ export const IntroLead = styled.p`
   margin-left: auto;
   margin-right: auto;
 `;
-
-/* ======================================================
-   INTRO GRID
-====================================================== */
 
 export const IntroGrid = styled.div`
   margin-top: 26px;
@@ -275,7 +307,7 @@ export const ExamColumn = styled.div`
 
 export const CalleCard = styled.div`
   width: 100%;
-  max-width: 480px; /* ✅ IGUAL QUE PRO */
+  max-width: 480px;
   box-sizing: border-box;
 
   background: linear-gradient(
@@ -304,9 +336,9 @@ export const CalleTitle = styled.h3`
 `;
 
 export const InputsRow = styled.div`
-  width: 100%; /* ← CLAVE */
+  width: 100%;
   display: flex;
-  justify-content: center; /* ← CLAVE */
+  justify-content: center;
   gap: 0.6rem;
   box-sizing: border-box;
 
@@ -317,15 +349,12 @@ export const InputsRow = styled.div`
 
 export const CalleInput = styled.input`
   box-sizing: border-box;
-
   width: 100%;
-  max-width: 140px; /* desktop */
-
+  max-width: 140px;
   padding: 0.75rem;
   border-radius: 12px;
   font-size: 1rem;
   text-align: center;
-
   background: #d3d0d0;
   color: #081325;
   border: 2px solid #10a37f;
@@ -336,9 +365,8 @@ export const CalleInput = styled.input`
     outline: none;
   }
 
-  /* 📱 MOBILE */
   @media (max-width: 420px) {
-    max-width: 120px; /* ← NO SE SALE JAMÁS */
+    max-width: 120px;
     padding: 0.6rem;
     font-size: 0.95rem;
   }

@@ -218,6 +218,24 @@ export default function AudioScreen() {
     [firebaseUser, signedUrls]
   );
 
+  useEffect(() => {
+    if (!firebaseUser || !audios.length) return;
+
+    let cancelled = false;
+
+    (async () => {
+      for (const audio of audios) {
+        if (cancelled) return;
+        if (signedUrls[audio.id]) continue;
+        await ensureSignedUrl(audio);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [firebaseUser, audios, signedUrls, ensureSignedUrl]);
+
   const handleLoadedMetadata = useCallback(
     (audio, e) => {
       const el = e.currentTarget;
@@ -264,40 +282,20 @@ export default function AudioScreen() {
       try {
         el.playbackRate = playbackRate;
       } catch {}
-
-      if (el.dataset.autoplayRequested === "true") {
-        el.dataset.autoplayRequested = "false";
-        el.play().catch(() => {});
-      }
     },
     [playbackRate]
   );
 
   const handlePlay = useCallback(
-    async (audio, e) => {
+    (audio, e) => {
       const el = e.currentTarget;
       audioElsRef.current[audio.id] = el;
 
       try {
         el.playbackRate = playbackRate;
       } catch {}
-
-      if (signedUrls[audio.id]) return;
-
-      e.preventDefault?.();
-      el.pause();
-      el.dataset.autoplayRequested = "true";
-
-      const url = await ensureSignedUrl(audio);
-      if (!url) {
-        el.dataset.autoplayRequested = "false";
-        return;
-      }
-
-      resumedOnceRef.current[audio.id] = false;
-      el.load();
     },
-    [signedUrls, ensureSignedUrl, playbackRate]
+    [playbackRate]
   );
 
   const handleError = useCallback(
@@ -310,15 +308,8 @@ export default function AudioScreen() {
         return next;
       });
 
-      const url = await ensureSignedUrl(audio);
-      if (!url) return;
-
-      const el = audioElsRef.current[audio.id];
-      if (!el) return;
-
-      el.dataset.autoplayRequested = "true";
       resumedOnceRef.current[audio.id] = false;
-      el.load();
+      await ensureSignedUrl(audio);
     },
     [firebaseUser, ensureSignedUrl]
   );
@@ -464,12 +455,13 @@ export default function AudioScreen() {
                   </StatusText>
                 ) : null}
 
-                {signing[audio.id] ? (
+                {!src && signing[audio.id] ? (
                   <StatusText>Preparando audio seguro...</StatusText>
                 ) : null}
 
                 <AudioPlayer
                   {...AUDIO_HTML_PROPS}
+                  src={src}
                   onContextMenu={(e) => e.preventDefault()}
                   onLoadedMetadata={(e) => handleLoadedMetadata(audio, e)}
                   onCanPlay={() => handleCanPlay(audio)}
@@ -479,7 +471,6 @@ export default function AudioScreen() {
                   onEnded={(e) => handleEnded(audio, e)}
                   onError={() => handleError(audio)}
                 >
-                  {src ? <source src={src} type="audio/mpeg" /> : null}
                   Tu navegador no soporta audio HTML5.
                 </AudioPlayer>
               </AudioCard>

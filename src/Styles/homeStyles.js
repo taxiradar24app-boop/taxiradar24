@@ -119,7 +119,7 @@ export const SubTitle = styled.span`
   @media (max-width: 640px) {
     font-size: clamp(1.05rem, 5vw, 1.45rem);
     line-height: 1.12;
-    max-width: 13ch;
+    max-width: 20ch;
     margin-top: 0.2rem;
   }
 `;
@@ -135,13 +135,13 @@ export const Title2 = styled.h2`
 
   @media (max-width: 768px) {
     margin: 0.95rem 0 0.4rem 0;
-    max-width: 18ch;
+    max-width: 20ch;
   }
 
   @media (max-width: 480px) {
     margin: 0.8rem 0 0.2rem 0;
     font-size: clamp(1.5rem, 5.8vw, 2.15rem);
-    max-width: 11ch;
+    max-width: 20ch;
     line-height: 1.1;
   }
 `;
@@ -158,7 +158,7 @@ export const HeroSubtitle = styled.p`
   @media (max-width: 768px) {
     font-size: ${({ theme }) => theme.fontSizes.md};
     line-height: 1.6;
-    max-width: 30rem;
+    max-width: 40rem;
   }
 
   @media (max-width: 640px) {
@@ -178,7 +178,8 @@ export const HeroCTA = styled.div`
   @media (max-width: 640px) {
     width: 100%;
     gap: 0.8rem;
-    margin-bottom: 1.35rem;
+    margin-bottom: 1.40rem;
+    max-width: 24ch;
 
     & > * {
       width: 100%;

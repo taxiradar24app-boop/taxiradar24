@@ -1,7 +1,8 @@
 // src/Academy/componentsAcademy/SidebarProAcademia.js
 // ======================================================================
 // 🟩 SidebarProAcademia.js
-// Sidebar PRO con progreso + menú de artículos + módulos principales
+// ✅ Sin bloque "Tu progreso general"
+// ✅ Solo bloques + menú academia
 // ======================================================================
 
 import React from "react";
@@ -11,8 +12,6 @@ import {
   SidebarSection,
   SidebarTitle,
   SidebarText,
-  ProgressBarTrack,
-  ProgressBarFill,
   ChipsRow,
   Chip,
   ChipActive,
@@ -45,8 +44,7 @@ const REGLAMENTO_LIST = [
 
 export default function SidebarProAcademia({
   currentArticleId = null,
-  overallProgress = 35,
-  progressData = null, // ✅ opcional: si no llega, no rompe nada
+  progressData = null,
 }) {
   const navigate = useNavigate();
 
@@ -63,7 +61,7 @@ export default function SidebarProAcademia({
 
   const getArticleStatus = (articleId) => {
     const a = articlesMap?.[articleId];
-    if (!a) return "none"; // no hecho
+    if (!a) return "none";
 
     const attempts = Number(a.attempts ?? 0);
     const best = Number(a.bestScore ?? 0);
@@ -75,20 +73,6 @@ export default function SidebarProAcademia({
 
   return (
     <SidebarWrapper>
-      {/* PROGRESO GENERAL */}
-      <SidebarSection>
-        <SidebarTitle>Tu progreso general</SidebarTitle>
-        <SidebarText>
-          Muy pronto verás aquí tus estadísticas reales: aciertos por bloque,
-          módulos completados y seguimiento semanal.
-        </SidebarText>
-
-        <ProgressBarTrack>
-          <ProgressBarFill style={{ width: `${overallProgress}%` }} />
-        </ProgressBarTrack>
-      </SidebarSection>
-
-      {/* BLOQUES DEL REGLAMENTO */}
       <SidebarSection>
         <SidebarTitle>Bloques del Reglamento</SidebarTitle>
         <SidebarText>
@@ -101,12 +85,6 @@ export default function SidebarProAcademia({
             const isActive = currentArticleId === item.id;
             const status = getArticleStatus(item.id);
 
-            // ✅ Prioridad visual:
-            // 1) Activo + Done
-            // 2) Activo
-            // 3) Done (100%)
-            // 4) Retry (hecho pero no 100%)
-            // 5) Normal
             let ChipComp = Chip;
 
             if (isActive && status === "done") ChipComp = ChipActiveDone;
@@ -123,7 +101,6 @@ export default function SidebarProAcademia({
         </ChipsRow>
       </SidebarSection>
 
-      {/* MENÚ PRINCIPAL DE LA ACADEMIA */}
       <SidebarSection>
         <SidebarTitle>Menú de la Academia</SidebarTitle>
         <SidebarText>Accesos rápidos a todos los módulos PRO.</SidebarText>

@@ -1,7 +1,5 @@
 // ======================================================================
 // 📘 DemoReglamento — Layout DEMO Reglamento
-// - Lista (solo cuando NO hay :id)
-// - Artículo (cuando hay :id) => solo <Outlet /> (sin sidebar)
 // ======================================================================
 
 import React from "react";
@@ -16,7 +14,6 @@ import {
   HeaderDemo,
   Title,
   Subtitle,
-  SubInfo,
   GridLayout,
   LeftColumn,
   RightColumn,
@@ -37,23 +34,22 @@ import {
 
 export default function DemoReglamento() {
   const navigate = useNavigate();
-  const { id } = useParams(); // 👈 cuando estamos en /reglamento/:id
+  const { id } = useParams();
 
   const DEMO_MODULES = ["art_1_3", "art_4_9", "art_10_15"];
   const modules = Object.values(articulosIndex).sort((a, b) => a.order - b.order);
 
   return (
     <ThemeProvider theme={themes.dark}>
-      {/* ✅ Si hay :id => mostramos SOLO el artículo (sin listado/slider) */}
       {id ? (
         <Outlet />
       ) : (
         <Page>
           <HeaderDemo>
-            
-            <Title>📘Reglamento Oficial</Title>
-              <Subtitle>Todos los bloques visibles. Algunos desbloqueados para prueba.</Subtitle>
-
+            <Title>📘 Reglamento Oficial</Title>
+            <Subtitle>
+              Todos los bloques visibles. Algunos desbloqueados para prueba.
+            </Subtitle>
           </HeaderDemo>
 
           <GridLayout>
@@ -72,21 +68,17 @@ export default function DemoReglamento() {
                         ? navigate(`/academia/demo/reglamento/${mod.id}`)
                         : navigate("/academia/upgrade")
                     }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        isUnlocked
-                          ? navigate(`/academia/demo/reglamento/${mod.id}`)
-                          : navigate("/academia/upgrade");
-                      }
-                    }}
                   >
                     <ArticleHeader>
                       <ArticleNumber>{mod.order}</ArticleNumber>
+
                       <div>
                         <ArticleTitle>{mod.rango}</ArticleTitle>
+
                         {mod.descripcion && (
-                          <ArticleDescription>{mod.descripcion}</ArticleDescription>
+                          <ArticleDescription>
+                            {mod.descripcion}
+                          </ArticleDescription>
                         )}
                       </div>
                     </ArticleHeader>
@@ -98,6 +90,7 @@ export default function DemoReglamento() {
                     {!isUnlocked && (
                       <LockOverlay>
                         <LockIcon>🔒</LockIcon>
+
                         <UnlockCTA
                           onClick={(e) => {
                             e.stopPropagation();
@@ -115,10 +108,12 @@ export default function DemoReglamento() {
 
             <RightColumn>
               <SidebarBox>
-               <SidebarTitle>Cómo estudiar este curso</SidebarTitle>
+                <SidebarTitle>Cómo estudiar este curso</SidebarTitle>
                 <SidebarText>
-                  Este reglamento está organizado para que puedas avanzar de forma clara y rápida.
+                  Este reglamento está organizado para que avances de forma
+                  clara y rápida.
                 </SidebarText>
+
                 <SidebarList>
                   <li>✔ Empieza por los básicos</li>
                   <li>✔ Refuerza con audios</li>
@@ -126,20 +121,22 @@ export default function DemoReglamento() {
                   <li>✔ Repite cuando sea necesario</li>
                 </SidebarList>
               </SidebarBox>
-  
+
               <SidebarBox>
                 <SidebarTitle>Contenido del curso</SidebarTitle>
                 <SidebarList>
-                  <li> 15 bloques</li>
-                  <li> 82 artículos</li>
-                  <li> Casos reales</li>
-                  <li> Preguntas oficiales</li>
+                  <li>15 bloques</li>
+                  <li>82 artículos</li>
+                  <li>Casos reales</li>
+                  <li>Preguntas oficiales</li>
                 </SidebarList>
               </SidebarBox>
 
               <SidebarBox>
                 <SidebarTitle>Consejo</SidebarTitle>
-                <SidebarText>Prueba los bloques DEMO y continúa en PRO.</SidebarText>
+                <SidebarText>
+                  Prueba los bloques DEMO y continúa en PRO.
+                </SidebarText>
               </SidebarBox>
             </RightColumn>
           </GridLayout>

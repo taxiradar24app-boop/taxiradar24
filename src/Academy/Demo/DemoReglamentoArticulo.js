@@ -22,18 +22,18 @@ import {
   Paragraph01,
   List,
   Divider,
-  TopBar,
-  TopBarCenter,
 } from "@/Academy/Pro/ReglamentoOficial/ReglamentoArticuloStyle";
 
 // ======================================================
 // 🔒 MÓDULOS PERMITIDOS EN DEMO
 // ======================================================
+
 const DEMO_ALLOWED = ["art_1_3", "art_4_9", "art_10_15"];
 
 // ======================================================
-// 🔧 UTILIDADES DE TEXTO (IGUAL QUE PRO)
+// 🔧 UTILIDADES DE TEXTO
 // ======================================================
+
 function parseBold(text) {
   if (!text) return "";
   return text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
@@ -61,8 +61,9 @@ function parseMarkdown(mdText) {
 }
 
 // ======================================================
-// 🧠 BLOQUE DE TEXTO EXPANDIBLE (COPIADO DE PRO)
+// 🧠 BLOQUE DE TEXTO EXPANDIBLE
 // ======================================================
+
 function ExpandableText({ html, maxChars = 600 }) {
   const [expanded, setExpanded] = useState(false);
 
@@ -103,6 +104,7 @@ function ExpandableText({ html, maxChars = 600 }) {
 // ======================================================
 // 📘 COMPONENTE PRINCIPAL
 // ======================================================
+
 export default function DemoReglamentoArticulo() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -120,10 +122,6 @@ export default function DemoReglamentoArticulo() {
     <Page>
       <Layout>
         <MainColumn>
-          <TopBar>
-            <TopBarCenter>{articulo.rango}</TopBarCenter>
-          </TopBar>
-
           <Title>{articulo.title}</Title>
 
           {/* INTRODUCCIÓN */}
@@ -156,9 +154,7 @@ export default function DemoReglamentoArticulo() {
           {articulo.contenido.map((bloque, i) => (
             <Section key={i}>
               <SectionTitle>{bloque.titulo}</SectionTitle>
-              <ExpandableText
-                html={parseMarkdown(bloque.texto)}
-              />
+              <ExpandableText html={parseMarkdown(bloque.texto)} />
             </Section>
           ))}
 
@@ -169,9 +165,12 @@ export default function DemoReglamentoArticulo() {
             <Paragraph>
               🔒 Continúa el Reglamento completo en la versión PRO.
             </Paragraph>
+
             <Paragraph01>
-               Cada sección de los artículos cuenta con un examen de cinco preguntas que pondrán a prueba tu nivel de progreso. 
-              </Paragraph01>
+              Cada sección cuenta con un examen de 5 preguntas que pondrán a
+              prueba tu progreso.
+            </Paragraph01>
+
             <span
               onClick={() => navigate("/academia/upgrade")}
               style={{
@@ -182,7 +181,7 @@ export default function DemoReglamentoArticulo() {
                 cursor: "pointer",
               }}
             >
-             Desbloquear Academia PRO
+              Desbloquear Academia PRO
             </span>
           </Section>
         </MainColumn>
