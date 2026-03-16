@@ -50,8 +50,13 @@ export const Content = styled.div`
 
 export const HeroTitle = styled.h1`
   margin: 0 0 8px;
-  color: #FFC83D;
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  color: #ffc83d;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-size: clamp(
     1.9rem,
@@ -69,7 +74,12 @@ export const HeroTitle = styled.h1`
 export const HeroSub = styled.p`
   margin: 0 0 18px;
   color: ${({ theme }) => theme.pro.textSoft};
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
   font-weight: ${({ theme }) => theme.fontWeights?.regular || 400};
@@ -108,7 +118,12 @@ export const Chip = styled.button`
   background: ${({ active, theme }) =>
     active ? theme.colors.green : theme.pro.cardAlt};
   color: ${({ active, theme }) => (active ? "#0a1528" : theme.pro.text)};
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-weight: ${({ theme }) => theme.fontWeights?.bold || 700};
   font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
@@ -129,7 +144,12 @@ export const CTA = styled.button`
   border: 0;
   background: ${({ theme }) => theme.colors.green};
   color: #0a1528;
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-weight: ${({ theme }) => theme.fontWeights?.bold || 700};
   font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
@@ -156,7 +176,12 @@ export const Ghost = styled.button`
   border: 1px solid ${({ theme }) => theme.pro.border};
   background: ${({ theme }) => theme.pro.cardAlt};
   color: ${({ theme }) => theme.pro.text};
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};
   font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
@@ -197,7 +222,12 @@ export const QMeta = styled.div`
 
 export const QIndex = styled.div`
   color: ${({ theme }) => theme.colors.yellow};
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-weight: ${({ theme }) => theme.fontWeights?.bold || 700};
   font-size: ${({ theme }) => theme.fontSizes?.sm || "0.9375rem"};
@@ -207,7 +237,12 @@ export const QIndex = styled.div`
 `;
 
 export const QMetaRight = styled.div`
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-size: ${({ theme }) => theme.fontSizes?.sm || "0.9375rem"};
   font-weight: ${({ theme }) => theme.fontWeights?.medium || 500};
@@ -219,7 +254,12 @@ export const QMetaRight = styled.div`
 
 export const QText = styled.div`
   color: ${({ theme }) => theme.pro.text};
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-size: 1.25rem;
   font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};
@@ -250,7 +290,12 @@ export const Option = styled.button`
   border: 1px solid ${({ theme }) => theme.pro.border};
   background: ${({ theme }) => theme.pro.cardAlt};
   color: ${({ theme }) => theme.pro.text};
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-weight: ${({ theme }) => theme.fontWeights?.medium || 500};
   font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};

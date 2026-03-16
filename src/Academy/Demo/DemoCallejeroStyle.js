@@ -13,8 +13,16 @@ export const PageWrapper = styled.div`
   align-items: center;
 
   background:
-    radial-gradient(circle at 18% 18%, rgba(16, 163, 127, 0.08), transparent 34%),
-    radial-gradient(circle at 82% 12%, rgba(255, 200, 61, 0.06), transparent 30%),
+    radial-gradient(
+      circle at 18% 18%,
+      rgba(16, 163, 127, 0.08),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 82% 12%,
+      rgba(255, 200, 61, 0.06),
+      transparent 30%
+    ),
     #06152b;
 
   color: #e5e7eb;
@@ -267,7 +275,7 @@ export const ExamColumn = styled.div`
 
 export const CalleCard = styled.div`
   width: 100%;
-  max-width: 480px;   /* ✅ IGUAL QUE PRO */
+  max-width: 480px; /* ✅ IGUAL QUE PRO */
   box-sizing: border-box;
 
   background: linear-gradient(
@@ -296,9 +304,9 @@ export const CalleTitle = styled.h3`
 `;
 
 export const InputsRow = styled.div`
-  width: 100%;              /* ← CLAVE */
+  width: 100%; /* ← CLAVE */
   display: flex;
-  justify-content: center;  /* ← CLAVE */
+  justify-content: center; /* ← CLAVE */
   gap: 0.6rem;
   box-sizing: border-box;
 
@@ -311,8 +319,8 @@ export const CalleInput = styled.input`
   box-sizing: border-box;
 
   width: 100%;
-  max-width: 140px;   /* desktop */
-  
+  max-width: 140px; /* desktop */
+
   padding: 0.75rem;
   border-radius: 12px;
   font-size: 1rem;
@@ -330,7 +338,7 @@ export const CalleInput = styled.input`
 
   /* 📱 MOBILE */
   @media (max-width: 420px) {
-    max-width: 120px;   /* ← NO SE SALE JAMÁS */
+    max-width: 120px; /* ← NO SE SALE JAMÁS */
     padding: 0.6rem;
     font-size: 0.95rem;
   }
@@ -347,7 +355,10 @@ export const SubmitButton = styled.button`
   font-size: 1rem;
   font-weight: 900;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease;
   box-shadow: 0 14px 30px rgba(16, 163, 127, 0.24);
 
   &:hover:not(:disabled) {
@@ -450,7 +461,9 @@ export const RetryButton = styled.button`
   font-size: 0.98rem;
   font-weight: 900;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 
   &:hover {
     transform: translateY(-1px);

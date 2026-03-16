@@ -96,18 +96,21 @@ export const ArticleCard = styled.div`
   border: 1px solid rgba(148, 163, 184, 0.35);
 
   background: radial-gradient(
-      circle at top left,
-      rgba(51, 65, 85, 0.55),
-      rgba(15, 23, 42, 0.96)
-    );
+    circle at top left,
+    rgba(51, 65, 85, 0.55),
+    rgba(15, 23, 42, 0.96)
+  );
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.85);
 
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.sm};
 
-  transition: transform 0.18s ease, box-shadow 0.18s ease,
-    border-color 0.18s ease, background 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
 
   &:hover {
     transform: translateY(-4px);

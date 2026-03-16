@@ -28,7 +28,6 @@ export const HeroSection = styled.section`
   }
 `;
 
-
 export const HeroBackground = styled.img`
   position: absolute;
   top: 0;
@@ -66,7 +65,9 @@ export const BackButtonWrapper = styled.div`
     color: #f4d35e;
     font-size: 1.8rem;
     cursor: pointer;
-    transition: transform 0.3s ease, color 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      color 0.3s ease;
 
     &:hover {
       color: #10a37f;

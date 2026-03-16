@@ -33,9 +33,6 @@ export const InnerWrapper = styled.div`
   }
 `;
 
-
-
-
 export const TopBar = styled.header`
   display: flex;
   align-items: center;
@@ -145,15 +142,12 @@ export const ActionButton = styled.button`
   font-weight: 600;
   font-size: 0.95rem;
 
-  background: radial-gradient(
-    circle at top left,
-    #4ade80,
-    #22c55e,
-    #16a34a
-  );
+  background: radial-gradient(circle at top left, #4ade80, #22c55e, #16a34a);
   color: #022c22;
   box-shadow: 0 0 25px rgba(34, 197, 94, 0.45);
-  transition: transform 0.15s ease, box-shadow 0.15s ease,
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
     filter 0.2s ease;
 
   &:hover {
@@ -179,8 +173,11 @@ export const GhostButton = styled.button`
   border: 1px solid rgba(148, 163, 184, 0.5);
   background: rgba(15, 23, 42, 0.9);
   color: ${({ theme }) => getColor(theme, "colors.textSecondary", "#e5e7eb")};
-  transition: background 0.15s ease, border-color 0.15s ease,
-    transform 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease,
+    color 0.15s ease;
 
   &:hover {
     background: rgba(30, 64, 175, 0.3);
@@ -350,8 +347,11 @@ export const ModuleCard = styled.button`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  transition: transform 0.18s ease, box-shadow 0.18s ease,
-    border-color 0.18s ease, background 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
 
   &:hover {
     transform: translateY(-4px);
@@ -384,7 +384,7 @@ export const ModuleBadge = styled.span`
 export const ModuleTitle = styled.h3`
   font-size: 1.05rem;
   font-weight: 600;
-  color: ${({ theme }) => getColor(theme, "colors.yellow", "#ffffff")}
+  color: ${({ theme }) => getColor(theme, "colors.yellow", "#ffffff")};
 `;
 
 export const ModuleDescription = styled.p`

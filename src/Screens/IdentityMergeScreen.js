@@ -10,7 +10,7 @@ const Wrap = styled.div`
   padding: 24px;
   background: radial-gradient(
     1200px 600px at 20% 0%,
-    rgba(16, 163, 127, 0.10),
+    rgba(16, 163, 127, 0.1),
     rgba(10, 15, 30, 0.98)
   );
 `;
@@ -21,7 +21,7 @@ const Card = styled.div`
   border-radius: 18px;
   padding: 22px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 `;
 
@@ -67,7 +67,9 @@ const Btn = styled.button`
   padding: 12px 14px;
   font-weight: 800;
   letter-spacing: 0.2px;
-  transition: transform 0.08s ease, opacity 0.12s ease;
+  transition:
+    transform 0.08s ease,
+    opacity 0.12s ease;
   &:active {
     transform: translateY(1px);
   }

@@ -12,7 +12,6 @@ export const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-
   background: radial-gradient(
     ellipse at top,
     #0f1c33 0%,
@@ -78,7 +77,7 @@ export const ExamColumn = styled.div`
   width: 100%;
   max-width: 480px;
 
-  margin: 0 ;
+  margin: 0;
 
   display: flex;
   flex-direction: column;
@@ -95,7 +94,7 @@ export const ExamColumn = styled.div`
 
 export const CalleCard = styled.div`
   width: 100%;
-  max-width: 480px;   /* ✅ IGUAL QUE PRO */
+  max-width: 480px; /* ✅ IGUAL QUE PRO */
   box-sizing: border-box;
 
   background: linear-gradient(
@@ -115,7 +114,6 @@ export const CalleCard = styled.div`
   }
 `;
 
-
 /* ======================================================
    TITULO CALLE
 ====================================================== */
@@ -132,9 +130,9 @@ export const CalleTitle = styled.h3`
 ====================================================== */
 
 export const InputsRow = styled.div`
-  width: 100%;              /* ← CLAVE */
+  width: 100%; /* ← CLAVE */
   display: flex;
-  justify-content: center;  /* ← CLAVE */
+  justify-content: center; /* ← CLAVE */
   gap: 0.6rem;
   box-sizing: border-box;
 
@@ -143,13 +141,12 @@ export const InputsRow = styled.div`
   }
 `;
 
-
 export const CalleInput = styled.input`
   box-sizing: border-box;
 
   width: 100%;
-  max-width: 140px;   /* desktop */
-  
+  max-width: 140px; /* desktop */
+
   padding: 0.75rem;
   border-radius: 12px;
   font-size: 1rem;
@@ -167,13 +164,11 @@ export const CalleInput = styled.input`
 
   /* 📱 MOBILE */
   @media (max-width: 420px) {
-    max-width: 120px;   /* ← NO SE SALE JAMÁS */
+    max-width: 120px; /* ← NO SE SALE JAMÁS */
     padding: 0.6rem;
     font-size: 0.95rem;
   }
 `;
-
-
 
 /* ======================================================
    BOTÓN ENVIAR
@@ -285,6 +280,5 @@ export const MobileCenter = styled.div`
   @media (max-width: 900px) {
     max-width: 720px;
     margin: 0 auto;
-
   }
 `;

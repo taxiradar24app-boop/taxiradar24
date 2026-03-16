@@ -7,14 +7,14 @@ export const PageWrapper = styled.div`
   width: 100%;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors?.background || "#0a1528"};
-   padding: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.lg};
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 export const PageContainer = styled.div`
-background: #081325;
+  background: #081325;
   padding: ${({ theme }) => theme.spacing.lg};
   width: 100%;
   max-width: 960px;

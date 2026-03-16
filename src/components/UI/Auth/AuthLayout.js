@@ -19,9 +19,21 @@ const AuthLayout = styled.div`
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(circle at 18% 20%, rgba(0, 168, 243, 0.08), transparent 28%),
-      radial-gradient(circle at 82% 18%, rgba(244, 211, 94, 0.06), transparent 24%),
-      radial-gradient(circle at 50% 100%, rgba(16, 163, 127, 0.08), transparent 32%);
+      radial-gradient(
+        circle at 18% 20%,
+        rgba(0, 168, 243, 0.08),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at 82% 18%,
+        rgba(244, 211, 94, 0.06),
+        transparent 24%
+      ),
+      radial-gradient(
+        circle at 50% 100%,
+        rgba(16, 163, 127, 0.08),
+        transparent 32%
+      );
     pointer-events: none;
   }
 `;

@@ -10,13 +10,18 @@ export const PageWrapper = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-size: clamp(2rem, 3.2vw, 2.8rem);
   line-height: 1.04;
   font-weight: ${({ theme }) => theme.fontWeights?.heavy || 800};
   letter-spacing: ${({ theme }) => theme.letterSpacings?.tighter || "-0.03em"};
-  color: #FFC83D;
+  color: #ffc83d;
   margin: 0 0 22px;
 `;
 
@@ -31,7 +36,12 @@ export const PageContainer = styled.div`
 `;
 
 export const IntroText = styled.p`
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-size: ${({ theme }) => theme.fontSizes?.lg || "1.125rem"};
   font-weight: ${({ theme }) => theme.fontWeights?.regular || 400};
@@ -65,7 +75,12 @@ export const AudioCard = styled.div`
 `;
 
 export const AudioTitle = styled.h3`
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-size: ${({ theme }) => theme.fontSizes?.lg || "1.125rem"};
   font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};
@@ -76,7 +91,12 @@ export const AudioTitle = styled.h3`
 `;
 
 export const AudioDescription = styled.p`
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
   font-weight: ${({ theme }) => theme.fontWeights?.regular || 400};
@@ -109,7 +129,12 @@ export const LockedBadge = styled.div`
   padding: 6px 12px;
   border-radius: 999px;
 
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-size: ${({ theme }) => theme.fontSizes?.xs || "0.8125rem"};
   font-weight: ${({ theme }) => theme.fontWeights?.medium || 500};
@@ -130,7 +155,12 @@ export const CTABox = styled.div`
 `;
 
 export const CTAText = styled.p`
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
   font-weight: ${({ theme }) => theme.fontWeights?.regular || 400};
@@ -151,7 +181,12 @@ export const CTAButton = styled.button`
   padding: 12px 22px;
   border-radius: 999px;
 
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
   font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};

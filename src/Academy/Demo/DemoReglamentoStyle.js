@@ -32,7 +32,7 @@ export const Title = styled.h1`
   font-size: clamp(2rem, 3.2vw, 2.8rem);
   line-height: 1.08;
   font-weight: 900;
-  color: #FFC83D;
+  color: #ffc83d;
   margin: 0 0 22px;
 `;
 
@@ -129,7 +129,10 @@ export const ArticleCard = styled.div`
   /* 🔥 Solo oscurecer si está bloqueada */
   filter: ${({ $locked }) => ($locked ? "brightness(0.65)" : "none")};
 
-  transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease;
+  transition:
+    transform 0.12s ease,
+    filter 0.12s ease,
+    box-shadow 0.12s ease;
 
   &:hover {
     transform: translateY(-2px);

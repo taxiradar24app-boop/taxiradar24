@@ -11,8 +11,9 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: linear-gradient(rgba(10, 15, 30, 0.28), rgba(10, 15, 30, 0.28)),
-    url(${(props) => props.bg}) no-repeat center center;
+  background:
+    linear-gradient(rgba(10, 15, 30, 0.28), rgba(10, 15, 30, 0.28)),
+    url(${props => props.bg}) no-repeat center center;
   background-size: cover;
   margin: 0;
   padding: 0 0 3rem 0;
@@ -303,8 +304,11 @@ export const FeatureCard = styled.div`
   padding: 1.2rem 1.25rem 1.25rem;
   border: 1px solid rgba(55, 65, 81, 0.9);
   box-shadow: 0 18px 32px rgba(15, 23, 42, 0.74);
-  transition: transform 0.2s ease, box-shadow 0.2s ease,
-    border-color 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 
   &:hover {
     transform: translateY(-4px);
@@ -513,7 +517,9 @@ export const SeoCard = styled.section`
 export const FadeInSection = styled.div`
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
   will-change: opacity, transform;
 
   &.is-visible {
