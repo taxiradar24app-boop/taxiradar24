@@ -2,10 +2,12 @@ import styled from "styled-components";
 
 export const HeaderWrapper = styled.header`
   width: 100%;
-  height: 70px;
+  height: calc(70px + env(safe-area-inset-top, 0px));
   position: sticky;
   top: 0;
   z-index: 1000;
+
+  padding-top: env(safe-area-inset-top, 0px);
 
   backdrop-filter: blur(10px);
   background: ${({ theme }) =>

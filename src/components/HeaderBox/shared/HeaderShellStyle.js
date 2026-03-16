@@ -2,15 +2,16 @@ import styled from "styled-components";
 
 export const HeaderWrapper = styled.header`
   width: 100%;
-  height: 70px;
+  background: rgba(10, 21, 40, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 5000;
+  backdrop-filter: blur(12px);
 
-  backdrop-filter: blur(10px);
-  background: rgba(10, 21, 40, 0.85);
-
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 14px);
+  padding-bottom: 14px;
 `;
 
 export const HeaderInner = styled.div`

@@ -16,6 +16,8 @@ const GlobalStyles = createGlobalStyle`
   ============================== */
   :root {
     --body-bg: ${({ theme }) => theme.colors?.body || "#081325"};
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
     
   }
 

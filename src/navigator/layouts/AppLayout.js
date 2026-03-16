@@ -7,6 +7,10 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+
+  /* SAFE AREA PARA IPHONE / PWA */
+  padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 `;
 
 export default function AppLayout() {
