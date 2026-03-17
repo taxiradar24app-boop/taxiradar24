@@ -17,6 +17,8 @@ import {
   ModulesGrid,
   ModuleCard,
   Pill,
+  ModuleCTA,
+  ModuleFooter,
   Emoji,
   DemoStrip,
   DemoDotList,
@@ -46,6 +48,90 @@ export default function AcademiaDemo() {
   return (
     <DemoWrapper>
       <DemoContainer>
+            {/* =====================================================
+            MÓDULOS DEMO
+        ====================================================== */}
+
+        <ModulesGrid>
+
+          <ModuleCard onClick={() => goDemoPath("/academia/demo/reglamento")}>
+
+            <header>
+              <Emoji>📘</Emoji>
+              <h3>Reglamento oficial</h3>
+            </header>
+
+            <p>
+              Lectura guiada del reglamento con explicación clara
+              y ejemplos prácticos.
+            </p>
+
+            <ModuleFooter>
+              <Pill>3 Bloques</Pill>
+              <ModuleCTA>Ir al Reglamento →</ModuleCTA>
+            </ModuleFooter>
+
+          </ModuleCard>
+
+
+          <ModuleCard onClick={() => goDemoPath("/academia/demo/audios")}>
+
+            <header>
+              <Emoji>🎧</Emoji>
+              <h3>Audios del Reglamento</h3>
+            </header>
+
+            <p>
+              Escucha un ejemplo de cómo se explican los artículos
+              más importantes.
+            </p>
+            
+            <ModuleFooter>
+              <Pill>3 Audios</Pill>
+              <ModuleCTA>Escuchar audios →</ModuleCTA>
+            </ModuleFooter>
+
+          </ModuleCard>
+
+
+          <ModuleCard onClick={() => goDemoPath("/academia/demo/simulador")}>
+
+            <header>
+              <Emoji>🧠</Emoji>
+              <h3>Simulador DEMO</h3>
+            </header>
+
+            <p>
+              Responde un mini examen basado en preguntas reales.
+            </p>
+ 
+            <ModuleFooter>
+              <Pill>3 Exámenes</Pill>
+              <ModuleCTA>Ir al simulador →</ModuleCTA>
+            </ModuleFooter>
+
+          </ModuleCard>
+
+
+          <ModuleCard onClick={() => goDemoPath("/academia/demo/callejero")}>
+
+            <header>
+              <Emoji>🗺️</Emoji>
+              <h3>Callejero de Palma</h3>
+            </header>
+
+            <p>
+              Practica un ejercicio tipo 10x10 del examen municipal.
+            </p>
+
+            <ModuleFooter>
+              <Pill>3 ejercicios </Pill>
+              <ModuleCTA>Ir alcallejero →</ModuleCTA>
+            </ModuleFooter>
+            
+          </ModuleCard>
+
+        </ModulesGrid>
 
         {/* =====================================================
             HERO DEMO
@@ -147,78 +233,7 @@ export default function AcademiaDemo() {
         </SectionTitleBlock>
 
 
-        {/* =====================================================
-            MÓDULOS DEMO
-        ====================================================== */}
-
-        <ModulesGrid>
-
-          <ModuleCard onClick={() => goDemoPath("/academia/demo/reglamento")}>
-
-            <header>
-              <Emoji>📘</Emoji>
-              <h3>Reglamento oficial</h3>
-            </header>
-
-            <p>
-              Lectura guiada del reglamento con explicación clara
-              y ejemplos prácticos.
-            </p>
-
-            <Pill>3 bloques accesibles</Pill>
-
-          </ModuleCard>
-
-
-          <ModuleCard onClick={() => goDemoPath("/academia/demo/audios")}>
-
-            <header>
-              <Emoji>🎧</Emoji>
-              <h3>Audios del Reglamento</h3>
-            </header>
-
-            <p>
-              Escucha un ejemplo de cómo se explican los artículos
-              más importantes.
-            </p>
-
-            <Pill>3 audios</Pill>
-
-          </ModuleCard>
-
-
-          <ModuleCard onClick={() => goDemoPath("/academia/demo/simulador")}>
-
-            <header>
-              <Emoji>🧠</Emoji>
-              <h3>Simulador DEMO</h3>
-            </header>
-
-            <p>
-              Responde un mini examen basado en preguntas reales.
-            </p>
-
-            <Pill>1 simulador</Pill>
-
-          </ModuleCard>
-
-
-          <ModuleCard onClick={() => goDemoPath("/academia/demo/callejero")}>
-
-            <header>
-              <Emoji>🗺️</Emoji>
-              <h3>Callejero de Palma</h3>
-            </header>
-
-            <p>
-              Practica un ejercicio tipo 10x10 del examen municipal.
-            </p>
-
-            <Pill>1 ejercicio</Pill>
-
-          </ModuleCard>
-
-        </ModulesGrid>
+    
 
 
         {/* =====================================================

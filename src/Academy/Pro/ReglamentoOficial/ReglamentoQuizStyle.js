@@ -11,7 +11,7 @@ export const QuizWrapper = styled.div`
   border-radius: 16px;
 
   background: ${({ theme }) =>
-    theme.mode === "light" ? "#ffffff" : theme.pro?.card || "#0f1b2d"};
+    theme.mode === "light" ? "#a6a9ae" : theme.pro?.card || "#0f1b2d"};
 
   border: 1px solid
     ${({ theme }) =>
@@ -23,7 +23,7 @@ export const QuizTitle = styled.h3`
   margin-bottom: 18px;
   font-weight: 650;
 
-  color: ${({ theme }) => theme.pro?.green || "#10a37f"};
+  color: ${({ theme }) => theme.pro?.blueDeep|| "#10a37f"};
 `;
 
 export const QuizSubTitle = styled.h4`
@@ -32,7 +32,7 @@ export const QuizSubTitle = styled.h4`
   font-weight: 400;
   line-height: 1.6;
 
-  color: ${({ theme }) => theme.pro?.green || "#10a37f"};
+  color: ${({ theme }) => theme.pro?.blueDeep || "#10a37f"};
 `;
 
 export const QuestionBox = styled.div`

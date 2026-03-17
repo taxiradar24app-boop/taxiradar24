@@ -279,6 +279,14 @@ export const Emoji = styled.span`
   font-size: 1.4rem;
 `;
 
+export const ModuleFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  gap: 0.6rem;
+`;
+
 export const Pill = styled.div`
   display: inline-block;
   font-size: 0.78rem;
@@ -289,6 +297,12 @@ export const Pill = styled.div`
   color: #bbf7d0;
 `;
 
+export const ModuleCTA = styled.span`
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #4ade80;
+  white-space: nowrap;
+`;
 /* =====================================================
    🟦 STRIP FINAL
 ===================================================== */

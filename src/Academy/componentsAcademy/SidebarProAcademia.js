@@ -1,8 +1,10 @@
 // src/Academy/componentsAcademy/SidebarProAcademia.js
 // ======================================================================
 // 🟩 SidebarProAcademia.js
-// ✅ Sin bloque "Tu progreso general"
-// ✅ Solo bloques + menú academia
+// ✅ Mantiene la lógica actual de progreso
+// ✅ Explica mejor los estados de las cápsulas
+// ✅ No rompe la estructura existente
+// ✅ Diseñado para encajar con darkTheme + SidebarProAcademiaStyle
 // ======================================================================
 
 import React from "react";
@@ -18,10 +20,7 @@ import {
   ChipActiveDone,
   ChipDone,
   ChipRetry,
-  ModulesList,
-  ModuleItem,
-  ModuleIcon,
-  ModuleLabel,
+
 } from "./SidebarProAcademiaStyle";
 
 const REGLAMENTO_LIST = [
@@ -60,11 +59,11 @@ export default function SidebarProAcademia({
   const articlesMap = progressData?.reglamento?.articles || {};
 
   const getArticleStatus = (articleId) => {
-    const a = articlesMap?.[articleId];
-    if (!a) return "none";
+    const article = articlesMap?.[articleId];
+    if (!article) return "none";
 
-    const attempts = Number(a.attempts ?? 0);
-    const best = Number(a.bestScore ?? 0);
+    const attempts = Number(article.attempts ?? 0);
+    const best = Number(article.bestScore ?? 0);
 
     if (best >= 100) return "done";
     if (attempts > 0) return "retry";
@@ -75,9 +74,25 @@ export default function SidebarProAcademia({
     <SidebarWrapper>
       <SidebarSection>
         <SidebarTitle>Bloques del Reglamento</SidebarTitle>
+
         <SidebarText>
-          Elige el bloque que quieres estudiar hoy. Más adelante podrás ver
-          cuáles ya tienes completados.
+          Elige el bloque que quieres estudiar hoy.
+          <br />
+          <br />
+          Las cápsulas cambian según tu avance:
+          <br />
+          • <strong>Activo</strong>: bloque que estás viendo ahora
+          <br />
+          • <strong>Completado</strong>: bloque ya superado
+          <br />
+          • <strong>Repetir</strong>: ya has trabajado ese bloque y puedes volver
+          a practicarlo
+          <br />
+          • <strong>Pendiente</strong>: bloque aún no iniciado
+          <br />
+          <br />
+          Tu progreso se reflejará automáticamente a medida que avances por el
+          contenido y respondas las preguntas de cada bloque.
         </SidebarText>
 
         <ChipsRow>
@@ -93,49 +108,17 @@ export default function SidebarProAcademia({
             else if (status === "retry") ChipComp = ChipRetry;
 
             return (
-              <ChipComp key={item.id} onClick={() => handleChipClick(item.id)}>
+              <ChipComp
+                key={item.id}
+                type="button"
+                onClick={() => handleChipClick(item.id)}
+                aria-current={isActive ? "page" : undefined}
+              >
                 {item.label}
               </ChipComp>
             );
           })}
         </ChipsRow>
-      </SidebarSection>
-
-      <SidebarSection>
-        <SidebarTitle>Menú de la Academia</SidebarTitle>
-        <SidebarText>Accesos rápidos a todos los módulos PRO.</SidebarText>
-
-        <ModulesList>
-          <ModuleItem onClick={handleGo("/academia/pro/reglamento")}>
-            <ModuleIcon>📘</ModuleIcon>
-            <ModuleLabel>Reglamento</ModuleLabel>
-          </ModuleItem>
-
-          <ModuleItem onClick={handleGo("/academia/pro/simulador")}>
-            <ModuleIcon>📝</ModuleIcon>
-            <ModuleLabel>Simuladores</ModuleLabel>
-          </ModuleItem>
-
-          <ModuleItem onClick={handleGo("/academia/pro/audios")}>
-            <ModuleIcon>🎧</ModuleIcon>
-            <ModuleLabel>Audios</ModuleLabel>
-          </ModuleItem>
-
-          <ModuleItem onClick={handleGo("/academia/pro/callejero")}>
-            <ModuleIcon>🗺</ModuleIcon>
-            <ModuleLabel>Callejero</ModuleLabel>
-          </ModuleItem>
-
-          <ModuleItem onClick={handleGo("/academia/pro/vias-principales")}>
-            <ModuleIcon>🛣️</ModuleIcon>
-            <ModuleLabel>Vías principales</ModuleLabel>
-          </ModuleItem>
-
-          <ModuleItem onClick={handleGo("/academia/pro/tarifas")}>
-            <ModuleIcon>💶</ModuleIcon>
-            <ModuleLabel>Tarifas</ModuleLabel>
-          </ModuleItem>
-        </ModulesList>
       </SidebarSection>
     </SidebarWrapper>
   );

@@ -295,7 +295,7 @@ export const DrawerContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 22px;
-  padding: 0 36px 32px;
+  padding: 24px 36px 32px;
 `;
 
 export const DrawerClose = styled.div`

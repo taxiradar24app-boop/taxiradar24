@@ -332,35 +332,51 @@ export const ModulesGrid = styled.div`
 `;
 
 export const ModuleCard = styled.button`
+  width: 100%;
+  height: 100%; /* 👈 clave para grid uniforme */
+
   text-align: left;
   border: none;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 18px 18px 16px;
+  border-radius: 18px;
+
   background: radial-gradient(
     circle at top left,
     rgba(15, 23, 42, 0.9),
     rgba(15, 23, 42, 0.98)
   );
-  border-radius: 18px;
-  padding: 16px 16px 14px;
-  cursor: pointer;
+
   border: 1.5px solid rgba(30, 64, 175, 0.5);
+
   box-shadow: 0 18px 45px rgba(15, 23, 42, 0.85);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease,
     border-color 0.18s ease,
     background 0.18s ease;
 
+  /* 👇 esto hace que el contenido se distribuya bien */
+  & > *:last-child {
+    margin-top: auto;
+  }
+
   &:hover {
     transform: translateY(-4px);
+
     border-color: rgba(74, 222, 128, 0.8);
+
     background: radial-gradient(
       circle at top left,
       rgba(74, 222, 128, 0.12),
       rgba(15, 23, 42, 0.98)
     );
+
     box-shadow: 0 26px 60px rgba(15, 23, 42, 0.95);
   }
 
@@ -368,7 +384,6 @@ export const ModuleCard = styled.button`
     transform: translateY(-1px);
   }
 `;
-
 export const ModuleBadge = styled.span`
   display: inline-flex;
   align-items: center;
@@ -382,7 +397,7 @@ export const ModuleBadge = styled.span`
 `;
 
 export const ModuleTitle = styled.h3`
-  font-size: 1.05rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: ${({ theme }) => getColor(theme, "colors.yellow", "#ffffff")};
 `;

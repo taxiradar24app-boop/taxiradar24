@@ -54,8 +54,8 @@ const MODULES = [
   },
   {
     id: "audios",
-    badge: "🎧 AudioLectura",
-    title: "Audios guiados completos",
+    badge: " AudioLectura",
+    title: "🎧 Audios guiados completos",
     description:
       "Escucha el Reglamento mientras conduces o descansas. Ideal para memorizar.",
     path: "/academia/pro/audios",
@@ -63,8 +63,8 @@ const MODULES = [
   },
   {
     id: "simulador",
-    badge: "📝 Simulador examen",
-    title: "Simuladores oficiales",
+    badge: "Simulador examen",
+    title: "📝 Simuladores oficiales",
     description:
       "Simulaciones reales de examen con cronómetro y corrección inmediata.",
     path: "/academia/pro/simulador",
@@ -72,8 +72,8 @@ const MODULES = [
   },
   {
     id: "callejero",
-    badge: "🗺️ Callejero Palma",
-    title: "Ejercicios: 10 calles en 10 minutos",
+    badge: " Callejero Palma",
+    title: "🗺️ Ejercicios: 10 calles en 10 minutos",
     description:
       "Rutas, zonas y ejercicios interactivos para dominar el callejero de Palma.",
     path: "/academia/pro/callejero",
@@ -82,7 +82,7 @@ const MODULES = [
   {
     id: "vias-principales",
     badge: "Sitios claves de Palma",
-    title: "Vías principales y Sitios claves de Palma",
+    title: "🧭 Vías principales y Sitios claves de Palma",
     description:
       "Aprende a identificar, ubicar y relacionar las principales avenidas y calles clave del municipio.",
     path: "/academia/pro/vias-principales",
@@ -92,7 +92,7 @@ const MODULES = [
     id: "tarifas",
     badge: "Tarifas oficiales",
     title:
-      "Tarifas del servicio de transporte urbano de viajeros en taxi, de Palma.",
+      "💶 Tarifas del servicio de transporte urbano de viajeros.",
     description:
       "Aprende a aplicar tarifas, suplementos y casos especiales sin dudas.",
     path: "/academia/pro/tarifas",

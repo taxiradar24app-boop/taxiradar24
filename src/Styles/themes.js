@@ -199,6 +199,7 @@ export const darkTheme = {
   border: "rgba(255,255,255,0.07)",
   card: "#13263f",
   cardAlt: "#0f1e34",
+  green: "#10a37f",
   text: "#e8edf3",
   textSoft: "#b7c3d0",
   textMuted: "#8fa1b6",

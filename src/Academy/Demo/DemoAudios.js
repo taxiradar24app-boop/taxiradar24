@@ -42,7 +42,7 @@ export default function DemoAudios() {
 
         <AudioGrid>
           {AUDIO_LIST.map((audio, index) => {
-            const isUnlocked = index < 2;
+            const isUnlocked = index < 3;
             const src = isUnlocked ? buildDemoAudioUrl(audio.key) : "";
 
             return (

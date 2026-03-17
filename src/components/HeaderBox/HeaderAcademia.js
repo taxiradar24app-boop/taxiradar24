@@ -151,7 +151,7 @@ export default function HeaderAcademia({ withSafeTop = true }) {
       <HeaderWrapper $withSafeTop={withSafeTop}>
         <HeaderInner>
           <Logo onClick={() => go(isProSub ? "/academia/pro" : "/academia/demo")}>
-            {isProSub ? "PRO" : "DEMO"}
+            {isProSub ? "Home/PRO" : "Home/DEMO"}
           </Logo>
 
           <Nav>
@@ -213,7 +213,7 @@ export default function HeaderAcademia({ withSafeTop = true }) {
         >
           ✕
         </DrawerClose>
-
+              <DrawerDivider />
         <DrawerContent>
           {user && (
             <>
@@ -256,6 +256,7 @@ export default function HeaderAcademia({ withSafeTop = true }) {
             <>
               <DrawerDivider />
               <NavItem onClick={handleLogout}>Cerrar sesión</NavItem>
+                <DrawerDivider />
             </>
           )}
         </DrawerContent>
