@@ -1,15 +1,12 @@
 // ======================================================================
-// 📄 DemoReglamentoArticulo
-// 👉 Visualmente IDÉNTICO a PRO
-// 👉 Usa EXACTAMENTE los mismos estilos que PRO
-// 👉 Sin Sidebar, sin Quiz
-// 👉 CTA PRO al final
+// 📄 DemoReglamentoArticulo (FIX)
 // ======================================================================
 
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import articulosContenido from "@/Academy/Pro/ReglamentoOficial/data/articulos/articulosContenido";
+import SidebarDemoAcademia from "@/Academy/componentsAcademy/SidebarDemoAcademia";
 
 import {
   Page,
@@ -24,14 +21,35 @@ import {
   Divider,
 } from "@/Academy/Pro/ReglamentoOficial/ReglamentoArticuloStyle";
 
+import styled from "styled-components";
+
 // ======================================================
-// 🔒 MÓDULOS PERMITIDOS EN DEMO
+// 🔥 BOTÓN PRO (SIN DEPENDENCIAS)
+// ======================================================
+
+const SecondaryButton = styled.button`
+  margin-top: 16px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid #10a37f;
+  background: transparent;
+  color: #10a37f;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  &:hover {
+    background: rgba(16, 163, 127, 0.1);
+    transform: translateY(-1px);
+  }
+`;
+
 // ======================================================
 
 const DEMO_ALLOWED = ["art_1_3", "art_4_9", "art_10_15"];
 
 // ======================================================
-// 🔧 UTILIDADES DE TEXTO
+// UTILIDADES
 // ======================================================
 
 function parseBold(text) {
@@ -60,8 +78,6 @@ function parseMarkdown(mdText) {
     .replace(/\n-\s*/g, "<br/>• ");
 }
 
-// ======================================================
-// 🧠 BLOQUE DE TEXTO EXPANDIBLE
 // ======================================================
 
 function ExpandableText({ html, maxChars = 600 }) {
@@ -92,7 +108,6 @@ function ExpandableText({ html, maxChars = 600 }) {
           cursor: "pointer",
           color: "#10a37f",
           fontWeight: 600,
-          fontSize: "0.95rem",
         }}
       >
         {expanded ? "Ocultar texto completo" : "… seguir leyendo"}
@@ -102,12 +117,17 @@ function ExpandableText({ html, maxChars = 600 }) {
 }
 
 // ======================================================
-// 📘 COMPONENTE PRINCIPAL
+// COMPONENTE
 // ======================================================
 
 export default function DemoReglamentoArticulo() {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  // ✅ ahora sí está en el lugar correcto
+  const goAcademyPro = () => {
+    navigate("/academia/upgrade");
+  };
 
   useEffect(() => {
     if (!DEMO_ALLOWED.includes(id)) {
@@ -121,10 +141,12 @@ export default function DemoReglamentoArticulo() {
   return (
     <Page>
       <Layout>
+        <SidebarDemoAcademia />
+
         <MainColumn>
           <Title>{articulo.title}</Title>
 
-          {/* INTRODUCCIÓN */}
+          {/* INTRO */}
           {articulo.introduccion && (
             <Section>
               <SectionTitle>Introducción</SectionTitle>
@@ -136,7 +158,7 @@ export default function DemoReglamentoArticulo() {
             </Section>
           )}
 
-          {/* PUNTOS CLAVE */}
+          {/* PUNTOS */}
           {articulo.puntosClave?.length > 0 && (
             <Section>
               <SectionTitle>Puntos clave</SectionTitle>
@@ -160,29 +182,19 @@ export default function DemoReglamentoArticulo() {
 
           <Divider />
 
-          {/* CTA DEMO */}
+          {/* CTA */}
           <Section style={{ textAlign: "center" }}>
             <Paragraph>
-              🔒 Continúa el Reglamento completo en la versión PRO.
+              🔒 La evaluación completa está disponible en la versión PRO.
             </Paragraph>
 
             <Paragraph01>
-              Cada sección cuenta con un examen de 5 preguntas que pondrán a
-              prueba tu progreso.
+              Cuestionarios, progreso y evaluación real por bloques.
             </Paragraph01>
 
-            <span
-              onClick={() => navigate("/academia/upgrade")}
-              style={{
-                display: "inline-block",
-                marginTop: "12px",
-                color: "#10a37f",
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
+            <SecondaryButton onClick={goAcademyPro}>
               Desbloquear Academia PRO
-            </span>
+            </SecondaryButton>
           </Section>
         </MainColumn>
       </Layout>

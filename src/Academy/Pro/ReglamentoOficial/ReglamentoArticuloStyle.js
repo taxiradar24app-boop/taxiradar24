@@ -1,9 +1,9 @@
 // ======================================================================
 // 📘 ReglamentoArticuloStyle.js — PRO | TAXIRADAR24 ENTERPRISE
-// ✅ Fijo en línea darkTheme
-// ✅ Sidebar a la derecha en web / arriba en móvil
-// ✅ Colores alineados con baseColors + academy palette
-// ✅ Sin botón Sol/Luna
+// ✅ Dark fijo
+// ✅ Sidebar derecha en PRO (web)
+// ✅ Sidebar izquierda en DEMO (web)
+// ✅ Sidebar arriba en móvil
 // ======================================================================
 
 import styled from "styled-components";
@@ -36,16 +36,17 @@ export const Layout = styled.div`
   padding: 0 24px;
   box-sizing: border-box;
 
-  @media (min-width: 993px) {
-    flex-direction: row-reverse;
-  }
+  /* WEB: contenido izquierda + sidebar derecha */
+  flex-direction: row-reverse;
 
   @media (max-width: 992px) {
+    /* MÓVIL: sidebar arriba + contenido abajo */
     flex-direction: column;
     gap: 18px;
     padding: 0 14px;
   }
 `;
+
 /* ============================================================
    🟦 COLUMNA PRINCIPAL
 ============================================================ */
@@ -54,8 +55,7 @@ export const MainColumn = styled.div`
   min-width: 0;
   max-width: 820px;
 
-  background: ${({ theme }) =>
-    theme.colors?.academy?.surface || "#0e1a33"};
+  background: ${({ theme }) => theme.colors?.academy?.surface || "#0e1a33"};
   border-radius: 20px;
   border: 1px solid
     ${({ theme }) => theme.pro.border || "rgba(255,255,255,0.07)"};
@@ -71,6 +71,7 @@ export const MainColumn = styled.div`
     border-radius: 18px;
   }
 `;
+
 /* ============================================================
    🟦 TIPOGRAFÍA
 ============================================================ */
@@ -93,8 +94,7 @@ export const Section = styled.section`
 `;
 
 export const SectionTitle = styled.h2`
-  color: ${({ theme }) =>
-    theme.colors?.academy?.textMain || "#e6edf7"};
+  color: ${({ theme }) => theme.colors?.academy?.textMain || "#e6edf7"};
   font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   line-height: ${({ theme }) => theme.lineHeights.title};
@@ -103,8 +103,7 @@ export const SectionTitle = styled.h2`
 `;
 
 export const Paragraph = styled.p`
-  color: ${({ theme }) =>
-    theme.colors?.academy?.textSoft || "#b9c3d6"};
+  color: ${({ theme }) => theme.colors?.academy?.textSoft || "#b9c3d6"};
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.regular};
   line-height: ${({ theme }) => theme.lineHeights.body};
@@ -112,8 +111,7 @@ export const Paragraph = styled.p`
   margin-bottom: 14px;
 
   strong {
-    color: ${({ theme }) =>
-      theme.colors?.academy?.textMain || "#e6edf7"};
+    color: ${({ theme }) => theme.colors?.academy?.textMain || "#e6edf7"};
     font-weight: ${({ theme }) => theme.fontWeights.semibold};
   }
 
@@ -140,8 +138,7 @@ export const List = styled.ul`
   padding-left: 10px;
 
   li {
-    color: ${({ theme }) =>
-      theme.colors?.academy?.textSoft || "#b9c3d6"};
+    color: ${({ theme }) => theme.colors?.academy?.textSoft || "#b9c3d6"};
     font-size: ${({ theme }) => theme.fontSizes.md};
     font-weight: ${({ theme }) => theme.fontWeights.regular};
     line-height: ${({ theme }) => theme.lineHeights.body};
@@ -175,43 +172,39 @@ export const Divider = styled.div`
    🟦 BLOQUES DESTACADOS
 ============================================================ */
 export const ExampleBox = styled.div`
-  background: ${({ theme }) =>
-    theme.colors?.academy?.surfaceSoft || "#132447"};
+  background: ${({ theme }) => theme.colors?.academy?.surfaceSoft || "#132447"};
   padding: 18px 20px;
   border-radius: 14px;
-  border: 1px solid ${({ theme }) => theme.pro.border || "rgba(255,255,255,0.07)"};
-  color: ${({ theme }) =>
-    theme.colors?.academy?.textMain || "#e6edf7"};
+  border: 1px solid
+    ${({ theme }) => theme.pro.border || "rgba(255,255,255,0.07)"};
+  color: ${({ theme }) => theme.colors?.academy?.textMain || "#e6edf7"};
   margin-bottom: 14px;
   font-size: ${({ theme }) => theme.fontSizes.md};
   line-height: ${({ theme }) => theme.lineHeights.body};
   letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 
   strong {
-    color: ${({ theme }) =>
-      theme.colors?.academy?.textMain || "#e6edf7"};
+    color: ${({ theme }) => theme.colors?.academy?.textMain || "#e6edf7"};
     font-weight: ${({ theme }) => theme.fontWeights.semibold};
   }
 
   p {
     margin: 8px 0 0 0;
-    color: ${({ theme }) =>
-      theme.colors?.academy?.textSoft || "#b9c3d6"};
+    color: ${({ theme }) => theme.colors?.academy?.textSoft || "#b9c3d6"};
   }
 `;
 
 export const FAQItem = styled.div`
-  background: ${({ theme }) =>
-    theme.colors?.academy?.surfaceSoft || "#132447"};
+  background: ${({ theme }) => theme.colors?.academy?.surfaceSoft || "#132447"};
   padding: 18px 20px;
   border-radius: 14px;
-  border: 1px solid ${({ theme }) => theme.pro.border || "rgba(255,255,255,0.07)"};
+  border: 1px solid
+    ${({ theme }) => theme.pro.border || "rgba(255,255,255,0.07)"};
   margin-bottom: 14px;
 
   h4 {
     margin: 0 0 8px 0;
-    color: ${({ theme }) =>
-      theme.colors?.academy?.textMain || "#e6edf7"};
+    color: ${({ theme }) => theme.colors?.academy?.textMain || "#e6edf7"};
     font-size: ${({ theme }) => theme.fontSizes.md};
     font-weight: ${({ theme }) => theme.fontWeights.semibold};
     line-height: ${({ theme }) => theme.lineHeights.title};
@@ -220,8 +213,7 @@ export const FAQItem = styled.div`
 
   p {
     margin: 0;
-    color: ${({ theme }) =>
-      theme.colors?.academy?.textSoft || "#b9c3d6"};
+    color: ${({ theme }) => theme.colors?.academy?.textSoft || "#b9c3d6"};
     font-size: ${({ theme }) => theme.fontSizes.md};
     font-weight: ${({ theme }) => theme.fontWeights.regular};
     line-height: ${({ theme }) => theme.lineHeights.body};

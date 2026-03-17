@@ -1,15 +1,9 @@
 // src/Academy/Pro/ReglamentoOficial/ReglamentoArticulo.js
-// ======================================================================
-// 📘 ReglamentoArticulo.js — ENTERPRISE FINAL
-// ✅ Sin botón Sol/Luna
-// ✅ Sidebar arriba en móvil (controlado por estilos)
-// ✅ Respeta guardado de progreso y lógica actual
-// ======================================================================
-
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import SidebarProAcademia from "./../../componentsAcademy/SidebarProAcademia";
+import SidebarDemoAcademia from "./../../componentsAcademy/SidebarDemoAcademia";
 import articulosContenido from "./data/articulos/articulosContenido";
 import saveReglamentoArticulo from "./saveReglamentoArticulo";
 
@@ -30,10 +24,6 @@ import {
 import ReglamentoQuiz from "./ReglamentoQuiz";
 import ScrollBoton from "@/components/Buttons/ScrollBoton";
 import { useAuth } from "./../../../navigator/sections/auth/useAuth";
-
-// ======================================================
-// 🔧 UTILIDADES DE TEXTO
-// ======================================================
 
 function parseBold(text) {
   if (!text) return "";
@@ -60,10 +50,6 @@ function parseMarkdown(mdText) {
     .replace(/\n\n/g, "<br/><br/>")
     .replace(/\n-\s*/g, "<br/>• ");
 }
-
-// ======================================================
-// 🧠 BLOQUE DE TEXTO EXPANDIBLE
-// ======================================================
 
 function ExpandableText({ html, maxChars = 700 }) {
   const [expanded, setExpanded] = useState(false);
@@ -102,11 +88,6 @@ function ExpandableText({ html, maxChars = 700 }) {
   );
 }
 
-// ======================================================
-// 📘 COMPONENTE PRINCIPAL
-// mode = "pro" | "demo"
-// ======================================================
-
 export default function ReglamentoArticulo({ mode = "pro" }) {
   const { id } = useParams();
   const isDemo = mode === "demo";
@@ -118,7 +99,9 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
     return (
       <Page>
         <Layout>
-          {!isDemo && (
+          {isDemo ? (
+            <SidebarDemoAcademia currentArticleId={id} />
+          ) : (
             <SidebarProAcademia
               currentArticleId={id}
               progressData={progressData}
@@ -141,7 +124,9 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
   return (
     <Page>
       <Layout>
-        {!isDemo && (
+        {isDemo ? (
+          <SidebarDemoAcademia currentArticleId={id} />
+        ) : (
           <SidebarProAcademia
             currentArticleId={id}
             progressData={progressData}
@@ -187,7 +172,6 @@ export default function ReglamentoArticulo({ mode = "pro" }) {
           {articulo.ejemplos?.length > 0 && (
             <Section>
               <SectionTitle>Ejemplos prácticos</SectionTitle>
-
               {articulo.ejemplos.map((ej, i) => (
                 <ExampleBox key={i}>
                   {typeof ej === "string" && <p>{ej}</p>}

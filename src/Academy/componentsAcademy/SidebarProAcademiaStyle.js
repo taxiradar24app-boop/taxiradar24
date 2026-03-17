@@ -1,10 +1,10 @@
 // src/Academy/componentsAcademy/SidebarProAcademiaStyle.js
 // ======================================================================
 // 📚 SidebarProAcademiaStyle.js — PRO | TAXIRADAR24 ENTERPRISE
-// ✅ Fijo en línea darkTheme
-// ✅ Sidebar arriba en móvil
-// ✅ Chips coherentes con la paleta base global
-// ✅ Sin depender del botón Sol/Luna
+// ✅ Dark fijo
+// ✅ Sidebar izquierda o derecha según Layout
+// ✅ En móvil siempre arriba
+// ✅ PRO + DEMO visual unificados
 // ======================================================================
 
 import styled from "styled-components";
@@ -15,6 +15,7 @@ import styled from "styled-components";
 export const SidebarWrapper = styled.aside`
   width: 28%;
   max-width: 340px;
+  flex-shrink: 0;
 
   background: rgba(14, 26, 51, 0.72);
   backdrop-filter: blur(10px);
@@ -36,7 +37,6 @@ export const SidebarWrapper = styled.aside`
     order: -1;
     padding: 18px 14px;
     border-radius: 18px;
-
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
@@ -55,17 +55,16 @@ export const SidebarSection = styled.div`
 
 export const SidebarTitle = styled.h3`
   margin: 0 0 10px 0;
-
   color: ${({ theme }) =>
     theme.colors?.green ||
     theme.colors?.academy?.accentAcademy ||
     "#10a37f"};
-
   font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   line-height: ${({ theme }) => theme.lineHeights.title};
   letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
 `;
+
 export const SidebarText = styled.p`
   margin: 0 0 16px 0;
   color: ${({ theme }) =>
@@ -93,13 +92,20 @@ export const ChipsRow = styled.div`
 
 export const Chip = styled.button`
   padding: 9px 14px;
-  background: ${({ theme }) =>
-    theme.colors?.academy?.surfaceSoft || theme.pro.cardAlt || "#132447"};
+  background: ${({ theme, $isCurrent }) =>
+    $isCurrent
+      ? theme.colors?.green || "#10a37f"
+      : theme.colors?.academy?.surfaceSoft || theme.pro.cardAlt || "#132447"};
   border: 1px solid
-    ${({ theme }) => theme.pro.border || "rgba(255,255,255,0.07)"};
+    ${({ theme, $isCurrent }) =>
+      $isCurrent
+        ? theme.colors?.green || "#10a37f"
+        : theme.pro.border || "rgba(255,255,255,0.07)"};
   border-radius: 10px;
-  color: ${({ theme }) =>
-    theme.colors?.academy?.textMain || theme.pro.text || "#e6edf7"};
+  color: ${({ theme, $isCurrent }) =>
+    $isCurrent
+      ? theme.colors?.white || "#ffffff"
+      : theme.colors?.academy?.textMain || theme.pro.text || "#e6edf7"};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: 1.2;
@@ -112,11 +118,28 @@ export const Chip = styled.button`
     transform 0.18s ease,
     box-shadow 0.25s ease;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: ${({ theme }) =>
       theme.colors?.academy?.surfaceLight || "#1a2f55"};
     border-color: rgba(44, 227, 181, 0.22);
     transform: translateY(-1px);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 1;
+  }
+
+  &:disabled:hover {
+    transform: none;
+    background: ${({ theme, $isCurrent }) =>
+      $isCurrent
+        ? theme.colors?.green || "#10a37f"
+        : theme.colors?.academy?.surfaceSoft || "#132447"};
+    border-color: ${({ theme, $isCurrent }) =>
+      $isCurrent
+        ? theme.colors?.green || "#10a37f"
+        : theme.pro.border || "rgba(255,255,255,0.07)"};
   }
 `;
 
@@ -196,62 +219,105 @@ export const ChipRetry = styled(Chip)`
 `;
 
 /* ============================================================
-   🟦 MENÚ DE MÓDULOS
+   🟦 DEMO PREVIEW
 ============================================================ */
-export const ModulesList = styled.div`
-  margin-top: 10px;
+export const DemoDivider = styled.div`
+  width: 100%;
+  height: 1px;
+  margin: 18px 0 22px;
+  background: ${({ theme }) => theme.pro.border || "rgba(255,255,255,0.07)"};
 `;
 
-export const ModuleItem = styled.button`
-  width: 100%;
-  background: ${({ theme }) =>
-    theme.colors?.academy?.surfaceSoft || theme.pro.cardAlt || "#132447"};
-  border: 1px solid
-    ${({ theme }) => theme.pro.border || "rgba(255,255,255,0.07)"};
-  padding: 12px 14px;
-  border-radius: 12px;
-  margin-bottom: 10px;
+export const DemoBox = styled.div`
   display: flex;
-  align-items: center;
-  gap: 12px;
-  color: ${({ theme }) =>
-    theme.colors?.academy?.textMain || theme.pro.text || "#e6edf7"};
+  flex-direction: column;
+  gap: 14px;
+`;
+
+export const DemoTitle = styled.h4`
+  margin: 0;
+  color: ${({ theme }) => theme.colors?.academy?.textMain || "#e6edf7"};
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  text-align: center;
+`;
+
+export const DemoCopy = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.colors?.academy?.textSoft || "#b9c3d6"};
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  text-align: center;
+`;
+
+export const FeatureList = styled.ul`
+  margin: 0;
+  padding-left: 18px;
+
+  li {
+    color: ${({ theme }) => theme.colors?.academy?.textSoft || "#b9c3d6"};
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    line-height: ${({ theme }) => theme.lineHeights.body};
+    margin-bottom: 8px;
+  }
+
+  li::marker {
+    color: ${({ theme }) => theme.colors?.green || "#10a37f"};
+  }
+`;
+
+export const PreviewRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+`;
+
+export const PreviewPill = styled.span`
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  border: 1px solid ${({ theme }) => theme.pro.border || "rgba(255,255,255,0.07)"};
+  background: ${({ theme }) => theme.colors?.academy?.surfaceSoft || "#132447"};
+  color: ${({ theme }) => theme.colors?.academy?.textMain || "#e6edf7"};
+`;
+
+export const PreviewPillProgress = styled(PreviewPill)`
+  background: rgba(255, 200, 61, 0.08);
+  border-color: rgba(255, 200, 61, 0.34);
+  color: ${({ theme }) => theme.colors?.yellow || "#FFC83D"};
+`;
+
+export const PreviewPillDone = styled(PreviewPill)`
+  background: rgba(16, 163, 127, 0.12);
+  border-color: rgba(44, 227, 181, 0.4);
+  color: ${({ theme }) => theme.colors?.greenLight || "#2ce3b5"};
+`;
+
+export const DemoButton = styled.button`
+  width: 100%;
+  border: none;
   cursor: pointer;
-  transition:
-    background 0.25s ease,
-    border-color 0.25s ease,
-    transform 0.18s ease;
+  border-radius: 999px;
+  padding: 16px 20px;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors?.blueDeep || "#0A1528"};
+  background: linear-gradient(
+    135deg,
+    ${({ theme }) => theme.colors?.greeLogo || "#58E63D"},
+    ${({ theme }) => theme.colors?.green || "#10a37f"}
+  );
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.35);
+  transition: transform 0.18s ease, filter 0.18s ease;
 
   &:hover {
-    background: ${({ theme }) =>
-      theme.colors?.academy?.surfaceLight || "#1a2f55"};
-    border-color: rgba(44, 227, 181, 0.18);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    filter: brightness(1.04);
   }
 
-  &:last-child {
-    margin-bottom: 0;
+  &:active {
+    transform: translateY(0);
   }
-`;
-
-export const ModuleIcon = styled.div`
-  width: 30px;
-  height: 30px;
-  background: rgba(16, 163, 127, 0.12);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.colors?.greenLight || "#2ce3b5"};
-  font-size: 1.05rem;
-  flex-shrink: 0;
-`;
-
-export const ModuleLabel = styled.span`
-  color: ${({ theme }) =>
-    theme.colors?.academy?.textMain || theme.pro.text || "#e6edf7"};
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
-  line-height: ${({ theme }) => theme.lineHeights.title};
-  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
