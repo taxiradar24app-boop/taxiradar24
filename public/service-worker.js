@@ -1,4 +1,4 @@
-const CACHE_NAME = "taxiradar24-cache-v21";
+const CACHE_NAME = "taxiradar24-cache-v28";
 
 const urlsToCache = [
   "/",
@@ -15,7 +15,7 @@ const urlsToCache = [
 ];
 
 self.addEventListener("install", (event) => {
-  console.log("[SW] Instalando v21");
+  console.log("[SW] Instalando v28");
 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
@@ -25,7 +25,7 @@ self.addEventListener("install", (event) => {
 });
 
 self.addEventListener("activate", (event) => {
-  console.log("[SW] Activado v21");
+  console.log("[SW] Activado v28");
 
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -58,8 +58,11 @@ self.addEventListener("fetch", (event) => {
         return fetch(event.request).then((response) => {
           if (response && response.status === 200) {
             const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, clone);
+            });
           }
+
           return response;
         });
       })
@@ -67,17 +70,28 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (url.pathname === "/" || url.pathname === "/index.html" || url.pathname.endsWith(".json")) {
+  if (
+    url.pathname === "/" ||
+    url.pathname === "/index.html" ||
+    url.pathname.endsWith(".json")
+  ) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
           if (response && response.status === 200) {
             const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, clone);
+            });
           }
+
           return response;
         })
-        .catch(() => caches.match(event.request).then((cached) => cached || caches.match("/index.html")))
+        .catch(() =>
+          caches
+            .match(event.request)
+            .then((cached) => cached || caches.match("/index.html"))
+        )
     );
   }
 });

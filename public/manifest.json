@@ -1,13 +1,13 @@
 {
-  "name": "TaxiRadar24 Academy",
+  "name": "TaxiRadar24 Academia",
   "short_name": "TaxiRadar24",
-  "description": "Academia profesional para preparar el Permiso Municipal de Taxista en Palma de Mallorca. Estudia reglamento, callejero, audios explicativos y practica con simulador de examen.",
+  "description": "Academia y herramientas digitales para taxistas de Palma.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#081325",
   "theme_color": "#081325",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "/assets/logo192.png",
@@ -25,13 +25,7 @@
       "src": "/assets/maskable-icon.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/assets/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any"
+      "purpose": "maskable any"
     }
   ]
 }
