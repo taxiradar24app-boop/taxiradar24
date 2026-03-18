@@ -187,7 +187,7 @@ export default function AcademiaPro() {
         <TopBar>
           <TopBarLeft>
             <Badge>Academia TaxiRadar24 PRO</Badge>
-            <TopTitle>Tu panel de estudio oficial</TopTitle>
+          
           </TopBarLeft>
 
           <TopRight />
@@ -204,22 +204,7 @@ export default function AcademiaPro() {
           <StatsRow />
         </GreetingSection>
 
-        {/* PROGRESS */}
-        <ProgressSection>
-          <ProgressHeader>
-            <SectionTitle>Tu progreso general</SectionTitle>
-
-            <ProgressText>
-              Preparación global:
-              <strong> {overall.level}</strong> ·{" "}
-              <strong>{overallProgress}%</strong>
-            </ProgressText>
-          </ProgressHeader>
-
-          <ProgressBarTrack>
-            <ProgressBarFill style={{ width: `${overallProgress}%` }} />
-          </ProgressBarTrack>
-        </ProgressSection>
+    
 
         {/* MODULES */}
         <ModulesSection>
@@ -254,6 +239,22 @@ export default function AcademiaPro() {
             ))}
           </ModulesGrid>
         </ModulesSection>
+            {/* PROGRESS */}
+        <ProgressSection>
+          <ProgressHeader>
+            <SectionTitle>Tu progreso general</SectionTitle>
+
+            <ProgressText>
+              Preparación global:
+              <strong> {overall.level}</strong> ·{" "}
+              <strong>{overallProgress}%</strong>
+            </ProgressText>
+          </ProgressHeader>
+
+          <ProgressBarTrack>
+            <ProgressBarFill style={{ width: `${overallProgress}%` }} />
+          </ProgressBarTrack>
+        </ProgressSection>
       </InnerWrapper>
     </PageWrapper>
   );
