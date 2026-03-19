@@ -2,6 +2,16 @@ import React from "react";
 import {
   PageWrapper,
   PageFrame,
+  IntroSection,
+  IntroBadge,
+  IntroTitle,
+  IntroSubtitle,
+  IntroStepsBox,
+  IntroStepsTitle,
+  IntroStepsList,
+  IntroStepItem,
+  StepNumber,
+  BenefitText,
   MapWrapper,
   ContentGrid,
   ListColumn,
@@ -12,7 +22,6 @@ import {
   SidebarTitle,
   SidebarItem,
 } from "./ViasPrincipalesStyle";
-
 
 import MapView from "./components/MapView";
 import useViasMap from "./hooks/useViasMap";
@@ -43,10 +52,48 @@ const ViasPrincipalesScreen = () => {
 
   return (
     <PageWrapper>
-
       <PageFrame>
+        <IntroSection>
+          <IntroBadge>Mapa interactivo de estudio</IntroBadge>
 
-        {/* MAPA */}
+          <IntroTitle>Domina los puntos clave de Palma en el mapa</IntroTitle>
+
+          <IntroSubtitle>
+            Aprende a ubicar centros oficiales, hospitales, hoteles y zonas
+            importantes como te lo pedirán en el examen del permiso municipal.
+          </IntroSubtitle>
+
+          <IntroStepsBox>
+            <IntroStepsTitle>Cómo funciona</IntroStepsTitle>
+
+            <IntroStepsList>
+              <IntroStepItem>
+                <StepNumber>1</StepNumber>
+                <span>Selecciona una categoría en el panel derecho</span>
+              </IntroStepItem>
+
+              <IntroStepItem>
+                <StepNumber>2</StepNumber>
+                <span>Explora los puntos directamente en el mapa</span>
+              </IntroStepItem>
+
+              <IntroStepItem>
+                <StepNumber>3</StepNumber>
+                <span>
+                  Haz clic en cualquier lugar para centrarlo y memorizar su
+                  ubicación
+                </span>
+              </IntroStepItem>
+            </IntroStepsList>
+          </IntroStepsBox>
+
+          <BenefitText>
+            Este entrenamiento te ayudará a responder preguntas reales del
+            examen y a orientarte rápidamente en la ciudad como un taxista
+            profesional.
+          </BenefitText>
+        </IntroSection>
+
         <MapWrapper>
           <MapView
             center={mapCenter}
@@ -57,7 +104,6 @@ const ViasPrincipalesScreen = () => {
           />
         </MapWrapper>
 
-        {/* CONTENIDO */}
         <ContentGrid>
           <ListColumn>
             <SectionTitle>

@@ -32,7 +32,10 @@ import {
   SidebarText,
   SidebarList,
   DifficultyPill,
-  TimeText
+  TimeText,
+  OfficialDocs,
+  DocsLabel,
+  DocLink
 } from "./ReglamentoMenuStyle";
 
 
@@ -53,8 +56,6 @@ export default function ReglamentoMenu() {
     <ThemeProvider theme={themes.dark}>
       <Page>
 
-      
-
         <HeaderDemo>
           <TagDemo>CURSO OFICIAL</TagDemo>
 
@@ -68,6 +69,27 @@ export default function ReglamentoMenu() {
           <SubInfo>
             15 bloques completos • 82 artículos • Metodología guiada
           </SubInfo>
+
+          <OfficialDocs>
+          <DocsLabel>Documentación oficial:</DocsLabel>
+
+          <DocLink
+            href="https://mobipalma.mobi/wp-content/uploads/2026/02/GUIA-INFORMATIVA-SOBRE-LA-OBTENCION-DEL-PERMISO-MUNICIPAL-DE-TAXISTA-2025-Version-1.3.-del-25.02.26.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Guía informativa
+          </DocLink>
+             -/- 
+          <DocLink
+            href="https://mobipalma.mobi/wp-content/uploads/2025/10/11212-1.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+           Decreto regulador
+          </DocLink>
+          </OfficialDocs>
+          
         </HeaderDemo>
 
         <GridLayout>

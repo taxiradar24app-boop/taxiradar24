@@ -1,21 +1,20 @@
-const CACHE_NAME = "taxiradar24-cache-v28";
+const CACHE_NAME = "taxiradar24-cache-v29";
 
 const urlsToCache = [
   "/",
   "/index.html",
   "/manifest.json",
-  "/favicon.ico",
+  "/assets/favicon.ico",
   "/assets/favicon-16x16.png",
   "/assets/favicon-32x32.png",
-  "/assets/favicon-48x48.png",
   "/assets/logo192.png",
   "/assets/logo512.png",
   "/assets/maskable-icon.png",
-  "/assets/apple-touch-icon.png"
+  "/assets/apple-touch-icon.v2.png"
 ];
 
 self.addEventListener("install", (event) => {
-  console.log("[SW] Instalando v28");
+  console.log("[SW] Instalando v29");
 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
@@ -25,7 +24,7 @@ self.addEventListener("install", (event) => {
 });
 
 self.addEventListener("activate", (event) => {
-  console.log("[SW] Activado v28");
+  console.log("[SW] Activado v29");
 
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -50,7 +49,7 @@ self.addEventListener("fetch", (event) => {
 
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
 
-  if (url.pathname.startsWith("/assets/") || url.pathname === "/favicon.ico") {
+  if (url.pathname.startsWith("/assets/")) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         if (cached) return cached;
@@ -62,7 +61,6 @@ self.addEventListener("fetch", (event) => {
               cache.put(event.request, clone);
             });
           }
-
           return response;
         });
       })
@@ -84,7 +82,6 @@ self.addEventListener("fetch", (event) => {
               cache.put(event.request, clone);
             });
           }
-
           return response;
         })
         .catch(() =>

@@ -264,3 +264,30 @@ export const TimeText = styled.span`
   font-weight: 500;
   opacity: 0.9;
 `;
+// ======================================================
+// DOCUMENTACIÓN OFICIAL (NEW)
+// ======================================================
+
+export const OfficialDocs = styled.div`
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.pro.textSoft};
+  opacity: 0.9;
+`;
+
+export const DocsLabel = styled.span`
+  margin-right: 8px;
+  opacity: 0.7;
+`;
+
+export const DocLink = styled.a`
+  color: ${({ theme }) => theme.colors.green};
+  text-decoration: none;
+  font-weight: 600;
+  margin-right: 10px;
+
+  &:hover {
+    text-decoration: underline;
+    opacity: 0.9;
+  }
+`;

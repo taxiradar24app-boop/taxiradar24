@@ -252,3 +252,30 @@ export const SidebarList = styled.ul`
     margin-bottom: 4px;
   }
 `;
+// ======================================================
+// DOCUMENTACIÓN OFICIAL (NEW)
+// ======================================================
+
+export const OfficialDocs = styled.div`
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.pro.textSoft};
+  opacity: 0.9;
+`;
+
+export const DocsLabel = styled.span`
+  margin-right: 8px;
+  opacity: 0.7;
+`;
+
+export const DocLink = styled.a`
+  color: ${({ theme }) => theme.colors.yellow};
+  text-decoration: none;
+  font-weight: 600;
+  margin-right: 10px;
+
+  &:hover {
+    text-decoration: underline;
+    opacity: 0.9;
+  }
+`;
