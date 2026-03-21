@@ -24,7 +24,9 @@ const LayoutWrap = styled.div`
 `;
 
 const Main = styled.main`
-  width: 100%;
+          minHeight: "100vh",
+          width: "100%",
+          paddingBottom: "40px",
 `;
 
 export default function AcademiaDemoLayout() {
