@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-
-import { getAuth } from "./../../services/firebaseConfig";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useAuth } from "./../../context/AuthContext";
 
 const WORKER_URL =
   "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
 
 export default function SuccessPage() {
-  const [params] = useSearchParams();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const { refreshSubscription } = useAuth();
 
-  const [status, setStatus] = useState("Verificando pago...");
+  const [status, setStatus] = useState("Validando tu acceso PRO...");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -23,98 +23,91 @@ export default function SuccessPage() {
       return;
     }
 
-    let timeoutRef = null;
-    let didVerify = false;
-    let unsubscribe = null;
+    const auth = getAuth();
     const controller = new AbortController();
+    let timeoutRef = null;
+    let handled = false;
 
-    async function initAuthListener() {
+    async function verifyNow(user) {
+      if (handled) return;
+      handled = true;
+
       try {
-        const auth = await getAuth();
+        setError("");
+        setStatus("Confirmando el pago con Stripe...");
 
-        unsubscribe = onAuthStateChanged(auth, async (user) => {
-          try {
-            if (didVerify) return;
+        const token = await user.getIdToken(true);
 
-            if (!user) {
-              console.log("[Stripe Verify] esperando sesión Firebase...");
-              return;
-            }
-
-            didVerify = true;
-            setError("");
-            setStatus("Verificando sesión con Stripe...");
-
-            const token = await user.getIdToken(true);
-
-            const url = `${WORKER_URL}/stripe/verify-session?session_id=${encodeURIComponent(
-              sessionId
-            )}`;
-
-            console.log("[Stripe Verify] URL:", url);
-            console.log("[Stripe Verify] UID:", user.uid);
-
-            const response = await fetch(url, {
-              method: "GET",
-              mode: "cors",
-              cache: "no-store",
-              signal: controller.signal,
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
-
-            let data = {};
-            try {
-              data = await response.json();
-            } catch (e) {
-              data = {};
-            }
-
-            if (!response.ok) {
-              const msg =
-                data?.message ||
-                data?.error ||
-                `Error verificando sesión (HTTP ${response.status})`;
-              throw new Error(msg);
-            }
-
-            console.log("[Stripe Verify] OK:", data);
-
-            setStatus("✅ Pago verificado. Activando PRO...");
-
-            timeoutRef = setTimeout(() => {
-              navigate("/perfil/pro-check", { replace: true });
-            }, 900);
-          } catch (err) {
-            if (err?.name === "AbortError") return;
-
-            console.error("[Stripe Verify] ERROR:", err);
-            setStatus("❌ No se pudo verificar el pago");
-            setError(err?.message || "Error inesperado");
+        const response = await fetch(
+          `${WORKER_URL}/stripe/verify-session?session_id=${encodeURIComponent(
+            sessionId
+          )}`,
+          {
+            method: "GET",
+            signal: controller.signal,
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Cache-Control": "no-store",
+            },
           }
-        });
+        );
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          const msg =
+            data?.error ||
+            data?.message ||
+            `Error verificando sesión (HTTP ${response.status})`;
+          throw new Error(msg);
+        }
+
+        if (data?.active || data?.status === "active") {
+          setStatus("✅ Pago confirmado. Activando Academia PRO...");
+
+          await user.getIdToken(true);
+          await refreshSubscription();
+
+          timeoutRef = setTimeout(() => {
+            navigate("/academia/pro", { replace: true });
+          }, 700);
+
+          return;
+        }
+
+        throw new Error("La suscripción no quedó activa.");
       } catch (err) {
-        console.error("[SuccessPage] ERROR initAuthListener:", err);
-        setStatus("❌ No se pudo verificar el pago");
-        setError("No se pudo inicializar la autenticación.");
+        if (err?.name === "AbortError") return;
+
+        console.error("[SuccessPage] verify-session error:", err);
+        setStatus("❌ No se pudo activar la suscripción");
+        setError(err?.message || "Error inesperado al verificar el pago.");
       }
     }
 
-    initAuthListener();
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        setStatus("Recuperando tu sesión...");
+        return;
+      }
+
+      await verifyNow(user);
+    });
 
     return () => {
-      if (unsubscribe) unsubscribe();
+      unsubscribe();
       controller.abort();
       if (timeoutRef) clearTimeout(timeoutRef);
     };
-  }, [params, navigate]);
+  }, [navigate, params, refreshSubscription]);
 
   return (
     <div style={{ padding: 24, color: "#ffffff" }}>
-      <h2>Resultado del pago</h2>
+      <h2>Resultado del pago de la Academia PRO</h2>
       <p>{status}</p>
-      {error && <p style={{ marginTop: 12, color: "#ff6b6b" }}>{error}</p>}
+      {error ? (
+        <p style={{ marginTop: 12, color: "#ff6b6b" }}>{error}</p>
+      ) : null}
     </div>
   );
 }

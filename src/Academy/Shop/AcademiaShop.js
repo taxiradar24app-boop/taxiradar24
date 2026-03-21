@@ -64,7 +64,7 @@ export default function AcademiaShop() {
             </PrimaryButton>
 
             <SecondaryButton onClick={goAcademyPro}>
-              Acceder a versión PRO
+              👉 Continuar tu acceso
             </SecondaryButton>
           </HeroCTA>
         </HeroContent>

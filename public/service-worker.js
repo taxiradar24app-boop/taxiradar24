@@ -1,4 +1,4 @@
-const CACHE_NAME = "taxiradar24-cache-v29";
+const CACHE_NAME = "taxiradar24-cache-v30";
 
 const urlsToCache = [
   "/",
