@@ -1,7 +1,3 @@
-// ===========================================
-// 🌍 AuthContext.js — TaxiRadar24 (Enterprise Lazy)
-// ===========================================
-
 import React, {
   createContext,
   useContext,
@@ -37,9 +33,6 @@ export function AuthProvider({ children }) {
   const { canShowPrompt, promptInstall, setCanShowPrompt } =
     usePWAInstallPrompt();
 
-  // =========================================================
-  // Helpers
-  // =========================================================
   const refreshUserDocs = useCallback(async (u) => {
     if (!u?.uid) return;
 
@@ -55,25 +48,31 @@ export function AuthProvider({ children }) {
     setProgressData(progressSnap.exists() ? progressSnap.data() : null);
   }, []);
 
-  const refreshSubscription = useCallback(async (u) => {
-    if (!u) {
-      setSubscription(null);
-      return;
-    }
+  const refreshSubscription = useCallback(
+    async (uParam) => {
+      const u = uParam || user;
 
-    setSubscriptionLoading(true);
-    try {
-      const sub = await fetchMySubscription(u);
-      setSubscription(sub);
-    } catch (e) {
-      console.error("❌ Error cargando suscripción:", e);
-      setSubscription({ status: "none", plan: null, expires_at: null });
-    } finally {
-      setSubscriptionLoading(false);
-    }
-  }, []);
+      if (!u) {
+        setSubscription(null);
+        return;
+      }
 
-  // ✅ Actualiza el estado local tras verificar/guardar teléfono
+      setSubscriptionLoading(true);
+      try {
+        const sub = await fetchMySubscription(u);
+        setSubscription(sub);
+      } catch (e) {
+        console.error("❌ Error cargando suscripción:", e);
+        setSubscription(
+          (prev) => prev || { status: "none", active: false, plan: null }
+        );
+      } finally {
+        setSubscriptionLoading(false);
+      }
+    },
+    [user]
+  );
+
   const markPhoneSaved = useCallback((phoneNumber) => {
     setUserData((prev) => ({
       ...(prev || {}),
@@ -96,9 +95,6 @@ export function AuthProvider({ children }) {
     }));
   }, []);
 
-  // =========================================================
-  // 🔐 Auth state (Lazy)
-  // =========================================================
   useEffect(() => {
     let unsub;
 
@@ -132,9 +128,6 @@ export function AuthProvider({ children }) {
     return () => unsub && unsub();
   }, [canShowPrompt, refreshSubscription, refreshUserDocs]);
 
-  // =========================================================
-  // 🚪 Logout
-  // =========================================================
   const logout = useCallback(async () => {
     const auth = await getAuth();
     const { signOut } = await import("firebase/auth");
@@ -149,9 +142,6 @@ export function AuthProvider({ children }) {
     window.location.href = "/";
   }, []);
 
-  // =========================================================
-  // PWA Banner
-  // =========================================================
   const handleAccept = async () => {
     await promptInstall();
     setShowInstallBanner(false);
@@ -164,7 +154,9 @@ export function AuthProvider({ children }) {
   };
 
   const value = useMemo(() => {
-    const proActive = isSubscriptionActive(subscription);
+    const proActive =
+      subscription?.plan === "ACADEMIA_PRO" &&
+      isSubscriptionActive(subscription);
 
     const phoneOk = !!userData?.phoneVerified;
     const emailOk = !!user?.emailVerified;

@@ -1,113 +1,128 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "./../../context/AuthContext";
-
-const WORKER_URL =
-  "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
 
 export default function SuccessPage() {
   const navigate = useNavigate();
-  const [params] = useSearchParams();
-  const { refreshSubscription } = useAuth();
+  const { user, subscription, refreshSubscription } = useAuth();
 
-  const [status, setStatus] = useState("Validando tu acceso PRO...");
+  const intervalRef = useRef(null);
+  const softMessageTimeoutRef = useRef(null);
+  const redirectTimeoutRef = useRef(null);
+  const stopPollingTimeoutRef = useRef(null);
+
+  const [status, setStatus] = useState("Activando tu acceso PRO...");
   const [error, setError] = useState("");
 
+  const isActive = useMemo(() => {
+    return (
+      subscription?.active === true ||
+      subscription?.status === "active" ||
+      subscription?.status === "trialing"
+    );
+  }, [subscription]);
+
   useEffect(() => {
-    const sessionId = params.get("session_id");
+    function clearTimers() {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
 
-    if (!sessionId) {
-      setStatus("❌ No se pudo verificar el pago");
-      setError("Falta session_id en la URL.");
-      return;
-    }
+      if (softMessageTimeoutRef.current) {
+        clearTimeout(softMessageTimeoutRef.current);
+        softMessageTimeoutRef.current = null;
+      }
 
-    const auth = getAuth();
-    const controller = new AbortController();
-    let timeoutRef = null;
-    let handled = false;
-
-    async function verifyNow(user) {
-      if (handled) return;
-      handled = true;
-
-      try {
-        setError("");
-        setStatus("Confirmando el pago con Stripe...");
-
-        const token = await user.getIdToken(true);
-
-        const response = await fetch(
-          `${WORKER_URL}/stripe/verify-session?session_id=${encodeURIComponent(
-            sessionId
-          )}`,
-          {
-            method: "GET",
-            signal: controller.signal,
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Cache-Control": "no-store",
-            },
-          }
-        );
-
-        const data = await response.json().catch(() => ({}));
-
-        if (!response.ok) {
-          const msg =
-            data?.error ||
-            data?.message ||
-            `Error verificando sesión (HTTP ${response.status})`;
-          throw new Error(msg);
-        }
-
-        if (data?.active || data?.status === "active") {
-          setStatus("✅ Pago confirmado. Activando Academia PRO...");
-
-          await user.getIdToken(true);
-          await refreshSubscription();
-
-          timeoutRef = setTimeout(() => {
-            navigate("/academia/pro", { replace: true });
-          }, 700);
-
-          return;
-        }
-
-        throw new Error("La suscripción no quedó activa.");
-      } catch (err) {
-        if (err?.name === "AbortError") return;
-
-        console.error("[SuccessPage] verify-session error:", err);
-        setStatus("❌ No se pudo activar la suscripción");
-        setError(err?.message || "Error inesperado al verificar el pago.");
+      if (stopPollingTimeoutRef.current) {
+        clearTimeout(stopPollingTimeoutRef.current);
+        stopPollingTimeoutRef.current = null;
       }
     }
 
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    async function startFlow() {
       if (!user) {
-        setStatus("Recuperando tu sesión...");
+        setStatus("Recuperando sesión...");
         return;
       }
 
-      await verifyNow(user);
-    });
+      if (isActive) {
+        clearTimers();
+        return;
+      }
+
+      try {
+        setError("");
+        setStatus("Confirmando acceso PRO...");
+
+        await refreshSubscription();
+
+        intervalRef.current = setInterval(() => {
+          refreshSubscription().catch((err) => {
+            console.error("[SuccessPage] refreshSubscription interval:", err);
+          });
+        }, 2500);
+
+        softMessageTimeoutRef.current = setTimeout(() => {
+          setStatus("Estamos finalizando la activación...");
+        }, 6000);
+
+        stopPollingTimeoutRef.current = setTimeout(() => {
+          clearTimers();
+          setStatus(
+            "Tu pago fue recibido. Estamos terminando de sincronizar tu acceso PRO..."
+          );
+        }, 20000);
+      } catch (err) {
+        console.error("[SuccessPage] startFlow:", err);
+        setError("Error activando la suscripción.");
+      }
+    }
+
+    startFlow();
 
     return () => {
-      unsubscribe();
-      controller.abort();
-      if (timeoutRef) clearTimeout(timeoutRef);
+      clearTimers();
     };
-  }, [navigate, params, refreshSubscription]);
+  }, [user, isActive, refreshSubscription]);
+
+  useEffect(() => {
+    if (!isActive) return;
+
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    if (softMessageTimeoutRef.current) {
+      clearTimeout(softMessageTimeoutRef.current);
+      softMessageTimeoutRef.current = null;
+    }
+
+    if (stopPollingTimeoutRef.current) {
+      clearTimeout(stopPollingTimeoutRef.current);
+      stopPollingTimeoutRef.current = null;
+    }
+
+    setStatus("✅ Academia PRO activada");
+
+    redirectTimeoutRef.current = setTimeout(() => {
+      navigate("/academia/pro", { replace: true });
+    }, 800);
+
+    return () => {
+      if (redirectTimeoutRef.current) {
+        clearTimeout(redirectTimeoutRef.current);
+        redirectTimeoutRef.current = null;
+      }
+    };
+  }, [isActive, navigate]);
 
   return (
     <div style={{ padding: 24, color: "#ffffff" }}>
-      <h2>Resultado del pago de la Academia PRO</h2>
+      <h2>Activando tu acceso PRO</h2>
       <p>{status}</p>
-      {error ? (
-        <p style={{ marginTop: 12, color: "#ff6b6b" }}>{error}</p>
-      ) : null}
+      {error ? <p style={{ color: "#ff6b6b" }}>{error}</p> : null}
     </div>
   );
 }

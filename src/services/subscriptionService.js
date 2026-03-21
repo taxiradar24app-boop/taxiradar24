@@ -76,6 +76,10 @@ export async function fetchMySubscription(firebaseUser) {
 export function isSubscriptionActive(sub) {
   if (!sub) return false;
 
+  if (typeof sub.active === "boolean") {
+    return sub.active;
+  }
+
   const status = String(sub.status || "").toLowerCase();
   return status === "active" || status === "trialing";
 }

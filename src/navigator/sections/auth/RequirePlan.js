@@ -1,8 +1,7 @@
-// src/navigator/sections/auth/RequirePlan.js
-
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { isSubscriptionActive } from "@/services/subscriptionService";
 
 export default function RequirePlan({ plan }) {
   const {
@@ -16,28 +15,26 @@ export default function RequirePlan({ plan }) {
     hasIdentityConflict,
   } = useAuth();
 
-  if (loading || subscriptionLoading) return null;
+  if (loading || subscriptionLoading) {
+    return null;
+  }
 
-  // 🧨 Bloqueo inmediato si hay conflicto
   if (user && hasIdentityConflict) {
     return <Navigate to="/identity-merge" replace />;
   }
 
-  // No autenticado
   if (!user) {
-      return <Navigate to="/" replace />;
-    }
+    return <Navigate to="/" replace />;
+  }
 
-  // Solo aplicamos esta lógica “enterprise” al plan PRO
   if (plan === "ACADEMIA_PRO") {
-    const isActive = subscription?.status === "active";
+    const hasRequestedPlan = subscription?.plan === "ACADEMIA_PRO";
+    const isActive = isSubscriptionActive(subscription);
 
-    // No tiene PRO real
-    if (!isActive) {
+    if (!hasRequestedPlan || !isActive) {
       return <Navigate to="/academia/upgrade" replace />;
     }
 
-    // Tiene PRO, pero falta seguridad (onboarding)
     if (!emailVerified || !phoneVerified) {
       return <Navigate to="/perfil/pro-check" replace />;
     }
@@ -45,7 +42,6 @@ export default function RequirePlan({ plan }) {
     return <Outlet />;
   }
 
-  // Fallback por si usas otros planes (no rompe nada)
   if (userData?.subscription !== plan) {
     return <Navigate to="/academia/upgrade" replace />;
   }
