@@ -23,20 +23,21 @@ export const UpgradeWrapper = styled.div`
 
 export const HeroTag = styled.div`
   color: #a3e635;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
   letter-spacing: 0.06em;
   margin-bottom: 0.85rem;
   text-transform: uppercase;
 `;
 
 export const HeroTitle = styled.h1`
- font-size: clamp(1.6rem, 4vw, 3.4rem);
-  line-height: 1.05;
-  font-weight: 800;
+  font-size: clamp(2rem, 2.5vw + 1.4rem, 3.15rem);
+  line-height: 1.04;
+  font-weight: ${({ theme }) => theme.fontWeights.heavy};
   color: #f8fafc;
   max-width: 980px;
   margin: 0 0 1rem;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tighter};
 
   @media (max-width: 720px) {
     font-size: clamp(2rem, 8vw, 3rem);
@@ -46,10 +47,11 @@ export const HeroTitle = styled.h1`
 
 export const HeroSubtitle = styled.p`
   color: rgba(255, 255, 255, 0.8);
-  font-size: 1.05rem;
-  line-height: 1.5;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  line-height: ${({ theme }) => theme.lineHeights.body};
   max-width: 760px;
   margin: 0 0 2.4rem;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
 /* ================================
@@ -69,12 +71,13 @@ export const PlansContainer = styled.div`
 
 export const PlansGrid = styled.div`
   display: grid;
-  gap: 1.5rem;
   grid-template-columns: repeat(4, 1fr);
-  align-items: stretch;
+  width: 280px;
+  gap: 1rem;
+  width: 100%;
 
-  @media (max-width: 960px) {
-    grid-template-columns: 1fr 1fr;
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   @media (max-width: 600px) {
@@ -86,44 +89,73 @@ export const PlanCard = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 420px;
+  height: 100%;
+
+
   background: ${({ pro }) =>
     pro ? "rgba(16, 163, 127, 0.2)" : "rgba(15, 23, 42, 0.8)"};
+
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
   padding: 1.6rem;
   box-shadow: 0 18px 32px rgba(0, 0, 0, 0.35);
 
   @media (max-width: 600px) {
-    min-height: auto;
+    height: auto;
   }
 `;
 
 export const PlanTitle = styled.h3`
   color: #e2e8f0;
   margin: 0;
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.heading};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
 `;
 
 export const PlanPrice = styled.div`
   color: #a3e635;
-  font-size: 1.6rem;
-  margin: 0.6rem 0 1rem;
-  font-weight: 800;
+  font-size: clamp(1.6rem, 2vw, 2rem);
+  margin: 0.75rem 0 1.1rem;
+  font-weight: ${({ theme }) => theme.fontWeights.heavy};
+  line-height: 1;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
 `;
 
 export const PlanList = styled.div`
+  width: 100%;
+  flex: 1;
   margin-bottom: 1rem;
+  padding-right: 0.15rem;
+
+  @media (min-width: 961px) {
+    min-height: 250px;
+  }
+
+  @media (max-width: 960px) {
+    min-height: 220px;
+  }
+
+  @media (max-width: 600px) {
+    min-height: auto;
+  }
 `;
 
 export const PlanItem = styled.div`
   color: #cfd8ee;
-  margin-bottom: 0.4rem;
-  line-height: 1.45;
+  margin-bottom: 0.75rem;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
 export const PlanButtonWrap = styled.div`
   margin-top: auto;
   padding-top: 1rem;
+  display: flex;
+  align-items: flex-end;
 
   & > * {
     width: 100%;
@@ -152,8 +184,8 @@ export const ClosingBox = styled.div`
 
 export const ClosingTag = styled.div`
   color: #10a37f;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
   margin-bottom: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -162,16 +194,19 @@ export const ClosingTag = styled.div`
 export const ClosingTitle = styled.h3`
   color: #f8fafc;
   font-size: clamp(1.6rem, 3vw, 2rem);
-  font-weight: 800;
+  font-weight: ${({ theme }) => theme.fontWeights.heavy};
   margin: 0 0 0.85rem;
+  line-height: ${({ theme }) => theme.lineHeights.heading};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
 `;
 
 export const ClosingText = styled.p`
   max-width: 760px;
   margin: 0 auto 1.5rem;
   color: rgba(255, 255, 255, 0.76);
-  font-size: 1.02rem;
-  line-height: 1.55;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
 export const ClosingButtons = styled.div`

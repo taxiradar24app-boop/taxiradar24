@@ -29,19 +29,33 @@ export const validateLoginForm = (email, password) => {
   return null;
 };
 
-export const validateRegisterForm = (name, email, password, phone) => {
+export const validateRegisterForm = (
+  name,
+  email,
+  confirmEmail,
+  password,
+  confirmPassword
+) => {
   if (!validateName(name)) {
     return "El nombre debe tener al menos 3 caracteres";
-  }
+}
+
   if (!validateEmail(email)) {
     return "El correo electrónico no es válido";
   }
+
+  if (email !== confirmEmail) {
+    return "Los correos no coinciden";
+  }
+
   if (!validatePassword(password)) {
     return "La contraseña debe tener al menos 6 caracteres";
   }
-  if (!validatePhone(phone)) {
-    return "El número de teléfono no es válido (usa formato +34...)";
+
+  if (password !== confirmPassword) {
+    return "Las contraseñas no coinciden";
   }
+
   return null;
 };
 

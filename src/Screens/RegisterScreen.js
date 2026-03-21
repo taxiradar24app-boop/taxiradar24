@@ -1,6 +1,5 @@
 import React from "react";
 import UserRegistration from "./../hooks/UserRegistration";
-import BotonGoogle from "./../components/BotonGoogle";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -35,22 +34,12 @@ const Sub = styled.p`
   line-height: 1.5;
 `;
 
-const Divider = styled.div`
-  margin: 18px 0;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.12);
-`;
-
 export default function RegisterScreen() {
   return (
     <Container>
       <Card>
         <Title>Crear cuenta</Title>
-        <Sub>Accede con tu cuenta o utiliza Google.</Sub>
-
-        <BotonGoogle />
-
-        <Divider />
+        <Sub>Crea tu cuenta con correo electrónico.</Sub>
 
         <UserRegistration mode="register" />
       </Card>

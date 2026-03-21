@@ -41,7 +41,7 @@ export default function AcademiaDemoLayout() {
 
   return (
     <LayoutWrap>
-      <DemoBanner>ESTÁS EN LA VERSIÓN DEMO</DemoBanner>
+      {/* <DemoBanner>ESTÁS EN LA VERSIÓN DEMO</DemoBanner> */}
       <HeaderAcademia withSafeTop={false} />
       <Main>
         <Outlet />

@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { useAuth } from "@/context/AuthContext";
 import { markPhoneAsVerified, normalizePhoneNumber } from "./userIDService";
 import { usePhoneAuth } from "./usePhoneAuth";
-
-import AuthLayout from "@/components/UI/Auth/AuthLayout";
-import AuthCard from "@/components/UI/Auth/AuthCard";
-import AuthInput from "@/components/UI/Auth/AuthInput";
-import AuthButton from "@/components/UI/Auth/AuthButton";
-import AuthMessage from "@/components/UI/Auth/AuthMessage";
 
 import { validatePhone } from "@/utils/utilsForm";
 import { getAuth, signOut } from "firebase/auth";
@@ -16,29 +9,21 @@ import { useNavigate } from "react-router-dom";
 
 import logoTaxiRadar from "./../../assets/Logo_taxiredar24_optimizado.svg";
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-`;
-
-const LogoWrap = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 18px;
-`;
-
-const LogoImage = styled.img`
-  display: block;
-  width: clamp(110px, 14vw, 160px);
-  height: auto;
-  object-fit: contain;
-
-  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.25));
-`;
+import {
+  AuthContainer,
+  AuthCard,
+  LogoWrap,
+  LogoImage,
+  AuthSubtitle,
+  Form,
+  Input,
+  Button,
+  AuthMessage,
+  RecaptchaWrap,
+  PhoneField,
+  PhonePrefix,
+  PhoneInput,
+} from "./../Styles/FormStyles";
 
 export default function PhoneVerification() {
   const navigate = useNavigate();
@@ -78,28 +63,25 @@ export default function PhoneVerification() {
 
   if (!user?.uid) {
     return (
-      <AuthLayout>
+      <AuthContainer>
         <AuthCard>
-          <p>Cargando usuario...</p>
+          <AuthSubtitle>Cargando usuario...</AuthSubtitle>
         </AuthCard>
-      </AuthLayout>
+      </AuthContainer>
     );
   }
 
   if (phoneVerified === undefined) {
     return (
-      <AuthLayout>
+      <AuthContainer>
         <AuthCard>
-          <p>Cargando verificación del teléfono...</p>
+          <AuthSubtitle>Cargando verificación del teléfono...</AuthSubtitle>
         </AuthCard>
-      </AuthLayout>
+      </AuthContainer>
     );
   }
 
   if (phoneVerified === true && !hasIdentityConflict) return null;
-
-  const buildConflictMessage = () =>
-    "Este número ya está asociado a otra cuenta.\nInicia sesión con la cuenta original o contacta soporte.";
 
   const clearMessages = () => {
     setUiError("");
@@ -122,7 +104,9 @@ export default function PhoneVerification() {
 
     if (result.conflict) {
       await refreshUserDocs?.();
-      setUiError(buildConflictMessage());
+      setUiError(
+        "Este número ya está asociado a otra cuenta.\nInicia sesión con la cuenta original o contacta soporte."
+      );
       return false;
     }
 
@@ -137,12 +121,12 @@ export default function PhoneVerification() {
     const authUser = getAuth().currentUser;
 
     if (!authUser?.uid || !user?.uid) {
-      setUiError("No hay sesión activa. Vuelve a iniciar sesión.");
+      setUiError("No hay sesión activa.");
       navigate("/login", { replace: true });
       return;
     }
 
-    const formatted = normalizePhoneNumber(phone.trim());
+    const formatted = normalizePhoneNumber(`+34${phone.trim()}`);
 
     if (!validatePhone(formatted)) {
       setUiError("Introduce un teléfono válido (+34...)");
@@ -184,14 +168,6 @@ export default function PhoneVerification() {
       return;
     }
 
-    const authUserBefore = getAuth().currentUser;
-
-    if (!authUserBefore?.uid || !user?.uid) {
-      setUiError("No hay sesión activa. Vuelve a iniciar sesión.");
-      navigate("/login", { replace: true });
-      return;
-    }
-
     setBusy(true);
 
     const verifiedUser = await confirmVerificationCode(code);
@@ -214,72 +190,75 @@ export default function PhoneVerification() {
   };
 
   const handleRestart = async () => {
-    try {
-      await signOut(getAuth());
-      localStorage.clear();
-      sessionStorage.clear();
-      navigate("/login", { replace: true });
-    } catch (e) {
-      console.error("Error al reiniciar:", e);
-      navigate("/login", { replace: true });
-    }
+    await signOut(getAuth());
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate("/login", { replace: true });
   };
 
   return (
-    <AuthLayout>
+    <AuthContainer>
       <AuthCard>
         <LogoWrap>
           <LogoImage src={logoTaxiRadar} alt="Logo TaxiRadar24" />
         </LogoWrap>
 
-        <Form>
-          <p style={{ marginBottom: 12 }}>
+        <Form onSubmit={step === 1 ? handleSendCode : handleConfirmCode}>
+          <AuthSubtitle>
             {step === 1
               ? "Completa tu número de teléfono para continuar"
-              : "Introduce el código SMS que recibiste"}
-          </p>
+              : "Introduce el código SMS"}
+          </AuthSubtitle>
 
           {step === 1 ? (
             <>
-              <AuthInput
+              <PhoneField>
+              <PhonePrefix>+34</PhonePrefix>
+              <PhoneInput
                 type="tel"
-                placeholder="Ej: +34612345678"
+                placeholder="612345678"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => {
+                  const onlyNumbers = e.target.value.replace(/\D/g, "");
+                  if (onlyNumbers.length <= 9) {
+                    setPhone(onlyNumbers);
+                  }
+                }}
               />
-              <AuthButton onClick={handleSendCode} disabled={busy || loading}>
+            </PhoneField>
+
+              <Button disabled={busy || loading}>
                 {busy || loading ? "Enviando…" : "Enviar código SMS"}
-              </AuthButton>
+              </Button>
             </>
           ) : (
             <>
-              <AuthInput
+              <Input
                 type="text"
                 placeholder="Código de 6 dígitos"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
               />
-              <AuthButton onClick={handleConfirmCode} disabled={busy || loading}>
+
+              <Button disabled={busy || loading}>
                 {busy || loading ? "Verificando…" : "Confirmar código"}
-              </AuthButton>
+              </Button>
             </>
           )}
 
-          <AuthButton onClick={handleRestart} $variant="danger">
-            Volver y reiniciar
-          </AuthButton>
+          <Button type="button" onClick={handleRestart} $variant="danger">
+            ← Volver y reiniciar
+          </Button>
 
           {!!uiSuccess && <AuthMessage type="success">{uiSuccess}</AuthMessage>}
-          {!!uiError && (
-            <AuthMessage type="error" style={{ whiteSpace: "pre-line" }}>
-              {uiError}
-            </AuthMessage>
-          )}
+          {!!uiError && <AuthMessage type="error">{uiError}</AuthMessage>}
           {error && <AuthMessage type="error">{error}</AuthMessage>}
         </Form>
 
-        <div id="recaptcha-container"></div>
+        <RecaptchaWrap>
+          <div id="recaptcha-container"></div>
+        </RecaptchaWrap>
       </AuthCard>
-    </AuthLayout>
+    </AuthContainer>
   );
 }
