@@ -59,7 +59,7 @@ export default function ToolsLanding() {
             </PrimaryButton>
 
             <SecondaryButton onClick={goScheduled}>
-              📅 Llegadas Próximas 12 hs
+              📅 Programadas Próximas 24hs
             </SecondaryButton>
           </HeroCTA>
         </HeroContent>
