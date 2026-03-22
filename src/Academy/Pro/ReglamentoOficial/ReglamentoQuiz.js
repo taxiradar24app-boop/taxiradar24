@@ -20,11 +20,17 @@ import {
 
 /**
  * ReglamentoQuiz
- * @param quiz     → datos del quiz
- * @param onFinish → callback al finalizar
- * @param mode     → "pro" | "demo"
+ * @param quiz       → datos del quiz
+ * @param onFinish   → callback al finalizar
+ * @param onGoTop    → callback opcional para subir al bloque superior
+ * @param mode       → "pro" | "demo"
  */
-export default function ReglamentoQuiz({ quiz, onFinish, mode = "pro" }) {
+export default function ReglamentoQuiz({
+  quiz,
+  onFinish,
+  onGoTop,
+  mode = "pro",
+}) {
   const isDemo = mode === "demo";
 
   const [answers, setAnswers] = useState({});
@@ -34,7 +40,7 @@ export default function ReglamentoQuiz({ quiz, onFinish, mode = "pro" }) {
 
   const handleSelect = (qIndex, optionIndex) => {
     if (finished) return;
-    setAnswers({ ...answers, [qIndex]: optionIndex });
+    setAnswers((prev) => ({ ...prev, [qIndex]: optionIndex }));
   };
 
   const correctCount = quiz.questions.reduce((acc, q, i) => {
@@ -44,17 +50,24 @@ export default function ReglamentoQuiz({ quiz, onFinish, mode = "pro" }) {
 
   const total = quiz.questions.length;
   const wrongCount = total - correctCount;
-
   const passed = correctCount >= quiz.minToPass;
-
   const allAnswered = Object.keys(answers).length === quiz.questions.length;
 
+  const fallbackScrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   const handleFinish = () => {
+    if (!allAnswered) return;
+
     setFinished(true);
 
     const score = total > 0 ? Math.round((correctCount / total) * 100) : 0;
 
-    onFinish?.({
+    const result = {
       total,
       correct: correctCount,
       wrong: wrongCount,
@@ -64,12 +77,38 @@ export default function ReglamentoQuiz({ quiz, onFinish, mode = "pro" }) {
       mode,
       finishedAt: new Date().toISOString(),
       isDemo,
-    });
+    };
+
+    onFinish?.(result);
+
+    setTimeout(() => {
+      if (typeof onGoTop === "function") {
+        onGoTop();
+      } else {
+        fallbackScrollTop();
+      }
+    }, 450);
   };
 
   const resetQuiz = () => {
     setAnswers({});
     setFinished(false);
+
+    setTimeout(() => {
+      if (typeof onGoTop === "function") {
+        onGoTop();
+      } else {
+        fallbackScrollTop();
+      }
+    }, 120);
+  };
+
+  const handleGoTop = () => {
+    if (typeof onGoTop === "function") {
+      onGoTop();
+    } else {
+      fallbackScrollTop();
+    }
   };
 
   return (
@@ -77,7 +116,7 @@ export default function ReglamentoQuiz({ quiz, onFinish, mode = "pro" }) {
       <QuizTitle>📝 Preguntas de comprobación</QuizTitle>
 
       {quiz.questions.map((q, qIndex) => (
-        <QuestionBox key={q.id}>
+        <QuestionBox key={q.id || qIndex}>
           <QuestionText>
             {qIndex + 1}. {q.question}
           </QuestionText>
@@ -85,6 +124,7 @@ export default function ReglamentoQuiz({ quiz, onFinish, mode = "pro" }) {
           {q.options.map((opt, oIndex) => (
             <Option
               key={oIndex}
+              type="button"
               selected={answers[qIndex] === oIndex}
               onClick={() => handleSelect(qIndex, oIndex)}
             >
@@ -95,24 +135,38 @@ export default function ReglamentoQuiz({ quiz, onFinish, mode = "pro" }) {
       ))}
 
       {!finished && (
-        <FinishButton onClick={handleFinish} disabled={!allAnswered}>
-          Finalizar evaluación
-        </FinishButton>
-      )}
+        <>
+          <QuizSubTitle>
+            Responde a todas las preguntas del cuestionario para completar la
+            evaluación.
+          </QuizSubTitle>
 
-      <QuizSubTitle>
-        {" "}
-        Responde a todas las preguntas del cuestionario para completar la
-        evaluación.
-      </QuizSubTitle>
+          <FinishButton
+            type="button"
+            onClick={handleFinish}
+            disabled={!allAnswered}
+          >
+            Finalizar evaluación
+          </FinishButton>
+        </>
+      )}
 
       {finished && (
         <ResultBox success={passed}>
           Resultado: {correctCount}/{quiz.questions.length} —{" "}
           {passed ? "✅ Bloque superado" : "⚠️ Recomendado repetir el bloque"}
+
+          {passed && (
+            <div style={{ marginTop: "16px" }}>
+              <FinishButton type="button" onClick={handleGoTop}>
+                Finalizar y volver al bloque
+              </FinishButton>
+            </div>
+          )}
+
           {!passed && (
             <div style={{ marginTop: "12px" }}>
-              <RetryButton onClick={resetQuiz}>
+              <RetryButton type="button" onClick={resetQuiz}>
                 🔁 Rehacer el examen
               </RetryButton>
             </div>

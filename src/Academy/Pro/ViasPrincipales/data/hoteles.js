@@ -48,7 +48,7 @@ const hoteles = {
       id: "hotel_es_princep",
       label: "Hotel Es Príncep",
       via: "Carrer de Bala Roja",
-      coordinates: [39.5609916, 2.6550274],
+      coordinates: [39.56571, 2.65528],
       icon: "hotel",
     },
     {

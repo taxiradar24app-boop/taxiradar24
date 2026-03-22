@@ -118,11 +118,36 @@ export const Chip = styled.button`
     transform 0.18s ease,
     box-shadow 0.25s ease;
 
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  touch-action: manipulation;
+
   &:hover:not(:disabled) {
-    background: ${({ theme }) =>
-      theme.colors?.academy?.surfaceLight || "#1a2f55"};
-    border-color: rgba(44, 227, 181, 0.22);
+    background: ${({ theme, $isCurrent }) =>
+      $isCurrent
+        ? theme.colors?.green || "#10a37f"
+        : theme.colors?.academy?.surfaceLight || "#1a2f55"};
+    border-color: ${({ theme, $isCurrent }) =>
+      $isCurrent
+        ? theme.colors?.green || "#10a37f"
+        : "rgba(44, 227, 181, 0.22)"};
+    color: ${({ theme, $isCurrent }) =>
+      $isCurrent
+        ? theme.colors?.white || "#ffffff"
+        : theme.colors?.academy?.textMain || theme.pro.text || "#e6edf7"};
     transform: translateY(-1px);
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(16, 163, 127, 0.35);
+    outline-offset: 2px;
   }
 
   &:disabled {

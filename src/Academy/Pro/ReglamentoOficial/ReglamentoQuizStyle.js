@@ -23,7 +23,7 @@ export const QuizTitle = styled.h3`
   margin-bottom: 18px;
   font-weight: 650;
 
-  color: ${({ theme }) => theme.pro?.blueDeep|| "#10a37f"};
+  color: ${({ theme }) => theme.pro?.blueDeep || "#10a37f"};
 `;
 
 export const QuizSubTitle = styled.h4`
@@ -57,25 +57,30 @@ export const Option = styled.button`
   border-radius: 10px;
   cursor: pointer;
   font-weight: 500;
-  font-size: 0.95rem; /* UX: explícito para coherencia */
+  font-size: 0.95rem;
 
   border: 1px solid
     ${({ selected, theme }) =>
       selected
-        ? theme.pro?.green
+        ? theme.pro?.green || "#10a37f"
         : theme.mode === "light"
-        ? "rgba(0,0,0,0.12)"
-        : "rgba(255,255,255,0.19)"};
+          ? "rgba(0,0,0,0.12)"
+          : "rgba(255,255,255,0.19)"};
 
   background: ${({ selected, theme }) =>
     selected
       ? "rgba(16,163,127,0.15)"
       : theme.mode === "light"
-      ? "#f8fafc"
-      : "rgba(255,255,255,0.04)"};
+        ? "#f8fafc"
+        : "rgba(255,255,255,0.04)"};
 
   color: ${({ theme }) =>
     theme.mode === "light" ? "#0f172a" : "rgba(255,255,255,0.92)"};
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
 
   &:hover {
     background: rgba(16, 163, 127, 0.12);
@@ -95,8 +100,8 @@ export const ResultBox = styled.div`
         ? "#e6f7f2"
         : "rgba(16,163,127,0.18)"
       : theme.mode === "light"
-      ? "#fff3cd"
-      : "rgba(245,158,11,0.18)"};
+        ? "#fff3cd"
+        : "rgba(245,158,11,0.18)"};
 
   color: ${({ success, theme }) =>
     success
@@ -104,8 +109,8 @@ export const ResultBox = styled.div`
         ? "#065f46"
         : "#6ee7b7"
       : theme.mode === "light"
-      ? "#92400e"
-      : "#fcd34d"};
+        ? "#92400e"
+        : "#fcd34d"};
 `;
 
 export const FinishButton = styled.button`
@@ -117,9 +122,18 @@ export const FinishButton = styled.button`
   color: #fff;
   font-weight: 750;
   cursor: pointer;
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.15s ease;
 
-  &:hover {
+  &:hover:not(:disabled) {
     filter: brightness(1.06);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
   }
 `;
 
