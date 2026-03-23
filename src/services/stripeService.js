@@ -1,5 +1,5 @@
 import { getAuth } from "./firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
+const { onAuthStateChanged } = await import("firebase/auth");
 
 function normalizeBase(url) {
   if (!url) return "";

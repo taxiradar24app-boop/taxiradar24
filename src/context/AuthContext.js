@@ -8,6 +8,7 @@ import React, {
 } from "react";
 
 import { getAuth, getDb } from "@/services/firebaseConfig";
+import { docLazy, getDocLazy } from "@/services/firestoreService";
 
 import usePWAInstallPrompt from "./../hooks/usePWAInstallPrompt";
 import InstallBanner from "./../components/UI/PWA/InstallBanner";
@@ -33,36 +34,40 @@ export function AuthProvider({ children }) {
   const { canShowPrompt, promptInstall, setCanShowPrompt } =
     usePWAInstallPrompt();
 
-  const refreshUserDocs = useCallback(async (u) => {
-    if (!u?.uid) return;
+  const refreshUserDocs = useCallback(async (currentUser) => {
+    if (!currentUser?.uid) return;
 
     const db = await getDb();
-    const { doc, getDoc } = await import("firebase/firestore");
 
-    const userRef = doc(db, "users", u.uid);
-    const snap = await getDoc(userRef);
-    setUserData(snap.exists() ? snap.data() : null);
+    const userRef = await docLazy(db, "users", currentUser.uid);
+    const progressRef = await docLazy(db, "progress", currentUser.uid);
 
-    const progressRef = doc(db, "progress", u.uid);
-    const progressSnap = await getDoc(progressRef);
+    const [userSnap, progressSnap] = await Promise.all([
+      getDocLazy(userRef),
+      getDocLazy(progressRef),
+    ]);
+
+    setUserData(userSnap.exists() ? userSnap.data() : null);
     setProgressData(progressSnap.exists() ? progressSnap.data() : null);
   }, []);
 
   const refreshSubscription = useCallback(
-    async (uParam) => {
-      const u = uParam || user;
+    async (userParam) => {
+      const currentUser = userParam || user;
 
-      if (!u) {
+      if (!currentUser) {
         setSubscription(null);
+        setSubscriptionLoading(false);
         return;
       }
 
       setSubscriptionLoading(true);
+
       try {
-        const sub = await fetchMySubscription(u);
+        const sub = await fetchMySubscription(currentUser);
         setSubscription(sub);
-      } catch (e) {
-        console.error("❌ Error cargando suscripción:", e);
+      } catch (error) {
+        console.error("❌ Error cargando suscripción:", error);
         setSubscription(
           (prev) => prev || { status: "none", active: false, plan: null }
         );
@@ -96,38 +101,59 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    let unsub;
+    let unsub = null;
+    let mounted = true;
 
     async function initAuth() {
-      const auth = await getAuth();
-      const { onAuthStateChanged } = await import("firebase/auth");
+      try {
+        const auth = await getAuth();
+        const { onAuthStateChanged } = await import("firebase/auth");
 
-      unsub = onAuthStateChanged(auth, async (u) => {
-        if (!u) {
-          setUser(null);
-          setUserData(null);
-          setProgressData(null);
-          setSubscription(null);
+        unsub = onAuthStateChanged(auth, async (currentUser) => {
+          if (!mounted) return;
+
+          if (!currentUser) {
+            setUser(null);
+            setUserData(null);
+            setProgressData(null);
+            setSubscription(null);
+            setSubscriptionLoading(false);
+            setLoading(false);
+            return;
+          }
+
+          setLoading(true);
+          setUser(currentUser);
+
+          await Promise.all([
+            refreshUserDocs(currentUser),
+            refreshSubscription(currentUser),
+          ]);
+
+          if (mounted && canShowPrompt) {
+            setShowInstallBanner(true);
+          }
+
+          if (mounted) {
+            setLoading(false);
+          }
+        });
+      } catch (error) {
+        console.error("❌ Error inicializando auth:", error);
+        if (mounted) {
           setLoading(false);
-          return;
         }
-
-        setLoading(true);
-        setUser(u);
-
-        await Promise.all([
-          refreshUserDocs(u),
-          refreshSubscription(u),
-        ]);
-
-        if (canShowPrompt) setShowInstallBanner(true);
-        setLoading(false);
-      });
+      }
     }
 
     initAuth();
 
-    return () => unsub && unsub();
+    return () => {
+      mounted = false;
+      if (typeof unsub === "function") {
+        unsub();
+      }
+    };
   }, [canShowPrompt, refreshSubscription, refreshUserDocs]);
 
   const logout = useCallback(async () => {
@@ -140,6 +166,7 @@ export function AuthProvider({ children }) {
     setUserData(null);
     setProgressData(null);
     setSubscription(null);
+    setSubscriptionLoading(false);
 
     window.location.href = "/";
   }, []);

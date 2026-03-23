@@ -38,6 +38,16 @@ const CATEGORIES = [
   { id: "monumentos", label: "Monumentos y lugares clave" },
 ];
 
+const mapFallbackStyle = {
+  minHeight: "420px",
+  width: "100%",
+  display: "grid",
+  placeItems: "center",
+  color: "#ffffff",
+  background: "rgba(10, 21, 40, 0.55)",
+  borderRadius: "18px",
+};
+
 const ViasPrincipalesScreen = () => {
   const {
     activeCategory,
@@ -95,7 +105,7 @@ const ViasPrincipalesScreen = () => {
         </IntroSection>
 
         <MapWrapper>
-          <Suspense fallback={<div style={{ color: "#fff" }}>Cargando mapa…</div>}>
+          <Suspense fallback={<div style={mapFallbackStyle}>Cargando mapa…</div>}>
             <MapView
               center={mapCenter}
               zoom={mapZoom}

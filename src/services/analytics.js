@@ -1,18 +1,24 @@
 // src/services/analytics.js
-import { getAnalytics, logEvent } from "firebase/analytics";
-import { app } from "./../services/firebaseApp";
 
-let analyticsInitialized = false;
+let analyticsInstance = null;
 
-export function initAnalytics() {
-  if (analyticsInitialized) return;
+export async function initAnalytics() {
+  if (analyticsInstance) return analyticsInstance;
 
   try {
+    const { getAnalytics, logEvent } = await import("firebase/analytics");
+    const { app } = await import("./firebaseApp");
+
     const analytics = getAnalytics(app);
-    analyticsInitialized = true;
+
+    analyticsInstance = analytics;
+
     logEvent(analytics, "consent_accepted");
-    console.log("✅ Firebase Analytics inicializado con consentimiento del usuario.");
+
+    console.log("✅ Firebase Analytics inicializado (lazy)");
+    return analytics;
   } catch (error) {
     console.warn("⚠️ No se pudo iniciar Firebase Analytics:", error);
+    return null;
   }
 }

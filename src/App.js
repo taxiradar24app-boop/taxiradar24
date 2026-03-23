@@ -1,45 +1,50 @@
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import { HashRouter } from "react-router-dom";
 
 import { ThemeProvider } from "./context/ThemeContext.js";
 import { GlobalStyle } from "./Styles/globalStyles";
 
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import Navigator from "./navigator/navigator";
-import PhoneVerification from "./hooks/usePhoneVerification";
 import CookieConsent from "./components/CookieConsent";
 
-// ✅ NUEVO
-import IdentityMergeScreen from "./Screens/IdentityMergeScreen";
+const Navigator = lazy(() => import("./navigator/navigator"));
+const PhoneVerification = lazy(() => import("./hooks/usePhoneVerification"));
+const IdentityMergeScreen = lazy(() => import("./Screens/IdentityMergeScreen"));
+
+const appScreenFallbackStyle = {
+  height: "100vh",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "#10a37f",
+  fontSize: "1.1rem",
+  background: "#0a1528",
+};
+
+const authLoadingStyle = {
+  height: "100vh",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "#888",
+  fontFamily: "System, -apple-system, Segoe UI, Roboto, Arial",
+  background: "#0a1528",
+};
 
 function AppContent() {
   const { user, loading, phoneVerified, hasIdentityConflict } = useAuth();
 
   if (loading) {
-    return (
-      <div
-        style={{
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#888",
-          fontFamily: "System, -apple-system, Segoe UI, Roboto, Arial",
-        }}
-      >
-        Cargando…
-      </div>
-    );
+    return <div style={authLoadingStyle}>Cargando…</div>;
   }
 
-  // =====================================================
-  // 🧨 BLOQUEO INMEDIATO (Enterprise) — Opción A
-  // Si hay conflicto de identidad, NO dejamos seguir
-  // =====================================================
-  if (user && hasIdentityConflict) return <IdentityMergeScreen />;
+  if (user && hasIdentityConflict) {
+    return <IdentityMergeScreen />;
+  }
 
-  // Tu lógica existente
-  if (user && !phoneVerified) return <PhoneVerification />;
+  if (user && !phoneVerified) {
+    return <PhoneVerification />;
+  }
 
   return <Navigator />;
 }
@@ -47,6 +52,7 @@ function AppContent() {
 export default function App() {
   useEffect(() => {
     const consent = localStorage.getItem("cookieConsent");
+
     if (consent === "accepted") {
       import("./services/analytics.js").then(({ initAnalytics }) =>
         initAnalytics()
@@ -60,21 +66,9 @@ export default function App() {
         <AuthProvider>
           <GlobalStyle />
 
-          {/* 🚀 Lazy Loading Activado */}
           <Suspense
             fallback={
-              <div
-                style={{
-                  height: "100vh",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#10a37f",
-                  fontSize: "1.2rem",
-                }}
-              >
-                Cargando módulo…
-              </div>
+              <div style={appScreenFallbackStyle}>Cargando módulo…</div>
             }
           >
             <AppContent />

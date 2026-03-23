@@ -21,7 +21,7 @@ import {
 import { useAuth } from "./../../../context/AuthContext";
 import { saveAudioProgress } from "./logic/saveAudioProgress";
 import { getDb } from "./../../../services/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { docLazy, getDocLazy } from "@/services/firestoreService";
 import { AUDIO_LIST, AUDIO_SIGN_ENDPOINT } from "./../../share/audioData";
 
 const RATE_STORAGE_KEY = "TR24_AUDIO_PLAYBACK_RATE";
@@ -105,8 +105,8 @@ export default function AudioScreen() {
     (async () => {
       try {
         const db = await getDb();
-        const ref = doc(db, "progress", userId);
-        const snap = await getDoc(ref);
+        const ref = await docLazy(db, "users", uid);
+         const snap = await getDocLazy(ref);
 
         if (!snap.exists()) {
           setSavedMap({});

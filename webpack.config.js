@@ -11,34 +11,25 @@ const Dotenv = require("dotenv-webpack");
 const HtmlMinimizerPlugin = require("html-minimizer-webpack-plugin");
 const { SubresourceIntegrityPlugin } = require("webpack-subresource-integrity");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+
 const isProduction = process.env.NODE_ENV === "production";
+const shouldAnalyze = process.env.ANALYZE === "true";
 
 module.exports = {
-  // ✅ 1) MODO EXPLÍCITO (prudente, mejora defaults)
   mode: isProduction ? "production" : "development",
-
-  // ✅ 2) SOURCEMAPS: OFF en producción (reduce peso)
   devtool: isProduction ? false : "eval-cheap-module-source-map",
 
-  // ===========================================
-  // 🔹 Punto de entrada principal
-  // ===========================================
   entry: "./src/index.js",
 
-  // ===========================================
-  // 📦 Salida de compilación
-  // ===========================================
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].[contenthash].js",
+    chunkFilename: "[name].[contenthash].js",
     publicPath: "/",
     clean: true,
-    crossOriginLoading: "anonymous", // Necesario para SRI
+    crossOriginLoading: "anonymous",
   },
 
-  // ===========================================
-  // 🧭 Resolución de módulos y alias globales
-  // ===========================================
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
@@ -52,12 +43,8 @@ module.exports = {
     extensions: [".js", ".jsx", ".json"],
   },
 
-  // ===========================================
-  // ⚙️ Reglas de carga
-  // ===========================================
   module: {
     rules: [
-      // 🧠 Transpila React y JS moderno
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -68,14 +55,10 @@ module.exports = {
           },
         },
       },
-
-      // 🎨 Carga y extrae CSS
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
-
-      // 🖼️ Carga imágenes y assets
       {
         test: /\.(png|jpe?g|gif|webp|avif|svg)$/i,
         type: "asset/resource",
@@ -86,11 +69,7 @@ module.exports = {
     ],
   },
 
-  // ===========================================
-  // 🧩 Plugins
-  // ===========================================
   plugins: [
-    // 🔹 Genera el index.html optimizado
     new HtmlWebpackPlugin({
       template: "./public/index.html",
       minify: {
@@ -100,19 +79,17 @@ module.exports = {
       scriptLoading: "defer",
     }),
 
-    // 🔹 Extrae los CSS en archivos separados
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
+      chunkFilename: "[name].[contenthash].css",
     }),
-    new BundleAnalyzerPlugin(),
-    // 🔹 Copia archivos públicos (PWA)
+
     new CopyWebpackPlugin({
       patterns: [
         { from: "public/manifest.json", to: "manifest.json" },
         { from: "public/service-worker.js", to: "service-worker.js" },
         { from: "public/.htaccess", to: ".htaccess" },
         { from: "public/assets", to: "assets" },
-        // { from: "public/audios", to: "audios" },   // 👈 🔥 AQUI SE COPIAN LOS AUDIOS
         { from: "public/robots.txt", to: "robots.txt" },
         { from: "public/sitemap.xml", to: "sitemap.xml" },
         {
@@ -122,10 +99,17 @@ module.exports = {
       ],
     }),
 
-    // 🔹 Variables de entorno (.env)
     new Dotenv(),
 
-    // 🔹 Minimiza HTML solo en producción
+    ...(shouldAnalyze
+      ? [
+          new BundleAnalyzerPlugin({
+            analyzerMode: "server",
+            openAnalyzer: true,
+          }),
+        ]
+      : []),
+
     ...(isProduction
       ? [
           new HtmlMinimizerPlugin({
@@ -139,7 +123,6 @@ module.exports = {
         ]
       : []),
 
-    // 🔹 Subresource Integrity (seguridad de hashes)
     ...(isProduction
       ? [
           new SubresourceIntegrityPlugin({
@@ -150,65 +133,60 @@ module.exports = {
       : []),
   ],
 
-  // ===========================================
-  // 🚀 Optimización avanzada
-  // ===========================================
   optimization: {
     minimize: isProduction,
-
     runtimeChunk: "single",
     realContentHash: true,
     usedExports: true,
 
     splitChunks: {
       chunks: "all",
-      maxInitialRequests: 10,
-      maxAsyncRequests: 10,
+      maxInitialRequests: 12,
+      maxAsyncRequests: 12,
       minSize: 20000,
 
       cacheGroups: {
         reactVendor: {
-          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
           name: "react-vendor",
-          priority: 40,
+          priority: 50,
           enforce: true,
         },
 
         firebaseVendor: {
-          test: /[\\/]node_modules[\\/]firebase[\\/]/,
+          test: /[\\/]node_modules[\\/](@firebase|firebase)[\\/]/,
           name: "firebase-vendor",
-          priority: 35,
+          priority: 45,
           enforce: true,
         },
 
         routerVendor: {
-          test: /[\\/]node_modules[\\/](react-router|react-router-dom)[\\/]/,
+          test: /[\\/]node_modules[\\/](react-router|react-router-dom|@remix-run)[\\/]/,
           name: "router-vendor",
-          priority: 30,
+          priority: 40,
           enforce: true,
         },
 
         styledVendor: {
-          test: /[\\/]node_modules[\\/]styled-components[\\/]/,
+          test: /[\\/]node_modules[\\/](styled-components|hoist-non-react-statics)[\\/]/,
           name: "styled-vendor",
-          priority: 25,
+          priority: 35,
           enforce: true,
         },
 
         leafletVendor: {
-          test: /[\\/]node_modules[\\/]leaflet[\\/]/,
+          test: /[\\/]node_modules[\\/](leaflet|react-leaflet)[\\/]/,
           name: "leaflet-vendor",
-          priority: 20,
+          priority: 30,
           enforce: true,
         },
 
-        // 👇 Divide automáticamente librerías del resto de node_modules
         vendors: {
           test: /[\\/]node_modules[\\/]/,
           name(module) {
-            const match = module.context && module.context.match(
-              /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-            );
+            const match =
+              module.context &&
+              module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
             const packageName = match ? match[1] : "misc";
             return `npm.${packageName.replace("@", "")}`;
           },
@@ -218,24 +196,21 @@ module.exports = {
     },
   },
 
-  // ===========================================
-  // 📊 Rendimiento y advertencias
-  // ===========================================
-performance: isProduction
-  ? { hints: "warning", maxEntrypointSize: 5120000, maxAssetSize: 5120000 }
-  : { hints: false },
-  // ===========================================
-  // 🧠 Servidor de desarrollo
-  // ===========================================
+  performance: isProduction
+    ? {
+        hints: "warning",
+        maxEntrypointSize: 5120000,
+        maxAssetSize: 5120000,
+      }
+    : { hints: false },
+
   devServer: {
     static: {
       directory: path.join(__dirname, "public"),
     },
     port: 3000,
-    historyApiFallback: true, // ✅ para React Router
+    historyApiFallback: true,
     open: true,
-
-    // ✅ Evita cache del navegador en DEV
     headers: {
       "Cache-Control": "no-store",
       "Cross-Origin-Opener-Policy": "unsafe-none",

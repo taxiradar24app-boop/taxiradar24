@@ -1,49 +1,106 @@
-import React, { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-
+import React, { useEffect, useState } from "react";
 import { getCategoryData } from "../utils/mapHelpers";
 
 // ==============================
-// ICONO GENÉRICO
-// ==============================
-const defaultIcon = new L.Icon({
-  iconUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
-
-// ==============================
-// CONTROLADOR DE MOVIMIENTO
-// ==============================
-const MapController = ({ center, zoom }) => {
-  const map = useMap();
-
-  useEffect(() => {
-    if (Array.isArray(center) && center.length === 2) {
-      map.flyTo(center, zoom, {
-        duration: 0.8,
-        easeLinearity: 0.25,
-      });
-    }
-  }, [center, zoom, map]);
-
-  return null;
-};
-
-// ==============================
-// MAP VIEW
+// MAP VIEW LAZY (Leaflet dinámico)
 // ==============================
 const MapView = ({ center, zoom, category, activeItem, onMarkerClick }) => {
+  const [LeafletComponents, setLeafletComponents] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadLeaflet() {
+      try {
+        const L = await import("leaflet");
+        await import("leaflet/dist/leaflet.css");
+
+        const {
+          MapContainer,
+          TileLayer,
+          Marker,
+          Popup,
+          useMap,
+        } = await import("react-leaflet");
+
+        if (!mounted) return;
+
+        // ICONO
+        const defaultIcon = new L.Icon({
+          iconUrl:
+            "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+          shadowUrl:
+            "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+        });
+
+        // CONTROLADOR
+        const MapController = ({ center, zoom }) => {
+          const map = useMap();
+
+          useEffect(() => {
+            if (Array.isArray(center) && center.length === 2) {
+              map.flyTo(center, zoom, {
+                duration: 0.8,
+                easeLinearity: 0.25,
+              });
+            }
+          }, [center, zoom, map]);
+
+          return null;
+        };
+
+        setLeafletComponents({
+          MapContainer,
+          TileLayer,
+          Marker,
+          Popup,
+          MapController,
+          defaultIcon,
+        });
+      } catch (error) {
+        console.error("Error cargando Leaflet:", error);
+      }
+    }
+
+    loadLeaflet();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // ⛔ mientras carga Leaflet
+  if (!LeafletComponents) {
+    return (
+      <div
+        style={{
+          height: "420px",
+          width: "100%",
+          display: "grid",
+          placeItems: "center",
+          color: "#fff",
+        }}
+      >
+        Cargando mapa…
+      </div>
+    );
+  }
+
+  const {
+    MapContainer,
+    TileLayer,
+    Marker,
+    Popup,
+    MapController,
+    defaultIcon,
+  } = LeafletComponents;
+
   const data = Array.isArray(getCategoryData(category))
     ? getCategoryData(category)
     : [];
 
-  // 🔑 SOLO MOSTRAR EL ICONO SELECCIONADO
   const visibleData = activeItem
     ? data.filter((item) => item.id === activeItem)
     : data;

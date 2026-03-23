@@ -29,10 +29,9 @@ import {
 } from "@/components/Buttons/ButtonsAcademia";
 
 import { useNavigate } from "react-router-dom";
-import { doc, onSnapshot } from "firebase/firestore";
-
 import { useSmartNavigation } from "@/utils/SmartNavigation";
 import { getDb } from "@/services/firebaseConfig";
+import { docLazy, onSnapshotLazy } from "@/services/firestoreService";
 import { createCheckoutSession } from "@/services/stripeService";
 import { useAuth } from "@/context/AuthContext";
 
@@ -53,15 +52,18 @@ export default function UpgradePage() {
     }
 
     let unsub = null;
+    let cancelled = false;
 
     async function init() {
       try {
         const db = await getDb();
-        const ref = doc(db, "users", user.uid);
+        const userRef = await docLazy(db, "users", user.uid);
 
-        unsub = onSnapshot(
-          ref,
+        unsub = await onSnapshotLazy(
+          userRef,
           (snap) => {
+            if (cancelled) return;
+
             const plan = (snap.data()?.subscription || "").trim().toUpperCase();
 
             if (snap.exists() && plan === "PRO") {
@@ -72,19 +74,25 @@ export default function UpgradePage() {
             setCheckingPro(false);
           },
           () => {
+            if (cancelled) return;
             setCheckingPro(false);
           }
         );
       } catch (error) {
         console.error("UpgradePage Firestore error:", error);
-        setCheckingPro(false);
+        if (!cancelled) {
+          setCheckingPro(false);
+        }
       }
     }
 
     init();
 
     return () => {
-      if (unsub) unsub();
+      cancelled = true;
+      if (typeof unsub === "function") {
+        unsub();
+      }
     };
   }, [user, loading, goAcademyPro]);
 
@@ -97,7 +105,13 @@ export default function UpgradePage() {
     }
 
     const plan =
-      months === 1 ? "monthly" : months === 3 ? "3m" : months === 6 ? "6m" : null;
+      months === 1
+        ? "monthly"
+        : months === 3
+          ? "3m"
+          : months === 6
+            ? "6m"
+            : null;
 
     if (!plan) return;
 
@@ -117,9 +131,7 @@ export default function UpgradePage() {
     <UpgradeWrapper>
       <HeroTag>PLANES DE ESTUDIO</HeroTag>
 
-      <HeroTitle>
-        Empieza gratis o accede a la formación completa
-      </HeroTitle>
+      <HeroTitle>Empieza gratis o accede a la formación completa</HeroTitle>
 
       <HeroSubtitle>
         Puedes probar primero la versión DEMO o entrar directamente en la
@@ -229,9 +241,9 @@ export default function UpgradePage() {
             Ir a /academia/demo
           </PrimaryButton>
 
-            <SecondaryButton onClick={goHome}>
-                    ← Volver al inicio
-            </SecondaryButton>
+          <SecondaryButton type="button" onClick={goHome}>
+            ← Volver al inicio
+          </SecondaryButton>
         </ClosingButtons>
       </ClosingBox>
     </UpgradeWrapper>
