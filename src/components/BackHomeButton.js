@@ -3,44 +3,46 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const BackWrapper = styled.div`
-  display: flex;
-  // justify-content: flex-end; /* 🚀 coloca el contenido a la derecha */
+  display: inline-flex;
   align-items: center;
-  margin-bottom: 1.5rem;
+  gap: 8px;
+
+
   cursor: pointer;
-  opacity: 0.92;
-  transition: opacity 0.25s ease, transform 0.2s ease;
-  width: 100%; /* 🔥 Para que pueda alinearse a la derecha */
+
+  padding: 8px 14px;
+  border-radius: 999px;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  background: ${({ theme }) =>
+    theme.colors.academy.surfaceSoft || "#132447"};
+
+  border: 1px solid
+    ${({ theme }) =>
+      theme.colors.academy.surfaceLight || "rgba(255,255,255,0.08)"};
+
+  color: ${({ theme }) =>
+    theme.colors.academy.textMain || "#e6edf7"};
+
+  transition: all 0.2s ease;
 
   &:hover {
-    opacity: 1;
-    transform: translateX(-2px);
-  }
-
-  img {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    filter: drop-shadow(0px 0px 6px rgba(0, 255, 0, 0.15));
+    transform: translateX(-3px);
+    background: ${({ theme }) =>
+      theme.colors.academy.surfaceLight || "#1a2f55"};
   }
 
   @media (max-width: 768px) {
-    margin-bottom: 1rem;
-
-    img {
-      width: 40px;
-      height: 40px;
-    }
+    font-size: 0.85rem;
+    padding: 7px 12px;
   }
+`;
 
-  @media (max-width: 480px) {
-    margin-bottom: 0.8rem;
-
-    img {
-      width: 36px;
-      height: 36px;
-    }
-  }
+const Arrow = styled.span`
+  font-size: 1rem;
+  line-height: 1;
 `;
 
 export default function BackHomeButton() {
@@ -48,7 +50,8 @@ export default function BackHomeButton() {
 
   return (
     <BackWrapper onClick={() => navigate("/")}>
-      <img src="/assets/logo192.png" alt="TaxiRadar24 logo" />
+      <Arrow>←</Arrow>
+      Volver al inicio
     </BackWrapper>
   );
 }

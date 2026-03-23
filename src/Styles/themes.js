@@ -15,6 +15,11 @@ export const baseColors = {
   greeLogo: "#58E63D",
   yellow: "#FFC83D",
 
+    // 🔥 NUEVO COLOR HERRAMIENTAS (estilo Black & Decker)
+  toolsOrange: "#ff6a00",
+  toolsOrangeSoft: "#ff8c33",
+  toolsOrangeDark: "#cc5500",
+
   white: "#ffffff",
   black: "#000000",
 

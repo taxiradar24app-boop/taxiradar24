@@ -171,36 +171,23 @@ export default function HomeScreen() {
         
           <SectionHeader>
             
-            <SectionTag>Qué encontrarás en TaxiRadar24</SectionTag>
+            <SectionTag>TaxiRadar24 para taxistas</SectionTag>
             <SectionTitle>
-              Dos caminos claros dentro de una misma plataforma
+              👉 Herramientas profesional para taxistas
             </SectionTitle>
             
             <SectionSubtitle>
-              Si quieres sacarte el permiso, entra en la Academia. Si ya trabajas
-              en el taxi, accede a herramientas pensadas para el día a día.
+              Accede a herramientas diseñadas para tu día a día: radar de vuelos,
+              información en tiempo real y recursos para trabajar con ventaja.
             </SectionSubtitle>
                       
-           <SecondaryButton onClick={goTools}>
-              Ver herramientas para taxistas
+           <SecondaryButton $variant="tools" onClick={goTools}>
+            Ver herramientas para taxistas
           </SecondaryButton>
           </SectionHeader>
 
           <FeatureGrid>
-            <FeatureCard>
-              <FeatureIcon>🎓</FeatureIcon>
-              <h3>Academia TaxiRadar24</h3>
-              <p>
-                Preparación guiada para el permiso municipal de taxista con una
-                metodología clara y práctica.
-              </p>
-              <PillList>
-                <Pill>Reglamento</Pill>
-                <Pill>Audios</Pill>
-                <Pill>Simuladores</Pill>
-                <Pill>Callejero</Pill>
-              </PillList>
-            </FeatureCard>
+ 
 
             <FeatureCard>
               <FeatureIcon>✈️</FeatureIcon>
@@ -241,6 +228,20 @@ export default function HomeScreen() {
                 <Pill>PWA</Pill>
                 <Pill>Móvil</Pill>
                 <Pill>24/7</Pill>
+              </PillList>
+            </FeatureCard>
+                       <FeatureCard>
+              <FeatureIcon>🎓</FeatureIcon>
+              <h3>Academia TaxiRadar24</h3>
+              <p>
+                Preparación guiada para el permiso municipal de taxista con una
+                metodología clara y práctica.
+              </p>
+              <PillList>
+                <Pill>Reglamento</Pill>
+                <Pill>Audios</Pill>
+                <Pill>Simuladores</Pill>
+                <Pill>Callejero</Pill>
               </PillList>
             </FeatureCard>
           </FeatureGrid>
