@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import {
   PageWrapper,
   PageFrame,
@@ -22,10 +22,10 @@ import {
   SidebarTitle,
   SidebarItem,
 } from "./ViasPrincipalesStyle";
-
-import MapView from "./components/MapView";
 import useViasMap from "./hooks/useViasMap";
 import { getCategoryData } from "./utils/mapHelpers";
+
+const MapView = lazy(() => import("./components/MapView"));
 
 const CATEGORIES = [
   { id: "oficiales", label: "Centros oficiales" },
@@ -95,13 +95,15 @@ const ViasPrincipalesScreen = () => {
         </IntroSection>
 
         <MapWrapper>
-          <MapView
-            center={mapCenter}
-            zoom={mapZoom}
-            category={activeCategory}
-            activeItem={activeItem}
-            onMarkerClick={focusOnItem}
-          />
+          <Suspense fallback={<div style={{ color: "#fff" }}>Cargando mapa…</div>}>
+            <MapView
+              center={mapCenter}
+              zoom={mapZoom}
+              category={activeCategory}
+              activeItem={activeItem}
+              onMarkerClick={focusOnItem}
+            />
+          </Suspense>
         </MapWrapper>
 
         <ContentGrid>

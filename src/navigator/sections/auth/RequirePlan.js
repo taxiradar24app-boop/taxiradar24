@@ -15,9 +15,20 @@ export default function RequirePlan({ plan }) {
     hasIdentityConflict,
   } = useAuth();
 
-  if (loading || subscriptionLoading) {
-    return null;
-  }
+    if (loading || subscriptionLoading) {
+      return (
+        <div
+          style={{
+            minHeight: "60vh",
+            display: "grid",
+            placeItems: "center",
+            color: "#fff",
+          }}
+        >
+          Cargando acceso PRO…
+        </div>
+      );
+    }
 
   if (user && hasIdentityConflict) {
     return <Navigate to="/identity-merge" replace />;

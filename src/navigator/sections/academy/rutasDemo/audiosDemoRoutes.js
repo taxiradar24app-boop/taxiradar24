@@ -1,5 +1,8 @@
-import React from "react";
-import DemoAudios from "@/Academy/Demo/DemoAudios";
+import React, { lazy } from "react";
+
+const DemoAudios = lazy(() =>
+  import("@/Academy/Demo/DemoAudios")
+);
 
 const audiosDemoRoutes = [
   {

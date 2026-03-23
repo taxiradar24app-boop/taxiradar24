@@ -7,7 +7,7 @@ import { validatePhone } from "@/utils/utilsForm";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-import logoTaxiRadar from "./../../assets/Logo_taxiredar24_optimizado.svg";
+const logoTaxiRadar = "/assets/LOGO_ORIGINAL.png";
 
 import {
   AuthContainer,

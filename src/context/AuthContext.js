@@ -115,8 +115,10 @@ export function AuthProvider({ children }) {
         setLoading(true);
         setUser(u);
 
-        await refreshUserDocs(u);
-        await refreshSubscription(u);
+        await Promise.all([
+          refreshUserDocs(u),
+          refreshSubscription(u),
+        ]);
 
         if (canShowPrompt) setShowInstallBanner(true);
         setLoading(false);

@@ -1,11 +1,17 @@
-import React from "react";
-import DemoReglamento from "@/Academy/Demo/DemoReglamento";
-import DemoReglamentoArticulo from "@/Academy/Demo/DemoReglamentoArticulo";
+import React, { lazy } from "react";
+
+const DemoReglamento = lazy(() =>
+  import("@/Academy/Demo/DemoReglamento")
+);
+
+const DemoReglamentoArticulo = lazy(() =>
+  import("@/Academy/Demo/DemoReglamentoArticulo")
+);
 
 const reglamentoDemoRoutes = [
   {
     path: "reglamento",
-    element: <DemoReglamento />, // 👈 usa <Outlet />
+    element: <DemoReglamento />,
     children: [
       {
         path: ":id",

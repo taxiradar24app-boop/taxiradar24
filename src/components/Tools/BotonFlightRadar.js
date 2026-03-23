@@ -2,9 +2,9 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth";
+import { getAuth } from "@/services/firebaseConfig";
 
-/* 🎨 Estilo del botón principal (idéntico en medidas al secundario) */
+/* 🎨 Estilo del botón principal */
 const ToolCard = styled.button`
   background-color: #343541;
   color: #fff;
@@ -20,8 +20,8 @@ const ToolCard = styled.button`
   gap: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 280px; /* ✅ igual ancho mínimo que el botón dorado */
-  height: 52px; /* ✅ misma altura */
+  min-width: 280px;
+  height: 52px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 
   &:hover {
@@ -50,14 +50,20 @@ const ToolText = styled.span`
 
 export default function BotonFlightRadar() {
   const navigate = useNavigate();
-  const auth = getAuth();
 
-  const handleClick = () => {
-    const user = auth.currentUser;
-    if (user) {
-      navigate("/aerodataradar"); // ✅ Redirige al radar si hay sesión
-    } else {
-      navigate("/login"); // 🔒 Si no está logeado, va al login
+  const handleClick = async () => {
+    try {
+      const auth = await getAuth(); // ✅ lazy correcto
+      const user = auth.currentUser;
+
+      if (user) {
+        navigate("/aerodataradar");
+      } else {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Error obteniendo auth:", error);
+      navigate("/login");
     }
   };
 

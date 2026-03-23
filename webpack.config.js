@@ -10,7 +10,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const Dotenv = require("dotenv-webpack");
 const HtmlMinimizerPlugin = require("html-minimizer-webpack-plugin");
 const { SubresourceIntegrityPlugin } = require("webpack-subresource-integrity");
-
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = {
@@ -104,7 +104,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
     }),
-
+    new BundleAnalyzerPlugin(),
     // 🔹 Copia archivos públicos (PWA)
     new CopyWebpackPlugin({
       patterns: [

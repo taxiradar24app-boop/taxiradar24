@@ -1,5 +1,8 @@
-import React from "react";
-import DemoCallejero from "@/Academy/Demo/DemoCallejero";
+import React, { lazy } from "react";
+
+const DemoCallejero = lazy(() =>
+  import("@/Academy/Demo/DemoCallejero")
+);
 
 const callejeroDemoRoutes = [
   {

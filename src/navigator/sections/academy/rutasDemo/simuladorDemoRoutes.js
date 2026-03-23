@@ -1,5 +1,8 @@
-import React from "react";
-import DemoSimulador from "@/Academy/Demo/DemoSimulador";
+import React, { lazy } from "react";
+
+const DemoSimulador = lazy(() =>
+  import("@/Academy/Demo/DemoSimulador")
+);
 
 const simuladorDemoRoutes = [
   {
