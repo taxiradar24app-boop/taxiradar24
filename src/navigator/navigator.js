@@ -1,18 +1,22 @@
 // src/navigator/navigator.js
-import React, { Suspense, useEffect, useMemo, useState } from "react";
+import React, { Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import PublicLayout from "./layouts/PublicLayout";
 import ToolsLayout from "./layouts/ToolsLayout";
 import RequirePlan from "@/navigator/sections/auth/RequirePlan";
 
-// 🔥 Lazy también para Home
+import academyRoutes from "@/navigator/sections/academy/academyRoutes";
+
+// Home
 const HomeScreen = React.lazy(() => import("@/Screens/HomeScreen"));
 
+// Auth
 import LoginScreen from "@/Screens/LoginScreen";
 import RegisterScreen from "@/Screens/RegisterScreen";
 import ResetPasswordScreen from "@/Screens/ResetPasswordScreen";
 
+// Otros módulos existentes
 const SuccessPage = React.lazy(() => import("@/Academy/upgrade/SuccessPage"));
 const ProfileProCheck = React.lazy(() => import("@/Profile/ProfileProCheck"));
 const ProfileLayout = React.lazy(() => import("@/Profile/ProfileLayout"));
@@ -37,20 +41,41 @@ function AppLoader({ text = "Cargando…" }) {
   );
 }
 
+function renderRouteTree(routes = []) {
+  return routes.map((route, index) => {
+    const key = `${route.path || "index"}-${index}`;
+
+    const routeElement = route.protected ? (
+      <RequirePlan plan="ACADEMIA_PRO" />
+    ) : (
+      route.element
+    );
+
+    if (route.children?.length) {
+      return (
+        <Route key={key} path={route.path} element={routeElement}>
+          {renderRouteTree(route.children)}
+        </Route>
+      );
+    }
+
+    if (route.index) {
+      return <Route key={key} index element={route.element} />;
+    }
+
+    if (route.protected) {
+      return (
+        <Route key={key} path={route.path} element={<RequirePlan plan="ACADEMIA_PRO" />}>
+          {route.element ? <Route index element={route.element} /> : null}
+        </Route>
+      );
+    }
+
+    return <Route key={key} path={route.path} element={route.element} />;
+  });
+}
+
 export default function Navigator() {
-  const [academyRoutes, setAcademyRoutes] = useState([]);
-  const [academyRoutesReady, setAcademyRoutesReady] = useState(true);
-
-  const demoRoutes = useMemo(
-    () => academyRoutes.filter((r) => !r.protected),
-    [academyRoutes]
-  );
-
-  const proRoutes = useMemo(
-    () => academyRoutes.filter((r) => r.protected),
-    [academyRoutes]
-  );
-
   return (
     <Suspense fallback={<AppLoader text="Cargando vista…" />}>
       <Routes>
@@ -59,16 +84,19 @@ export default function Navigator() {
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           <Route path="reset-password" element={<ResetPasswordScreen />} />
+
+          <Route path="success" element={<SuccessPage />} />
+          <Route path="perfil" element={<ProfileLayout />} />
+          <Route path="progreso" element={<ProgressLayout />} />
+          <Route path="profile/pro-check" element={<ProfileProCheck />} />
+          <Route path="identity-merge" element={<IdentityMergeScreen />} />
         </Route>
 
-        {demoRoutes}
-
-        <Route element={<RequirePlan plan="ACADEMIA_PRO" />}>
-          {proRoutes}
-        </Route>
+        {renderRouteTree(academyRoutes)}
 
         <Route element={<ToolsLayout />}>
           <Route path="herramientas" element={<ToolsLanding />} />
+          <Route path="tools" element={<Navigate to="/herramientas" replace />} />
           <Route path="tools/flights" element={<FlightAeroDataBoxScreen />} />
           <Route
             path="tools/flights/scheduled"

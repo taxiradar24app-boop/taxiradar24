@@ -3,11 +3,6 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
-/**
- * 🔁 Botón universal de navegación adaptable.
- * Si el router actual es `navigator.js` (ToolScreen base),
- * y se pide ir a "/", redirige a "/tools" o al AuthNavigator según contexto.
- */
 const GoBtn = styled.button`
   position: fixed;
   top: ${({ top }) => top || "16px"};
@@ -51,15 +46,18 @@ export default function BotonGoTo({
   const handleClick = () => {
     if (onBeforeNavigate) onBeforeNavigate();
 
-    // 🧭 Si estamos en ToolScreen (navigator.js), redirigir a AuthNavigator
     if (location.pathname.startsWith("/") && !location.pathname.includes("auth")) {
       if (to === "/" || to === "/home") {
-        navigate("/tools", { replace: true }); // fallback dentro del Navigator.js
+        navigate("/", { replace: true });
+        return;
+      }
+
+      if (to === "/tools") {
+        navigate("/herramientas", { replace: true });
         return;
       }
     }
 
-    // Si se especifica destino, navegar normalmente
     if (to) navigate(to, { replace: true });
     else navigate(-1);
   };

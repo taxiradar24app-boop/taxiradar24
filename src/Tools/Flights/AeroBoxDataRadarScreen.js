@@ -1,16 +1,11 @@
-// src/Tools/Flight/AeroBoxDataRadarScreen.js
-
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useAeroBoxArrivals from "@/Drivers/hooksDrivers/useAeroBoxArrival";
 import { useSmartNavigation } from "@/utils/SmartNavigation";
+import ButtonBackSlot from "@/components/Buttons/ButtonBackSlot";
 import {
   Container,
   TopBar,
-  BackSlot,
-  BackIcon,
-  BackText,
   HeaderBlock,
-  Kicker,
   Title,
   HeaderSubtitle,
   MetaRow,
@@ -25,11 +20,11 @@ import {
   EmptyState,
 } from "@/Tools/Flights/AeroBoxDataRadarStyle";
 
-function classifyFlight(f) {
-  if (!f.estimated_arrival) return null;
+function classifyFlight(flight) {
+  if (!flight?.estimated_arrival) return null;
 
   const now = Date.now();
-  const eta = new Date(f.estimated_arrival).getTime();
+  const eta = new Date(flight.estimated_arrival).getTime();
   const diffMin = (eta - now) / 60000;
 
   if (diffMin < -15 || diffMin > 30) return null;
@@ -56,7 +51,7 @@ function classifyFlight(f) {
     };
   }
 
-  if (f.status === "Delayed" && diffMin >= 0 && diffMin <= 30) {
+  if (flight.status === "Delayed" && diffMin >= 0 && diffMin <= 30) {
     return {
       icon: "🟠",
       label: "Delayed",
@@ -82,24 +77,26 @@ function classifyFlight(f) {
 }
 
 export default function FlightAeroDataBoxScreen() {
-  const { items, updatedAt, loading } = useAeroBoxArrivals();
+  const { items = [], updatedAt, loading } = useAeroBoxArrivals();
   const { goTools } = useSmartNavigation();
   const [processed, setProcessed] = useState([]);
   const wakeLockRef = useRef(null);
 
   useEffect(() => {
-    let wakeLock = null;
     let visibilityHandler = null;
 
     async function requestWakeLock() {
       try {
         if ("wakeLock" in navigator) {
-          wakeLock = await navigator.wakeLock.request("screen");
+          const wakeLock = await navigator.wakeLock.request("screen");
           wakeLockRef.current = wakeLock;
-          wakeLock.addEventListener("release", () => {});
+
+          wakeLock.addEventListener("release", () => {
+            wakeLockRef.current = null;
+          });
         }
       } catch (err) {
-        console.warn("No se pudo activar el Wake Lock:", err.message);
+        console.warn("No se pudo activar el Wake Lock:", err?.message);
       }
     }
 
@@ -115,36 +112,38 @@ export default function FlightAeroDataBoxScreen() {
 
     return () => {
       document.removeEventListener("visibilitychange", visibilityHandler);
+
       if (wakeLockRef.current) {
-        wakeLockRef.current.release();
+        wakeLockRef.current.release().catch(() => {});
         wakeLockRef.current = null;
       }
     };
   }, []);
 
   useEffect(() => {
-    if (items.length > 0) {
-      const classified = items
-        .map((f) => {
-          const status = classifyFlight(f);
-          return status ? { ...f, ...status } : null;
-        })
-        .filter(Boolean)
-        .sort((a, b) => a.diffMin - b.diffMin);
-
-      setProcessed(classified);
-    } else {
+    if (!items.length) {
       setProcessed([]);
+      return;
     }
+
+    const classified = items
+      .map((flight) => {
+        const status = classifyFlight(flight);
+        return status ? { ...flight, ...status } : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.diffMin - b.diffMin);
+
+    setProcessed(classified);
   }, [items]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setProcessed((prev) =>
         prev
-          .map((f) => {
-            const status = classifyFlight(f);
-            return status ? { ...f, ...status } : null;
+          .map((flight) => {
+            const status = classifyFlight(flight);
+            return status ? { ...flight, ...status } : null;
           })
           .filter(Boolean)
           .sort((a, b) => a.diffMin - b.diffMin)
@@ -157,20 +156,22 @@ export default function FlightAeroDataBoxScreen() {
   return (
     <Container>
       <TopBar>
-        <BackSlot type="button" onClick={goTools} aria-label="Volver a herramientas">
-          <BackIcon>←</BackIcon>
-          <BackText>Herramientas</BackText>
-        </BackSlot>
+        <ButtonBackSlot
+          onClick={goTools}
+          label="Herramientas"
+          ariaLabel="Volver a herramientas"
+        />
       </TopBar>
 
       <HeaderBlock>
-        <Kicker>Radar operativo</Kicker>
         <Title>
-          ✈️ Radar <span>/ Llegadas</span>
+          ✈️ VUELOS: <span>{processed.length}</span>
         </Title>
+
         <HeaderSubtitle>
-          Vista rápida de vuelos en aproximación y aterrizajes recientes para
-          ayudarte a decidir mejor tu posición.
+          {processed.length === 0
+            ? "Sin actividad en este momento"
+            : "Vuelos activos en ventana operativa"}
         </HeaderSubtitle>
       </HeaderBlock>
 
@@ -189,9 +190,9 @@ export default function FlightAeroDataBoxScreen() {
         <Table>
           <thead>
             <tr>
-              <th>Vuelo</th>
+              <th className="hide-flight-mobile">Vuelo</th>
               <th>Aerolínea</th>
-              <th className="hide-mobile">Origen</th>
+              <th>Origen</th>
               <th>ETA</th>
               <th>Estado</th>
             </tr>
@@ -199,36 +200,45 @@ export default function FlightAeroDataBoxScreen() {
 
           <tbody>
             {processed.length > 0 ? (
-              processed.map((f, i) => (
-                <tr key={`${f.flight_number || "flight"}-${i}`}>
+              processed.map((flight, index) => (
+                <tr key={`${flight.flight_number || "flight"}-${index}`}>
+                  <td className="hide-flight-mobile">
+                    <FlightCode>{flight.flight_number || "—"}</FlightCode>
+                  </td>
+
                   <td>
-                    <FlightCode>{f.flight_number || "—"}</FlightCode>
+                    <AirlineText>{flight.airline || "—"}</AirlineText>
                   </td>
+
                   <td>
-                    <AirlineText>{f.airline || "—"}</AirlineText>
+                    <OriginText>
+                      {flight.origin_iata || flight.origin_name || "—"}
+                    </OriginText>
                   </td>
-                  <td className="hide-mobile">
-                    <OriginText>{f.origin_iata || f.origin_name || "—"}</OriginText>
-                  </td>
+
                   <td>
                     <TimeText>
-                      {f.estimated_arrival
-                        ? new Date(f.estimated_arrival).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
+                      {flight.estimated_arrival
+                        ? new Date(flight.estimated_arrival).toLocaleTimeString(
+                            [],
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )
                         : "—"}
                     </TimeText>
                   </td>
+
                   <td>
                     <Status
                       style={{
-                        color: f.color,
-                        background: f.background,
-                        border: `1px solid ${f.border}`,
+                        color: flight.color,
+                        background: flight.background,
+                        border: `1px solid ${flight.border}`,
                       }}
                     >
-                      {f.icon} {f.label}
+                      {flight.icon} {flight.label}
                     </Status>
                   </td>
                 </tr>

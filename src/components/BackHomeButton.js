@@ -6,26 +6,18 @@ const BackWrapper = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-
-
   cursor: pointer;
-
   padding: 8px 14px;
   border-radius: 999px;
-
   font-size: 0.9rem;
   font-weight: 600;
-
   background: ${({ theme }) =>
     theme.colors.academy.surfaceSoft || "#132447"};
-
   border: 1px solid
     ${({ theme }) =>
       theme.colors.academy.surfaceLight || "rgba(255,255,255,0.08)"};
-
   color: ${({ theme }) =>
     theme.colors.academy.textMain || "#e6edf7"};
-
   transition: all 0.2s ease;
 
   &:hover {

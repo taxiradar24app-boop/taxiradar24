@@ -1,6 +1,10 @@
 // ====================================================================
-// 🚀 SMART NAVIGATION — TaxiRadar24 ENTERPRISE (D1 + Identity Guard)
-// (respeta tu lógica + PRO real desde D1 + bloqueo por duplicado)
+// 🚀 SMART NAVIGATION — TaxiRadar24
+// Restaurado para respetar la lógica real de la web
+// - Academia pública entra por /academia/demo
+// - Tools pública entra por /herramientas
+// - PRO sigue entrando por /academia/pro
+// - No inventa rutas ni pantallas nuevas
 // ====================================================================
 
 import { useNavigate } from "react-router-dom";
@@ -12,15 +16,10 @@ export function useSmartNavigation() {
   const {
     user,
     userData,
-
-    // ✅ Source of truth (D1)
     isPro,
-
-    // ✅ Identity guard
     hasIdentityConflict,
   } = useAuth();
 
-  // ROLES
   const isLogged = !!user;
 
   const isDemo =
@@ -31,56 +30,54 @@ export function useSmartNavigation() {
     userData?.role === "driver" ||
     (Array.isArray(userData?.roles) && userData.roles.includes("driver"));
 
-  const isHybrid = isPro && isDriver;
-
-  // =====================================================
-  // 🧨 BLOQUEO INMEDIATO (Enterprise)
-  // =====================================================
   const guardIdentity = (redirectTo = "/") => {
     if (hasIdentityConflict) {
-      return navigate("/identity-merge", { state: { redirectTo } });
+      navigate("/identity-merge", { state: { redirectTo } });
+      return true;
     }
-    return null;
+    return false;
   };
 
   // =====================================================
   // 🎓 ACADEMY
   // =====================================================
   const goAcademy = () => {
-    const blocked = guardIdentity("/academia");
-    if (blocked) return;
+    if (guardIdentity("/academia/demo")) return;
 
-    if (!isLogged) return navigate("/academia");
+    if (!isLogged) return navigate("/academia/demo");
     if (isPro) return navigate("/academia/pro");
     if (isDemo) return navigate("/academia/demo");
-    return navigate("/academia");
+
+    return navigate("/academia/demo");
   };
 
   const goAcademyPro = () => {
-    const blocked = guardIdentity("/academia/pro");
-    if (blocked) return;
+    if (guardIdentity("/academia/pro")) return;
 
     if (!isLogged) {
-      return navigate("/login", { state: { redirectTo: "/academia/pro" } });
+      return navigate("/login", {
+        state: { redirectTo: "/academia/pro" },
+      });
     }
+
     if (isPro) return navigate("/academia/pro");
     return navigate("/academia/upgrade");
   };
 
   const goUpgrade = () => {
-    const blocked = guardIdentity("/academia/upgrade");
-    if (blocked) return;
+    if (guardIdentity("/academia/upgrade")) return;
 
     if (!isLogged) {
-      return navigate("/login", { state: { redirectTo: "/academia/upgrade" } });
+      return navigate("/login", {
+        state: { redirectTo: "/academia/upgrade" },
+      });
     }
+
     return navigate("/academia/upgrade");
   };
 
   const goDemo = () => {
-    const blocked = guardIdentity("/academia/demo");
-    if (blocked) return;
-
+    if (guardIdentity("/academia/demo")) return;
     return navigate("/academia/demo");
   };
 
@@ -88,41 +85,48 @@ export function useSmartNavigation() {
   // 🛠️ TOOLS
   // =====================================================
   const goTools = () => {
-    const blocked = guardIdentity("/tools");
-    if (blocked) return;
+    if (guardIdentity("/herramientas")) return;
 
-    if (!isLogged)
-      return navigate("/login", { state: { redirectTo: "/tools" } });
+    if (!isLogged) {
+      return navigate("/herramientas");
+    }
+
     return navigate("/herramientas");
   };
 
   const goFlights = () => {
-    const blocked = guardIdentity("/tools/flights");
-    if (blocked) return;
+    if (guardIdentity("/tools/flights")) return;
 
     if (!isLogged) {
-      return navigate("/login", { state: { redirectTo: "/tools/flights" } });
+      return navigate("/login", {
+        state: { redirectTo: "/tools/flights" },
+      });
     }
+
     return navigate("/tools/flights");
   };
 
   const goCruises = () => {
-    const blocked = guardIdentity("/tools/cruises");
-    if (blocked) return;
+    if (guardIdentity("/tools/cruises")) return;
 
     if (!isLogged) {
-      return navigate("/login", { state: { redirectTo: "/tools/cruises" } });
+      return navigate("/login", {
+        state: { redirectTo: "/tools/cruises" },
+      });
     }
+
     return navigate("/tools/cruises");
   };
 
   const goTariffs = () => {
-    const blocked = guardIdentity("/tools/tariffs");
-    if (blocked) return;
+    if (guardIdentity("/tools/tariffs")) return;
 
     if (!isLogged) {
-      return navigate("/login", { state: { redirectTo: "/tools/tariffs" } });
+      return navigate("/login", {
+        state: { redirectTo: "/tools/tariffs" },
+      });
     }
+
     return navigate("/tools/tariffs");
   };
 
@@ -134,44 +138,35 @@ export function useSmartNavigation() {
   const goHome = () => navigate("/");
 
   // =====================================================
-  // 🧰 DEFAULT ROUTE (Header / Drawer)
+  // 🧰 DEFAULT ENTRY POINT
   // =====================================================
-  // ✅ Limpieza: mantenemos la lógica enterprise (identity + roles),
-  // pero evitamos caer en /workspace (legacy) que te está devolviendo a "/".
-  // Esto NO rompe: goAcademy/goAcademyPro/goTools siguen igual.
   const getDefaultEntryPoint = () => {
     if (!isLogged) return "/";
     if (hasIdentityConflict) return "/identity-merge";
 
-    // PRIORIDAD: si tiene PRO real (D1) -> Academia PRO
     if (isPro) return "/academia/pro";
+    if (isDriver) return "/herramientas";
 
-    // Si es taxista sin PRO academia -> Tools
-    if (isDriver) return "/tools";
-
-    // Usuario normal -> Academia (landing)
     return "/academia/demo";
   };
 
   return {
-    // HOME / AUTH
     goHome,
     goLogin,
     goRegister,
 
-    // ACADEMY
     goAcademy,
     goAcademyPro,
     goUpgrade,
     goDemo,
 
-    // TOOLS
     goTools,
     goFlights,
     goCruises,
     goTariffs,
 
-    // UTIL
     getDefaultEntryPoint,
   };
 }
+
+export default useSmartNavigation;
