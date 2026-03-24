@@ -33,15 +33,27 @@
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://taxiradar24.com/" />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <!-- Google Fonts (no bloqueante) -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      />
+    </noscript>
 
-    <!-- Imagen crítica -->
+    <!-- Imagen crítica (LCP) -->
     <link
       rel="preload"
       as="image"
@@ -57,7 +69,7 @@
     />
     <meta
       property="og:description"
-      content="Academia profesional para preparar el examen de taxista en Palma de Mallorca. Aprende reglamento, domina el callejero, estudia con audios y practica con simulador."
+      content="Academia profesional para preparar el examen de taxista en Palma de Mallorca."
     />
     <meta property="og:url" content="https://taxiradar24.com/" />
     <meta property="og:type" content="website" />
@@ -67,62 +79,18 @@
       property="og:image"
       content="https://taxiradar24.com/assets/og-image.png"
     />
-    <meta
-      property="og:image:secure_url"
-      content="https://taxiradar24.com/assets/og-image.png"
-    />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta
-      property="og:image:alt"
-      content="TaxiRadar24 Academia - Academia para preparar el Permiso Municipal de Taxista en Palma de Mallorca"
-    />
 
-    <!-- Twitter / X -->
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="TaxiRadar24 Academia | Preparar el Permiso Municipal de Taxista en Palma"
-    />
-    <meta
-      name="twitter:description"
-      content="Formación profesional para futuros taxistas en Palma de Mallorca: reglamento, callejero, audios y simulador de examen."
-    />
-    <meta
-      name="twitter:image"
-      content="https://taxiradar24.com/assets/twitter-card.png"
-    />
-    <meta
-      name="twitter:image:alt"
-      content="TaxiRadar24 Academia - Plataforma para preparar el examen de taxista en Palma"
-    />
 
     <!-- Manifest + iconos -->
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon" href="/assets/favicon.ico" sizes="any" />
     <link rel="shortcut icon" href="/assets/favicon.ico" />
     <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/assets/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/assets/favicon-16x16.png"
-    />
-    <link
       rel="apple-touch-icon"
       sizes="180x180"
       href="/assets/apple-touch-icon.v2.png"
-    />
-    <link
-      rel="mask-icon"
-      href="/assets/maskable-icon.png"
-      color="#10a37f"
     />
 
     <!-- Google verification -->
@@ -131,21 +99,10 @@
       content="D-JEqLPydf0LBvCtapusQ1qoqGXmaTzjclVEp1sxElI"
     />
 
-    <!-- Performance -->
-    <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
-    <link rel="dns-prefetch" href="https://www.gstatic.com" />
-    <link rel="dns-prefetch" href="https://apis.google.com" />
-    <link rel="dns-prefetch" href="https://www.google.com" />
-    <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://apis.google.com" crossorigin />
-    <link rel="preconnect" href="https://www.google.com" crossorigin />
-
     <style>
       .seo-hidden {
         position: absolute;
         left: -9999px;
-        top: auto;
         width: 1px;
         height: 1px;
         overflow: hidden;
@@ -162,43 +119,16 @@
     <div id="root"></div>
 
     <!-- SEO de apoyo -->
-    <h1 class="seo-hidden" aria-hidden="true">
+    <h1 class="seo-hidden">
       TaxiRadar24 Academia - Academia para preparar el Permiso Municipal de
       Taxista en Palma de Mallorca
     </h1>
 
-    <p class="seo-hidden" aria-hidden="true">
-      TaxiRadar24 Academia es una plataforma de formación diseñada para preparar
-      el Permiso Municipal de Taxista en Palma de Mallorca. La academia incluye
-      el estudio del reglamento oficial del taxi, ejercicios prácticos de
-      callejero, audios explicativos y simulador de examen para facilitar un
-      aprendizaje claro, progresivo y profesional.
-    </p>
-
-    <p class="seo-hidden" aria-hidden="true">
-      Nuestro objetivo es ayudar a futuros taxistas a comprender la normativa,
-      dominar la ciudad, mejorar su preparación y afrontar el examen oficial con
-      más seguridad, orden y confianza.
+    <p class="seo-hidden">
+      Plataforma profesional para preparar el examen de taxista en Palma con
+      reglamento, callejero, audios y simulador.
     </p>
 
     <noscript>Debes habilitar JavaScript para usar TaxiRadar24 Academia.</noscript>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const s = document.createElement("script");
-        s.src = "https://www.googletagmanager.com/gtag/js?id=G-PMNL95ESWN";
-        s.async = true;
-        document.body.appendChild(s);
-
-        s.onload = () => {
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
-          gtag("js", new Date());
-          gtag("config", "G-PMNL95ESWN");
-        };
-      });
-    </script>
   </body>
 </html>

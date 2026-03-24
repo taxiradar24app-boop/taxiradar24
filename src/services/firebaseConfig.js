@@ -1,30 +1,114 @@
 // src/services/firebaseConfig.js
 // =======================================================
-// ✅ Firebase "Enterprise" - Lazy Load + Compat Layer
-// - NO exporta db/auth como instancias (evita bundle inicial pesado)
-// - Exporta getters async: getDb(), getAuth()
-// - Mantiene exports app/firebaseConfig para compat
+// ✅ Firebase "Enterprise" - Lazy total
+// - Inicialización lazy sin dependencia de módulos globales
+// - Inicializa Firebase App solo cuando hace falta
+// - Exporta getters async: getApp(), getAuth(), getDb()
+// - Mantiene compat exportando getFirebaseConfig()
 // =======================================================
 
-import { app, firebaseConfig } from "./firebaseApp";
-
+let _appInstance = null;
 let _authInstance = null;
 let _dbInstance = null;
 let _persistenceReady = false;
+let _firebaseConfigCache = null;
 
-// -----------------------------
-// ✅ AUTH lazy + persistencia 1 vez
-// -----------------------------
+function readEnvValue(key) {
+  if (
+    typeof process !== "undefined" &&
+    process.env &&
+    typeof process.env[key] !== "undefined"
+  ) {
+    return process.env[key];
+  }
+
+  if (
+    typeof window !== "undefined" &&
+    window.__ENV__ &&
+    typeof window.__ENV__[key] !== "undefined"
+  ) {
+    return window.__ENV__[key];
+  }
+
+  return undefined;
+}
+
+function buildFirebaseConfig() {
+  if (_firebaseConfigCache) return _firebaseConfigCache;
+
+  const config = {
+    apiKey:
+      readEnvValue("REACT_APP_FIREBASE_API_KEY") ||
+      readEnvValue("FIREBASE_API_KEY"),
+    authDomain:
+      readEnvValue("REACT_APP_FIREBASE_AUTH_DOMAIN") ||
+      readEnvValue("FIREBASE_AUTH_DOMAIN"),
+    projectId:
+      readEnvValue("REACT_APP_FIREBASE_PROJECT_ID") ||
+      readEnvValue("FIREBASE_PROJECT_ID"),
+    storageBucket:
+      readEnvValue("REACT_APP_FIREBASE_STORAGE_BUCKET") ||
+      readEnvValue("FIREBASE_STORAGE_BUCKET"),
+    messagingSenderId:
+      readEnvValue("REACT_APP_FIREBASE_MESSAGING_SENDER_ID") ||
+      readEnvValue("FIREBASE_MESSAGING_SENDER_ID"),
+    appId:
+      readEnvValue("REACT_APP_FIREBASE_APP_ID") ||
+      readEnvValue("FIREBASE_APP_ID"),
+    measurementId:
+      readEnvValue("REACT_APP_FIREBASE_MEASUREMENT_ID") ||
+      readEnvValue("FIREBASE_MEASUREMENT_ID"),
+  };
+
+  const requiredKeys = [
+    "apiKey",
+    "authDomain",
+    "projectId",
+    "storageBucket",
+    "messagingSenderId",
+    "appId",
+  ];
+
+  const missingKeys = requiredKeys.filter((key) => !config[key]);
+
+  if (missingKeys.length > 0) {
+    throw new Error(
+      `Firebase config incompleta. Faltan: ${missingKeys.join(", ")}`
+    );
+  }
+
+  _firebaseConfigCache = config;
+  return _firebaseConfigCache;
+}
+
+export function getFirebaseConfig() {
+  return buildFirebaseConfig();
+}
+
+export async function getApp() {
+  if (_appInstance) return _appInstance;
+
+  const { initializeApp, getApps, getApp: getExistingApp } = await import(
+    "firebase/app"
+  );
+
+  const config = buildFirebaseConfig();
+
+  _appInstance = getApps().length ? getExistingApp() : initializeApp(config);
+
+  return _appInstance;
+}
+
 export async function getAuth() {
   if (_authInstance) return _authInstance;
 
+  const app = await getApp();
   const { getAuth, setPersistence, browserLocalPersistence } = await import(
     "firebase/auth"
   );
 
   const auth = getAuth(app);
 
-  // Persistencia solo una vez (evita re-ejecuciones)
   if (!_persistenceReady) {
     _persistenceReady = true;
     try {
@@ -38,24 +122,12 @@ export async function getAuth() {
   return auth;
 }
 
-// -----------------------------
-// ✅ FIRESTORE lazy
-// -----------------------------
 export async function getDb() {
   if (_dbInstance) return _dbInstance;
 
+  const app = await getApp();
   const { getFirestore } = await import("firebase/firestore");
-  _dbInstance = getFirestore(app);
 
+  _dbInstance = getFirestore(app);
   return _dbInstance;
 }
-
-// -----------------------------
-// ✅ Compat exports (ligeros)
-// -----------------------------
-export { app, firebaseConfig };
-
-// ❌ Importante: ya NO exportamos `db` ni `auth` directos.
-// Si algún archivo hace `import { db } ...` fallará, y eso es correcto:
-// te obliga a migrar ese archivo a getDb().
-// (Vamos migrando primero los globales)

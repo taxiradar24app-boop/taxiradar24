@@ -21,23 +21,10 @@ const appScreenFallbackStyle = {
   background: "#0a1528",
 };
 
-const authLoadingStyle = {
-  height: "100vh",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "#888",
-  fontFamily: "System, -apple-system, Segoe UI, Roboto, Arial",
-  background: "#0a1528",
-};
-
 function AppContent() {
-  const { user, loading, phoneVerified, hasIdentityConflict } = useAuth();
+  const { user, phoneVerified, hasIdentityConflict } = useAuth();
 
-  if (loading) {
-    return <div style={authLoadingStyle}>Cargando…</div>;
-  }
-
+  // 🔥 YA NO BLOQUEAMOS EL RENDER
   if (user && hasIdentityConflict) {
     return <IdentityMergeScreen />;
   }

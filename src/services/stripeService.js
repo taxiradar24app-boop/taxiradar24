@@ -1,5 +1,6 @@
+// src/services/stripeService.js
+
 import { getAuth } from "./firebaseConfig";
-const { onAuthStateChanged } = await import("firebase/auth");
 
 function normalizeBase(url) {
   if (!url) return "";
@@ -46,6 +47,7 @@ export function getApiBase() {
 
 async function waitForAuthenticatedUser(timeoutMs = 10000) {
   const auth = await getAuth();
+  const { onAuthStateChanged } = await import("firebase/auth");
 
   if (auth.currentUser) {
     return auth.currentUser;
@@ -57,7 +59,7 @@ async function waitForAuthenticatedUser(timeoutMs = 10000) {
     const timer = setTimeout(() => {
       if (settled) return;
       settled = true;
-      if (unsubscribe) unsubscribe();
+      if (typeof unsubscribe === "function") unsubscribe();
       reject(new Error("User not authenticated"));
     }, timeoutMs);
 

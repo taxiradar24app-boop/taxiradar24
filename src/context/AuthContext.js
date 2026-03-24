@@ -122,20 +122,16 @@ export function AuthProvider({ children }) {
             return;
           }
 
-          setLoading(true);
+          // 🔥 CLAVE → NO BLOQUEAMOS
           setUser(currentUser);
+          setLoading(false);
 
-          await Promise.all([
-            refreshUserDocs(currentUser),
-            refreshSubscription(currentUser),
-          ]);
+          // 🔥 CARGA EN BACKGROUND
+          refreshUserDocs(currentUser);
+          refreshSubscription(currentUser);
 
           if (mounted && canShowPrompt) {
             setShowInstallBanner(true);
-          }
-
-          if (mounted) {
-            setLoading(false);
           }
         });
       } catch (error) {

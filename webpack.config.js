@@ -1,6 +1,7 @@
 // ============================================================
 // 🚕 TAXIRADAR24 — CONFIGURACIÓN WEBPACK COMPLETA
 // Optimizado para PWA, React 18, Firebase y arquitectura modular.
+// SEO PRO + rendimiento real en móvil.
 // ============================================================
 
 const path = require("path");
@@ -141,8 +142,8 @@ module.exports = {
 
     splitChunks: {
       chunks: "all",
-      maxInitialRequests: 12,
-      maxAsyncRequests: 12,
+      maxInitialRequests: 14,
+      maxAsyncRequests: 18,
       minSize: 20000,
 
       cacheGroups: {
@@ -150,13 +151,6 @@ module.exports = {
           test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
           name: "react-vendor",
           priority: 50,
-          enforce: true,
-        },
-
-        firebaseVendor: {
-          test: /[\\/]node_modules[\\/](@firebase|firebase)[\\/]/,
-          name: "firebase-vendor",
-          priority: 45,
           enforce: true,
         },
 
@@ -191,6 +185,7 @@ module.exports = {
             return `npm.${packageName.replace("@", "")}`;
           },
           priority: -10,
+          reuseExistingChunk: true,
         },
       },
     },
