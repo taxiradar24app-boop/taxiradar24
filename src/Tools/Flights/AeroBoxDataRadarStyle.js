@@ -1,4 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+/* =========================
+   CONTENEDORES
+========================= */
 
 export const Container = styled.section`
   width: min(1180px, calc(100% - 32px));
@@ -31,6 +35,19 @@ export const Container = styled.section`
   }
 `;
 
+export const TableContainer = styled(Container)`
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10, 22, 50, 0.96) 0%,
+      rgba(8, 18, 42, 0.99) 100%
+    );
+`;
+
+/* =========================
+   HEADER
+========================= */
+
 export const TopBar = styled.div`
   display: flex;
   align-items: center;
@@ -52,11 +69,22 @@ export const TopBar = styled.div`
 export const HeaderBlock = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
   position: relative;
   z-index: 1;
   margin: 0 0 16px 0;
+`;
+
+export const Kicker = styled.div`
+  color: #a3e635;
+  text-transform: uppercase;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: ${({ theme }) => theme.fontSizes?.xs || "0.8125rem"};
+  font-weight: ${({ theme }) => theme.fontWeights?.medium || 500};
+  line-height: 1.2;
+  letter-spacing: 0.08em;
 `;
 
 export const Title = styled.h3`
@@ -68,7 +96,6 @@ export const Title = styled.h3`
   font-weight: ${({ theme }) => theme.fontWeights?.bold || 700};
   line-height: 1.15;
   letter-spacing: ${({ theme }) => theme.letterSpacings?.tight || "-0.02em"};
-
   display: block;
 
   span {
@@ -86,6 +113,8 @@ export const Title = styled.h3`
   }
 `;
 
+export const TableTitle = styled(Title)``;
+
 export const HeaderSubtitle = styled.p`
   margin: 0;
   max-width: 760px;
@@ -101,6 +130,68 @@ export const HeaderSubtitle = styled.p`
     font-size: 0.95rem;
   }
 `;
+
+/* =========================
+   RESUMEN POR HORA
+========================= */
+
+export const HourForecastWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+
+  @media (max-width: 480px) {
+    gap: 8px;
+  }
+`;
+
+export const HourForecastItem = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(16, 163, 127, 0.1);
+  border: 1px solid rgba(16, 163, 127, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+  @media (max-width: 480px) {
+    min-height: 34px;
+    padding: 7px 10px;
+  }
+`;
+
+export const HourForecastHour = styled.span`
+  color: #d9e8ff;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: ${({ theme }) => theme.fontSizes?.sm || "0.9375rem"};
+  font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};
+  line-height: 1.2;
+
+  @media (max-width: 480px) {
+    font-size: 0.84rem;
+  }
+`;
+
+export const HourForecastCount = styled.span`
+  color: #a3e635;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: ${({ theme }) => theme.fontSizes?.sm || "0.9375rem"};
+  font-weight: ${({ theme }) => theme.fontWeights?.bold || 700};
+  line-height: 1.2;
+
+  @media (max-width: 480px) {
+    font-size: 0.84rem;
+  }
+`;
+
+/* =========================
+   PILLS / META
+========================= */
 
 export const MetaRow = styled.div`
   display: flex;
@@ -128,6 +219,21 @@ export const LastUpdated = styled.div`
   letter-spacing: ${({ theme }) => theme.letterSpacings?.normal || "-0.01em"};
 `;
 
+export const UpdatePill = styled(LastUpdated)``;
+
+export const ErrorText = styled.p`
+  margin: 0 0 14px 0;
+  color: #ffb4b4;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: ${({ theme }) => theme.fontSizes?.sm || "0.9375rem"};
+  font-weight: ${({ theme }) => theme.fontWeights?.medium || 500};
+`;
+
+/* =========================
+   TABLAS
+========================= */
+
 export const TableWrap = styled.div`
   width: 100%;
   overflow-x: hidden;
@@ -136,6 +242,8 @@ export const TableWrap = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.06);
   background: rgba(8, 18, 42, 0.75);
 `;
+
+export const TableScroll = styled(TableWrap)``;
 
 export const Table = styled.table`
   width: 100%;
@@ -192,32 +300,6 @@ export const Table = styled.table`
     background: rgba(255, 255, 255, 0.03);
   }
 
-  th.hide-flight-mobile,
-  td.hide-flight-mobile {
-    display: table-cell;
-    width: 18%;
-  }
-
-  th:nth-child(2),
-  td:nth-child(2) {
-    width: 26%;
-  }
-
-  th:nth-child(3),
-  td:nth-child(3) {
-    width: 24%;
-  }
-
-  th:nth-child(4),
-  td:nth-child(4) {
-    width: 14%;
-  }
-
-  th:nth-child(5),
-  td:nth-child(5) {
-    width: 18%;
-  }
-
   td:first-child,
   th:first-child {
     padding-left: 14px;
@@ -229,6 +311,10 @@ export const Table = styled.table`
   }
 
   @media (max-width: 768px) {
+    .hide-flight-mobile {
+      display: none;
+    }
+
     th {
       font-size: 0.74rem;
       padding: 11px 8px;
@@ -238,31 +324,6 @@ export const Table = styled.table`
     td {
       font-size: 0.85rem;
       padding: 11px 8px;
-    }
-
-    th.hide-flight-mobile,
-    td.hide-flight-mobile {
-      display: none;
-    }
-
-    th:nth-child(2),
-    td:nth-child(2) {
-      width: 32%;
-    }
-
-    th:nth-child(3),
-    td:nth-child(3) {
-      width: 30%;
-    }
-
-    th:nth-child(4),
-    td:nth-child(4) {
-      width: 14%;
-    }
-
-    th:nth-child(5),
-    td:nth-child(5) {
-      width: 24%;
     }
 
     td:first-child,
@@ -287,26 +348,6 @@ export const Table = styled.table`
       padding: 10px 6px;
     }
 
-    th:nth-child(2),
-    td:nth-child(2) {
-      width: 33%;
-    }
-
-    th:nth-child(3),
-    td:nth-child(3) {
-      width: 31%;
-    }
-
-    th:nth-child(4),
-    td:nth-child(4) {
-      width: 14%;
-    }
-
-    th:nth-child(5),
-    td:nth-child(5) {
-      width: 22%;
-    }
-
     td:first-child,
     th:first-child {
       padding-left: 8px;
@@ -318,6 +359,10 @@ export const Table = styled.table`
     }
   }
 `;
+
+/* =========================
+   CELDAS
+========================= */
 
 export const FlightCode = styled.span`
   display: inline-flex;
@@ -388,6 +433,33 @@ export const Status = styled.span`
     padding: 5px 8px;
     font-size: 0.72rem;
   }
+`;
+
+const statusStyles = {
+  Expected: css`
+    color: #9ff0da;
+    background: rgba(16, 163, 127, 0.14);
+    border: 1px solid rgba(16, 163, 127, 0.24);
+  `,
+  Delayed: css`
+    color: #ffd08b;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.22);
+  `,
+  Canceled: css`
+    color: #ffb4b4;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.22);
+  `,
+  landed: css`
+    color: #e9d5ff;
+    background: rgba(168, 85, 247, 0.12);
+    border: 1px solid rgba(168, 85, 247, 0.22);
+  `,
+};
+
+export const StatusBadge = styled(Status)`
+  ${({ status }) => statusStyles[status] || ""}
 `;
 
 export const EmptyState = styled.div`

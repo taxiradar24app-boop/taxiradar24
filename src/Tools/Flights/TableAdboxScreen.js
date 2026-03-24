@@ -1,18 +1,16 @@
-// src/Tools/Flight/TableAdboxScreen.js
-// (llegadas programadas — AerodataBox)
-
-import React from "react";
+import React, { useMemo } from "react";
 import { useAdboxFlights } from "@/Drivers/hooksDrivers/useAdboxFlights";
+import ButtonBackSlot from "@/components/Buttons/ButtonBackSlot";
 import {
   TableContainer,
   TopBar,
-  BackSlot,
-  BackIcon,
-  BackText,
   HeaderBlock,
   Kicker,
   TableTitle,
-  HeaderSubtitle,
+  HourForecastWrap,
+  HourForecastItem,
+  HourForecastHour,
+  HourForecastCount,
   MetaRow,
   UpdatePill,
   ErrorText,
@@ -24,65 +22,64 @@ import {
   TimeText,
   StatusBadge,
   EmptyState,
-} from "@/Tools/Flights/TableAdboxStyle";
+} from "@/Tools/Flights/AeroBoxDataRadarStyle";
 import { useThemeMode } from "@/context/ThemeContext";
 import { useSmartNavigation } from "@/utils/SmartNavigation";
 
 export default function TableAdboxScreen() {
-  const { flights, loading, updatedAt, error } = useAdboxFlights();
+  const { flights = [], loading, updatedAt, error } = useAdboxFlights();
   const { mode } = useThemeMode();
   const { goTools } = useSmartNavigation();
 
-  if (loading) {
-    return (
-      <TableContainer data-theme={mode}>
-        <TopBar>
-          <BackSlot type="button" onClick={goTools} aria-label="Volver a herramientas">
-            <BackIcon>←</BackIcon>
-            <BackText>Herramientas</BackText>
-          </BackSlot>
-        </TopBar>
-
-        <HeaderBlock>
-          <Kicker>Herramienta operativa</Kicker>
-          <TableTitle>
-            ✈️ Llegadas <span>/ Próximas horas</span>
-          </TableTitle>
-          <HeaderSubtitle>
-            Cargando previsión de vuelos para ayudarte a anticipar la demanda.
-          </HeaderSubtitle>
-        </HeaderBlock>
-
-        <UpdatePill>⏳ Cargando vuelos…</UpdatePill>
-      </TableContainer>
-    );
-  }
-
-  const getDisplayStatus = (f) => {
+  const getDisplayStatus = (flight) => {
     try {
       const now = new Date();
-      const eta = new Date(f.estimated_arrival);
+      const eta = new Date(flight.estimated_arrival);
       const diffMin = (now - eta) / 60000;
 
       if (diffMin > 0 && diffMin <= 15) return "landed";
       if (diffMin > 15) return "expired";
-      return f.status;
+      return flight.status;
     } catch {
-      return f.status;
+      return flight.status;
     }
   };
 
-  const processedFlights = [...flights]
-    .map((f) => ({
-      ...f,
-      display_status: getDisplayStatus(f),
-    }))
-    .filter((f) => f.display_status !== "expired")
-    .sort(
-      (a, b) =>
-        new Date(a.estimated_arrival).getTime() -
-        new Date(b.estimated_arrival).getTime()
-    );
+  const processedFlights = useMemo(() => {
+    return [...flights]
+      .map((flight) => ({
+        ...flight,
+        display_status: getDisplayStatus(flight),
+      }))
+      .filter((flight) => flight.display_status !== "expired")
+      .sort(
+        (a, b) =>
+          new Date(a.estimated_arrival).getTime() -
+          new Date(b.estimated_arrival).getTime()
+      );
+  }, [flights]);
+
+  const hourlyForecast = useMemo(() => {
+    const bucket = {};
+
+    processedFlights.forEach((flight) => {
+      const baseDate = flight.estimated_arrival || flight.scheduled_arrival;
+      if (!baseDate) return;
+
+      const date = new Date(baseDate);
+      if (Number.isNaN(date.getTime())) return;
+
+      const hour = date.getHours();
+      bucket[hour] = (bucket[hour] || 0) + 1;
+    });
+
+    return Object.entries(bucket)
+      .map(([hour, count]) => ({
+        hour: Number(hour),
+        count,
+      }))
+      .sort((a, b) => a.hour - b.hour);
+  }, [processedFlights]);
 
   const renderStatus = (status) => {
     if (status === "Expected") return "🟢 On Time";
@@ -92,13 +89,37 @@ export default function TableAdboxScreen() {
     return status || "—";
   };
 
+  if (loading) {
+    return (
+      <TableContainer data-theme={mode}>
+        <TopBar>
+          <ButtonBackSlot
+            onClick={goTools}
+            label="Herramientas"
+            ariaLabel="Volver a herramientas"
+          />
+        </TopBar>
+
+        <HeaderBlock>
+          <Kicker>Herramienta operativa</Kicker>
+          <TableTitle>
+            ✈️ Llegadas <span>/ Próximas 12 horas</span>
+          </TableTitle>
+        </HeaderBlock>
+
+        <UpdatePill>⏳ Cargando vuelos…</UpdatePill>
+      </TableContainer>
+    );
+  }
+
   return (
     <TableContainer data-theme={mode}>
       <TopBar>
-        <BackSlot type="button" onClick={goTools} aria-label="Volver a herramientas">
-          <BackIcon>←</BackIcon>
-          <BackText>Herramientas</BackText>
-        </BackSlot>
+        <ButtonBackSlot
+          onClick={goTools}
+          label="Herramientas"
+          ariaLabel="Volver a herramientas"
+        />
       </TopBar>
 
       <HeaderBlock>
@@ -106,10 +127,26 @@ export default function TableAdboxScreen() {
         <TableTitle>
           ✈️ Llegadas <span>/ Próximas 12 horas</span>
         </TableTitle>
-        <HeaderSubtitle>
-          Revisa la previsión del aeropuerto y detecta con más claridad las
-          próximas ventanas de movimiento.
-        </HeaderSubtitle>
+
+        <HourForecastWrap>
+          {hourlyForecast.length === 0 ? (
+            <HourForecastItem>
+              <HourForecastHour>Sin datos</HourForecastHour>
+              <HourForecastCount>0 vuelos</HourForecastCount>
+            </HourForecastItem>
+          ) : (
+            hourlyForecast.map((item) => (
+              <HourForecastItem key={item.hour}>
+                <HourForecastHour>
+                  Hora {String(item.hour).padStart(2, "0")}
+                </HourForecastHour>
+                <HourForecastCount>
+                  {item.count} {item.count === 1 ? "vuelo" : "vuelos"}
+                </HourForecastCount>
+              </HourForecastItem>
+            ))
+          )}
+        </HourForecastWrap>
       </HeaderBlock>
 
       <MetaRow>
@@ -128,51 +165,52 @@ export default function TableAdboxScreen() {
 
       <TableScroll>
         <Table>
-          <thead>
-            <tr>
-              <th>Vuelo</th>
-              <th>Aerolínea</th>
-              <th>Origen</th>
-              <th>Programado</th>
-              <th>Estimado</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
+        <thead>
+          <tr>
+            <th className="hide-flight-mobile">Vuelo</th>
+            <th>Aerolínea</th>
+            <th>Origen</th>
+            <th>Programado</th>
+            <th>Estimado</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
 
-          <tbody>
-            {processedFlights.length === 0 ? (
-              <tr>
-                <td colSpan="6">
-                  <EmptyState>Sin vuelos en las próximas horas.</EmptyState>
-                </td>
-              </tr>
-            ) : (
-              processedFlights.map((f) => (
-                <tr key={f.id}>
-                  <td>
-                    <FlightCode>{f.flight_number || "—"}</FlightCode>
-                  </td>
-                  <td>
-                    <AirlineText>{f.airline || "—"}</AirlineText>
-                  </td>
-                  <td>
-                    <OriginText>{f.origin_name || "—"}</OriginText>
-                  </td>
-                  <td>
-                    <TimeText>{f.scheduled_arrival?.slice(11, 16) || "—"}</TimeText>
-                  </td>
-                  <td>
-                    <TimeText>{f.estimated_arrival?.slice(11, 16) || "—"}</TimeText>
-                  </td>
-                  <td>
-                    <StatusBadge status={f.display_status}>
-                      {renderStatus(f.display_status)}
-                    </StatusBadge>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
+<tbody>
+  {processedFlights.length === 0 ? (
+    <tr>
+      <td colSpan="6">
+        <EmptyState>Sin vuelos en las próximas horas.</EmptyState>
+      </td>
+    </tr>
+  ) : (
+    processedFlights.map((flight) => (
+      <tr key={flight.id}>
+        <td className="hide-flight-mobile">
+          <FlightCode>{flight.flight_number || "—"}</FlightCode>
+        </td>
+        <td>
+          <AirlineText>{flight.airline || "—"}</AirlineText>
+        </td>
+        <td>
+          <OriginText>{flight.origin_name || "—"}</OriginText>
+        </td>
+        <td>
+          <TimeText>{flight.scheduled_arrival?.slice(11, 16) || "—"}</TimeText>
+        </td>
+        <td>
+          <TimeText>{flight.estimated_arrival?.slice(11, 16) || "—"}</TimeText>
+        </td>
+        <td>
+          <StatusBadge status={flight.display_status}>
+            {renderStatus(flight.display_status)}
+          </StatusBadge>
+        </td>
+      </tr>
+    ))
+  )}
+</tbody>
+
         </Table>
       </TableScroll>
     </TableContainer>
