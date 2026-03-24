@@ -1,49 +1,91 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const BackWrapper = styled.div`
+const BackButton = styled.button`
+  position: relative;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding: 8px 14px;
+  justify-content: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: 100%;
+  flex-shrink: 0;
+
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid rgba(163, 230, 53, 0.16);
   border-radius: 999px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  background: ${({ theme }) =>
-    theme.colors.academy.surfaceSoft || "#132447"};
-  border: 1px solid
-    ${({ theme }) =>
-      theme.colors.academy.surfaceLight || "rgba(255,255,255,0.08)"};
-  color: ${({ theme }) =>
-    theme.colors.academy.textMain || "#e6edf7"};
-  transition: all 0.2s ease;
+  background: rgba(10, 20, 44, 0.72);
+  color: #e8eef9;
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: ${({ theme }) => theme.fontSizes?.sm || "0.9375rem"};
+  font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};
+  line-height: 1.2;
+  letter-spacing: ${({ theme }) => theme.letterSpacings?.normal || "-0.01em"};
 
   &:hover {
-    transform: translateX(-3px);
-    background: ${({ theme }) =>
-      theme.colors.academy.surfaceLight || "#1a2f55"};
+    transform: translateY(-1px);
+    border-color: rgba(163, 230, 53, 0.34);
+    background: rgba(12, 24, 52, 0.9);
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.28),
+      0 0 0 1px rgba(163, 230, 53, 0.06);
   }
 
-  @media (max-width: 768px) {
-    font-size: 0.85rem;
-    padding: 7px 12px;
+  &:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 480px) {
+    min-height: 40px;
+    padding: 9px 12px;
+    font-size: 0.88rem;
   }
 `;
 
-const Arrow = styled.span`
-  font-size: 1rem;
+const Icon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(163, 230, 53, 0.12);
+  color: #c9f36b;
+  font-size: 0.95rem;
   line-height: 1;
+  flex-shrink: 0;
 `;
 
-export default function BackHomeButton() {
-  const navigate = useNavigate();
+const Text = styled.span`
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+`;
 
+export default function ButtonBackSlot({
+  onClick,
+  label = "Volver",
+  ariaLabel = "Volver",
+}) {
   return (
-    <BackWrapper onClick={() => navigate("/")}>
-      <Arrow>←</Arrow>
-      Volver al inicio
-    </BackWrapper>
+    <BackButton type="button" onClick={onClick} aria-label={ariaLabel}>
+      <Icon>←</Icon>
+      <Text>{label}</Text>
+    </BackButton>
   );
 }

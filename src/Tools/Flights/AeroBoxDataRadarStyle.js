@@ -35,10 +35,17 @@ export const TopBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 10px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 16px;
 
-  @media (max-width: 640px) {
-    margin-bottom: 8px;
+  @media (max-width: 768px) {
+    margin-bottom: 14px;
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 12px;
   }
 `;
 
@@ -46,12 +53,10 @@ export const HeaderBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-top: 6px;
-  margin-bottom: 16px;
-
-  @media (max-width: 480px) {
-    margin-top: 4px;
-  }
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  margin: 0 0 16px 0;
 `;
 
 export const Title = styled.h3`
@@ -63,10 +68,8 @@ export const Title = styled.h3`
   font-weight: ${({ theme }) => theme.fontWeights?.bold || 700};
   line-height: 1.15;
   letter-spacing: ${({ theme }) => theme.letterSpacings?.tight || "-0.02em"};
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
+
+  display: block;
 
   span {
     color: #a3e635;
@@ -79,7 +82,7 @@ export const Title = styled.h3`
 
   @media (max-width: 480px) {
     font-size: 1.1rem;
-    line-height: 1.1;
+    line-height: 1.15;
   }
 `;
 
