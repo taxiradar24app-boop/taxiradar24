@@ -406,16 +406,27 @@ export const SectionHeader = styled.div`
 `;
 
 export const SectionTag = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+    display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.28rem 0.8rem;
+  border-radius: 999px;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: 1.2;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  background: rgba(30, 64, 175, 0.7);
   color: ${({ $toolsSection, theme }) =>
     $toolsSection
       ? theme.tools?.colors?.brand || "#00A8F3"
-      : "#a5b4fc"};
+      : "#a5e9fc"};
   margin-bottom: 0.42rem;
+  @media (max-width: 640px) {
+    white-space: normal;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+  }
 `;
 
 export const SectionTitle = styled.h2`
@@ -427,7 +438,7 @@ export const SectionTitle = styled.h2`
   margin: 0 0 0.65rem 0;
   color: ${({ $toolsSection, theme }) =>
     $toolsSection
-      ? theme.tools?.colors?.textStrong || "#f9fafb"
+      ? theme.tools?.colors?.brand|| "#f9fafb"
       : "#f9fafb"};
 
   @media (max-width: 640px) {

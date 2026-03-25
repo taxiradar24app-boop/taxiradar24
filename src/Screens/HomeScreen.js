@@ -117,8 +117,6 @@ export default function HomeScreen() {
             <PrimaryButton onClick={goAcademy}>
               Entrar a la Academia
             </PrimaryButton>
-
-           
           </HeroCTA>
 
           <HeroStatsRow>
@@ -166,20 +164,23 @@ export default function HomeScreen() {
         
           {/*  */}
           <SectionHeader>
+            <HeroCTA>
+              <SectionTag>TaxiRadar24 para taxistas</SectionTag>
+            </HeroCTA>
             
-            <SectionTag>TaxiRadar24 para taxistas</SectionTag>
             <SectionTitle>
               👉 Herramientas profesional para taxistas
             </SectionTitle>
             
-            {/* <SectionSubtitle>
-              Accede a herramientas diseñadas para tu día a día: radar de vuelos,
-              información en tiempo real y recursos para trabajar con ventaja.
-            </SectionSubtitle> */}
-                      
-           <ToolsPrimaryButton onClick={goTools}>
+            <SectionSubtitle>
+              Herramientas diseñadas para mejorar tu operativa diaria como taxista profesional.
+              </SectionSubtitle>
+               
+                   <HeroCTA>
+             <ToolsPrimaryButton onClick={goTools}>
               🔧 Herramientas para taxistas
             </ToolsPrimaryButton>
+          </HeroCTA>
             
           </SectionHeader>
 

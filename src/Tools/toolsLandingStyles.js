@@ -54,7 +54,7 @@ export const HeroTag = styled.div`
    MODULE CTA (NO CAMBIADO)
 ========================= */
 export const ModuleCTA = styled.span`
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   font-weight: 500;
   color: #00f5ff;
   white-space: nowrap;
@@ -110,6 +110,7 @@ export const Section = styled.section`
    GRID
 ========================= */
 export const FeatureGrid = styled.div`
+
   display: grid;
   gap: 1.15rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -123,34 +124,73 @@ export const FeatureGrid = styled.div`
    CARD
 ========================= */
 export const FeatureCard = styled.div`
-  background: rgba(15, 23, 42, 0.9);
-  border-radius: 18px;
-  padding: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: ${({ $toolsSection, theme }) =>
+    $toolsSection
+      ? theme.tools?.colors?.bgCard || "rgba(10,22,40,0.92)"
+      : "rgba(15, 23, 42, 0.95)"};
 
-  box-shadow: 0 20px 28px rgba(0, 0, 0, 0.35);
+  border-radius: 1.3rem;
+  padding: 1.2rem 1.25rem 1.25rem;
 
-  cursor: ${({ $clickable }) => ($clickable ? "pointer" : "default")};
+  border: 1px solid
+    ${({ $toolsSection, theme }) =>
+      $toolsSection
+        ? theme.border || "rgba(255,255,255,0.08)"
+        : "rgba(55, 65, 81, 0.9)"};
 
-  transition: 0.18s ease;
+  box-shadow: 0 18px 32px rgba(15, 23, 42, 0.74);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 
   &:hover {
-    transform: ${({ $clickable }) =>
-      $clickable ? "translateY(-2px)" : "none"};
+    transform: translateY(-4px);
+    box-shadow: 0 26px 40px rgba(15, 23, 42, 0.9);
+    border-color: ${({ $toolsSection, theme }) =>
+      $toolsSection
+        ? theme.tools?.colors?.brandSoft || "rgba(0,168,243,0.16)"
+        : "rgba(129, 140, 248, 0.7)"};
+
+    background: ${({ $toolsSection, theme }) =>
+      $toolsSection
+        ? "linear-gradient(180deg, rgba(0,168,243,0.08) 0%, rgba(10,22,40,0.96) 100%)"
+        : "radial-gradient(circle at top, rgba(30, 64, 175, 0.7), rgba(15, 23, 42, 0.98))"};
+  }
+
+  h3 {
+    margin-bottom: 0.45rem;
+  }
+
+  p {
+    font-size: ${({ theme }) => theme.fontSizes.md};
+    font-weight: ${({ theme }) => theme.fontWeights.regular};
+    line-height: ${({ theme }) => theme.lineHeights.body};
+    letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+    color: ${({ $toolsSection, theme }) =>
+      $toolsSection ? theme.text || "#e8edf3" : "#9ca3af"};
+    margin-bottom: 0.8rem;
   }
 `;
+
+export const FeatureTitle = styled.h3`
+  color: ${({ theme }) => theme.tools?.colors?.brand || "#00A8F3"};
+  margin-bottom: 0.35rem;
+
+  font-size: ${({ theme }) => theme.fontSizes?.xl || "1.25rem"};
+  font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};
+  line-height: ${({ theme }) => theme.lineHeights?.title || "1.3"};
+  letter-spacing: ${({ theme }) => theme.letterSpacings?.tight || "-0.01em"};
+`;
+/* =========================
+   ICON
+========================= */
 
 export const FeatureIcon = styled.div`
   font-size: 1.95rem;
   margin-bottom: 0.55rem;
-`;
-
-export const FeatureTitle = styled.h3`
-  color: #0094da;
-  margin-bottom: 0.35rem;
-
-  font-size: ${({ theme }) => theme.fontSizes?.xl || "1.125rem"};
-  font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};
 `;
 
 export const FeatureText = styled.p`
