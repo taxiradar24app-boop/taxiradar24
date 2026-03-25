@@ -10,7 +10,7 @@ export const HeaderWrapper = styled.header`
   z-index: 5000;
   backdrop-filter: blur(12px);
 
-  padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
+  padding-top: 0;
   padding-bottom: 14px;
 `;
 

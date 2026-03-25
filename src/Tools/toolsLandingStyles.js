@@ -17,8 +17,8 @@ export const PageWrapper = styled.div`
    HERO
 ========================= */
 export const HeroSection = styled.section`
-  margin-top: -16px;
-  margin-bottom: 2rem;
+  margin-top: 0;              /* 🔥 eliminar hack */
+  margin-bottom: 1.2rem;      /* 🔥 menos espacio */
   display: flex;
   flex-direction: column;
 `;
@@ -27,21 +27,22 @@ export const TopBar = styled.div`
   position: sticky;
   top: 0;
   z-index: ${({ theme }) => theme.zIndex?.sticky || 100};
-
   background: rgba(7, 17, 31, 0.85);
   backdrop-filter: blur(10px);
-
-  padding: 12px 0;
+  padding: 6px 0;
   border-bottom: 1px solid rgba(255,255,255,0.06);
 `;
 
 export const HeroContent = styled.div`
   max-width: 760px;
+  margin-top: 0.25rem;   /* 🔥 antes estaba muy separado */
 `;
 
 export const HeroTag = styled.div`
   color: #00f5ff;
-  margin-bottom: 0.7rem;
+
+  margin: 0.25rem 0 0.4rem; /* 🔥 compacta arriba y abajo */
+  
   text-transform: uppercase;
 
   font-size: ${({ theme }) => theme.fontSizes?.xs || "0.8125rem"};
@@ -148,7 +149,7 @@ export const FeatureTitle = styled.h3`
   color: #0094da;
   margin-bottom: 0.35rem;
 
-  font-size: ${({ theme }) => theme.fontSizes?.lg || "1.125rem"};
+  font-size: ${({ theme }) => theme.fontSizes?.xl || "1.125rem"};
   font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};
 `;
 

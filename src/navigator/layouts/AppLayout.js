@@ -9,7 +9,7 @@ const Main = styled.main`
   min-height: 100dvh;
 
   /* El top safe-area lo debe gestionar el header correspondiente */
-  padding-top: 0;
+  padding-top: env(safe-area-inset-top, 0px);
 
   /* Safe areas útiles para el resto de la app */
   padding-bottom: env(safe-area-inset-bottom, 0px);
