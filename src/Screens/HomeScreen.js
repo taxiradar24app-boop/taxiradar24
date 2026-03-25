@@ -11,8 +11,8 @@ import { useSmartNavigation } from "@/utils/SmartNavigation";
 
 import {
   PrimaryButton,
-  SecondaryButton,
 } from "@/components/Buttons/ButtonsAcademia";
+import { ToolsPrimaryButton } from "@/Tools/componentsTools/Buttons/BotonGoTools";
 
 import {
   Container,
@@ -49,15 +49,10 @@ import {
   StepNumber,
   StepTitle,
   StepText,
-  TestimonialsWrapper,
-  TestimonialCard,
-  TestimonialQuote,
-  TestimonialName,
-  TestimonialRole,
   FinalCTASection,
   FinalCTATitle,
   FinalCTAText,
-  FadeInSection,
+  FadeInSection
 } from "./../Styles/homeStyles";
 
 /* =========================
@@ -165,10 +160,11 @@ export default function HomeScreen() {
         </HeroSideCard>
       </HeroSection>
 
-      {/* DOS PILARES */}
+      {/* HERRAMIENTAS TAXISTAS */}
       <FadeInSection ref={overviewRef}>
         <Section>
         
+          {/*  */}
           <SectionHeader>
             
             <SectionTag>TaxiRadar24 para taxistas</SectionTag>
@@ -176,14 +172,15 @@ export default function HomeScreen() {
               👉 Herramientas profesional para taxistas
             </SectionTitle>
             
-            <SectionSubtitle>
+            {/* <SectionSubtitle>
               Accede a herramientas diseñadas para tu día a día: radar de vuelos,
               información en tiempo real y recursos para trabajar con ventaja.
-            </SectionSubtitle>
+            </SectionSubtitle> */}
                       
-           <SecondaryButton $variant="tools" onClick={goTools}>
-            Ver herramientas para taxistas
-          </SecondaryButton>
+           <ToolsPrimaryButton onClick={goTools}>
+              🔧 Herramientas para taxistas
+            </ToolsPrimaryButton>
+            
           </SectionHeader>
 
           <FeatureGrid>
@@ -248,7 +245,7 @@ export default function HomeScreen() {
         </Section>
       </FadeInSection>
 
-      {/* RUTA DE USO */}
+      {/* TEXTO EXTRA */}
       <FadeInSection ref={stepsRef}>
         <Section background="alt">
           <SectionHeader>
@@ -291,51 +288,6 @@ export default function HomeScreen() {
         </Section>
       </FadeInSection>
 
-      {/* TESTIMONIOS */}
-      {/* <FadeInSection ref={testimonialsRef}>
-        <Section>
-          <SectionHeader>
-            <SectionTag>Experiencias de alumnos</SectionTag>
-            <SectionTitle>
-              Una plataforma creada con la realidad del taxi en mente
-            </SectionTitle>
-            <SectionSubtitle>
-              Pensada para personas que quieren aprobar el permiso municipal y
-              avanzar con un sistema claro, directo y útil.
-            </SectionSubtitle>
-          </SectionHeader>
-
-          <TestimonialsWrapper>
-            <TestimonialCard>
-              <TestimonialQuote>
-                “Los audios me ayudaron a estudiar en ratos muertos sin perder el
-                ritmo de trabajo.”
-              </TestimonialQuote>
-              <TestimonialName>María R.</TestimonialName>
-              <TestimonialRole>Aspirante a taxista en Palma</TestimonialRole>
-            </TestimonialCard>
-
-            <TestimonialCard>
-              <TestimonialQuote>
-                “Con los simuladores entendí mucho mejor cómo me iban a preguntar
-                en el examen.”
-              </TestimonialQuote>
-              <TestimonialName>Carlos M.</TestimonialName>
-              <TestimonialRole>Taxista novel</TestimonialRole>
-            </TestimonialCard>
-
-            <TestimonialCard>
-              <TestimonialQuote>
-                “Me gusta que todo esté ordenado y que academia y herramientas
-                vivan dentro del mismo proyecto.”
-              </TestimonialQuote>
-              <TestimonialName>Laura G.</TestimonialName>
-              <TestimonialRole>Futura conductora de taxi</TestimonialRole>
-            </TestimonialCard>
-          </TestimonialsWrapper>
-        </Section>
-      </FadeInSection> */}
-
       {/* CTA FINAL */}
       <FinalCTASection>
         <FinalCTATitle>
@@ -352,9 +304,9 @@ export default function HomeScreen() {
               Entrar a la Academia
             </PrimaryButton>
 
-          <SecondaryButton onClick={goTools}>
-            Ver herramientas para taxistas
-          </SecondaryButton>
+           <ToolsPrimaryButton onClick={goTools}>
+              🔧 Herramientas para taxistas
+            </ToolsPrimaryButton>
         </HeroCTA>
       </FinalCTASection>
     </Container>

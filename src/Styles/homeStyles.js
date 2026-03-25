@@ -24,6 +24,27 @@ export const Container = styled.div`
 `;
 
 /* ======================================================
+   HELPERS RESPONSIVE
+====================================================== */
+export const MobileOnly = styled.div`
+  display: none;
+
+  @media (max-width: 640px) {
+    display: block;
+    width: 100%;
+  }
+`;
+
+export const DesktopOnly = styled.div`
+  display: block;
+  width: 100%;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+`;
+
+/* ======================================================
    HERO PRINCIPAL
 ====================================================== */
 export const HeroSection = styled.section`
@@ -178,8 +199,8 @@ export const HeroCTA = styled.div`
   @media (max-width: 640px) {
     width: 100%;
     gap: 0.8rem;
-    margin-bottom: 1.40rem;
-    max-width: 24ch;
+    margin-bottom: 1.4rem;
+    max-width: 34ch;
 
     & > * {
       width: 100%;
@@ -328,27 +349,60 @@ export const Section = styled.section`
   width: 100%;
   max-width: 1200px;
   padding: 2.65rem 1.5rem 0;
+  margin: 0 auto;
 
   ${({ background }) =>
     background === "alt" &&
     `
-    background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(2,6,23,0.9));
-    border-radius: 24px;
-    margin-top: 1.2rem;
-  `}
+      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(2,6,23,0.9));
+      border-radius: 24px;
+      margin-top: 1.2rem;
+    `}
+
+  ${({ $toolsSection }) =>
+    $toolsSection &&
+    `
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    `}
 
   @media (max-width: 960px) {
     padding: 2.2rem 1.25rem 0;
   }
 
   @media (max-width: 640px) {
-    padding: 2rem 1rem 0;
+    padding: 1.85rem 1rem 0;
   }
 `;
 
 export const SectionHeader = styled.div`
   max-width: 46rem;
   margin-bottom: 1.9rem;
+
+  ${({ $toolsSection }) =>
+    $toolsSection &&
+    `
+      max-width: 52rem;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: left;
+    `}
+
+  @media (max-width: 640px) {
+    margin-bottom: 1.4rem;
+
+    ${({ $toolsSection }) =>
+      $toolsSection &&
+      `
+        max-width: 100%;
+      `}
+  }
 `;
 
 export const SectionTag = styled.div`
@@ -357,17 +411,28 @@ export const SectionTag = styled.div`
   line-height: 1.2;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #a5b4fc;
+  color: ${({ $toolsSection, theme }) =>
+    $toolsSection
+      ? theme.tools?.colors?.brand || "#00A8F3"
+      : "#a5b4fc"};
   margin-bottom: 0.42rem;
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: clamp(1.55rem, 1vw + 1.2rem, 2.15rem);
+  font-size: clamp(1.2rem, 1vw + 1.2rem, 2.15rem);
   line-height: 1.18;
+  
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   margin: 0 0 0.65rem 0;
-  color: #f9fafb;
+  color: ${({ $toolsSection, theme }) =>
+    $toolsSection
+      ? theme.tools?.colors?.textStrong || "#f9fafb"
+      : "#f9fafb"};
+
+  @media (max-width: 640px) {
+    font-size: clamp(1.4rem, 5.2vw, 1.95rem);
+  }
 `;
 
 export const SectionSubtitle = styled.p`
@@ -375,17 +440,27 @@ export const SectionSubtitle = styled.p`
   font-weight: ${({ theme }) => theme.fontWeights.regular};
   line-height: ${({ theme }) => theme.lineHeights.body};
   letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
-  color: #9ca3af;
+  color: ${({ $toolsSection, theme }) =>
+    $toolsSection ? theme.text || "#e8edf3" : "#9ca3af"};
+
+  @media (max-width: 640px) {
+    font-size: ${({ theme }) => theme.fontSizes.md};
+    line-height: 1.58;
+  }
 `;
 
 /* =========================
    GRID FEATURES
 ========================= */
 export const FeatureGrid = styled.div`
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.35rem;
   padding-bottom: 2.5rem;
+  align-items: stretch;
 
   @media (max-width: 1200px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -393,15 +468,28 @@ export const FeatureGrid = styled.div`
 
   @media (max-width: 720px) {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    padding-bottom: 2.1rem;
   }
 `;
 
 export const FeatureCard = styled.div`
-  background: rgba(15, 23, 42, 0.95);
+  background: ${({ $toolsSection, theme }) =>
+    $toolsSection
+      ? theme.tools?.colors?.bgCard || "rgba(10,22,40,0.92)"
+      : "rgba(15, 23, 42, 0.95)"};
+
   border-radius: 1.3rem;
   padding: 1.2rem 1.25rem 1.25rem;
-  border: 1px solid rgba(55, 65, 81, 0.9);
+
+  border: 1px solid
+    ${({ $toolsSection, theme }) =>
+      $toolsSection
+        ? theme.border || "rgba(255,255,255,0.08)"
+        : "rgba(55, 65, 81, 0.9)"};
+
   box-shadow: 0 18px 32px rgba(15, 23, 42, 0.74);
+
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -411,12 +499,15 @@ export const FeatureCard = styled.div`
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 26px 40px rgba(15, 23, 42, 0.9);
-    border-color: rgba(129, 140, 248, 0.7);
-    background: radial-gradient(
-      circle at top,
-      rgba(30, 64, 175, 0.7),
-      rgba(15, 23, 42, 0.98)
-    );
+    border-color: ${({ $toolsSection, theme }) =>
+      $toolsSection
+        ? theme.tools?.colors?.brandSoft || "rgba(0,168,243,0.16)"
+        : "rgba(129, 140, 248, 0.7)"};
+
+    background: ${({ $toolsSection, theme }) =>
+      $toolsSection
+        ? "linear-gradient(180deg, rgba(0,168,243,0.08) 0%, rgba(10,22,40,0.96) 100%)"
+        : "radial-gradient(circle at top, rgba(30, 64, 175, 0.7), rgba(15, 23, 42, 0.98))"};
   }
 
   h3 {
@@ -424,7 +515,10 @@ export const FeatureCard = styled.div`
     line-height: ${({ theme }) => theme.lineHeights.title};
     font-weight: ${({ theme }) => theme.fontWeights.semibold};
     letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
-    color: #e5e7eb;
+    color: ${({ $toolsSection, theme }) =>
+      $toolsSection
+        ? theme.tools?.colors?.textStrong || "#e5e7eb"
+        : "#e5e7eb"};
     margin-bottom: 0.45rem;
   }
 
@@ -433,7 +527,8 @@ export const FeatureCard = styled.div`
     font-weight: ${({ theme }) => theme.fontWeights.regular};
     line-height: ${({ theme }) => theme.lineHeights.body};
     letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
-    color: #9ca3af;
+    color: ${({ $toolsSection, theme }) =>
+      $toolsSection ? theme.text || "#e8edf3" : "#9ca3af"};
     margin-bottom: 0.8rem;
   }
 `;
@@ -456,9 +551,22 @@ export const Pill = styled.span`
   letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   padding: 0.16rem 0.62rem;
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.7);
-  color: #e5e7eb;
+
+  background: ${({ $toolsSection, theme }) =>
+    $toolsSection
+      ? theme.tools?.colors?.brandSoft || "rgba(0,168,243,0.14)"
+      : "rgba(15, 23, 42, 0.9)"};
+
+  border: 1px solid
+    ${({ $toolsSection, theme }) =>
+      $toolsSection
+        ? theme.tools?.colors?.brandSoft || "rgba(0,168,243,0.16)"
+        : "rgba(148, 163, 184, 0.7)"};
+
+  color: ${({ $toolsSection, theme }) =>
+    $toolsSection
+      ? theme.tools?.colors?.textStrong || "#e5e7eb"
+      : "#e5e7eb"};
 `;
 
 /* =========================
@@ -511,47 +619,6 @@ export const StepText = styled.p`
   font-weight: ${({ theme }) => theme.fontWeights.regular};
   line-height: ${({ theme }) => theme.lineHeights.body};
   letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
-  color: #9ca3af;
-`;
-
-/* =========================
-   TESTIMONIOS
-========================= */
-export const TestimonialsWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.3rem;
-  padding-bottom: 2.65rem;
-
-  @media (max-width: 960px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-export const TestimonialCard = styled.div`
-  background: rgba(15, 23, 42, 0.95);
-  border-radius: 1.1rem;
-  padding: 1.3rem 1.35rem;
-  border: 1px solid rgba(55, 65, 81, 0.9);
-`;
-
-export const TestimonialQuote = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  font-weight: ${({ theme }) => theme.fontWeights.regular};
-  line-height: ${({ theme }) => theme.lineHeights.body};
-  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
-  color: #e5e7eb;
-  margin-bottom: 0.82rem;
-`;
-
-export const TestimonialName = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  font-weight: ${({ theme }) => theme.fontWeights.semibold};
-  color: #d1fae5;
-`;
-
-export const TestimonialRole = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.xs};
   color: #9ca3af;
 `;
 
@@ -613,6 +680,7 @@ export const SeoCard = styled.section`
    ANIMACIÓN ENTRADA
 ========================= */
 export const FadeInSection = styled.div`
+  width: 100%;
   opacity: 0;
   transform: translateY(20px);
   transition:
@@ -635,7 +703,7 @@ export const FinalCTASection = styled.section`
   padding: 3rem 1.5rem 0;
 
   @media (max-width: 640px) {
-    padding: 2.4rem 1rem 0;
+    padding: 2.2rem 1rem 0;
   }
 `;
 
@@ -656,4 +724,18 @@ export const FinalCTAText = styled.p`
   color: #9ca3af;
   max-width: 42rem;
   margin-bottom: 1.55rem;
+`;
+
+export const ToolsCTAButton = styled.div`
+  width: 100%;
+  max-width: 420px;
+  margin-top: 1rem;
+
+  @media (max-width: 640px) {
+    max-width: 100%;
+  }
+
+  & > button {
+    width: 100%;
+  }
 `;

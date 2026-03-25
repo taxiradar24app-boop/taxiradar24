@@ -25,7 +25,7 @@ const IdentityMergeScreen = React.lazy(() =>
   import("@/Screens/IdentityMergeScreen")
 );
 
-const ToolsLanding = React.lazy(() => import("@/Screens/ToolsLanding"));
+const ToolsLanding = React.lazy(() => import("@/Tools/ToolsLanding"));
 const FlightAeroDataBoxScreen = React.lazy(() =>
   import("@/Tools/Flights/AeroBoxDataRadarScreen")
 );

@@ -79,8 +79,8 @@ const Text = styled.span`
 
 export default function ButtonBackSlot({
   onClick,
-  label = "Volver",
-  ariaLabel = "Volver",
+  label = "Home",
+  ariaLabel = "Home",
 }) {
   return (
     <BackButton type="button" onClick={onClick} aria-label={ariaLabel}>

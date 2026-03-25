@@ -1,40 +1,29 @@
-// ==================================================
-// 🚖 TOOLS LANDING — TaxiRadar24 (versión operativa)
-// ==================================================
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
   PageWrapper,
   HeroSection,
   HeroContent,
   HeroTag,
-  HeroTitle,
-  HeroSubtitle,
-  HeroCTA,
-  PrimaryButton,
-  SecondaryButton,
   Section,
-  SectionHeader,
-  SectionTag,
-  SectionTitle,
-  SectionSubtitle,
   FeatureGrid,
   FeatureCard,
   FeatureIcon,
   FeatureTitle,
   FeatureText,
   CTASection,
-  CTAHeader,
-  CTAButton,
+  SecondaryButton,
   ModuleCTA,
-} from "./";
+  ModuleFooter,
+  TopBar,
+} from "./toolsLandingStyles";
 
-import BackHomeButton from "@/Tools/componentsTools/Buttons/BackHomeButton";
+import BackButtonTools from "@/Tools/componentsTools/Buttons/BackButtonTools";
 
 export default function ToolsLanding() {
   const navigate = useNavigate();
 
-  // 👉 Rutas reales del proyecto
   const goFlights = () => navigate("/tools/flights");
   const goScheduled = () => navigate("/tools/flights/scheduled");
   const goHome = () => navigate("/");
@@ -42,46 +31,28 @@ export default function ToolsLanding() {
   return (
     <PageWrapper>
       <HeroSection>
-        <BackHomeButton /> {/* colocar a la derecha */}
+        <TopBar>
+          <BackButtonTools to="/" />
+        </TopBar>
+
         <HeroContent>
           <HeroTag>Herramientas para conductores</HeroTag>
-
-          {/* <HeroTitle>¿Dónde hay trabajo ahora mismo?</HeroTitle>
-
-          <HeroSubtitle>
-            Consulta vuelos en aproximación, próximas llegadas y puntos de
-            movimiento para decidir rápido y posicionarte mejor.
-          </HeroSubtitle> */}
-
-          {/* <HeroCTA>
-            <PrimaryButton onClick={goFlights}>
-              🟢 Ver vuelos ahora
-            </PrimaryButton>
-
-            <SecondaryButton onClick={goScheduled}>
-              📅 Programadas Próximas 24hs
-            </SecondaryButton>
-          </HeroCTA> */}
         </HeroContent>
       </HeroSection>
 
       <Section>
-        {/* <SectionHeader>
-          <SectionTag>Acceso rápido</SectionTag>
-          <SectionTitle>Elige una herramienta y actúa</SectionTitle>
-          <SectionSubtitle>
-            Información directa, clara y útil para trabajar sin distracciones.
-          </SectionSubtitle>
-        </SectionHeader> */}
-
         <FeatureGrid>
           <FeatureCard onClick={goFlights} $clickable>
             <FeatureIcon>🛬</FeatureIcon>
             <FeatureTitle>Aeropuerto ahora</FeatureTitle>
             <FeatureText>
-              Mira los vuelos que están llegando o aproximándose a Palma.
+              Vuelos llegando y en aproximación a Palma.
             </FeatureText>
-            <ModuleCTA>next: 30 minutos →</ModuleCTA>
+
+            <ModuleFooter>
+              <span />
+              <ModuleCTA>Ver: 30 minutos →</ModuleCTA>
+            </ModuleFooter>
           </FeatureCard>
 
           <FeatureCard onClick={goScheduled} $clickable>
@@ -90,7 +61,11 @@ export default function ToolsLanding() {
             <FeatureText>
               Revisa la previsión de vuelos y anticípate a los próximos picos.
             </FeatureText>
-            <ModuleCTA>next: 12 horas →</ModuleCTA>
+
+            <ModuleFooter>
+              <span />
+              <ModuleCTA>Ver: 12 Horas →</ModuleCTA>
+            </ModuleFooter>
           </FeatureCard>
 
           <FeatureCard>
@@ -99,24 +74,44 @@ export default function ToolsLanding() {
             <FeatureText>
               Cruceros y ferries previstos para hoy. Próxima actualización.
             </FeatureText>
-            <ModuleCTA>next: 24 horas →</ModuleCTA>
+
+            <ModuleFooter>
+              <span />
+              <ModuleCTA>Próximamente →</ModuleCTA>
+            </ModuleFooter>
           </FeatureCard>
 
           <FeatureCard>
             <FeatureIcon>🚆</FeatureIcon>
             <FeatureTitle>Tren Soller</FeatureTitle>
-            <ModuleCTA>next: 24 horas →</ModuleCTA>
             <FeatureText>
               Llegadas clave y movimiento en estaciones centrales. Próxima
               actualización.
             </FeatureText>
+
+            <ModuleFooter>
+              <span />
+              <ModuleCTA>Próximamente →</ModuleCTA>
+            </ModuleFooter>
           </FeatureCard>
         </FeatureGrid>
       </Section>
 
       <CTASection>
-        <CTAHeader>Entra y consulta la demanda</CTAHeader>
-        <CTAButton onClick={goHome}>Entrar en herramientas</CTAButton>
+        <div
+          style={{
+            display: "grid",
+            gap: "0.9rem",
+            maxWidth: "520px",
+            margin: "0 auto",
+          }}
+        >
+          <SecondaryButton onClick={goHome}>
+            ← Volver al inicio
+          </SecondaryButton>
+
+          <FeatureText>@TaxiRadar24.com</FeatureText>
+        </div>
       </CTASection>
     </PageWrapper>
   );

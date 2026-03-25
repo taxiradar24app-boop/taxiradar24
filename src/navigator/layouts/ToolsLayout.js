@@ -4,7 +4,6 @@
 
 import React from "react";
 import { Outlet } from "react-router-dom";
-import HeaderShell from "@/components/HeaderBox/shared/HeaderShell";
 import styled from "styled-components";
 
 const MainContainer = styled.main`
@@ -28,7 +27,6 @@ const MainContainer = styled.main`
 export default function ToolsLayout() {
   return (
     <>
-      <HeaderShell />
       <MainContainer>
         <Outlet />
       </MainContainer>

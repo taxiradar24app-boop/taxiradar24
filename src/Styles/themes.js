@@ -1,8 +1,66 @@
 // ======================================================================
-// 🎨 themes.js — TAXIRADAR24 ENTERPRISE (versión final unificada)
+// 🎨 TAXIRADAR24 — THEME SYSTEM (FINAL PRO)
 // ======================================================================
 
-// 🎨 PALETA BASE GLOBAL
+/* =====================================================
+🛠 TOOLS ZONE (NO ROMPE NADA — EXTENSIÓN DEL THEME)
+===================================================== */
+
+const toolsStyles = {
+  colors: {
+    brand: "#00A8F3",
+    brandStrong: "#0094DA",
+    brandSoft: "rgba(0,168,243,0.16)",
+
+    accent: "#00F5FF",
+
+    success: "#10A37F",
+    warning: "#FFC83D",
+    danger: "#FF5C7A",
+
+    bgCard: "rgba(10,22,40,0.92)",
+    bgPanel: "#10233D",
+
+    textStrong: "#FFFFFF",
+  },
+
+  gradients: {
+    brand: "linear-gradient(135deg, #00A8F3 0%, #00F5FF 100%)",
+  },
+
+  table: {
+    headBg: "#102742",
+    rowHover: "rgba(0,168,243,0.08)",
+  },
+
+  pills: {
+    info: {
+      bg: "rgba(0,168,243,0.14)",
+      color: "#6FDBFF",
+    },
+    success: {
+      bg: "rgba(16,163,127,0.14)",
+      color: "#6EE7B7",
+    },
+    warning: {
+      bg: "rgba(255,200,61,0.14)",
+      color: "#FFD978",
+    },
+  },
+
+  status: {
+    onTime: "#10A37F",
+    delayed: "#FFC83D",
+    landed: "#00A8F3",
+    tubo: "#00F5FF",
+    canceled: "#FF5C7A",
+  },
+};
+
+/* =====================================================
+🎨 PALETA BASE GLOBAL
+===================================================== */
+
 export const baseColors = {
   backBlue: "rgba(10, 15, 30, 0.55)",
   blue: "#162c66",
@@ -15,7 +73,7 @@ export const baseColors = {
   greeLogo: "#58E63D",
   yellow: "#FFC83D",
 
-    // 🔥 NUEVO COLOR HERRAMIENTAS (estilo Black & Decker)
+  // 🔥 Tools (por si lo necesitas global)
   toolsOrange: "#ff6a00",
   toolsOrangeSoft: "#ff8c33",
   toolsOrangeDark: "#cc5500",
@@ -45,9 +103,10 @@ export const baseColors = {
   },
 };
 
-// ======================================================================
-// 🧱 TOKENS COMPARTIDOS
-// ======================================================================
+/* =====================================================
+🧱 TOKENS COMPARTIDOS
+===================================================== */
+
 const sharedSpacing = {
   xs: "4px",
   sm: "8px",
@@ -58,13 +117,13 @@ const sharedSpacing = {
 };
 
 const sharedFontSizes = {
-  xs: "0.8125rem",  // 13px
-  sm: "0.9375rem",  // 15px
-  md: "1rem",       // 16px
-  lg: "1.125rem",   // 18px
-  xl: "1.75rem",    // 28px
-  xxl: "2.25rem",   // 36px
-  hero: "2.75rem",  // 44px aprox
+  xs: "0.8125rem",
+  sm: "0.9375rem",
+  md: "1rem",
+  lg: "1.125rem",
+  xl: "1.75rem",
+  xxl: "2.25rem",
+  hero: "2.75rem",
 };
 
 const sharedFontWeights = {
@@ -115,9 +174,10 @@ const sharedEffects = {
   glassBorderDark: "1px solid rgba(255,255,255,0.08)",
 };
 
-// ======================================================================
-// ☀️ THEME LIGHT
-// ======================================================================
+/* =====================================================
+☀️ LIGHT THEME
+===================================================== */
+
 export const lightTheme = {
   mode: "light",
   colors: { ...baseColors },
@@ -128,6 +188,7 @@ export const lightTheme = {
   border: "rgba(0,0,0,0.08)",
   card: "#ffffff",
   cardAlt: "#f5f8fc",
+
   text: "#111827",
   textSoft: "#4b5563",
   textMuted: "#6b7280",
@@ -143,27 +204,6 @@ export const lightTheme = {
     text: "#111827",
     textSoft: "#4b5563",
     textMuted: "#6b7280",
-
-    backBlue: "rgba(10, 15, 30, 0.08)",
-    blue: "#162c66",
-    blueSoft: "#0b1f3b",
-    blueDeep: "#0A1528",
-
-    green: "#10a37f",
-    greenLight: "#2ce3b5",
-    greeLogo: "#58E63D",
-    yellow: "#FFC83D",
-
-    white: "#ffffff",
-    black: "#000000",
-
-    grey: "#9ca3af",
-    greyLight: "#e5e7eb",
-    greyDark: "#404552",
-
-    success: "#10a37f",
-    warning: "#f59e0b",
-    danger: "#dc2626",
   },
 
   spacing: sharedSpacing,
@@ -189,11 +229,15 @@ export const lightTheme = {
     border: "1px solid rgba(255,255,255,0.7)",
     text: "#111827",
   },
+
+  // 🔥 NUEVO (TOOLS)
+  tools: toolsStyles,
 };
 
-// ======================================================================
-// 🌙 THEME DARK
-// ======================================================================
+/* =====================================================
+🌙 DARK THEME
+===================================================== */
+
 export const darkTheme = {
   mode: "dark",
   colors: { ...baseColors },
@@ -204,7 +248,7 @@ export const darkTheme = {
   border: "rgba(255,255,255,0.07)",
   card: "#13263f",
   cardAlt: "#0f1e34",
-  green: "#10a37f",
+
   text: "#e8edf3",
   textSoft: "#b7c3d0",
   textMuted: "#8fa1b6",
@@ -216,7 +260,6 @@ export const darkTheme = {
 
     card: "#13263f",
     cardAlt: "#0f1e34",
-
     border: "rgba(255,255,255,0.07)",
 
     text: "#e8edf3",
@@ -247,11 +290,15 @@ export const darkTheme = {
     border: "1px solid rgba(255,255,255,0.08)",
     text: "#e8edf3",
   },
+
+  // 🔥 NUEVO (TOOLS)
+  tools: toolsStyles,
 };
 
-// ======================================================================
-// 🟦 OBJETO DE THEMES PARA ThemeContext
-// ======================================================================
+/* =====================================================
+EXPORT
+===================================================== */
+
 const themes = {
   light: lightTheme,
   dark: darkTheme,
