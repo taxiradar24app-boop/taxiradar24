@@ -277,6 +277,33 @@ export const HeroSideCard = styled.aside`
   }
 `;
 
+export const HeroSideCardTools = styled.aside`
+  width: 100%;
+  align-self: stretch;
+  background: ${({ theme }) => theme.colors.sideCardBg};
+  border-radius: 1.45rem;
+  padding: 1.9rem 2rem;
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  box-shadow: 0 22px 40px rgba(15, 23, 42, 0.72);
+  margin-bottom: 2.4rem;
+
+  @media (min-width: 961px) {
+    max-width: 100%;
+    min-height: 100%;
+  }
+
+  @media (max-width: 960px) {
+    max-width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 1.15rem 1rem 1.2rem;
+    border-radius: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+`;
+
 export const HeroSideBadge = styled.div`
   display: inline-flex;
   width: fit-content;

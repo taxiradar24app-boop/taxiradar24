@@ -105,6 +105,10 @@ export const HeaderRightDesktop = styled.div`
   gap: 14px;
   flex-shrink: 0;
 
+  @media (max-width: 980px) {
+    gap: 10px;
+  }
+
   @media (max-width: 780px) {
     display: none;
   }
@@ -337,4 +341,10 @@ export const DemoInfoText = styled.div`
   font-size: 0.84rem;
   line-height: 1.45;
   color: rgba(255, 255, 255, 0.74);
+`;
+
+export const DrawerActionWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;

@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { resolveNavigation } from "@/navigator/navigationConfig";
 import { useAuth } from "@/navigator/sections/auth/useAuth";
+import LoginId, { LoginIdText } from "@/components/Buttons/LoginID";
+
 const iconoUsuario = "/assets/iconoUsuario.png";
 
 import {
@@ -28,6 +30,7 @@ import {
   DesktopDropdown,
   DesktopDropdownItem,
   DesktopDropdownDivider,
+  DrawerActionWrap,
 } from "./HeaderAcademiaStyle";
 
 export default function HeaderAcademia({ withSafeTop = true }) {
@@ -49,11 +52,21 @@ export default function HeaderAcademia({ withSafeTop = true }) {
   const profilePath = needsProOnboarding ? "/perfil/pro-check" : "/perfil";
   const progressPath = needsProOnboarding ? "/perfil/pro-check" : "/progreso";
 
+  const accountLabel = user ? "Mi cuenta" : "¡Ya tengo cuenta!";
+
   const go = (path) => {
     if (!path) return;
     navigate(path);
     setOpenDrawer(false);
     setOpenDesktopMenu(false);
+  };
+
+  const goAccount = () => {
+    if (user) {
+      go(profilePath);
+      return;
+    }
+    go("/login");
   };
 
   const handleLogout = async () => {
@@ -167,6 +180,10 @@ export default function HeaderAcademia({ withSafeTop = true }) {
           </Nav>
 
           <HeaderRightDesktop>
+            <LoginId type="button" onClick={goAccount}>
+              <LoginIdText>{accountLabel}</LoginIdText>
+            </LoginId>
+
             {user && (
               <DesktopMenuWrap ref={desktopMenuRef}>
                 <DesktopUserButton
@@ -213,7 +230,9 @@ export default function HeaderAcademia({ withSafeTop = true }) {
         >
           ✕
         </DrawerClose>
-              <DrawerDivider />
+
+        <DrawerDivider />
+
         <DrawerContent>
           {user && (
             <>
@@ -252,11 +271,17 @@ export default function HeaderAcademia({ withSafeTop = true }) {
             </>
           )}
 
+          <DrawerActionWrap>
+            <LoginId type="button" onClick={goAccount}>
+              <LoginIdText>{accountLabel}</LoginIdText>
+            </LoginId>
+          </DrawerActionWrap>
+
           {user && (
             <>
               <DrawerDivider />
               <NavItem onClick={handleLogout}>Cerrar sesión</NavItem>
-                <DrawerDivider />
+              <DrawerDivider />
             </>
           )}
         </DrawerContent>

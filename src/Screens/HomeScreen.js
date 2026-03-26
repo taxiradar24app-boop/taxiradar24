@@ -4,14 +4,15 @@
 // - Mantiene SmartNavigation
 // - Reduce repetición de mensaje
 // - Refuerza Academia + Herramientas
+// - Añade acceso directo para usuarios con cuenta
 // ======================================================================
 
 import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSmartNavigation } from "@/utils/SmartNavigation";
 
-import {
-  PrimaryButton,
-} from "@/components/Buttons/ButtonsAcademia";
+import { PrimaryButton } from "@/components/Buttons/ButtonsAcademia";
+import LoginId, { LoginIdText } from "@/components/Buttons/LoginID";
 import { ToolsPrimaryButton } from "@/Tools/componentsTools/Buttons/BotonGoTools";
 
 import {
@@ -29,6 +30,7 @@ import {
   HeroStatNumber,
   HeroStatLabel,
   HeroSideCard,
+  HeroSideCardTools,
   HeroSideBadge,
   HeroSideTitle,
   HeroSideText,
@@ -52,7 +54,7 @@ import {
   FinalCTASection,
   FinalCTATitle,
   FinalCTAText,
-  FadeInSection
+  FadeInSection,
 } from "./../Styles/homeStyles";
 
 /* =========================
@@ -88,11 +90,16 @@ function useScrollFadeIn() {
    HOME SCREEN
 ========================= */
 export default function HomeScreen() {
+  const navigate = useNavigate();
   const { goAcademy, goTools } = useSmartNavigation();
 
   const overviewRef = useScrollFadeIn();
   const stepsRef = useScrollFadeIn();
   const testimonialsRef = useScrollFadeIn();
+
+  const goLogin = () => {
+    navigate("/login");
+  };
 
   return (
     <Container>
@@ -110,14 +117,22 @@ export default function HomeScreen() {
 
           <HeroSubtitle>
             Estudia con una ruta clara: Reglamento explicado, audios guiados,
-            simuladores y callejero de Palma en una sola plataforma, desde móvil o PWA.
+            simuladores y callejero de Palma en una sola plataforma, desde móvil
+            o PWA.
           </HeroSubtitle>
 
           <HeroCTA>
             <PrimaryButton onClick={goAcademy}>
               Entrar a la Academia
             </PrimaryButton>
-          </HeroCTA>
+             </HeroCTA>
+            <HeroCTA>
+           <LoginId onClick={goLogin}>
+            <LoginIdText>¡Ya tengo cuenta!</LoginIdText>
+          </LoginId>
+             </HeroCTA>
+         
+         
 
           <HeroStatsRow>
             <HeroStat>
@@ -159,34 +174,34 @@ export default function HomeScreen() {
       </HeroSection>
 
       {/* HERRAMIENTAS TAXISTAS */}
+      
       <FadeInSection ref={overviewRef}>
         <Section>
-        
-          {/*  */}
+          <HeroSideCardTools >
           <SectionHeader>
             <HeroCTA>
               <SectionTag>TaxiRadar24 para taxistas</SectionTag>
             </HeroCTA>
-            
+
             <SectionTitle>
               👉 Herramientas profesional para taxistas
             </SectionTitle>
-            
+
             <SectionSubtitle>
-              Herramientas diseñadas para mejorar tu operativa diaria como taxista profesional.
-              </SectionSubtitle>
-               
-                   <HeroCTA>
-             <ToolsPrimaryButton onClick={goTools}>
-              🔧 Herramientas para taxistas
-            </ToolsPrimaryButton>
-          </HeroCTA>
-            
+              Herramientas diseñadas para mejorar tu operativa diaria como
+              taxista profesional.
+            </SectionSubtitle>
+
+            <HeroCTA>
+              <ToolsPrimaryButton onClick={goTools}>
+                🔧 Herramientas para taxistas
+              </ToolsPrimaryButton>
+            </HeroCTA>
           </SectionHeader>
+      </HeroSideCardTools>
+
 
           <FeatureGrid>
- 
-
             <FeatureCard>
               <FeatureIcon>✈️</FeatureIcon>
               <h3>Herramientas para taxistas</h3>
@@ -228,7 +243,8 @@ export default function HomeScreen() {
                 <Pill>24/7</Pill>
               </PillList>
             </FeatureCard>
-                       <FeatureCard>
+
+            <FeatureCard>
               <FeatureIcon>🎓</FeatureIcon>
               <h3>Academia TaxiRadar24</h3>
               <p>
@@ -290,24 +306,25 @@ export default function HomeScreen() {
       </FadeInSection>
 
       {/* CTA FINAL */}
-      <FinalCTASection>
+      <FinalCTASection ref={testimonialsRef}>
         <FinalCTATitle>
           Empieza por el camino que necesitas hoy
         </FinalCTATitle>
 
         <FinalCTAText>
           Accede a la Academia para prepararte para el examen o entra en
-          Herramientas si buscas utilidades profesionales para tu trabajo diario.
+          Herramientas si buscas utilidades profesionales para tu trabajo
+          diario.
         </FinalCTAText>
 
         <HeroCTA>
-            <PrimaryButton onClick={goAcademy}>
-              Entrar a la Academia
-            </PrimaryButton>
+          <PrimaryButton onClick={goAcademy}>
+            Entrar a la Academia
+          </PrimaryButton>
 
-           <ToolsPrimaryButton onClick={goTools}>
-              🔧 Herramientas para taxistas
-            </ToolsPrimaryButton>
+          <ToolsPrimaryButton onClick={goTools}>
+            🔧 Herramientas para taxistas
+          </ToolsPrimaryButton>
         </HeroCTA>
       </FinalCTASection>
     </Container>

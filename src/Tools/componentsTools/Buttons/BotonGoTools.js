@@ -7,7 +7,7 @@ export const ToolsPrimaryButton = styled.button`
 
   background: transparent;
 
-  border: 1px solid rgba(30, 64, 175, 0.7);
+  border: 2px solid rgba(30, 64, 175, 0.7);
   color: #00A8F3;
 
   font-size: 0.95rem;
