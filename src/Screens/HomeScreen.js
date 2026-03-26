@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useSmartNavigation } from "@/utils/SmartNavigation";
 
 import { PrimaryButton } from "@/components/Buttons/ButtonsAcademia";
-import LoginId, { LoginIdText } from "@/components/Buttons/LoginID";
+import LoginId, { LoginIdText } from "@/components/Buttons/LoginId";
 import { ToolsPrimaryButton } from "@/Tools/componentsTools/Buttons/BotonGoTools";
 
 import {

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { resolveNavigation } from "@/navigator/navigationConfig";
 import { useAuth } from "@/navigator/sections/auth/useAuth";
-import LoginId, { LoginIdText } from "@/components/Buttons/LoginID";
+import LoginId, { LoginIdText } from "@/components/Buttons/LoginId";
 
 const iconoUsuario = "/assets/iconoUsuario.png";
 
