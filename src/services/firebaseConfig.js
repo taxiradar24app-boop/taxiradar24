@@ -6,51 +6,47 @@ let _dbInstance = null;
 let _persistenceReady = false;
 let _firebaseConfigCache = null;
 
+function getEnvVar(key) {
+  return (
+    (typeof process !== "undefined" && process.env?.[`REACT_APP_${key}`]) ||
+    (typeof process !== "undefined" && process.env?.[key]) ||
+    (typeof window !== "undefined" && window.__ENV__?.[`REACT_APP_${key}`]) ||
+    (typeof window !== "undefined" && window.__ENV__?.[key]) ||
+    ""
+  );
+}
+
 function buildFirebaseConfig() {
   if (_firebaseConfigCache) return _firebaseConfigCache;
 
   const config = {
     apiKey:
-      process.env.REACT_APP_FIREBASE_API_KEY ||
-      process.env.FIREBASE_API_KEY ||
-      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_API_KEY) ||
-      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_API_KEY),
+      getEnvVar("FIREBASE_API_KEY") ||
+      "AIzaSyBA6MEcmuci9c8uFhvRwkasG5ot8BeiRHM",
 
     authDomain:
-      process.env.REACT_APP_FIREBASE_AUTH_DOMAIN ||
-      process.env.FIREBASE_AUTH_DOMAIN ||
-      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_AUTH_DOMAIN) ||
-      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_AUTH_DOMAIN),
+      getEnvVar("FIREBASE_AUTH_DOMAIN") ||
+      "taxiradar24db.firebaseapp.com",
 
     projectId:
-      process.env.REACT_APP_FIREBASE_PROJECT_ID ||
-      process.env.FIREBASE_PROJECT_ID ||
-      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_PROJECT_ID) ||
-      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_PROJECT_ID),
+      getEnvVar("FIREBASE_PROJECT_ID") ||
+      "taxiradar24db",
 
     storageBucket:
-      process.env.REACT_APP_FIREBASE_STORAGE_BUCKET ||
-      process.env.FIREBASE_STORAGE_BUCKET ||
-      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_STORAGE_BUCKET) ||
-      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_STORAGE_BUCKET),
+      getEnvVar("FIREBASE_STORAGE_BUCKET") ||
+      "taxiradar24db.firebasestorage.app",
 
     messagingSenderId:
-      process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID ||
-      process.env.FIREBASE_MESSAGING_SENDER_ID ||
-      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_MESSAGING_SENDER_ID) ||
-      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_MESSAGING_SENDER_ID),
+      getEnvVar("FIREBASE_MESSAGING_SENDER_ID") ||
+      "829274808088",
 
     appId:
-      process.env.REACT_APP_FIREBASE_APP_ID ||
-      process.env.FIREBASE_APP_ID ||
-      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_APP_ID) ||
-      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_APP_ID),
+      getEnvVar("FIREBASE_APP_ID") ||
+      "1:829274808088:web:db5ed97be1d89146d1086d",
 
     measurementId:
-      process.env.REACT_APP_FIREBASE_MEASUREMENT_ID ||
-      process.env.FIREBASE_MEASUREMENT_ID ||
-      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_MEASUREMENT_ID) ||
-      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_MEASUREMENT_ID),
+      getEnvVar("FIREBASE_MEASUREMENT_ID") ||
+      "G-PMNL95ESWN",
   };
 
   const requiredKeys = [
@@ -65,6 +61,21 @@ function buildFirebaseConfig() {
   const missingKeys = requiredKeys.filter((key) => !config[key]);
 
   if (missingKeys.length > 0) {
+    console.error("🔥 Firebase CONFIG ERROR", {
+      missingKeys,
+      hasProcessEnv:
+        typeof process !== "undefined" &&
+        !!process.env?.REACT_APP_FIREBASE_API_KEY,
+      hasWindowEnv:
+        typeof window !== "undefined" &&
+        !!window.__ENV__?.REACT_APP_FIREBASE_API_KEY,
+      configPreview: {
+        apiKey: !!config.apiKey,
+        authDomain: config.authDomain,
+        projectId: config.projectId,
+      },
+    });
+
     throw new Error(
       `Firebase config incompleta. Faltan: ${missingKeys.join(", ")}`
     );
@@ -96,6 +107,7 @@ export async function getAuth() {
   if (_authInstance) return _authInstance;
 
   const app = await getApp();
+
   const { getAuth, setPersistence, browserLocalPersistence } = await import(
     "firebase/auth"
   );
@@ -119,6 +131,7 @@ export async function getDb() {
   if (_dbInstance) return _dbInstance;
 
   const app = await getApp();
+
   const { getFirestore } = await import("firebase/firestore");
 
   _dbInstance = getFirestore(app);
