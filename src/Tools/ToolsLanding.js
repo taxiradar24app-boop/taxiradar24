@@ -26,6 +26,8 @@ export default function ToolsLanding() {
 
   const goFlights = () => navigate("/herramientas/flights");
   const goScheduled = () => navigate("/herramientas/flights/scheduled");
+  const goTrain = () => navigate("/herramientas/train");
+  const goBoats = () => navigate("/herramientas/boats");
   const goHome = () => navigate("/");
 
   return (
@@ -68,7 +70,7 @@ export default function ToolsLanding() {
             </ModuleFooter>
           </FeatureCard>
 
-          <FeatureCard>
+          <FeatureCard onClick={goBoats} $clickable>
             <FeatureIcon>⚓</FeatureIcon>
             <FeatureTitle>Puerto</FeatureTitle>
             <FeatureText>
@@ -81,17 +83,16 @@ export default function ToolsLanding() {
             </ModuleFooter>
           </FeatureCard>
 
-          <FeatureCard>
+          <FeatureCard onClick={goTrain} $clickable>
             <FeatureIcon>🚆</FeatureIcon>
             <FeatureTitle>Tren Soller</FeatureTitle>
             <FeatureText>
-              Llegadas clave y movimiento en estaciones centrales. Próxima
-              actualización.
+              Consulta las próximas llegadas del Tren de Sóller a Palma.
             </FeatureText>
 
             <ModuleFooter>
               <span />
-              <ModuleCTA>Próximamente →</ModuleCTA>
+              <ModuleCTA>Ver horarios →</ModuleCTA>
             </ModuleFooter>
           </FeatureCard>
         </FeatureGrid>

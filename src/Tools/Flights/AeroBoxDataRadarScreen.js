@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import useAeroBoxArrivals from "@/Drivers/hooksDrivers/useAeroBoxArrival";
+import useAeroBoxArrivals from "@/Tools/Flights/hooksToolsFlights/useAeroBoxArrivals";
 import { useSmartNavigation } from "@/utils/SmartNavigation";
 import ButtonBackSlot from "@/components/Buttons/ButtonBackSlot";
 import {

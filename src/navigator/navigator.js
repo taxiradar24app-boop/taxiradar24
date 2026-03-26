@@ -1,4 +1,3 @@
-// src/navigator/navigator.js
 import React, { Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useAdboxFlights } from "@/Drivers/hooksDrivers/useAdboxFlights";
+import { useAdboxFlights } from "@/Tools/Flights/hooksToolsFlights/useAdboxFlights";
 import ButtonBackSlot from "@/components/Buttons/ButtonBackSlot";
 import {
   TableContainer,
