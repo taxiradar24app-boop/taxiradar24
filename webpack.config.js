@@ -147,6 +147,7 @@ module.exports = {
       minSize: 20000,
 
       cacheGroups: {
+
         reactVendor: {
           test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
           name: "react-vendor",
@@ -175,8 +176,21 @@ module.exports = {
           enforce: true,
         },
 
+        firebaseVendor: {
+          test: /[\\/]node_modules[\\/](firebase|@firebase)[\\/]/,
+          name: "firebase-vendor",
+          priority: 45,
+          enforce: true,
+        },
+
         vendors: {
-          test: /[\\/]node_modules[\\/]/,
+          test(module) {
+            return (
+              module.context &&
+              /[\\/]node_modules[\\/]/.test(module.context) &&
+              !/[\\/]node_modules[\\/](firebase|@firebase)[\\/]/.test(module.context)
+            );
+          },
           name(module) {
             const match =
               module.context &&

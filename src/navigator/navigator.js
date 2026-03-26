@@ -3,20 +3,20 @@ import React, { Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import PublicLayout from "./layouts/PublicLayout";
-import ToolsLayout from "./layouts/ToolsLayout";
 import RequirePlan from "@/navigator/sections/auth/RequirePlan";
-
 import academyRoutes from "@/navigator/sections/academy/academyRoutes";
 
 // Home
 const HomeScreen = React.lazy(() => import("@/Screens/HomeScreen"));
 
 // Auth
-import LoginScreen from "@/Screens/LoginScreen";
-import RegisterScreen from "@/Screens/RegisterScreen";
-import ResetPasswordScreen from "@/Screens/ResetPasswordScreen";
+const LoginScreen = React.lazy(() => import("@/Screens/LoginScreen"));
+const RegisterScreen = React.lazy(() => import("@/Screens/RegisterScreen"));
+const ResetPasswordScreen = React.lazy(() =>
+  import("@/Screens/ResetPasswordScreen")
+);
 
-// Otros módulos existentes
+// Otros módulos
 const SuccessPage = React.lazy(() => import("@/Academy/upgrade/SuccessPage"));
 const ProfileProCheck = React.lazy(() => import("@/Profile/ProfileProCheck"));
 const ProfileLayout = React.lazy(() => import("@/Profile/ProfileLayout"));
@@ -25,13 +25,8 @@ const IdentityMergeScreen = React.lazy(() =>
   import("@/Screens/IdentityMergeScreen")
 );
 
-const ToolsLanding = React.lazy(() => import("@/Tools/ToolsLanding"));
-const FlightAeroDataBoxScreen = React.lazy(() =>
-  import("@/Tools/Flights/AeroBoxDataRadarScreen")
-);
-const TableAdboxScreen = React.lazy(() =>
-  import("@/Tools/Flights/TableAdboxScreen")
-);
+// Tools lazy
+const ToolsModule = React.lazy(() => import("@/Tools/ToolsModule"));
 
 function AppLoader({ text = "Cargando…" }) {
   return (
@@ -65,7 +60,11 @@ function renderRouteTree(routes = []) {
 
     if (route.protected) {
       return (
-        <Route key={key} path={route.path} element={<RequirePlan plan="ACADEMIA_PRO" />}>
+        <Route
+          key={key}
+          path={route.path}
+          element={<RequirePlan plan="ACADEMIA_PRO" />}
+        >
           {route.element ? <Route index element={route.element} /> : null}
         </Route>
       );
@@ -84,7 +83,6 @@ export default function Navigator() {
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           <Route path="reset-password" element={<ResetPasswordScreen />} />
-
           <Route path="success" element={<SuccessPage />} />
           <Route path="perfil" element={<ProfileLayout />} />
           <Route path="progreso" element={<ProgressLayout />} />
@@ -94,15 +92,8 @@ export default function Navigator() {
 
         {renderRouteTree(academyRoutes)}
 
-        <Route element={<ToolsLayout />}>
-          <Route path="herramientas" element={<ToolsLanding />} />
-          <Route path="tools" element={<Navigate to="/herramientas" replace />} />
-          <Route path="tools/flights" element={<FlightAeroDataBoxScreen />} />
-          <Route
-            path="tools/flights/scheduled"
-            element={<TableAdboxScreen />}
-          />
-        </Route>
+        <Route path="herramientas/*" element={<ToolsModule />} />
+        <Route path="tools/*" element={<Navigate to="/herramientas" replace />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

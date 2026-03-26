@@ -8,7 +8,7 @@ import { useAuth } from "./../context/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSmartNavigation } from "@/utils/SmartNavigation";
 
-const logoTaxiRadar = "/assets/LOGO_ORIGINAL.png";
+const logoTaxiRadar = "/assets/LOGO_ORIGINAL.webp";
 
 import {
   AuthContainer,

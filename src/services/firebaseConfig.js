@@ -1,11 +1,4 @@
 // src/services/firebaseConfig.js
-// =======================================================
-// ✅ Firebase "Enterprise" - Lazy total
-// - Inicialización lazy sin dependencia de módulos globales
-// - Inicializa Firebase App solo cuando hace falta
-// - Exporta getters async: getApp(), getAuth(), getDb()
-// - Mantiene compat exportando getFirebaseConfig()
-// =======================================================
 
 let _appInstance = null;
 let _authInstance = null;
@@ -13,51 +6,51 @@ let _dbInstance = null;
 let _persistenceReady = false;
 let _firebaseConfigCache = null;
 
-function readEnvValue(key) {
-  if (
-    typeof process !== "undefined" &&
-    process.env &&
-    typeof process.env[key] !== "undefined"
-  ) {
-    return process.env[key];
-  }
-
-  if (
-    typeof window !== "undefined" &&
-    window.__ENV__ &&
-    typeof window.__ENV__[key] !== "undefined"
-  ) {
-    return window.__ENV__[key];
-  }
-
-  return undefined;
-}
-
 function buildFirebaseConfig() {
   if (_firebaseConfigCache) return _firebaseConfigCache;
 
   const config = {
     apiKey:
-      readEnvValue("REACT_APP_FIREBASE_API_KEY") ||
-      readEnvValue("FIREBASE_API_KEY"),
+      process.env.REACT_APP_FIREBASE_API_KEY ||
+      process.env.FIREBASE_API_KEY ||
+      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_API_KEY) ||
+      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_API_KEY),
+
     authDomain:
-      readEnvValue("REACT_APP_FIREBASE_AUTH_DOMAIN") ||
-      readEnvValue("FIREBASE_AUTH_DOMAIN"),
+      process.env.REACT_APP_FIREBASE_AUTH_DOMAIN ||
+      process.env.FIREBASE_AUTH_DOMAIN ||
+      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_AUTH_DOMAIN) ||
+      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_AUTH_DOMAIN),
+
     projectId:
-      readEnvValue("REACT_APP_FIREBASE_PROJECT_ID") ||
-      readEnvValue("FIREBASE_PROJECT_ID"),
+      process.env.REACT_APP_FIREBASE_PROJECT_ID ||
+      process.env.FIREBASE_PROJECT_ID ||
+      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_PROJECT_ID) ||
+      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_PROJECT_ID),
+
     storageBucket:
-      readEnvValue("REACT_APP_FIREBASE_STORAGE_BUCKET") ||
-      readEnvValue("FIREBASE_STORAGE_BUCKET"),
+      process.env.REACT_APP_FIREBASE_STORAGE_BUCKET ||
+      process.env.FIREBASE_STORAGE_BUCKET ||
+      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_STORAGE_BUCKET) ||
+      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_STORAGE_BUCKET),
+
     messagingSenderId:
-      readEnvValue("REACT_APP_FIREBASE_MESSAGING_SENDER_ID") ||
-      readEnvValue("FIREBASE_MESSAGING_SENDER_ID"),
+      process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID ||
+      process.env.FIREBASE_MESSAGING_SENDER_ID ||
+      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_MESSAGING_SENDER_ID) ||
+      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_MESSAGING_SENDER_ID),
+
     appId:
-      readEnvValue("REACT_APP_FIREBASE_APP_ID") ||
-      readEnvValue("FIREBASE_APP_ID"),
+      process.env.REACT_APP_FIREBASE_APP_ID ||
+      process.env.FIREBASE_APP_ID ||
+      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_APP_ID) ||
+      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_APP_ID),
+
     measurementId:
-      readEnvValue("REACT_APP_FIREBASE_MEASUREMENT_ID") ||
-      readEnvValue("FIREBASE_MEASUREMENT_ID"),
+      process.env.REACT_APP_FIREBASE_MEASUREMENT_ID ||
+      process.env.FIREBASE_MEASUREMENT_ID ||
+      (typeof window !== "undefined" && window.__ENV__?.REACT_APP_FIREBASE_MEASUREMENT_ID) ||
+      (typeof window !== "undefined" && window.__ENV__?.FIREBASE_MEASUREMENT_ID),
   };
 
   const requiredKeys = [

@@ -7,7 +7,7 @@ import { validatePhone } from "@/utils/utilsForm";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-const logoTaxiRadar = "/assets/LOGO_ORIGINAL.png";
+const logoTaxiRadar = "/assets/LOGO_ORIGINAL.webp";
 
 import {
   AuthContainer,

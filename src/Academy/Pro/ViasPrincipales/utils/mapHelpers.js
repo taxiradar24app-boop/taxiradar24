@@ -1,5 +1,3 @@
-// src/Academy/Pro/ViasPrincipales/utils/mapHelpers.js
-
 import centrosOficiales from "./../data/centrosOficiales";
 import centrosCulturales from "./../data/centrosCulturales";
 import centrosSalud from "./../data/centrosSalud";
@@ -8,36 +6,11 @@ import hoteles from "./../data/hoteles";
 import polideportivos from "./../data/polideportivos";
 import hosteleria from "./../data/hosteleria";
 import monumentos from "./../data/monumentos";
-// ================= ICONOS =================
 
-const iconBase = (emoji) =>
-  L.divIcon({
-    html: `<div style="
-      font-size:22px;
-      line-height:1;
-      transform: translate(-50%, -50%);
-    ">${emoji}</div>`,
-    className: "",
-    iconSize: [24, 24],
-  });
-
-export const CATEGORY_ICONS = {
-  vias: iconBase("🛣️"),
-  oficiales: iconBase("🏛️"),
-  culturales: iconBase("🎭"),
-  salud: iconBase("🏥"),
-  educativos: iconBase("🎓"),
-  hoteles: iconBase("🏨"),
-  deportes: iconBase("🏟️"),
-  hosteleria: iconBase("🍽️"),
-  monumentos: iconBase("🗿"),
-};
-
-// ================= DATOS =================
-
-// ⬇️⬇️⬇️ CLAVE ⬇️⬇️⬇️
 export const getCategoryData = (category) => {
   switch (category) {
+    case "vias":
+      return [];
     case "oficiales":
       return centrosOficiales.items;
     case "culturales":
@@ -48,7 +21,7 @@ export const getCategoryData = (category) => {
       return centrosEducativos.items;
     case "hoteles":
       return hoteles.items;
-    case "deportivos": 
+    case "deportivos":
       return polideportivos.items;
     case "hosteleria":
       return hosteleria.items;
@@ -58,6 +31,3 @@ export const getCategoryData = (category) => {
       return [];
   }
 };
-
-export const getCategoryIcon = (category) =>
-  CATEGORY_ICONS[category] || CATEGORY_ICONS.vias;
