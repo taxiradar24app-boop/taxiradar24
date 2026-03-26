@@ -62,5 +62,4 @@ export const LoginIdText = styled.span`
   }
 `;
 
-export { LoginIdText };
 export default LoginId;
