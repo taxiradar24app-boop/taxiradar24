@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { isSubscriptionActive } from "@/services/subscriptionService";
 
-export default function RequirePlan({ plan }) {
+export default function RequirePlan({ plan, children }) {
   const {
     user,
     userData,
@@ -15,20 +15,20 @@ export default function RequirePlan({ plan }) {
     hasIdentityConflict,
   } = useAuth();
 
-    if (loading || subscriptionLoading) {
-      return (
-        <div
-          style={{
-            minHeight: "60vh",
-            display: "grid",
-            placeItems: "center",
-            color: "#fff",
-          }}
-        >
-          Cargando acceso PRO…
-        </div>
-      );
-    }
+  if (loading || subscriptionLoading) {
+    return (
+      <div
+        style={{
+          minHeight: "60vh",
+          display: "grid",
+          placeItems: "center",
+          color: "#fff",
+        }}
+      >
+        Cargando acceso PRO…
+      </div>
+    );
+  }
 
   if (user && hasIdentityConflict) {
     return <Navigate to="/identity-merge" replace />;
@@ -50,12 +50,13 @@ export default function RequirePlan({ plan }) {
       return <Navigate to="/perfil/pro-check" replace />;
     }
 
-    return <Outlet />;
+    // 🔥 CLAVE: si hay children, devolverlos
+    return children ? children : <Outlet />;
   }
 
   if (userData?.subscription !== plan) {
     return <Navigate to="/academia/upgrade" replace />;
   }
 
-  return <Outlet />;
+  return children ? children : <Outlet />;
 }

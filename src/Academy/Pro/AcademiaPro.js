@@ -13,7 +13,6 @@ import {
   TopBar,
   TopBarLeft,
   Badge,
-  TopTitle,
   TopRight,
   GreetingSection,
   GreetingText,
@@ -54,7 +53,7 @@ const MODULES = [
   },
   {
     id: "audios",
-    badge: " AudioLectura",
+    badge: "AudioLectura",
     title: "🎧 Audios guiados completos",
     description:
       "Escucha el Reglamento mientras conduces o descansas. Ideal para memorizar.",
@@ -72,7 +71,7 @@ const MODULES = [
   },
   {
     id: "callejero",
-    badge: " Callejero Palma",
+    badge: "Callejero Palma",
     title: "🗺️ Ejercicios: 10 calles en 10 minutos",
     description:
       "Rutas, zonas y ejercicios interactivos para dominar el callejero de Palma.",
@@ -91,8 +90,7 @@ const MODULES = [
   {
     id: "tarifas",
     badge: "Tarifas oficiales",
-    title:
-      "💶 Tarifas del servicio de transporte urbano de viajeros.",
+    title: "💶 Tarifas del servicio de transporte urbano de viajeros.",
     description:
       "Aprende a aplicar tarifas, suplementos y casos especiales sin dudas.",
     path: "/academia/pro/tarifas",
@@ -187,7 +185,6 @@ export default function AcademiaPro() {
         <TopBar>
           <TopBarLeft>
             <Badge>Academia TaxiRadar24 PRO</Badge>
-          
           </TopBarLeft>
 
           <TopRight />
@@ -203,8 +200,6 @@ export default function AcademiaPro() {
 
           <StatsRow />
         </GreetingSection>
-
-    
 
         {/* MODULES */}
         <ModulesSection>
@@ -239,7 +234,8 @@ export default function AcademiaPro() {
             ))}
           </ModulesGrid>
         </ModulesSection>
-            {/* PROGRESS */}
+
+        {/* PROGRESS */}
         <ProgressSection>
           <ProgressHeader>
             <SectionTitle>Tu progreso general</SectionTitle>

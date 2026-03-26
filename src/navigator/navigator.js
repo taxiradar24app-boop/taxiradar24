@@ -36,41 +36,30 @@ function AppLoader({ text = "Cargando…" }) {
   );
 }
 
+function withProtection(element, protectedRoute) {
+  if (!protectedRoute) return element;
+
+  return <RequirePlan plan="ACADEMIA_PRO">{element}</RequirePlan>;
+}
+
 function renderRouteTree(routes = []) {
   return routes.map((route, index) => {
     const key = `${route.path || "index"}-${index}`;
-
-    const routeElement = route.protected ? (
-      <RequirePlan plan="ACADEMIA_PRO" />
-    ) : (
-      route.element
-    );
+    const wrappedElement = withProtection(route.element, route.protected);
 
     if (route.children?.length) {
       return (
-        <Route key={key} path={route.path} element={routeElement}>
+        <Route key={key} path={route.path} element={wrappedElement}>
           {renderRouteTree(route.children)}
         </Route>
       );
     }
 
     if (route.index) {
-      return <Route key={key} index element={route.element} />;
+      return <Route key={key} index element={wrappedElement} />;
     }
 
-    if (route.protected) {
-      return (
-        <Route
-          key={key}
-          path={route.path}
-          element={<RequirePlan plan="ACADEMIA_PRO" />}
-        >
-          {route.element ? <Route index element={route.element} /> : null}
-        </Route>
-      );
-    }
-
-    return <Route key={key} path={route.path} element={route.element} />;
+    return <Route key={key} path={route.path} element={wrappedElement} />;
   });
 }
 

@@ -1,20 +1,21 @@
 import React, { lazy } from "react";
+import RequirePlan from "@/navigator/sections/auth/RequirePlan";
 
 /* =========================
-   LANDING / UPGRADE (LAZY)
+   LANDING / UPGRADE
 ========================= */
 const AcademiaShop = lazy(() => import("@/Academy/Shop/AcademiaShop"));
 const UpgradePage = lazy(() => import("@/Academy/upgrade/UpgradePage"));
 
 /* =========================
-   LAYOUT PUBLICO (LAZY)
+   LAYOUT PUBLICO
 ========================= */
 const AcademyPublicLayout = lazy(() =>
   import("@/navigator/layouts/AcademyPublicLayout")
 );
 
 /* =========================
-   DEMO (LAZY)
+   DEMO
 ========================= */
 const AcademiaDemo = lazy(() => import("@/Academy/Demo/AcademiaDemo"));
 const AcademiaDemoLayout = lazy(() =>
@@ -29,7 +30,7 @@ import viasDemoRoutes from "./rutasDemo/viasDemoRoutes";
 import tarifasDemoRoutes from "./rutasDemo/tarifasDemoRoutes";
 
 /* =========================
-   PRO (LAZY)
+   PRO
 ========================= */
 const AcademyLayout = lazy(() => import("@/navigator/layouts/AcademyLayout"));
 const AcademiaPro = lazy(() => import("@/Academy/Pro/AcademiaPro"));
@@ -72,8 +73,11 @@ const academyRoutes = [
   },
   {
     path: "academia/pro",
-    protected: true,
-    element: <AcademyLayout />,
+    element: (
+      <RequirePlan plan="ACADEMIA_PRO">
+        <AcademyLayout />
+      </RequirePlan>
+    ),
     children: [
       { index: true, element: <AcademiaPro /> },
       ...reglamentoProRoutes,
