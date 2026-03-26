@@ -24,8 +24,8 @@ import BackButtonTools from "@/Tools/componentsTools/Buttons/BackButtonTools";
 export default function ToolsLanding() {
   const navigate = useNavigate();
 
-  const goFlights = () => navigate("/tools/flights");
-  const goScheduled = () => navigate("/tools/flights/scheduled");
+  const goFlights = () => navigate("/herramientas/flights");
+  const goScheduled = () => navigate("/herramientas/flights/scheduled");
   const goHome = () => navigate("/");
 
   return (

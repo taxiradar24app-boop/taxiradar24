@@ -124,6 +124,7 @@ export const FeatureGrid = styled.div`
    CARD
 ========================= */
 export const FeatureCard = styled.div`
+  cursor: ${({ $clickable }) => ($clickable ? "pointer" : "default")};
   background: ${({ $toolsSection, theme }) =>
     $toolsSection
       ? theme.tools?.colors?.bgCard || "rgba(10,22,40,0.92)"
