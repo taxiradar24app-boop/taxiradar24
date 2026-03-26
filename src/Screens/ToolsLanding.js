@@ -45,34 +45,10 @@ export default function ToolsLanding() {
         <BackHomeButton /> {/* colocar a la derecha */}
         <HeroContent>
           <HeroTag>Herramientas para conductores</HeroTag>
-
-          {/* <HeroTitle>¿Dónde hay trabajo ahora mismo?</HeroTitle>
-
-          <HeroSubtitle>
-            Consulta vuelos en aproximación, próximas llegadas y puntos de
-            movimiento para decidir rápido y posicionarte mejor.
-          </HeroSubtitle> */}
-
-          {/* <HeroCTA>
-            <PrimaryButton onClick={goFlights}>
-              🟢 Ver vuelos ahora
-            </PrimaryButton>
-
-            <SecondaryButton onClick={goScheduled}>
-              📅 Programadas Próximas 24hs
-            </SecondaryButton>
-          </HeroCTA> */}
         </HeroContent>
       </HeroSection>
 
       <Section>
-        {/* <SectionHeader>
-          <SectionTag>Acceso rápido</SectionTag>
-          <SectionTitle>Elige una herramienta y actúa</SectionTitle>
-          <SectionSubtitle>
-            Información directa, clara y útil para trabajar sin distracciones.
-          </SectionSubtitle>
-        </SectionHeader> */}
 
         <FeatureGrid>
           <FeatureCard onClick={goFlights} $clickable>

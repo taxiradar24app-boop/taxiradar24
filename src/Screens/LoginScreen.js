@@ -7,6 +7,7 @@ import AuthDivider from "@/components/UI/Auth/AuthDivider";
 import { useAuth } from "./../context/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSmartNavigation } from "@/utils/SmartNavigation";
+import BackHomeButton from "@/Tools/componentsTools/Buttons/BackButtonTools";
 
 const logoTaxiRadar = "/assets/LOGO_ORIGINAL.webp";
 
@@ -44,6 +45,7 @@ export default function LoginScreen() {
   return (
     <AuthContainer>
       <AuthCard>
+        <BackHomeButton /> {/* colocar a la derecha */}
         <LogoWrap>
           <LogoImage src={logoTaxiRadar} alt="Logo TaxiRadar24" />
         </LogoWrap>
