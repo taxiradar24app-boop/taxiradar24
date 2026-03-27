@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 const LoginId = styled.button`
   padding: 0.9rem 1.9rem;
+  min-height: 56px;
+  min-width: 280px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   cursor: pointer;
@@ -10,6 +12,7 @@ const LoginId = styled.button`
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
+  flex-shrink: 0;
 
   font-weight: 700;
   font-size: 1rem;
@@ -43,8 +46,9 @@ const LoginId = styled.button`
     transform: scale(0.98);
   }
 
-  @media (min-width: 641px) {
-    min-width: 280px;
+  @media (max-width: 640px) {
+    width: 100%;
+    min-width: 100%;
   }
 `;
 
@@ -54,12 +58,12 @@ export const LoginIdText = styled.span`
   line-height: 1.35;
   letter-spacing: ${({ theme }) => theme.letterSpacings?.normal || "0"};
   color: ${({ theme }) => theme.colors?.grey || "#9ca3af"} !important;
-  max-width: 9rem;
-  text-align: center;
 
-  @media (max-width: 640px) {
-    max-width: 100%;
-  }
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export default LoginId;

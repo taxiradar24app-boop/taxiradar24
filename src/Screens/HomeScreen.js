@@ -128,7 +128,7 @@ export default function HomeScreen() {
              </HeroCTA>
             <HeroCTA>
            <LoginId onClick={goLogin}>
-            <LoginIdText>¡Ya tengo cuenta!</LoginIdText>
+            <LoginIdText>Login / Registro</LoginIdText>
           </LoginId>
              </HeroCTA>
          

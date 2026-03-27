@@ -52,7 +52,7 @@ export default function HeaderAcademia({ withSafeTop = true }) {
   const profilePath = needsProOnboarding ? "/perfil/pro-check" : "/perfil";
   const progressPath = needsProOnboarding ? "/perfil/pro-check" : "/progreso";
 
-  const accountLabel = user ? "Mi cuenta" : "¡Ya tengo cuenta!";
+  const accountLabel = user ? "← Volver al inicio" : "Login / Registro";
 
   const go = (path) => {
     if (!path) return;
@@ -61,9 +61,13 @@ export default function HeaderAcademia({ withSafeTop = true }) {
     setOpenDesktopMenu(false);
   };
 
+  const goHome = () => {
+    go("/");
+  };
+
   const goAccount = () => {
     if (user) {
-      go(profilePath);
+      goHome();
       return;
     }
     go("/login");

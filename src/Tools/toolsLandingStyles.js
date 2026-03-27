@@ -1,6 +1,24 @@
 import styled from "styled-components";
 
 /* =========================
+   HELPERS COLOR
+========================= */
+const getColorByType = (type) => {
+  switch (type) {
+    case "airport":
+      return "#00a8f3"; // ✈️ azul
+    case "arrivals":
+      return "#10a37f"; // 📋 verde
+    case "port":
+      return "#ff8c42"; // ⚓ naranja
+    case "train":
+      return "#7c5cff"; // 🚆 morado
+    default:
+      return "#00a8f3";
+  }
+};
+
+/* =========================
    WRAPPER GENERAL
 ========================= */
 export const PageWrapper = styled.div`
@@ -17,8 +35,8 @@ export const PageWrapper = styled.div`
    HERO
 ========================= */
 export const HeroSection = styled.section`
-  margin-top: 0;              /* 🔥 eliminar hack */
-  margin-bottom: 1.2rem;      /* 🔥 menos espacio */
+  margin-top: 0;
+  margin-bottom: 1.2rem;
   display: flex;
   flex-direction: column;
 `;
@@ -30,19 +48,17 @@ export const TopBar = styled.div`
   background: rgba(7, 17, 31, 0.85);
   backdrop-filter: blur(10px);
   padding: 6px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 `;
 
 export const HeroContent = styled.div`
   max-width: 760px;
-  margin-top: 0.25rem;   /* 🔥 antes estaba muy separado */
+  margin-top: 0.25rem;
 `;
 
 export const HeroTag = styled.div`
   color: #00f5ff;
-
-  margin: 0.25rem 0 0.4rem; /* 🔥 compacta arriba y abajo */
-  
+  margin: 0.25rem 0 0.4rem;
   text-transform: uppercase;
 
   font-size: ${({ theme }) => theme.fontSizes?.xs || "0.8125rem"};
@@ -51,7 +67,7 @@ export const HeroTag = styled.div`
 `;
 
 /* =========================
-   MODULE CTA (NO CAMBIADO)
+   MODULE CTA
 ========================= */
 export const ModuleCTA = styled.span`
   font-size: 1.2rem;
@@ -61,7 +77,7 @@ export const ModuleCTA = styled.span`
 `;
 
 /* =========================
-   FOOTER DEL CARD (nuevo uso)
+   FOOTER DEL CARD
 ========================= */
 export const ModuleFooter = styled.div`
   display: flex;
@@ -110,7 +126,6 @@ export const Section = styled.section`
    GRID
 ========================= */
 export const FeatureGrid = styled.div`
-
   display: grid;
   gap: 1.15rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -177,7 +192,8 @@ export const FeatureCard = styled.div`
 `;
 
 export const FeatureTitle = styled.h3`
-  color: ${({ theme }) => theme.tools?.colors?.brand || "#00A8F3"};
+  color: ${({ $type, theme }) =>
+    $type ? getColorByType($type) : theme.tools?.colors?.brand || "#00A8F3"};
   margin-bottom: 0.35rem;
 
   font-size: ${({ theme }) => theme.fontSizes?.xl || "1.25rem"};
@@ -185,13 +201,19 @@ export const FeatureTitle = styled.h3`
   line-height: ${({ theme }) => theme.lineHeights?.title || "1.3"};
   letter-spacing: ${({ theme }) => theme.letterSpacings?.tight || "-0.01em"};
 `;
+
 /* =========================
    ICON
 ========================= */
-
-export const FeatureIcon = styled.div`
-  font-size: 1.95rem;
+export const FeatureIcon = styled.img`
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
   margin-bottom: 0.55rem;
+  display: block;
+
+  filter: ${({ $type }) =>
+    $type ? `drop-shadow(0px 0px 6px ${getColorByType($type)}55)` : "none"};
 `;
 
 export const FeatureText = styled.p`
@@ -207,4 +229,11 @@ export const FeatureText = styled.p`
 export const CTASection = styled.section`
   margin-top: 3.5rem;
   text-align: center;
+`;
+
+export const CTAInner = styled.div`
+  display: grid;
+  gap: 0.9rem;
+  max-width: 520px;
+  margin: 0 auto;
 `;

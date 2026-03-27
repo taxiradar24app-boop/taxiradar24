@@ -13,6 +13,7 @@ import {
   FeatureTitle,
   FeatureText,
   CTASection,
+  CTAInner,
   SecondaryButton,
   ModuleCTA,
   ModuleFooter,
@@ -45,10 +46,14 @@ export default function ToolsLanding() {
       <Section>
         <FeatureGrid>
           <FeatureCard onClick={goFlights} $clickable>
-            <FeatureIcon>🛬</FeatureIcon>
-            <FeatureTitle>Aeropuerto ahora</FeatureTitle>
+            <FeatureIcon
+              src="/assets/icono/icono_avion_aproximandose.webp"
+              alt="Icono aeropuerto"
+              $type="airport"
+            />
+            <FeatureTitle $type="airport">Aeropuerto ahora</FeatureTitle>
             <FeatureText>
-              Vuelos llegando y en aproximación a Palma.
+              Vuelos llegando y en aproximación a 30 minutos de Palma.
             </FeatureText>
 
             <ModuleFooter>
@@ -58,8 +63,12 @@ export default function ToolsLanding() {
           </FeatureCard>
 
           <FeatureCard onClick={goScheduled} $clickable>
-            <FeatureIcon>📋</FeatureIcon>
-            <FeatureTitle>Próximas llegadas</FeatureTitle>
+            <FeatureIcon
+              src="/assets/icono/icono_avion_vuelo.webp"
+              alt="Icono próximas llegadas"
+              $type="arrivals"
+            />
+            <FeatureTitle $type="arrivals">Próximas llegadas</FeatureTitle>
             <FeatureText>
               Revisa la previsión de vuelos y anticípate a los próximos picos.
             </FeatureText>
@@ -71,8 +80,12 @@ export default function ToolsLanding() {
           </FeatureCard>
 
           <FeatureCard onClick={goBoats} $clickable>
-            <FeatureIcon>⚓</FeatureIcon>
-            <FeatureTitle>Puerto</FeatureTitle>
+            <FeatureIcon
+              src="/assets/icono/icono_boat_navegando.webp"
+              alt="Icono puerto"
+              $type="port"
+            />
+            <FeatureTitle $type="port">Puerto</FeatureTitle>
             <FeatureText>
               Cruceros y ferries previstos para hoy. Próxima actualización.
             </FeatureText>
@@ -84,8 +97,12 @@ export default function ToolsLanding() {
           </FeatureCard>
 
           <FeatureCard onClick={goTrain} $clickable>
-            <FeatureIcon>🚆</FeatureIcon>
-            <FeatureTitle>Tren Soller</FeatureTitle>
+            <FeatureIcon
+              src="/assets/icono/icono_tren_viajando.webp"
+              alt="Icono tren"
+              $type="train"
+            />
+            <FeatureTitle $type="train">Tren Soller</FeatureTitle>
             <FeatureText>
               Consulta las próximas llegadas del Tren de Sóller a Palma.
             </FeatureText>
@@ -99,20 +116,13 @@ export default function ToolsLanding() {
       </Section>
 
       <CTASection>
-        <div
-          style={{
-            display: "grid",
-            gap: "0.9rem",
-            maxWidth: "520px",
-            margin: "0 auto",
-          }}
-        >
+        <CTAInner>
           <SecondaryButton onClick={goHome}>
             ← Volver al inicio
           </SecondaryButton>
 
           <FeatureText>@TaxiRadar24.com</FeatureText>
-        </div>
+        </CTAInner>
       </CTASection>
     </PageWrapper>
   );
