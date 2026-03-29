@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { getAuth } from "@/services/firebaseConfig";
 import { markPhoneAsVerified, normalizePhoneNumber } from "./userIDService";
 import { usePhoneAuth } from "./usePhoneAuth";
-
 import { validatePhone } from "@/utils/utilsForm";
-import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const logoTaxiRadar = "/assets/LOGO_ORIGINAL.webp";
@@ -46,6 +45,19 @@ export default function PhoneVerification() {
   const [busy, setBusy] = useState(false);
   const [uiError, setUiError] = useState("");
   const [uiSuccess, setUiSuccess] = useState("");
+
+  // 🔥 NUEVO: cooldown anti-spam
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+
+    const timer = setInterval(() => {
+      setCooldown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
   useEffect(() => {
     if (phoneVerified === true && !hasIdentityConflict) {
@@ -118,7 +130,14 @@ export default function PhoneVerification() {
     e.preventDefault();
     clearMessages();
 
-    const authUser = getAuth().currentUser;
+    // 🚫 BLOQUEO POR COOLDOWN
+    if (cooldown > 0) {
+      setUiError(`Espera ${cooldown}s antes de reenviar.`);
+      return;
+    }
+
+    const auth = await getAuth();
+    const authUser = auth.currentUser;
 
     if (!authUser?.uid || !user?.uid) {
       setUiError("No hay sesión activa.");
@@ -136,6 +155,9 @@ export default function PhoneVerification() {
     setBusy(true);
 
     const result = await sendVerificationCode(formatted);
+
+    // 🔥 ACTIVAMOS COOLDOWN
+    setCooldown(60);
 
     if (result?.ok && result?.alreadyLinked) {
       const claimResult = await markPhoneAsVerified(user.uid, formatted, {
@@ -171,7 +193,8 @@ export default function PhoneVerification() {
     setBusy(true);
 
     const verifiedUser = await confirmVerificationCode(code);
-    const authUserAfter = getAuth().currentUser;
+    const auth = await getAuth();
+    const authUserAfter = auth.currentUser;
 
     if (!verifiedUser || !authUserAfter?.uid) {
       setBusy(false);
@@ -190,7 +213,10 @@ export default function PhoneVerification() {
   };
 
   const handleRestart = async () => {
-    await signOut(getAuth());
+    const auth = await getAuth();
+    const { signOut } = await import("firebase/auth");
+
+    await signOut(auth);
     localStorage.clear();
     sessionStorage.clear();
     navigate("/login", { replace: true });
@@ -213,22 +239,26 @@ export default function PhoneVerification() {
           {step === 1 ? (
             <>
               <PhoneField>
-              <PhonePrefix>+34</PhonePrefix>
-              <PhoneInput
-                type="tel"
-                placeholder="612345678"
-                value={phone}
-                onChange={(e) => {
-                  const onlyNumbers = e.target.value.replace(/\D/g, "");
-                  if (onlyNumbers.length <= 9) {
-                    setPhone(onlyNumbers);
-                  }
-                }}
-              />
-            </PhoneField>
+                <PhonePrefix>+34</PhonePrefix>
+                <PhoneInput
+                  type="tel"
+                  placeholder="612345678"
+                  value={phone}
+                  onChange={(e) => {
+                    const onlyNumbers = e.target.value.replace(/\D/g, "");
+                    if (onlyNumbers.length <= 9) {
+                      setPhone(onlyNumbers);
+                    }
+                  }}
+                />
+              </PhoneField>
 
-              <Button disabled={busy || loading}>
-                {busy || loading ? "Enviando…" : "Enviar código SMS"}
+              <Button disabled={busy || loading || cooldown > 0}>
+                {cooldown > 0
+                  ? `Espera ${cooldown}s`
+                  : busy || loading
+                  ? "Enviando…"
+                  : "Enviar código SMS"}
               </Button>
             </>
           ) : (

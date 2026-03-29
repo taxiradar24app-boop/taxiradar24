@@ -14,6 +14,9 @@ const RegisterScreen = React.lazy(() => import("@/Screens/RegisterScreen"));
 const ResetPasswordScreen = React.lazy(() =>
   import("@/Screens/ResetPasswordScreen")
 );
+const PhoneVerificationScreen = React.lazy(() =>
+  import("@/hooks/usePhoneVerification")
+);
 
 // Otros módulos
 const SuccessPage = React.lazy(() => import("@/Academy/upgrade/SuccessPage"));
@@ -71,6 +74,7 @@ export default function Navigator() {
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           <Route path="reset-password" element={<ResetPasswordScreen />} />
+          <Route path="verify" element={<PhoneVerificationScreen />} />
           <Route path="success" element={<SuccessPage />} />
           <Route path="perfil" element={<ProfileLayout />} />
           <Route path="progreso" element={<ProgressLayout />} />

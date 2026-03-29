@@ -35,7 +35,6 @@ export default function BotonGoogle() {
 
       console.log("✅ Google login:", user?.uid);
 
-      // 🚀 SI necesita teléfono
       if (needsPhone) {
         return navigate("/verify", {
           state: { redirectTo },
@@ -43,9 +42,7 @@ export default function BotonGoogle() {
         });
       }
 
-      // 🚀 REDIRECCIÓN INTELIGENTE
       navigate(redirectTo, { replace: true });
-
     } catch (error) {
       console.error("❌ Error en autenticación:", error?.message || error);
       alert("No se pudo iniciar sesión con Google. Inténtalo de nuevo.");
@@ -56,13 +53,11 @@ export default function BotonGoogle() {
 
   return (
     <Wrapper>
-
       <AuthButton onClick={handleGoogleLogin} disabled={loading}>
         {loading ? "Conectando…" : "Continuar con Google"} 🌐
       </AuthButton>
 
       <MiniText>Acceso rápido y seguro</MiniText>
-
     </Wrapper>
   );
 }
