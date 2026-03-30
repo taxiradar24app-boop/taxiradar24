@@ -14,13 +14,9 @@ export default function SuccessPage() {
   const [status, setStatus] = useState("Activando tu acceso PRO...");
   const [error, setError] = useState("");
 
-  const isActive = useMemo(() => {
-    return (
-      subscription?.active === true ||
-      subscription?.status === "active" ||
-      subscription?.status === "trialing"
-    );
-  }, [subscription]);
+ const isActive = useMemo(() => {
+  return subscription?.active === true;
+}, [subscription]);
 
   useEffect(() => {
     function clearTimers() {

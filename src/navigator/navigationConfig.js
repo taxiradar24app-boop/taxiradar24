@@ -26,13 +26,10 @@ export const academyNav = {
     { id: "demo-callejero", label: "Callejero", path: "/academia/demo/callejero" },
   ],
   pro: [
-    // { id: "pro-dashboard", label: "Mi Academia", path: "/academia/pro" },
     { id: "pro-reglamento", label: "Reglamento", path: "/academia/pro/reglamento" },
     { id: "pro-simulador", label: "Simulador", path: "/academia/pro/simulador" },
     { id: "pro-audios", label: "Audios", path: "/academia/pro/audios" },
     { id: "pro-callejero", label: "Callejero", path: "/academia/pro/callejero" },
-    // { id: "pro-vias", label: "Vías", path: "/academia/pro/vias-principales" },
-    // { id: "pro-tarifas", label: "Tarifas", path: "/academia/pro/tarifas" },
   ],
 };
 
@@ -44,7 +41,6 @@ export const toolsNav = {
   ],
 };
 
-// 🔥 NUEVO: usa subscription (D1), no Firestore
 export function resolveNavigation({ user, subscription }) {
   if (!user) {
     return {
@@ -55,9 +51,9 @@ export function resolveNavigation({ user, subscription }) {
     };
   }
 
-  const isActive = subscription?.status === "active";
+  const isPro = subscription?.active === true;
 
-  if (!isActive) {
+  if (!isPro) {
     return {
       mode: "demo",
       academy: academyNav.demo,

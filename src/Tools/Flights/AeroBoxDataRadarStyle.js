@@ -136,10 +136,17 @@ export const HeaderSubtitle = styled.p`
 ========================= */
 
 export const HourForecastWrap = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 4px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 6px;
+  width: 100%;
+  max-width: 720px;
+
+  @media (max-width: 768px) {
+    gap: 10px;
+    max-width: 100%;
+  }
 
   @media (max-width: 480px) {
     gap: 8px;
@@ -147,29 +154,46 @@ export const HourForecastWrap = styled.div`
 `;
 
 export const HourForecastItem = styled.div`
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  min-height: 38px;
-  padding: 8px 12px;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 50px;
+  width: 100%;
+  padding: 10px 14px;
   border-radius: 999px;
   background: rgba(16, 163, 127, 0.1);
   border: 1px solid rgba(16, 163, 127, 0.22);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 8px 20px rgba(0, 0, 0, 0.18);
+
+  ${({ $isCurrentHour }) =>
+    $isCurrentHour &&
+    css`
+      background: rgba(168, 85, 247, 0.16);
+      border: 1px solid rgba(168, 85, 247, 0.42);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 0 0 1px rgba(168, 85, 247, 0.14),
+        0 10px 24px rgba(76, 29, 149, 0.28);
+    `}
 
   @media (max-width: 480px) {
-    min-height: 34px;
-    padding: 7px 10px;
+    min-height: 44px;
+    padding: 8px 11px;
+    gap: 8px;
   }
 `;
 
 export const HourForecastHour = styled.span`
-  color: #d9e8ff;
+  color: ${({ $isCurrentHour }) => ($isCurrentHour ? "#f3e8ff" : "#d9e8ff")};
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   font-size: ${({ theme }) => theme.fontSizes?.sm || "0.9375rem"};
   font-weight: ${({ theme }) => theme.fontWeights?.semibold || 600};
   line-height: 1.2;
+  white-space: nowrap;
 
   @media (max-width: 480px) {
     font-size: 0.84rem;
@@ -177,12 +201,14 @@ export const HourForecastHour = styled.span`
 `;
 
 export const HourForecastCount = styled.span`
-  color: #a3e635;
+  color: ${({ $isCurrentHour }) => ($isCurrentHour ? "#e9d5ff" : "#a3e635")};
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   font-size: ${({ theme }) => theme.fontSizes?.sm || "0.9375rem"};
   font-weight: ${({ theme }) => theme.fontWeights?.bold || 700};
   line-height: 1.2;
+  white-space: nowrap;
+  text-align: right;
 
   @media (max-width: 480px) {
     font-size: 0.84rem;

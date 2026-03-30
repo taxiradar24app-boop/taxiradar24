@@ -20,7 +20,7 @@ export default function AcademiaDemoLayout() {
   const location = useLocation();
   const { subscription, loading, subscriptionLoading } = useAuth();
 
-  const isPro = subscription?.status === "active";
+  const isPro = subscription?.active === true;
 
   if (loading || subscriptionLoading) return null;
 

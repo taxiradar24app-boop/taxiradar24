@@ -19,7 +19,7 @@ export default function UserMenu({ mobile = false, onAction = () => {} }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
 
-  const isProSub = subscription?.status === "active";
+  const isProSub = subscription?.active === true;
   const profilePath = needsProOnboarding ? "/perfil/pro-check" : "/perfil";
   const progressPath = needsProOnboarding ? "/perfil/pro-check" : "/progreso";
 

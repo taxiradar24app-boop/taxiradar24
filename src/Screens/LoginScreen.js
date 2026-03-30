@@ -21,7 +21,7 @@ import {
 } from "./../Styles/FormStyles";
 
 export default function LoginScreen() {
-  const { user, subscription } = useAuth();
+  const { user, subscription } = useAuth(); // ✅ CORRECTO
   const navigate = useNavigate();
   const location = useLocation();
   const { getDefaultEntryPoint } = useSmartNavigation();
@@ -32,7 +32,7 @@ export default function LoginScreen() {
   useEffect(() => {
     if (!user) return;
 
-    const isPro = subscription?.status === "active";
+    const isPro = subscription?.active === true; // ✅ CORRECTO
 
     if (isPro) {
       navigate("/academia/pro", { replace: true });
@@ -45,7 +45,7 @@ export default function LoginScreen() {
   return (
     <AuthContainer>
       <AuthCard>
-        <BackHomeButton /> {/* colocar a la derecha */}
+        <BackHomeButton />
         <LogoWrap>
           <LogoImage src={logoTaxiRadar} alt="Logo TaxiRadar24" />
         </LogoWrap>

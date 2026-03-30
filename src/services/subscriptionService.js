@@ -74,19 +74,9 @@ export async function fetchMySubscription(firebaseUser) {
 }
 
 export function isSubscriptionActive(sub) {
-  if (!sub) return false;
-
-  if (typeof sub.active === "boolean") {
-    return sub.active;
-  }
-
-  const status = String(sub.status || "").toLowerCase();
-  return status === "active" || status === "trialing";
+  return sub?.active === true;
 }
 
 export function isAcademiaPro(sub) {
-  if (!sub) return false;
-
-  const plan = String(sub.plan || "").toUpperCase();
-  return plan === "ACADEMIA_PRO" && isSubscriptionActive(sub);
+  return sub?.active === true;
 }

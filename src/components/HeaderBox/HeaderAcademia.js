@@ -46,7 +46,7 @@ export default function HeaderAcademia({ withSafeTop = true }) {
 
   const { academy, showUpgradeCTA } = resolveNavigation({ user, subscription });
 
-  const isProSub = subscription?.status === "active";
+  const isProSub = subscription?.active === true;
   const basePath = isProSub ? "/academia/pro" : "/academia/demo";
 
   const profilePath = needsProOnboarding ? "/perfil/pro-check" : "/perfil";

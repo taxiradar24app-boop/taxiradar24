@@ -1,34 +1,25 @@
-import { useAuth } from "@/context/AuthContext";
+// src/hooks/useRequirePro.js
+
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { docLazy, getDocLazy } from "@/services/firestoreService";
-import { getDb } from "./../services/firebaseConfig";
+import { useAuth } from "@/context/AuthContext";
 
 export function useRequirePro() {
-  const { user, loading } = useAuth();
+  const { user, loading, subscription } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function check() {
-      if (loading) return;
+    if (loading) return;
 
-      if (!user) {
-        navigate("/login");
-        return;
-      }
-
-      const db = await getDb();
-
-      const ref = await docLazy(db, "users", uid);
-      const snap = await getDocLazy(ref);
-
-      const plan = (snap.data()?.subscription || "").trim().toUpperCase();
-
-      if (!snap.exists() || plan !== "PRO") {
-        navigate("/academia/upgrade");
-      }
+    if (!user) {
+      navigate("/login", { replace: true });
+      return;
     }
 
-    check();
-  }, [user, loading, navigate]);
+    const isPro = subscription?.active === true;
+
+    if (!isPro) {
+      navigate("/academia/upgrade", { replace: true });
+    }
+  }, [user, loading, subscription, navigate]);
 }

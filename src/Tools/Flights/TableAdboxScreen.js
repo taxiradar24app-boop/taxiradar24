@@ -81,6 +81,8 @@ export default function TableAdboxScreen() {
       .sort((a, b) => a.hour - b.hour);
   }, [processedFlights]);
 
+  const currentHour = new Date().getHours();
+
   const renderStatus = (status) => {
     if (status === "Expected") return "🟢 On Time";
     if (status === "Delayed") return "🟠 Delayed";
@@ -135,16 +137,24 @@ export default function TableAdboxScreen() {
               <HourForecastCount>0 vuelos</HourForecastCount>
             </HourForecastItem>
           ) : (
-            hourlyForecast.map((item) => (
-              <HourForecastItem key={item.hour}>
-                <HourForecastHour>
-                  Hora {String(item.hour).padStart(2, "0")}
-                </HourForecastHour>
-                <HourForecastCount>
-                  {item.count} {item.count === 1 ? "vuelo" : "vuelos"}
-                </HourForecastCount>
-              </HourForecastItem>
-            ))
+            hourlyForecast.map((item) => {
+              const isCurrentHour = item.hour === currentHour;
+
+              return (
+                <HourForecastItem
+                  key={item.hour}
+                  $isCurrentHour={isCurrentHour}
+                >
+                  <HourForecastHour $isCurrentHour={isCurrentHour}>
+                    {String(item.hour).padStart(2, "0")}:00
+                  </HourForecastHour>
+
+                  <HourForecastCount $isCurrentHour={isCurrentHour}>
+                    {item.count} {item.count === 1 ? "vuelo" : "vuelos"}
+                  </HourForecastCount>
+                </HourForecastItem>
+              );
+            })
           )}
         </HourForecastWrap>
       </HeaderBlock>
@@ -165,52 +175,55 @@ export default function TableAdboxScreen() {
 
       <TableScroll>
         <Table>
-        <thead>
-          <tr>
-            <th className="hide-flight-mobile">Vuelo</th>
-            <th>Aerolínea</th>
-            <th>Origen</th>
-            <th>Programado</th>
-            <th>Estimado</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
+          <thead>
+            <tr>
+              <th className="hide-flight-mobile">Vuelo</th>
+              <th>Aerolínea</th>
+              <th>Origen</th>
+              <th>Programado</th>
+              <th>Estimado</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
 
-<tbody>
-  {processedFlights.length === 0 ? (
-    <tr>
-      <td colSpan="6">
-        <EmptyState>Sin vuelos en las próximas horas.</EmptyState>
-      </td>
-    </tr>
-  ) : (
-    processedFlights.map((flight) => (
-      <tr key={flight.id}>
-        <td className="hide-flight-mobile">
-          <FlightCode>{flight.flight_number || "—"}</FlightCode>
-        </td>
-        <td>
-          <AirlineText>{flight.airline || "—"}</AirlineText>
-        </td>
-        <td>
-          <OriginText>{flight.origin_name || "—"}</OriginText>
-        </td>
-        <td>
-          <TimeText>{flight.scheduled_arrival?.slice(11, 16) || "—"}</TimeText>
-        </td>
-        <td>
-          <TimeText>{flight.estimated_arrival?.slice(11, 16) || "—"}</TimeText>
-        </td>
-        <td>
-          <StatusBadge status={flight.display_status}>
-            {renderStatus(flight.display_status)}
-          </StatusBadge>
-        </td>
-      </tr>
-    ))
-  )}
-</tbody>
-
+          <tbody>
+            {processedFlights.length === 0 ? (
+              <tr>
+                <td colSpan="6">
+                  <EmptyState>Sin vuelos en las próximas horas.</EmptyState>
+                </td>
+              </tr>
+            ) : (
+              processedFlights.map((flight) => (
+                <tr key={flight.id}>
+                  <td className="hide-flight-mobile">
+                    <FlightCode>{flight.flight_number || "—"}</FlightCode>
+                  </td>
+                  <td>
+                    <AirlineText>{flight.airline || "—"}</AirlineText>
+                  </td>
+                  <td>
+                    <OriginText>{flight.origin_name || "—"}</OriginText>
+                  </td>
+                  <td>
+                    <TimeText>
+                      {flight.scheduled_arrival?.slice(11, 16) || "—"}
+                    </TimeText>
+                  </td>
+                  <td>
+                    <TimeText>
+                      {flight.estimated_arrival?.slice(11, 16) || "—"}
+                    </TimeText>
+                  </td>
+                  <td>
+                    <StatusBadge status={flight.display_status}>
+                      {renderStatus(flight.display_status)}
+                    </StatusBadge>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
         </Table>
       </TableScroll>
     </TableContainer>

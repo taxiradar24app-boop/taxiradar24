@@ -1,3 +1,5 @@
+// src/context/AuthContext.js
+
 import React, {
   createContext,
   useContext,
@@ -13,10 +15,7 @@ import { docLazy, getDocLazy } from "@/services/firestoreService";
 import usePWAInstallPrompt from "./../hooks/usePWAInstallPrompt";
 import InstallBanner from "./../components/UI/PWA/InstallBanner";
 
-import {
-  fetchMySubscription,
-  isSubscriptionActive,
-} from "./../services/subscriptionService";
+import { fetchMySubscription } from "./../services/subscriptionService";
 
 export const AuthContext = createContext(null);
 
@@ -122,11 +121,9 @@ export function AuthProvider({ children }) {
             return;
           }
 
-          // 🔥 CLAVE → NO BLOQUEAMOS
           setUser(currentUser);
           setLoading(false);
 
-          // 🔥 CARGA EN BACKGROUND
           refreshUserDocs(currentUser);
           refreshSubscription(currentUser);
 
@@ -179,9 +176,7 @@ export function AuthProvider({ children }) {
   };
 
   const value = useMemo(() => {
-    const proActive =
-      subscription?.plan === "ACADEMIA_PRO" &&
-      isSubscriptionActive(subscription);
+    const proActive = subscription?.active === true;
 
     const phoneOk = !!userData?.phoneVerified;
     const emailOk = !!user?.emailVerified;

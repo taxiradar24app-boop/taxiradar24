@@ -44,23 +44,12 @@ export default function ProfileLayout({ user = {} }) {
 
   const createdAt = userData?.createdAt || user?.createdAt;
 
-  // 🔹 🔐 Suscripción REAL (Cloudflare D1)
+   // 🔹 🔐 Suscripción REAL (Cloudflare D1)
   const plan = subscription?.plan || null;
   const status = subscription?.status || "none";
   const expiresAt = subscription?.expires_at || null;
 
-  const now = new Date();
-  const expiresDate = expiresAt ? new Date(expiresAt) : null;
-
-  const isActive =
-    status === "active" &&
-    (!expiresDate || expiresDate.getTime() > now.getTime());
-
-  const isPro =
-  isActive &&
-  ["ACADEMIA_PRO", "PRO", "PRO_MONTHLY", "PRO_ANNUAL", "BASIC_MONTHLY"].includes(
-    String(plan || "").toUpperCase()
-  );
+  const isPro = subscription?.active === true;
 
   // 🔹 Verificaciones
   const phoneNumber = userData?.phoneNumber ?? null;
@@ -85,11 +74,11 @@ export default function ProfileLayout({ user = {} }) {
               <UserName>{displayName}</UserName>
               <UserEmail>{email}</UserEmail>
               <DatesRow>
-                {createdAt && <span>Alta: {toDateLabel(createdAt)}</span>}
-                {expiresAt && isActive && (
-                  <span>Activo hasta: {toDateLabel(expiresAt)}</span>
-                )}
-              </DatesRow>
+                {createdAt && <span>Alumno desde: {toDateLabel(createdAt)}</span>}
+              {expiresAt && isPro && (
+                <span>Activo hasta: {toDateLabel(expiresAt)}</span>
+              )}
+                            </DatesRow>
             </div>
           </UserInfo>
 

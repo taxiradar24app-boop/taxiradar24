@@ -131,21 +131,13 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
   const progressFromContext = auth?.progressData || null;
 
   const subscription = auth?.subscription || null;
+
   const plan = subscription?.plan || null;
-  const status = subscription?.status || "none";
-  const expiresAt = subscription?.expires_at || null;
+const status = subscription?.status || "none";
+const expiresAt = subscription?.expires_at || null;
 
-  const now = new Date();
-  const expiresDate = expiresAt ? new Date(expiresAt) : null;
-
-  const isActive =
-    status === "active" &&
-    (!expiresDate || expiresDate.getTime() > now.getTime());
-
-  const planKey = String(plan || "").toUpperCase();
-  const isPro =
-    isActive &&
-    (planKey === "ACADEMIA_PRO" || planKey === "BASIC_MONTHLY");
+// ✅ NUEVA LÓGICA
+const isPro = subscription?.active === true;
 
   const effectiveProgress = progressFromContext || progress;
 
@@ -203,7 +195,7 @@ export default function ProgressLayout({ user = {}, progress = {} }) {
         </HeaderSection>
 
         <DatesRow>
-          {createdAt && <span>Alta: {toDateLabel(createdAt)}</span>}
+          {createdAt && <span>Alumno desde: {toDateLabel(createdAt)}</span>}
           {isPro && expiresAt && (
             <span>Activo hasta: {toDateLabel(expiresAt)}</span>
           )}

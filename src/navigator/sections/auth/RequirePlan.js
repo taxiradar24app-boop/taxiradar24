@@ -1,7 +1,8 @@
+// src/navigator/sections/auth/RequirePlan.js
+
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import { isSubscriptionActive } from "@/services/subscriptionService";
 
 export default function RequirePlan({ plan, children }) {
   const {
@@ -39,10 +40,9 @@ export default function RequirePlan({ plan, children }) {
   }
 
   if (plan === "ACADEMIA_PRO") {
-    const hasRequestedPlan = subscription?.plan === "ACADEMIA_PRO";
-    const isActive = isSubscriptionActive(subscription);
+    const isPro = subscription?.active === true;
 
-    if (!hasRequestedPlan || !isActive) {
+    if (!isPro) {
       return <Navigate to="/academia/upgrade" replace />;
     }
 
@@ -50,7 +50,6 @@ export default function RequirePlan({ plan, children }) {
       return <Navigate to="/perfil/pro-check" replace />;
     }
 
-    // 🔥 CLAVE: si hay children, devolverlos
     return children ? children : <Outlet />;
   }
 

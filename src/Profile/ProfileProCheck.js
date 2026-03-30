@@ -451,7 +451,7 @@ export default function ProfileProCheck() {
   const [emailError, setEmailError] = useState(false);
   const [redirectCountdown, setRedirectCountdown] = useState(3);
 
-  const isActive = subscription?.status === "active";
+  const isProSub = subscription?.active === true;
   const ready = emailVerified && phoneVerified;
 
   const completedSteps = useMemo(() => {
