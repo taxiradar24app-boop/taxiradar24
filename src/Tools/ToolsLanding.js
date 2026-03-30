@@ -85,7 +85,7 @@ export default function ToolsLanding() {
             alt="Icono ferries"
             $type="port"
           />
-          <FeatureTitle $type="port">Ferries</FeatureTitle>
+          <FeatureTitle $type="ferries">Ferries</FeatureTitle>
           <FeatureText>
             Consulta rápida de ferries con llegada a Palma y horarios de entrada al puerto.
           </FeatureText>
@@ -102,7 +102,7 @@ export default function ToolsLanding() {
             alt="Icono cruceros"
             $type="port"
           />
-          <FeatureTitle $type="port">Cruceros</FeatureTitle>
+          <FeatureTitle $type="cruises">Cruceros</FeatureTitle>
           <FeatureText>
             Consulta los cruceros previstos en Palma y detecta los horarios de mayor movimiento.
           </FeatureText>

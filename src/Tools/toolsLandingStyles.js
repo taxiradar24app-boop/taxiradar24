@@ -6,13 +6,20 @@ import styled from "styled-components";
 const getColorByType = (type) => {
   switch (type) {
     case "airport":
-      return "#00a8f3"; // ✈️ azul
+      return "#00a8f3";
+
     case "arrivals":
-      return "#10a37f"; // 📋 verde
-    case "port":
-      return "#ff8c42"; // ⚓ naranja
+      return "#10a37f";
+
+    case "ferries":
+      return "#ff8c42";
+
+    case "cruises":
+      return "#b32dd4";
+
     case "train":
-      return "#7c5cff"; // 🚆 morado
+      return "#7c5cff";
+
     default:
       return "#00a8f3";
   }
