@@ -1,0 +1,98 @@
+[
+  {
+    "id": "msc-explora-1-0104",
+    "date": "2026-04-01",
+    "ship": "MSC Explora 1",
+    "company": "MSC",
+    "arrival": "09:00",
+    "departure": "20:00"
+  },
+  {
+    "id": "seven-seas-splendor-0304",
+    "date": "2026-04-03",
+    "ship": "Seven Seas Splendor",
+    "company": "Regent",
+    "arrival": "11:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "aidacosma-0404",
+    "date": "2026-04-04",
+    "ship": "AIDAcosma",
+    "company": "AIDA",
+    "arrival": "05:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "sun-princess-0504",
+    "date": "2026-04-05",
+    "ship": "Sun Princess",
+    "company": "Princess",
+    "arrival": "07:00",
+    "departure": "16:00"
+  },
+  {
+    "id": "marella-explorer-2-0704",
+    "date": "2026-04-07",
+    "ship": "Marella Explorer 2",
+    "company": "Marella",
+    "arrival": "06:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "costa-pacifica-0704",
+    "date": "2026-04-07",
+    "ship": "Costa Pacifica",
+    "company": "Costa",
+    "arrival": "09:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "msc-fantasia-1004",
+    "date": "2026-04-10",
+    "ship": "MSC Fantasia",
+    "company": "MSC",
+    "arrival": "09:00",
+    "departure": "18:00"
+  },
+  {
+    "id": "odyssey-seas-1704",
+    "date": "2026-04-17",
+    "ship": "Odyssey Of The Seas",
+    "company": "Royal Caribbean",
+    "arrival": "08:00",
+    "departure": "18:00"
+  },
+  {
+    "id": "norwegian-dawn-2504",
+    "date": "2026-04-25",
+    "ship": "Norwegian Dawn",
+    "company": "Norwegian",
+    "arrival": "07:00",
+    "departure": "18:00"
+  },
+  {
+    "id": "celebrity-equinox-2404",
+    "date": "2026-04-24",
+    "ship": "Celebrity Equinox",
+    "company": "Celebrity",
+    "arrival": "08:00",
+    "departure": "18:00"
+  },
+  {
+    "id": "mein-schiff-1-2804",
+    "date": "2026-04-28",
+    "ship": "Mein Schiff 1",
+    "company": "TUI",
+    "arrival": "04:00",
+    "departure": "21:00"
+  },
+  {
+    "id": "aidablu-3004",
+    "date": "2026-04-30",
+    "ship": "AIDAblu",
+    "company": "AIDA",
+    "arrival": "05:00",
+    "departure": "22:00"
+  }
+]

@@ -12,14 +12,16 @@ const TableAdboxScreen = React.lazy(() =>
   import("@/Tools/Flights/TableAdboxScreen")
 );
 
-// 🚆 Tren
 const TrainScreen = React.lazy(() =>
   import("@/Tools/train/trainScreen")
 );
 
-// ⚓ Boats (CORREGIDO)
 const BoatsScreen = React.lazy(() =>
   import("@/Tools/Boats/BoatsScreen")
+);
+
+const CrusierScreen = React.lazy(() =>
+  import("@/Tools/Boats/CrusierScreen")
 );
 
 function ToolsLoader() {
@@ -37,17 +39,14 @@ export default function ToolsModule() {
         <Route element={<ToolsLayout />}>
           <Route index element={<ToolsLanding />} />
 
-          {/* ✈️ Vuelos */}
           <Route path="flights" element={<FlightAeroDataBoxScreen />} />
           <Route path="flights/scheduled" element={<TableAdboxScreen />} />
 
-          {/* 🚆 Tren */}
           <Route path="train" element={<TrainScreen />} />
 
-          {/* ⚓ Puerto */}
           <Route path="boats" element={<BoatsScreen />} />
+          <Route path="cruises" element={<CrusierScreen />} />
 
-          {/* fallback */}
           <Route path="*" element={<Navigate to="/herramientas" replace />} />
         </Route>
       </Routes>

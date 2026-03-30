@@ -1,0 +1,234 @@
+[
+  {
+    "id": "valiant-lady-0106",
+    "date": "2026-06-01",
+    "ship": "Valiant Lady",
+    "company": "Virgin Voyages",
+    "arrival": "08:00",
+    "departure": "18:00"
+  },
+  {
+    "id": "harmony-seas-0106",
+    "date": "2026-06-01",
+    "ship": "Harmony Of The Seas",
+    "company": "Royal Caribbean",
+    "arrival": "08:00",
+    "departure": "16:00"
+  },
+  {
+    "id": "silver-shadow-0206",
+    "date": "2026-06-02",
+    "ship": "Silver Shadow",
+    "company": "Silversea",
+    "arrival": "08:00",
+    "departure": "18:00"
+  },
+  {
+    "id": "mein-schiff-1-0206",
+    "date": "2026-06-02",
+    "ship": "Mein Schiff 1",
+    "company": "TUI",
+    "arrival": "04:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "marella-discovery-2-0206",
+    "date": "2026-06-02",
+    "ship": "Marella Discovery 2",
+    "company": "Marella",
+    "arrival": "06:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "costa-pacifica-0206",
+    "date": "2026-06-02",
+    "ship": "Costa Pacifica",
+    "company": "Costa",
+    "arrival": "10:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "msc-grandiosa-0506",
+    "date": "2026-06-05",
+    "ship": "MSC Grandiosa",
+    "company": "MSC",
+    "arrival": "09:00",
+    "departure": "21:00"
+  },
+  {
+    "id": "aidacosma-0606",
+    "date": "2026-06-06",
+    "ship": "AIDAcosma",
+    "company": "AIDA",
+    "arrival": "05:00",
+    "departure": "20:00"
+  },
+  {
+    "id": "marella-explorer-0606",
+    "date": "2026-06-06",
+    "ship": "Marella Explorer",
+    "company": "Marella",
+    "arrival": "06:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "norwegian-dawn-0606",
+    "date": "2026-06-06",
+    "ship": "Norwegian Dawn",
+    "company": "Norwegian",
+    "arrival": "07:00",
+    "departure": "18:00"
+  },
+  {
+    "id": "aidastella-0706",
+    "date": "2026-06-07",
+    "ship": "AIDAstella",
+    "company": "AIDA",
+    "arrival": "05:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "sun-princess-0706",
+    "date": "2026-06-07",
+    "ship": "Sun Princess",
+    "company": "Princess",
+    "arrival": "07:00",
+    "departure": "16:00"
+  },
+  {
+    "id": "norwegian-dawn-0806",
+    "date": "2026-06-08",
+    "ship": "Norwegian Dawn",
+    "company": "Norwegian",
+    "arrival": "07:00",
+    "departure": "21:00"
+  },
+  {
+    "id": "harmony-seas-0806",
+    "date": "2026-06-08",
+    "ship": "Harmony Of The Seas",
+    "company": "Royal Caribbean",
+    "arrival": "08:00",
+    "departure": "16:00"
+  },
+  {
+    "id": "marella-discovery-2-0906",
+    "date": "2026-06-09",
+    "ship": "Marella Discovery 2",
+    "company": "Marella",
+    "arrival": "06:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "azamara-journey-0906",
+    "date": "2026-06-09",
+    "ship": "Azamara Journey",
+    "company": "Azamara",
+    "arrival": "09:00",
+    "departure": "18:00"
+  },
+  {
+    "id": "costa-pacifica-0906",
+    "date": "2026-06-09",
+    "ship": "Costa Pacifica",
+    "company": "Costa",
+    "arrival": "10:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "mein-schiff-1-1006",
+    "date": "2026-06-10",
+    "ship": "Mein Schiff 1",
+    "company": "TUI",
+    "arrival": "04:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "silver-ray-1006",
+    "date": "2026-06-10",
+    "ship": "Silver Ray",
+    "company": "Silversea",
+    "arrival": "08:00",
+    "departure": "19:00"
+  },
+  {
+    "id": "celebrity-xcel-1106",
+    "date": "2026-06-11",
+    "ship": "Celebrity Xcel",
+    "company": "Celebrity",
+    "arrival": "08:00",
+    "departure": "18:00"
+  },
+  {
+    "id": "msc-grandiosa-1206",
+    "date": "2026-06-12",
+    "ship": "MSC Grandiosa",
+    "company": "MSC",
+    "arrival": "09:00",
+    "departure": "21:00"
+  },
+  {
+    "id": "aidacosma-1306",
+    "date": "2026-06-13",
+    "ship": "AIDAcosma",
+    "company": "AIDA",
+    "arrival": "05:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "marella-explorer-1306",
+    "date": "2026-06-13",
+    "ship": "Marella Explorer",
+    "company": "Marella",
+    "arrival": "06:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "msc-explora-1-1406",
+    "date": "2026-06-14",
+    "ship": "MSC Explora 1",
+    "company": "MSC",
+    "arrival": "09:00",
+    "departure": "21:00"
+  },
+  {
+    "id": "valiant-lady-1506",
+    "date": "2026-06-15",
+    "ship": "Valiant Lady",
+    "company": "Virgin Voyages",
+    "arrival": "08:00",
+    "departure": "19:00"
+  },
+  {
+    "id": "wind-surf-1506",
+    "date": "2026-06-15",
+    "ship": "Wind Surf",
+    "company": "Windstar",
+    "arrival": "08:00",
+    "departure": "16:00"
+  },
+  {
+    "id": "azamara-journey-1506",
+    "date": "2026-06-15",
+    "ship": "Azamara Journey",
+    "company": "Azamara",
+    "arrival": "08:00",
+    "departure": "18:00"
+  },
+  {
+    "id": "marella-discovery-2-1606",
+    "date": "2026-06-16",
+    "ship": "Marella Discovery 2",
+    "company": "Marella",
+    "arrival": "06:00",
+    "departure": "22:00"
+  },
+  {
+    "id": "costa-pacifica-1606",
+    "date": "2026-06-16",
+    "ship": "Costa Pacifica",
+    "company": "Costa",
+    "arrival": "10:00",
+    "departure": "22:00"
+  }
+]

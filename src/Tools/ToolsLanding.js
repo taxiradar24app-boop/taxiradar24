@@ -29,6 +29,7 @@ export default function ToolsLanding() {
   const goScheduled = () => navigate("/herramientas/flights/scheduled");
   const goTrain = () => navigate("/herramientas/train");
   const goBoats = () => navigate("/herramientas/boats");
+  const goCruisers = () => navigate("/herramientas/cruises");
   const goHome = () => navigate("/");
 
   return (
@@ -78,24 +79,39 @@ export default function ToolsLanding() {
               <ModuleCTA>Ver: 12 Horas →</ModuleCTA>
             </ModuleFooter>
           </FeatureCard>
-
           <FeatureCard onClick={goBoats} $clickable>
-            <FeatureIcon
-              src="/assets/icono/icono_boat_navegando.webp"
-              alt="Icono puerto"
-              $type="port"
-            />
-            <FeatureTitle $type="port">Puerto</FeatureTitle>
-            <FeatureText>
-              Cruceros y ferries previstos para hoy. Próxima actualización.
-            </FeatureText>
+          <FeatureIcon
+            src="/assets/icono/icono_boat_navegando.webp"
+            alt="Icono ferries"
+            $type="port"
+          />
+          <FeatureTitle $type="port">Ferries</FeatureTitle>
+          <FeatureText>
+            Consulta rápida de ferries con llegada a Palma y horarios de entrada al puerto.
+          </FeatureText>
 
-            <ModuleFooter>
-              <span />
-              <ModuleCTA>Próximamente →</ModuleCTA>
-            </ModuleFooter>
-          </FeatureCard>
+          <ModuleFooter>
+            <span />
+            <ModuleCTA>Ver ferries →</ModuleCTA>
+          </ModuleFooter>
+        </FeatureCard>
 
+        <FeatureCard onClick={goCruisers} $clickable>
+          <FeatureIcon
+            src="/assets/icono/icono_boat_navegando.webp"
+            alt="Icono cruceros"
+            $type="port"
+          />
+          <FeatureTitle $type="port">Cruceros</FeatureTitle>
+          <FeatureText>
+            Consulta los cruceros previstos en Palma y detecta los horarios de mayor movimiento.
+          </FeatureText>
+
+          <ModuleFooter>
+            <span />
+            <ModuleCTA>Ver cruceros →</ModuleCTA>
+          </ModuleFooter>
+        </FeatureCard>
           <FeatureCard onClick={goTrain} $clickable>
             <FeatureIcon
               src="/assets/icono/icono_tren_viajando.webp"

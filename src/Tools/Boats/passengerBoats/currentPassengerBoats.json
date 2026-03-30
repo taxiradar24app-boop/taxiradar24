@@ -1,0 +1,50 @@
+[
+  {
+    "id": "balearia-denia-1700",
+    "company": "Baleària",
+    "from": "Dénia",
+    "arrival": "22:15"
+  },
+  {
+    "id": "balearia-formentera-1801",
+    "company": "Baleària",
+    "from": "Formentera",
+    "arrival": "22:15"
+  },
+  {
+    "id": "balearia-ibiza-2000",
+    "company": "Baleària",
+    "from": "Ibiza",
+    "arrival": "22:15"
+  },
+  {
+    "id": "gnv-barcelona-2130",
+    "company": "GNV",
+    "from": "Barcelona",
+    "arrival": "06:00"
+  },
+  {
+    "id": "balearia-barcelona-2130",
+    "company": "Baleària",
+    "from": "Barcelona",
+    "arrival": "04:30"
+  },
+  {
+    "id": "balearia-valencia-2145",
+    "company": "Baleària",
+    "from": "Valencia",
+    "arrival": "05:00"
+  },
+  {
+    "id": "trasmed-valencia-2230",
+    "company": "Trasmed",
+    "from": "Valencia",
+    "arrival": "06:30"
+  },
+  {
+    "id": "gnv-valencia-2230",
+    "company": "GNV",
+    "from": "Valencia",
+    "arrival": "06:00"
+  }
+]

@@ -21,7 +21,7 @@ import {
 } from "./../Styles/FormStyles";
 
 export default function LoginScreen() {
-  const { user, subscription } = useAuth(); // ✅ CORRECTO
+  const { user, userData, subscription, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { getDefaultEntryPoint } = useSmartNavigation();
@@ -30,9 +30,29 @@ export default function LoginScreen() {
     location.state?.redirectTo || getDefaultEntryPoint() || "/";
 
   useEffect(() => {
+    if (loading) return;
     if (!user) return;
 
-    const isPro = subscription?.active === true; // ✅ CORRECTO
+    const isPro = subscription?.active === true;
+
+    const isDriver =
+      userData?.isDriver ||
+      userData?.role === "driver" ||
+      (Array.isArray(userData?.roles) && userData.roles.includes("driver"));
+
+    const cameFromTools =
+      typeof location.state?.redirectTo === "string" &&
+      location.state.redirectTo.startsWith("/herramientas");
+
+    if (cameFromTools) {
+      navigate("/herramientas", { replace: true });
+      return;
+    }
+
+    if (isDriver) {
+      navigate("/herramientas", { replace: true });
+      return;
+    }
 
     if (isPro) {
       navigate("/academia/pro", { replace: true });
@@ -40,7 +60,7 @@ export default function LoginScreen() {
     }
 
     navigate(redirectTo, { replace: true });
-  }, [user, subscription, navigate, redirectTo]);
+  }, [user, userData, subscription, loading, navigate, redirectTo, location.state]);
 
   return (
     <AuthContainer>

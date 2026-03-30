@@ -2,7 +2,7 @@
 // 🚀 SMART NAVIGATION — TaxiRadar24
 // Restaurado para respetar la lógica real de la web
 // - Academia pública entra por /academia/demo
-// - Tools pública entra por /herramientas
+// - Tools requiere login y entra por /herramientas
 // - PRO sigue entrando por /academia/pro
 // - No inventa rutas ni pantallas nuevas
 // ====================================================================
@@ -88,46 +88,48 @@ export function useSmartNavigation() {
     if (guardIdentity("/herramientas")) return;
 
     if (!isLogged) {
-      return navigate("/herramientas");
+      return navigate("/login", {
+        state: { redirectTo: "/herramientas" },
+      });
     }
 
     return navigate("/herramientas");
   };
 
   const goFlights = () => {
-    if (guardIdentity("/tools/flights")) return;
+    if (guardIdentity("/herramientas/flights")) return;
 
     if (!isLogged) {
       return navigate("/login", {
-        state: { redirectTo: "/tools/flights" },
+        state: { redirectTo: "/herramientas/flights" },
       });
     }
 
-    return navigate("/tools/flights");
+    return navigate("/herramientas/flights");
   };
 
   const goCruises = () => {
-    if (guardIdentity("/tools/cruises")) return;
+    if (guardIdentity("/herramientas/cruises")) return;
 
     if (!isLogged) {
       return navigate("/login", {
-        state: { redirectTo: "/tools/cruises" },
+        state: { redirectTo: "/herramientas/cruises" },
       });
     }
 
-    return navigate("/tools/cruises");
+    return navigate("/herramientas/cruises");
   };
 
   const goTariffs = () => {
-    if (guardIdentity("/tools/tariffs")) return;
+    if (guardIdentity("/herramientas/tariffs")) return;
 
     if (!isLogged) {
       return navigate("/login", {
-        state: { redirectTo: "/tools/tariffs" },
+        state: { redirectTo: "/herramientas/tariffs" },
       });
     }
 
-    return navigate("/tools/tariffs");
+    return navigate("/herramientas/tariffs");
   };
 
   // =====================================================
@@ -144,8 +146,8 @@ export function useSmartNavigation() {
     if (!isLogged) return "/";
     if (hasIdentityConflict) return "/identity-merge";
 
-    if (isPro) return "/academia/pro";
     if (isDriver) return "/herramientas";
+    if (isPro) return "/academia/pro";
 
     return "/academia/demo";
   };
