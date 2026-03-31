@@ -21,7 +21,16 @@ import {
 } from "./../Styles/FormStyles";
 
 export default function LoginScreen() {
-  const { user, userData, subscription, loading } = useAuth();
+  const {
+    user,
+    userData,
+    subscription,
+    loading,
+    emailVerified,
+    phoneVerified,
+    hasIdentityConflict,
+  } = useAuth();
+
   const navigate = useNavigate();
   const location = useLocation();
   const { getDefaultEntryPoint } = useSmartNavigation();
@@ -44,6 +53,30 @@ export default function LoginScreen() {
       typeof location.state?.redirectTo === "string" &&
       location.state.redirectTo.startsWith("/herramientas");
 
+    if (hasIdentityConflict) {
+      navigate("/identity-merge", {
+        replace: true,
+        state: { redirectTo },
+      });
+      return;
+    }
+
+    if (!emailVerified) {
+      navigate("/check-email", {
+        replace: true,
+        state: { redirectTo },
+      });
+      return;
+    }
+
+    if (!phoneVerified) {
+      navigate("/verify", {
+        replace: true,
+        state: { redirectTo },
+      });
+      return;
+    }
+
     if (cameFromTools) {
       navigate("/herramientas", { replace: true });
       return;
@@ -60,7 +93,18 @@ export default function LoginScreen() {
     }
 
     navigate(redirectTo, { replace: true });
-  }, [user, userData, subscription, loading, navigate, redirectTo, location.state]);
+  }, [
+    user,
+    userData,
+    subscription,
+    loading,
+    emailVerified,
+    phoneVerified,
+    hasIdentityConflict,
+    navigate,
+    redirectTo,
+    location.state,
+  ]);
 
   return (
     <AuthContainer>

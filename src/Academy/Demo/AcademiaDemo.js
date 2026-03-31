@@ -33,29 +33,26 @@ import {
 import { useSmartNavigation } from "@/utils/SmartNavigation";
 
 export default function AcademiaDemo() {
-
   const navigate = useNavigate();
-  const { goHome  } = useSmartNavigation();
+  const { goHome } = useSmartNavigation();
 
   const goDemoPath = (path) => {
     navigate(path);
   };
 
-  const goUpgrade = () => {
+  const handleUpgradeClick = () => {
     navigate("/academia/upgrade");
   };
 
   return (
     <DemoWrapper>
       <DemoContainer>
-            {/* =====================================================
+        {/* =====================================================
             MÓDULOS DEMO
         ====================================================== */}
 
         <ModulesGrid>
-
           <ModuleCard onClick={() => goDemoPath("/academia/demo/reglamento")}>
-
             <header>
               <Emoji>📘</Emoji>
               <h3>Reglamento oficial</h3>
@@ -70,12 +67,9 @@ export default function AcademiaDemo() {
               <Pill>3 Bloques</Pill>
               <ModuleCTA>Ir al Reglamento →</ModuleCTA>
             </ModuleFooter>
-
           </ModuleCard>
 
-
           <ModuleCard onClick={() => goDemoPath("/academia/demo/audios")}>
-
             <header>
               <Emoji>🎧</Emoji>
               <h3>Audios del Reglamento</h3>
@@ -85,17 +79,14 @@ export default function AcademiaDemo() {
               Escucha un ejemplo de cómo se explican los artículos
               más importantes.
             </p>
-            
+
             <ModuleFooter>
               <Pill>3 Audios</Pill>
               <ModuleCTA>Escuchar audios →</ModuleCTA>
             </ModuleFooter>
-
           </ModuleCard>
 
-
           <ModuleCard onClick={() => goDemoPath("/academia/demo/simulador")}>
-
             <header>
               <Emoji>🧠</Emoji>
               <h3>Simulador DEMO</h3>
@@ -104,17 +95,14 @@ export default function AcademiaDemo() {
             <p>
               Responde un mini examen basado en preguntas reales.
             </p>
- 
+
             <ModuleFooter>
               <Pill>3 Exámenes</Pill>
               <ModuleCTA>Ir al simulador →</ModuleCTA>
             </ModuleFooter>
-
           </ModuleCard>
 
-
           <ModuleCard onClick={() => goDemoPath("/academia/demo/callejero")}>
-
             <header>
               <Emoji>🗺️</Emoji>
               <h3>Callejero de Palma</h3>
@@ -126,11 +114,9 @@ export default function AcademiaDemo() {
 
             <ModuleFooter>
               <Pill>3 ejercicios </Pill>
-              <ModuleCTA>Ir alcallejero →</ModuleCTA>
+              <ModuleCTA>Ir al callejero →</ModuleCTA>
             </ModuleFooter>
-            
           </ModuleCard>
-
         </ModulesGrid>
 
         {/* =====================================================
@@ -138,16 +124,12 @@ export default function AcademiaDemo() {
         ====================================================== */}
 
         <DemoHeader>
-
           <div>
-
             <DemoTagline>
               Academia online para taxistas de Baleares
             </DemoTagline>
 
-            <DemoBread>
-              Versión DEMO
-            </DemoBread>
+            <DemoBread>Versión DEMO</DemoBread>
 
             <DemoTitle>
               Prueba la <DemoHighlight>Academia TaxiRadar24</DemoHighlight>
@@ -160,7 +142,6 @@ export default function AcademiaDemo() {
             </DemoSubtitle>
 
             <StatsRow>
-
               <StatItem>
                 <span className="stat-number">15</span>
                 <span className="stat-label">Audios</span>
@@ -175,27 +156,22 @@ export default function AcademiaDemo() {
                 <span className="stat-number">24/7</span>
                 <span className="stat-label">Acceso móvil</span>
               </StatItem>
-
             </StatsRow>
 
             <CTAGroup>
-
-              <PrimaryButton onClick={goUpgrade}>
+              <PrimaryButton onClick={handleUpgradeClick}>
                 Ver planes PRO
               </PrimaryButton>
+
               <SecondaryButton onClick={goHome}>
                 ← Volver al inicio
               </SecondaryButton>
-
             </CTAGroup>
-
           </div>
-
 
           {/* CARD DERECHA */}
 
           <HeroRightCard>
-
             <h3>Cómo funciona la academia</h3>
 
             <h4>Estudia con una ruta clara</h4>
@@ -211,37 +187,27 @@ export default function AcademiaDemo() {
               En la versión PRO desbloqueas todo el contenido,
               estadísticas de progreso y simuladores completos.
             </small>
-
           </HeroRightCard>
-
         </DemoHeader>
-
 
         {/* =====================================================
             SECCIÓN DEMO
         ====================================================== */}
 
         <SectionTitleBlock>
-
           <h2>Explora la versión DEMO</h2>
 
           <p>
             Estos módulos te permiten probar cómo funciona la
             academia antes de acceder a todo el contenido.
           </p>
-
         </SectionTitleBlock>
-
-
-    
-
 
         {/* =====================================================
             LIMITACIÓN DEMO
         ====================================================== */}
 
         <DemoStrip>
-
           <strong>La DEMO incluye:</strong>
 
           <DemoDotList>
@@ -249,9 +215,7 @@ export default function AcademiaDemo() {
             <li>Mini simulador de examen</li>
             <li>Ejercicio básico de callejero</li>
           </DemoDotList>
-
         </DemoStrip>
-
       </DemoContainer>
     </DemoWrapper>
   );

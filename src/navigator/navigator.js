@@ -14,6 +14,9 @@ const RegisterScreen = React.lazy(() => import("@/Screens/RegisterScreen"));
 const ResetPasswordScreen = React.lazy(() =>
   import("@/Screens/ResetPasswordScreen")
 );
+const CheckEmailScreen = React.lazy(() =>
+  import("@/Screens/CheckEmailScreen")
+);
 const PhoneVerificationScreen = React.lazy(() =>
   import("@/hooks/usePhoneVerification")
 );
@@ -40,7 +43,6 @@ function AppLoader({ text = "Cargando…" }) {
 
 function withProtection(element, protectedRoute) {
   if (!protectedRoute) return element;
-
   return <RequirePlan plan="ACADEMIA_PRO">{element}</RequirePlan>;
 }
 
@@ -73,6 +75,7 @@ export default function Navigator() {
           <Route index element={<HomeScreen />} />
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
+          <Route path="check-email" element={<CheckEmailScreen />} />
           <Route path="reset-password" element={<ResetPasswordScreen />} />
           <Route path="verify" element={<PhoneVerificationScreen />} />
           <Route path="success" element={<SuccessPage />} />

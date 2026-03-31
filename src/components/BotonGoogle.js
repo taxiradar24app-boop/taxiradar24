@@ -12,6 +12,71 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const GoogleButton = styled(AuthButton)`
+  width: 100%;
+  max-width: 420px;   /* 👈 mismo ancho que el botón de login */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  padding: 1rem 1.2rem;
+  border-radius: 1rem;
+  font-weight: 800;
+  font-size: 1.08rem;
+  line-height: 1;
+  background: linear-gradient(135deg, #10a37f 0%, #6bcf57 100%);
+  color: #07111f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 16px 32px rgba(16, 163, 127, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.02);
+    box-shadow:
+      0 20px 36px rgba(16, 163, 127, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+
+  &:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1rem;
+    padding: 0.95rem 1rem;
+    border-radius: 1.15rem;
+    gap: 0.75rem;
+  }
+`;
+
+const GoogleLogo = styled.img`
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex: 0 0 22px;
+  display: block;
+
+  @media (max-width: 640px) {
+    width: 20px;
+    height: 20px;
+    flex-basis: 20px;
+  }
+`;
+
+const ButtonText = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+`;
+
 const MiniText = styled.div`
   margin-top: 10px;
   font-size: 0.9rem;
@@ -53,9 +118,20 @@ export default function BotonGoogle() {
 
   return (
     <Wrapper>
-      <AuthButton onClick={handleGoogleLogin} disabled={loading}>
-        {loading ? "Conectando…" : "Continuar con Google"} 🌐
-      </AuthButton>
+      <GoogleButton onClick={handleGoogleLogin} disabled={loading}>
+        {loading ? (
+          "Conectando…"
+        ) : (
+            <>
+              <ButtonText>Continuar con Google</ButtonText>
+            <GoogleLogo
+              src="/assets/google-Taxiradar24.webp"
+              alt="Google TaxiRadar24"
+            />
+            
+          </>
+        )}
+      </GoogleButton>
 
       <MiniText>Acceso rápido y seguro</MiniText>
     </Wrapper>

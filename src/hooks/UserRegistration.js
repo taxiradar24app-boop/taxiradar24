@@ -4,30 +4,44 @@ import {
   registerWithEmail,
   loginWithEmail,
   resetPassword,
+  normalizePhoneNumber,
+  sendEmailVerificationToUser,
 } from "./../hooks/userIDService";
 
 import {
   validateLoginForm,
   validateRegisterForm,
+  validatePhone,
   getFriendlyAuthError,
 } from "./../utils/utilsForm";
 
-import { Form, Input, Button, TextLink } from "./../Styles/FormStyles";
+import {
+  Form,
+  Input,
+  Button,
+  TextLink,
+  PhoneField,
+  PhonePrefix,
+  PhoneInput,
+} from "./../Styles/FormStyles";
 
 export default function UserRegistration({ mode = "login" }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [busy, setBusy] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const redirectTo =
-    location.state?.from === "demo-simulador"
+    location.state?.redirectTo ||
+    (location.state?.from === "demo-simulador"
       ? "/academia/demo/simulador"
-      : "/academia/demo";
+      : "/academia/demo");
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -45,12 +59,37 @@ export default function UserRegistration({ mode = "login" }) {
       return;
     }
 
+    const formattedPhone = normalizePhoneNumber(`+34${phone.trim()}`);
+
+    if (!validatePhone(formattedPhone)) {
+      alert("Introduce un teléfono válido de España.");
+      return;
+    }
+
     try {
-      await registerWithEmail(name.trim(), email.trim(), password);
-      navigate(redirectTo, { replace: true });
+      setBusy(true);
+
+      const user = await registerWithEmail(
+        name.trim(),
+        email.trim().toLowerCase(),
+        password,
+        formattedPhone
+      );
+
+      await sendEmailVerificationToUser(user);
+
+      navigate("/check-email", {
+        replace: true,
+        state: {
+          redirectTo,
+          email: email.trim().toLowerCase(),
+        },
+      });
     } catch (error) {
       console.error("Error en registro:", error);
       alert(getFriendlyAuthError(error.code));
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -65,11 +104,14 @@ export default function UserRegistration({ mode = "login" }) {
     }
 
     try {
-      await loginWithEmail(email.trim(), password);
+      setBusy(true);
+      await loginWithEmail(email.trim().toLowerCase(), password);
       navigate(redirectTo, { replace: true });
     } catch (error) {
       console.error("Error en login:", error);
       alert(getFriendlyAuthError(error.code));
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -80,7 +122,7 @@ export default function UserRegistration({ mode = "login" }) {
     }
 
     try {
-      await resetPassword(email.trim());
+      await resetPassword(email.trim().toLowerCase());
       alert("📩 Te enviamos un correo para restablecer la contraseña");
     } catch (error) {
       console.error("Error reset password:", error);
@@ -115,6 +157,23 @@ export default function UserRegistration({ mode = "login" }) {
         />
       )}
 
+      {mode === "register" && (
+        <PhoneField>
+          <PhonePrefix>+34</PhonePrefix>
+          <PhoneInput
+            type="tel"
+            placeholder="612345678"
+            value={phone}
+            onChange={(e) => {
+              const onlyNumbers = e.target.value.replace(/\D/g, "");
+              if (onlyNumbers.length <= 9) {
+                setPhone(onlyNumbers);
+              }
+            }}
+          />
+        </PhoneField>
+      )}
+
       <Input
         type="password"
         placeholder="Contraseña"
@@ -133,7 +192,9 @@ export default function UserRegistration({ mode = "login" }) {
 
       {mode === "login" ? (
         <>
-          <Button type="submit">Iniciar sesión</Button>
+          <Button type="submit" disabled={busy}>
+            {busy ? "Entrando…" : "Iniciar sesión"}
+          </Button>
 
           <TextLink onClick={handleResetPassword}>
             ¿Olvidaste tu contraseña?
@@ -145,7 +206,9 @@ export default function UserRegistration({ mode = "login" }) {
         </>
       ) : (
         <>
-          <Button type="submit">Registrarse</Button>
+          <Button type="submit" disabled={busy}>
+            {busy ? "Creando cuenta…" : "Registrarse"}
+          </Button>
 
           <TextLink as={Link} to="/login">
             ¿Ya tienes cuenta? Inicia sesión

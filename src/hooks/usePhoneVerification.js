@@ -4,7 +4,7 @@ import { getAuth } from "@/services/firebaseConfig";
 import { markPhoneAsVerified, normalizePhoneNumber } from "./userIDService";
 import { usePhoneAuth } from "./usePhoneAuth";
 import { validatePhone } from "@/utils/utilsForm";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const logoTaxiRadar = "/assets/LOGO_ORIGINAL.webp";
 
@@ -26,6 +26,7 @@ import {
 
 export default function PhoneVerification() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     user,
@@ -45,9 +46,9 @@ export default function PhoneVerification() {
   const [busy, setBusy] = useState(false);
   const [uiError, setUiError] = useState("");
   const [uiSuccess, setUiSuccess] = useState("");
-
-  // 🔥 NUEVO: cooldown anti-spam
   const [cooldown, setCooldown] = useState(0);
+
+  const redirectTo = location.state?.redirectTo || "/academia/demo";
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -61,9 +62,9 @@ export default function PhoneVerification() {
 
   useEffect(() => {
     if (phoneVerified === true && !hasIdentityConflict) {
-      navigate("/academia/demo", { replace: true });
+      navigate(redirectTo, { replace: true });
     }
-  }, [phoneVerified, hasIdentityConflict, navigate]);
+  }, [phoneVerified, hasIdentityConflict, navigate, redirectTo]);
 
   useEffect(() => {
     if (hasIdentityConflict) {
@@ -110,7 +111,7 @@ export default function PhoneVerification() {
       markPhoneSaved(formattedPhone);
       await refreshUserDocs?.();
       setUiSuccess("Teléfono verificado correctamente.");
-      navigate("/academia/demo", { replace: true });
+      navigate(redirectTo, { replace: true });
       return true;
     }
 
@@ -130,7 +131,6 @@ export default function PhoneVerification() {
     e.preventDefault();
     clearMessages();
 
-    // 🚫 BLOQUEO POR COOLDOWN
     if (cooldown > 0) {
       setUiError(`Espera ${cooldown}s antes de reenviar.`);
       return;
@@ -155,8 +155,6 @@ export default function PhoneVerification() {
     setBusy(true);
 
     const result = await sendVerificationCode(formatted);
-
-    // 🔥 ACTIVAMOS COOLDOWN
     setCooldown(60);
 
     if (result?.ok && result?.alreadyLinked) {

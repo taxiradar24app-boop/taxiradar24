@@ -1,10 +1,9 @@
 // src/hooks/userIDService.js
-// ✅ Enterprise Lazy Firebase (sin romper lógica)
-// ✅ userIDService centrado en auth / identidad básica
-// ✅ accountLinkingService resuelve conflictos y cuenta canónica
+// ✅ Enterprise Lazy Firebase
+// ✅ auth / identidad básica
+// ✅ flujo limpio email + teléfono
 
-import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
-import { getDb } from "./../services/firebaseConfig";
+import { getAuth, getDb } from "./../services/firebaseConfig";
 import { claimPhoneForUid } from "./../services/accountLinkingService";
 
 // --------------------------------------------------
@@ -12,6 +11,10 @@ import { claimPhoneForUid } from "./../services/accountLinkingService";
 // --------------------------------------------------
 async function fs() {
   return await import("firebase/firestore");
+}
+
+async function authMod() {
+  return await import("firebase/auth");
 }
 
 export function normalizePhoneNumber(raw) {
@@ -49,8 +52,15 @@ async function identityGuardPhone(uid, phoneNumber) {
     if (!uid || !phoneNumber) return;
 
     const db = await getDb();
-    const { collection, query, where, getDocs, doc, updateDoc, serverTimestamp } =
-      await fs();
+    const {
+      collection,
+      query,
+      where,
+      getDocs,
+      doc,
+      updateDoc,
+      serverTimestamp,
+    } = await fs();
 
     const q = query(
       collection(db, "users"),
@@ -87,56 +97,125 @@ async function identityGuardPhone(uid, phoneNumber) {
 // Registro Email
 // --------------------------------------------------
 export async function registerWithEmail(name, email, password, phoneNumber) {
-  const auth = getAuth();
+  const auth = await getAuth();
+  const {
+    setPersistence,
+    browserLocalPersistence,
+    createUserWithEmailAndPassword,
+  } = await authMod();
+
   await setPersistence(auth, browserLocalPersistence);
 
-  const { createUserWithEmailAndPassword } = await import("firebase/auth");
   const res = await createUserWithEmailAndPassword(auth, email, password);
   const user = res.user;
 
   const db = await getDb();
   const { doc, setDoc } = await fs();
+  const normalizedPhone = phoneNumber ? normalizePhoneNumber(phoneNumber) : null;
 
   await setDoc(doc(db, "users", user.uid), {
     uid: user.uid,
     displayName: name,
     email,
-    phoneNumber: phoneNumber ? normalizePhoneNumber(phoneNumber) : null,
-    canonicalPhone: phoneNumber ? normalizePhoneNumber(phoneNumber) : null,
+    phoneNumber: normalizedPhone,
+    canonicalPhone: normalizedPhone,
     canonicalUid: user.uid,
+
     phoneVerified: false,
     phoneVerifiedAt: null,
+
+    emailVerifiedSnapshot: !!user.emailVerified,
+    emailVerifiedAt: user.emailVerified ? new Date().toISOString() : null,
+
+    registrationStep: user.emailVerified
+      ? "phone_verification_pending"
+      : "email_verification_pending",
+
     needsMerge: false,
     mergeCandidates: [],
     mergeReason: null,
+
     linkingStatus: "none",
     linkCandidateUid: null,
     identityRiskLevel: "low",
+
     providers: ["password"],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
 
   await createInitialProgress(user.uid);
+  await identityGuardPhone(user.uid, normalizedPhone);
 
   return user;
+}
+
+// --------------------------------------------------
+// Verificación de email
+// --------------------------------------------------
+export async function sendEmailVerificationToUser(user) {
+  if (!user) throw new Error("No hay usuario para verificar.");
+
+  const { sendEmailVerification } = await authMod();
+  await sendEmailVerification(user);
+}
+
+export async function resendEmailVerification() {
+  const auth = await getAuth();
+  const currentUser = auth.currentUser;
+
+  if (!currentUser) {
+    throw new Error("No hay sesión activa.");
+  }
+
+  const { sendEmailVerification } = await authMod();
+  await sendEmailVerification(currentUser);
+}
+
+export async function syncEmailVerificationStatus(uid) {
+  const auth = await getAuth();
+  const currentUser = auth.currentUser;
+
+  if (!currentUser) return false;
+
+  await currentUser.reload();
+
+  const verified = !!currentUser.emailVerified;
+  const db = await getDb();
+  const { doc, updateDoc, serverTimestamp } = await fs();
+
+  await updateDoc(doc(db, "users", uid || currentUser.uid), {
+    emailVerifiedSnapshot: verified,
+    emailVerifiedAt: verified ? serverTimestamp() : null,
+    registrationStep: verified
+      ? "phone_verification_pending"
+      : "email_verification_pending",
+    updatedAt: serverTimestamp(),
+  });
+
+  return verified;
 }
 
 // --------------------------------------------------
 // Login Email
 // --------------------------------------------------
 export async function loginWithEmail(email, password) {
-  const auth = getAuth();
+  const auth = await getAuth();
+  const {
+    setPersistence,
+    browserLocalPersistence,
+    signInWithEmailAndPassword,
+  } = await authMod();
+
   await setPersistence(auth, browserLocalPersistence);
 
-  const { signInWithEmailAndPassword } = await import("firebase/auth");
   const res = await signInWithEmailAndPassword(auth, email, password);
   return res.user;
 }
 
 export async function resetPassword(email) {
-  const auth = getAuth();
-  const { sendPasswordResetEmail } = await import("firebase/auth");
+  const auth = await getAuth();
+  const { sendPasswordResetEmail } = await authMod();
   await sendPasswordResetEmail(auth, email);
 }
 
@@ -144,16 +223,18 @@ export async function resetPassword(email) {
 // Google Login
 // --------------------------------------------------
 export async function loginWithGoogle() {
-  const auth = getAuth();
-  await setPersistence(auth, browserLocalPersistence);
-
+  const auth = await getAuth();
   const {
+    setPersistence,
+    browserLocalPersistence,
     GoogleAuthProvider,
     signInWithPopup,
     signInWithRedirect,
     getRedirectResult,
     signOut,
-  } = await import("firebase/auth");
+  } = await authMod();
+
+  await setPersistence(auth, browserLocalPersistence);
 
   try {
     await signOut(auth);
@@ -196,14 +277,23 @@ export async function loginWithGoogle() {
       phoneNumber: null,
       canonicalPhone: null,
       canonicalUid: user.uid,
+
       phoneVerified: false,
       phoneVerifiedAt: null,
+
+      emailVerifiedSnapshot: !!user.emailVerified,
+      emailVerifiedAt: user.emailVerified ? new Date().toISOString() : null,
+
+      registrationStep: "phone_verification_pending",
+
       needsMerge: false,
       mergeCandidates: [],
       mergeReason: null,
+
       linkingStatus: "none",
       linkCandidateUid: null,
       identityRiskLevel: "low",
+
       providers: ["google.com"],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -245,6 +335,14 @@ export async function markPhoneAsVerified(uid, phoneNumber, meta = {}) {
 
   if (result?.status === "ok" && !result.conflict) {
     await identityGuardPhone(uid, result.phoneNumber);
+
+    const db = await getDb();
+    const { doc, updateDoc, serverTimestamp } = await fs();
+
+    await updateDoc(doc(db, "users", uid), {
+      registrationStep: "identity_completed",
+      updatedAt: serverTimestamp(),
+    });
   }
 
   return result;

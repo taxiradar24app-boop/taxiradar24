@@ -1,48 +1,9 @@
-// src/services/stripeService.js
-
 import { getAuth } from "./firebaseConfig";
+import { getDb } from "./firebaseConfig";
+import { getApiBase } from "./subscriptionService";
 
-function normalizeBase(url) {
-  if (!url) return "";
-  return String(url).replace(/\/$/, "");
-}
-
-function readEnvValue(key) {
-  if (
-    typeof process !== "undefined" &&
-    process.env &&
-    typeof process.env[key] !== "undefined"
-  ) {
-    return process.env[key];
-  }
-
-  if (
-    typeof window !== "undefined" &&
-    window.__ENV__ &&
-    typeof window.__ENV__[key] !== "undefined"
-  ) {
-    return window.__ENV__[key];
-  }
-
-  return undefined;
-}
-
-export function getApiBase() {
-  const envBase =
-    readEnvValue("REACT_APP_API_BASE") || readEnvValue("API_BASE");
-  const fallback =
-    "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
-
-  const base = normalizeBase(envBase || fallback);
-
-  if (!envBase) {
-    console.warn(
-      "⚠️ API base no definida en stripeService, usando fallback:",
-      fallback
-    );
-  }
-
-  return base;
+async function fs() {
+  return await import("firebase/firestore");
 }
 
 async function waitForAuthenticatedUser(timeoutMs = 10000) {
@@ -77,14 +38,45 @@ export async function createCheckoutSession(plan) {
   if (!plan) {
     throw new Error("Plan no especificado");
   }
+  function getApiBase() {
+  return "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
+}
 
   const user = await waitForAuthenticatedUser();
+
+  // 🔥 VALIDACIÓN DE IDENTIDAD COMPLETA
+  await user.reload();
+
+  if (!user.emailVerified) {
+    window.location.href = "/check-email";
+    return;
+  }
+
+  const db = await getDb();
+  const { doc, getDoc } = await fs();
+
+  const userRef = doc(db, "users", user.uid);
+  const snap = await getDoc(userRef);
+
+  if (!snap.exists()) {
+    throw new Error("Usuario no encontrado");
+  }
+
+  const userData = snap.data();
+
+  if (!userData.phoneVerified) {
+    window.location.href = "/verify";
+    return;
+  }
+
+  if (userData.needsMerge) {
+    window.location.href = "/identity-merge";
+    return;
+  }
+
+  // 🔐 SI TODO OK → STRIPE
   const token = await user.getIdToken(true);
   const apiBase = getApiBase();
-
-  if (!apiBase) {
-    throw new Error("API base no disponible para Stripe");
-  }
 
   const response = await fetch(`${apiBase}/stripe/create-checkout-session`, {
     method: "POST",

@@ -50,7 +50,32 @@ export const HeroSubtitle = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.lg};
   line-height: ${({ theme }) => theme.lineHeights.body};
   max-width: 760px;
-  margin: 0 0 2.4rem;
+  margin: 0 0 1.4rem;
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+`;
+
+export const NoticeBox = styled.div`
+  margin: 0 0 2rem;
+  padding: 1rem 1rem 1.05rem;
+  border-radius: 1rem;
+  background: rgba(10, 24, 46, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+`;
+
+export const NoticeTitle = styled.div`
+  color: #f8fafc;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: 1.25;
+  margin-bottom: 0.35rem;
+`;
+
+export const NoticeText = styled.p`
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  line-height: ${({ theme }) => theme.lineHeights.body};
   letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
 `;
 
@@ -72,7 +97,6 @@ export const PlansContainer = styled.div`
 export const PlansGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  width: 280px;
   gap: 1rem;
   width: 100%;
 
@@ -90,7 +114,7 @@ export const PlanCard = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-
+  position: relative;
 
   background: ${({ pro }) =>
     pro ? "rgba(16, 163, 127, 0.2)" : "rgba(15, 23, 42, 0.8)"};
@@ -103,6 +127,22 @@ export const PlanCard = styled.div`
   @media (max-width: 600px) {
     height: auto;
   }
+`;
+
+export const LockPill = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 32px;
+  margin-bottom: 0.9rem;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  letter-spacing: 0.04em;
 `;
 
 export const PlanTitle = styled.h3`
@@ -155,12 +195,22 @@ export const PlanButtonWrap = styled.div`
   margin-top: auto;
   padding-top: 1rem;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.7rem;
 
   & > * {
     width: 100%;
     justify-content: center;
   }
+`;
+
+export const PlanHint = styled.p`
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  line-height: 1.45;
+  text-align: center;
 `;
 
 /* ================================
