@@ -7,118 +7,80 @@ export default function SuccessPage() {
   const { user, subscription, refreshSubscription } = useAuth();
 
   const intervalRef = useRef(null);
-  const softMessageTimeoutRef = useRef(null);
-  const redirectTimeoutRef = useRef(null);
-  const stopPollingTimeoutRef = useRef(null);
-
   const [status, setStatus] = useState("Activando tu acceso PRO...");
   const [error, setError] = useState("");
 
- const isActive = useMemo(() => {
-  return subscription?.active === true;
-}, [subscription]);
+  const isActive = useMemo(() => {
+    return subscription?.active === true;
+  }, [subscription]);
 
   useEffect(() => {
-    function clearTimers() {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-
-      if (softMessageTimeoutRef.current) {
-        clearTimeout(softMessageTimeoutRef.current);
-        softMessageTimeoutRef.current = null;
-      }
-
-      if (stopPollingTimeoutRef.current) {
-        clearTimeout(stopPollingTimeoutRef.current);
-        stopPollingTimeoutRef.current = null;
-      }
+    if (!user) {
+      setStatus("Recuperando sesión...");
+      return;
     }
 
-    async function startFlow() {
-      if (!user) {
-        setStatus("Recuperando sesión...");
-        return;
-      }
+    let attempts = 0;
 
-      if (isActive) {
-        clearTimers();
-        return;
-      }
-
+    const startPolling = async () => {
       try {
-        setError("");
         setStatus("Confirmando acceso PRO...");
+        setError("");
 
-        await refreshSubscription();
+        // 🔥 PRIMER INTENTO
+        await safeRefresh();
 
-        intervalRef.current = setInterval(() => {
-          refreshSubscription().catch((err) => {
-            console.error("[SuccessPage] refreshSubscription interval:", err);
-          });
-        }, 2500);
+        intervalRef.current = setInterval(async () => {
+          attempts++;
 
-        softMessageTimeoutRef.current = setTimeout(() => {
-          setStatus("Estamos finalizando la activación...");
-        }, 6000);
+          await safeRefresh();
 
-        stopPollingTimeoutRef.current = setTimeout(() => {
-          clearTimers();
-          setStatus(
-            "Tu pago fue recibido. Estamos terminando de sincronizar tu acceso PRO..."
-          );
-        }, 20000);
+          if (attempts > 10) {
+            clearInterval(intervalRef.current);
+            setStatus(
+              "Tu pago fue recibido. Activando acceso en segundo plano..."
+            );
+          }
+        }, 2000);
       } catch (err) {
-        console.error("[SuccessPage] startFlow:", err);
-        setError("Error activando la suscripción.");
+        console.error("Success flow error:", err);
+        setError("Error activando suscripción");
       }
-    }
+    };
 
-    startFlow();
+    startPolling();
 
     return () => {
-      clearTimers();
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [user, isActive, refreshSubscription]);
+  }, [user]);
+
+  // 🔥 SAFE REFRESH (EVITA FIREBASE ERROR)
+  const safeRefresh = async () => {
+    try {
+      await refreshSubscription();
+    } catch (err) {
+      console.warn("⚠️ refreshSubscription falló (ignorado):", err?.message);
+    }
+  };
 
   useEffect(() => {
     if (!isActive) return;
 
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-
-    if (softMessageTimeoutRef.current) {
-      clearTimeout(softMessageTimeoutRef.current);
-      softMessageTimeoutRef.current = null;
-    }
-
-    if (stopPollingTimeoutRef.current) {
-      clearTimeout(stopPollingTimeoutRef.current);
-      stopPollingTimeoutRef.current = null;
-    }
+    if (intervalRef.current) clearInterval(intervalRef.current);
 
     setStatus("✅ Academia PRO activada");
 
-    redirectTimeoutRef.current = setTimeout(() => {
+    setTimeout(() => {
       navigate("/academia/pro", { replace: true });
     }, 800);
-
-    return () => {
-      if (redirectTimeoutRef.current) {
-        clearTimeout(redirectTimeoutRef.current);
-        redirectTimeoutRef.current = null;
-      }
-    };
-  }, [isActive, navigate]);
+  }, [isActive]);
 
   return (
-    <div style={{ padding: 24, color: "#ffffff" }}>
+    <div style={{ padding: 24, color: "#fff" }}>
       <h2>Activando tu acceso PRO</h2>
       <p>{status}</p>
-      {error ? <p style={{ color: "#ff6b6b" }}>{error}</p> : null}
+      {error && <p style={{ color: "#ff6b6b" }}>{error}</p>}
     </div>
   );
 }
