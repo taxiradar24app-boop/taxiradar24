@@ -7,6 +7,7 @@ import React, {
   useMemo,
   useState,
   useCallback,
+  useRef,
 } from "react";
 
 import { getAuth, getDb } from "@/services/firebaseConfig";
@@ -29,6 +30,9 @@ export function AuthProvider({ children }) {
 
   const [loading, setLoading] = useState(true);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
+
+  const tokenCacheRef = useRef(null);
+  const tokenTimeRef = useRef(0);
 
   const { canShowPrompt, promptInstall, setCanShowPrompt } =
     usePWAInstallPrompt();
@@ -60,47 +64,35 @@ export function AuthProvider({ children }) {
         return;
       }
 
-const refreshSubscription = useCallback(
-  async (userParam) => {
-    const currentUser = userParam || user;
+      setSubscriptionLoading(true);
 
-    if (!currentUser) {
-      setSubscription(null);
-      setSubscriptionLoading(false);
-      return;
-    }
+      try {
+        let token = tokenCacheRef.current;
 
-    setSubscriptionLoading(true);
-
-    try {
-      let token = tokenCacheRef.current;
-
-      // 🔥 REFRESCAR TOKEN SOLO CADA 60s
-      if (!token || Date.now() - tokenTimeRef.current > 60000) {
-        try {
-          token = await currentUser.getIdToken();
-          tokenCacheRef.current = token;
-          tokenTimeRef.current = Date.now();
-        } catch (err) {
-          console.warn("⚠️ Firebase token falló:", err?.message);
+        if (!token || Date.now() - tokenTimeRef.current > 60000) {
+          try {
+            token = await currentUser.getIdToken();
+            tokenCacheRef.current = token;
+            tokenTimeRef.current = Date.now();
+          } catch (err) {
+            console.warn("⚠️ Firebase token falló:", err?.message);
+            token = null;
+          }
         }
+
+        const sub = await fetchMySubscription(currentUser, token);
+        setSubscription(sub);
+      } catch (error) {
+        console.error("❌ Error cargando suscripción:", error);
+        setSubscription(
+          (prev) => prev || { status: "none", active: false, plan: null }
+        );
+      } finally {
+        setSubscriptionLoading(false);
       }
-
-      const sub = await fetchMySubscription(currentUser, token);
-      setSubscription(sub);
-
-    } catch (error) {
-      console.error("❌ Error cargando suscripción:", error);
-
-      setSubscription(
-        (prev) => prev || { status: "none", active: false, plan: null }
-      );
-    } finally {
-      setSubscriptionLoading(false);
-    }
-  },
-  [user]
-);
+    },
+    [user]
+  );
 
   const markPhoneSaved = useCallback((phoneNumber) => {
     setUserData((prev) => ({
@@ -142,6 +134,8 @@ const refreshSubscription = useCallback(
             setProgressData(null);
             setSubscription(null);
             setSubscriptionLoading(false);
+            tokenCacheRef.current = null;
+            tokenTimeRef.current = 0;
             setLoading(false);
             return;
           }
@@ -149,8 +143,8 @@ const refreshSubscription = useCallback(
           setUser(currentUser);
           setLoading(false);
 
-          refreshUserDocs(currentUser);
-          refreshSubscription(currentUser);
+          await refreshUserDocs(currentUser);
+          await refreshSubscription(currentUser);
 
           if (mounted && canShowPrompt) {
             setShowInstallBanner(true);
@@ -185,6 +179,8 @@ const refreshSubscription = useCallback(
     setProgressData(null);
     setSubscription(null);
     setSubscriptionLoading(false);
+    tokenCacheRef.current = null;
+    tokenTimeRef.current = 0;
 
     window.location.href = "/";
   }, []);
