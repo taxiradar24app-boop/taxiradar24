@@ -191,9 +191,9 @@ export default function UpgradePage() {
       return;
     }
 
-    const plan =
+   const plan =
       months === 1
-        ? "test"
+        ? "monthly"
         : months === 3
           ? "3m"
           : months === 6
