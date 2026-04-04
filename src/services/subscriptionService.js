@@ -42,12 +42,28 @@ export function getApiBase() {
   return base;
 }
 
-export async function fetchMySubscription(firebaseUser) {
+async function getAuthHeaders(firebaseUser) {
   if (!firebaseUser) {
     throw new Error("No user");
   }
 
   const token = await firebaseUser.getIdToken(true);
+
+  return {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+}
+
+async function readJsonSafe(res) {
+  return res.json().catch(() => ({}));
+}
+
+export async function fetchMySubscription(firebaseUser) {
+  if (!firebaseUser) {
+    throw new Error("No user");
+  }
+
   const apiBase = getApiBase();
 
   if (!apiBase) {
@@ -56,17 +72,70 @@ export async function fetchMySubscription(firebaseUser) {
 
   const res = await fetch(`${apiBase}/academy/subscription/me`, {
     method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    headers: await getAuthHeaders(firebaseUser),
   });
 
-  const data = await res.json().catch(() => ({}));
+  const data = await readJsonSafe(res);
 
   if (!res.ok) {
     const msg =
       data?.error || data?.message || "Error consultando suscripción";
+    throw new Error(msg);
+  }
+
+  return data;
+}
+
+export async function cancelSubscription(firebaseUser) {
+  if (!firebaseUser) {
+    throw new Error("No user");
+  }
+
+  const apiBase = getApiBase();
+
+  if (!apiBase) {
+    throw new Error("API base no disponible");
+  }
+
+  const res = await fetch(`${apiBase}/stripe/cancel-subscription`, {
+    method: "POST",
+    headers: await getAuthHeaders(firebaseUser),
+    body: JSON.stringify({}),
+  });
+
+  const data = await readJsonSafe(res);
+
+  if (!res.ok) {
+    const msg =
+      data?.error || data?.message || "No se pudo cancelar la suscripción";
+    throw new Error(msg);
+  }
+
+  return data;
+}
+
+export async function requestRefund(firebaseUser) {
+  if (!firebaseUser) {
+    throw new Error("No user");
+  }
+
+  const apiBase = getApiBase();
+
+  if (!apiBase) {
+    throw new Error("API base no disponible");
+  }
+
+  const res = await fetch(`${apiBase}/stripe/request-refund`, {
+    method: "POST",
+    headers: await getAuthHeaders(firebaseUser),
+    body: JSON.stringify({}),
+  });
+
+  const data = await readJsonSafe(res);
+
+  if (!res.ok) {
+    const msg =
+      data?.error || data?.message || "No se pudo solicitar el reembolso";
     throw new Error(msg);
   }
 
