@@ -40,7 +40,12 @@ export default function ProfileLayout({ user = {} }) {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  const { userData, subscription, user: firebaseUser, refreshSubscription } = auth;
+  const {
+    userData,
+    subscription,
+    user: firebaseUser,
+    refreshSubscription,
+  } = auth;
 
   const [busyAction, setBusyAction] = useState("");
   const [actionMessage, setActionMessage] = useState("");
@@ -51,7 +56,7 @@ export default function ProfileLayout({ user = {} }) {
   const email = userData?.email || user?.email || "";
   const createdAt = userData?.createdAt || user?.createdAt;
 
-  // 🔹 🔐 Suscripción REAL (Cloudflare D1)
+  // 🔹 Suscripción real (Cloudflare D1)
   const plan = subscription?.plan || null;
   const status = subscription?.status || "none";
   const expiresAt = subscription?.expires_at || null;
@@ -273,7 +278,9 @@ export default function ProfileLayout({ user = {} }) {
                     type="button"
                     onClick={handleCancelSubscription}
                     disabled={
-                      !canManageSubscription || busyAction === "cancel" || busyAction === "refund"
+                      !canManageSubscription ||
+                      busyAction === "cancel" ||
+                      busyAction === "refund"
                     }
                   >
                     {busyAction === "cancel"
@@ -285,7 +292,9 @@ export default function ProfileLayout({ user = {} }) {
                     type="button"
                     onClick={handleRefundRequest}
                     disabled={
-                      !canManageSubscription || busyAction === "cancel" || busyAction === "refund"
+                      !canManageSubscription ||
+                      busyAction === "cancel" ||
+                      busyAction === "refund"
                     }
                   >
                     {busyAction === "refund"
