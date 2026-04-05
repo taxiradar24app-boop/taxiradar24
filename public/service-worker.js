@@ -1,8 +1,7 @@
-const CACHE_NAME = "taxiradar24-cache-v30";
+const CACHE_NAME = "taxiradar24-cache-v31";
 
-const urlsToCache = [
+const STATIC_ASSETS = [
   "/",
-  "/index.html",
   "/manifest.json",
   "/assets/favicon.ico",
   "/assets/favicon-16x16.png",
@@ -13,18 +12,24 @@ const urlsToCache = [
   "/assets/apple-touch-icon.v2.png"
 ];
 
+// =======================
+// INSTALL
+// =======================
 self.addEventListener("install", (event) => {
-  console.log("[SW] Instalando v29");
+  console.log("[SW] Installing v31");
 
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
   );
 
   self.skipWaiting();
 });
 
+// =======================
+// ACTIVATE
+// =======================
 self.addEventListener("activate", (event) => {
-  console.log("[SW] Activado v29");
+  console.log("[SW] Activated v31");
 
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -33,7 +38,6 @@ self.addEventListener("activate", (event) => {
           if (key !== CACHE_NAME) {
             return caches.delete(key);
           }
-          return null;
         })
       )
     )
@@ -42,6 +46,9 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
+// =======================
+// FETCH
+// =======================
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
@@ -49,6 +56,13 @@ self.addEventListener("fetch", (event) => {
 
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
 
+  // 🚫 NUNCA cachear HTML principal (CRÍTICO)
+  if (url.pathname === "/" || url.pathname === "/index.html") {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // 🧠 Assets (cache first)
   if (url.pathname.startsWith("/assets/")) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
@@ -68,11 +82,21 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // 🧠 JS / CSS (network first, fallback cache)
   if (
-    url.pathname === "/" ||
-    url.pathname === "/index.html" ||
-    url.pathname.endsWith(".json")
+    url.pathname.endsWith(".js") ||
+    url.pathname.endsWith(".css")
   ) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => response)
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // 🧠 JSON (network first)
+  if (url.pathname.endsWith(".json")) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
@@ -84,15 +108,15 @@ self.addEventListener("fetch", (event) => {
           }
           return response;
         })
-        .catch(() =>
-          caches
-            .match(event.request)
-            .then((cached) => cached || caches.match("/index.html"))
-        )
+        .catch(() => caches.match(event.request))
     );
+    return;
   }
 });
 
+// =======================
+// PUSH
+// =======================
 self.addEventListener("push", (event) => {
   const data = event.data ? event.data.json() : {};
   const title = data.title || "TaxiRadar24";
@@ -100,7 +124,7 @@ self.addEventListener("push", (event) => {
   const options = {
     body: data.body || "Tienes una nueva notificación.",
     icon: "/assets/logo192.png",
-    badge: "/assets/logo192.png"
+    badge: "/assets/logo192.png",
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
