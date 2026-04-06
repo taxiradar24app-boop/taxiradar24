@@ -24,8 +24,10 @@ function buildFirebaseConfig() {
       getEnvVar("FIREBASE_API_KEY") ||
       "AIzaSyBA6MEcmuci9c8uFhvRwkasG5ot8BeiRHM",
 
-    // 🔥 SOLUCIÓN CRÍTICA PARA PWA / MOBILE
-    authDomain: "taxiradar24.com",
+    // ✅ Usa el dominio real de Firebase Auth / Hosting
+    authDomain:
+      getEnvVar("FIREBASE_AUTH_DOMAIN") ||
+      "taxiradar24db.firebaseapp.com",
 
     projectId:
       getEnvVar("FIREBASE_PROJECT_ID") ||
@@ -130,4 +132,3 @@ export async function getDb() {
   _dbInstance = getFirestore(app);
   return _dbInstance;
 }
-
