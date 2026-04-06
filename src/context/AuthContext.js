@@ -12,6 +12,7 @@ import React, {
 
 import { getAuth, getDb } from "@/services/firebaseConfig";
 import { docLazy, getDocLazy } from "@/services/firestoreService";
+import { resolveGoogleRedirectLogin } from "@/hooks/userIDService";
 
 import usePWAInstallPrompt from "./../hooks/usePWAInstallPrompt";
 import InstallBanner from "./../components/UI/PWA/InstallBanner";
@@ -125,6 +126,14 @@ export function AuthProvider({ children }) {
         const auth = await getAuth();
         const { onAuthStateChanged } = await import("firebase/auth");
 
+        try {
+          await resolveGoogleRedirectLogin();
+          sessionStorage.removeItem("googleAuthInProgress");
+        } catch (redirectError) {
+          console.error("❌ Error resolviendo redirect Google:", redirectError);
+          sessionStorage.removeItem("googleAuthInProgress");
+        }
+
         unsub = onAuthStateChanged(auth, async (currentUser) => {
           if (!mounted) return;
 
@@ -140,6 +149,8 @@ export function AuthProvider({ children }) {
             return;
           }
 
+          sessionStorage.removeItem("googleAuthInProgress");
+
           setUser(currentUser);
           setLoading(false);
 
@@ -152,6 +163,8 @@ export function AuthProvider({ children }) {
         });
       } catch (error) {
         console.error("❌ Error inicializando auth:", error);
+        sessionStorage.removeItem("googleAuthInProgress");
+
         if (mounted) {
           setLoading(false);
         }
@@ -173,6 +186,8 @@ export function AuthProvider({ children }) {
     const { signOut } = await import("firebase/auth");
 
     await signOut(auth);
+
+    sessionStorage.removeItem("googleAuthInProgress");
 
     setUser(null);
     setUserData(null);

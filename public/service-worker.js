@@ -1,4 +1,4 @@
-const CACHE_NAME = "taxiradar24-cache-v33";
+const CACHE_NAME = "taxiradar24-cache-v34";
 
 const STATIC_ASSETS = [
   "/",
@@ -16,7 +16,7 @@ const STATIC_ASSETS = [
 // INSTALL
 // =======================
 self.addEventListener("install", (event) => {
-  console.log("[SW] Installing v33");
+  console.log("[SW] Installing v34");
 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
@@ -29,7 +29,7 @@ self.addEventListener("install", (event) => {
 // ACTIVATE
 // =======================
 self.addEventListener("activate", (event) => {
-  console.log("[SW] Activated v33");
+  console.log("[SW] Activated v34");
 
   event.waitUntil(
     (async () => {
@@ -70,6 +70,12 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
+
+  // 🔥 CRÍTICO: nunca interceptar namespace reservado de Firebase
+  if (url.pathname.startsWith("/__/")) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
 
   // Nunca cachear HTML principal
   if (url.pathname === "/" || url.pathname === "/index.html") {
@@ -129,7 +135,6 @@ self.addEventListener("fetch", (event) => {
 
           const validCss = isCss && contentType.includes("text/css");
 
-          // Solo cachear si el tipo es el correcto
           if (response && response.status === 200 && (validJs || validCss)) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => {

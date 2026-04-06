@@ -24,9 +24,8 @@ function buildFirebaseConfig() {
       getEnvVar("FIREBASE_API_KEY") ||
       "AIzaSyBA6MEcmuci9c8uFhvRwkasG5ot8BeiRHM",
 
-    authDomain:
-      getEnvVar("FIREBASE_AUTH_DOMAIN") ||
-      "taxiradar24db.firebaseapp.com",
+    // 🔥 SOLUCIÓN CRÍTICA PARA PWA / MOBILE
+    authDomain: "taxiradar24.com",
 
     projectId:
       getEnvVar("FIREBASE_PROJECT_ID") ||
@@ -63,12 +62,6 @@ function buildFirebaseConfig() {
   if (missingKeys.length > 0) {
     console.error("🔥 Firebase CONFIG ERROR", {
       missingKeys,
-      hasProcessEnv:
-        typeof process !== "undefined" &&
-        !!process.env?.REACT_APP_FIREBASE_API_KEY,
-      hasWindowEnv:
-        typeof window !== "undefined" &&
-        !!window.__ENV__?.REACT_APP_FIREBASE_API_KEY,
       configPreview: {
         apiKey: !!config.apiKey,
         authDomain: config.authDomain,

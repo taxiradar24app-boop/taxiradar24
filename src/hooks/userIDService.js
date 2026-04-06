@@ -2,6 +2,7 @@
 // ✅ Enterprise Lazy Firebase
 // ✅ auth / identidad básica
 // ✅ flujo limpio email + teléfono
+// ✅ Google Auth estable para web, móvil y PWA
 
 import { getAuth, getDb } from "./../services/firebaseConfig";
 import { claimPhoneForUid } from "./../services/accountLinkingService";
@@ -28,13 +29,10 @@ function isStandalonePWA() {
   }
 }
 
-function isIOSDevice() {
+function isMobileDevice() {
   try {
     const ua = navigator.userAgent || "";
-    return (
-      /iPad|iPhone|iPod/.test(ua) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-    );
+    return /Android|iPhone|iPad|iPod/i.test(ua);
   } catch {
     return false;
   }
@@ -42,7 +40,7 @@ function isIOSDevice() {
 
 async function ensureGoogleUserDocument(user) {
   const db = await getDb();
-  const { doc, getDoc, setDoc } = await fs();
+  const { doc, getDoc, setDoc, serverTimestamp } = await fs();
 
   const userRef = doc(db, "users", user.uid);
   const snap = await getDoc(userRef);
@@ -75,6 +73,7 @@ async function ensureGoogleUserDocument(user) {
       providers: ["google.com"],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      updatedAtServer: serverTimestamp(),
     });
 
     await createInitialProgress(user.uid);
@@ -82,7 +81,40 @@ async function ensureGoogleUserDocument(user) {
     return { user, needsPhone: true };
   }
 
-  const data = snap.data();
+  const data = snap.data() || {};
+  const providers = Array.isArray(data.providers) ? data.providers : [];
+
+  if (!providers.includes("google.com")) {
+    await setDoc(
+      userRef,
+      {
+        providers: [...providers, "google.com"],
+        email: user.email || data.email || null,
+        displayName: user.displayName || data.displayName || "",
+        emailVerifiedSnapshot: !!user.emailVerified,
+        emailVerifiedAt:
+          user.emailVerified && !data.emailVerifiedAt
+            ? new Date().toISOString()
+            : data.emailVerifiedAt || null,
+        updatedAt: new Date().toISOString(),
+        updatedAtServer: serverTimestamp(),
+      },
+      { merge: true }
+    );
+  } else {
+    await setDoc(
+      userRef,
+      {
+        email: user.email || data.email || null,
+        displayName: user.displayName || data.displayName || "",
+        emailVerifiedSnapshot: !!user.emailVerified,
+        updatedAt: new Date().toISOString(),
+        updatedAtServer: serverTimestamp(),
+      },
+      { merge: true }
+    );
+  }
+
   return { user, needsPhone: !data.phoneVerified };
 }
 
@@ -98,7 +130,7 @@ export function normalizePhoneNumber(raw) {
 // --------------------------------------------------
 async function createInitialProgress(userId) {
   const db = await getDb();
-  const { doc, setDoc } = await fs();
+  const { doc, setDoc, serverTimestamp } = await fs();
 
   await setDoc(doc(db, "progress", userId), {
     userId,
@@ -110,6 +142,7 @@ async function createInitialProgress(userId) {
     tarifas: { completed: false },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    updatedAtServer: serverTimestamp(),
   });
 }
 
@@ -179,7 +212,7 @@ export async function registerWithEmail(name, email, password, phoneNumber) {
   const user = res.user;
 
   const db = await getDb();
-  const { doc, setDoc } = await fs();
+  const { doc, setDoc, serverTimestamp } = await fs();
   const normalizedPhone = phoneNumber ? normalizePhoneNumber(phoneNumber) : null;
 
   await setDoc(doc(db, "users", user.uid), {
@@ -211,6 +244,7 @@ export async function registerWithEmail(name, email, password, phoneNumber) {
     providers: ["password"],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    updatedAtServer: serverTimestamp(),
   });
 
   await createInitialProgress(user.uid);
@@ -299,7 +333,6 @@ export async function loginWithGoogle() {
     GoogleAuthProvider,
     signInWithPopup,
     signInWithRedirect,
-    getRedirectResult,
   } = await authMod();
 
   await setPersistence(auth, browserLocalPersistence);
@@ -307,39 +340,55 @@ export async function loginWithGoogle() {
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
 
-  const useRedirect = isIOSDevice() || isStandalonePWA();
-
-  let result = null;
-
-  try {
-    result = await getRedirectResult(auth);
-  } catch (e) {
-    console.warn("⚠️ Error obteniendo redirect result:", e?.code || e?.message);
-  }
-
-  if (result?.user) {
-    return await ensureGoogleUserDocument(result.user);
-  }
+  const useRedirect = isMobileDevice() || isStandalonePWA();
 
   if (useRedirect) {
-    console.log("📱 iOS/PWA detectado → usando redirect");
+    console.log("📱 móvil/PWA detectado → usando redirect");
     await signInWithRedirect(auth, provider);
     return { redirecting: true };
   }
 
   try {
-    result = await signInWithPopup(auth, provider);
+    const result = await signInWithPopup(auth, provider);
+
+    if (!result?.user) {
+      throw new Error("No se pudo iniciar sesión con Google.");
+    }
+
+    sessionStorage.removeItem("googleAuthInProgress");
+    return await ensureGoogleUserDocument(result.user);
   } catch (e) {
     console.warn("⚠️ Popup falló, fallback a redirect:", e?.code || e?.message);
     await signInWithRedirect(auth, provider);
     return { redirecting: true };
   }
+}
 
-  if (!result?.user) {
-    throw new Error("No se pudo iniciar sesión con Google.");
+// --------------------------------------------------
+// Procesar redirect Google
+// --------------------------------------------------
+export async function resolveGoogleRedirectLogin() {
+  const auth = await getAuth();
+  const { getRedirectResult } = await authMod();
+
+  try {
+    const result = await getRedirectResult(auth);
+
+    if (!result?.user) {
+      sessionStorage.removeItem("googleAuthInProgress");
+      return null;
+    }
+
+    sessionStorage.removeItem("googleAuthInProgress");
+    return await ensureGoogleUserDocument(result.user);
+  } catch (e) {
+    sessionStorage.removeItem("googleAuthInProgress");
+    console.warn(
+      "⚠️ Error obteniendo redirect result:",
+      e?.code || e?.message
+    );
+    throw e;
   }
-
-  return await ensureGoogleUserDocument(result.user);
 }
 
 // --------------------------------------------------

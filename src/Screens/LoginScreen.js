@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UserRegistration from "./../hooks/UserRegistration";
 import BotonGoogle from "./../components/BotonGoogle";
 
@@ -26,7 +26,6 @@ export default function LoginScreen() {
     userData,
     subscription,
     loading,
-    subscriptionLoading,
     emailVerified,
     phoneVerified,
     hasIdentityConflict,
@@ -37,16 +36,38 @@ export default function LoginScreen() {
   const { getDefaultEntryPoint } = useSmartNavigation();
   const hasNavigatedRef = useRef(false);
 
+  const [googleFlowActive, setGoogleFlowActive] = useState(false);
+
   const redirectTo =
     location.state?.redirectTo || getDefaultEntryPoint() || "/";
 
   useEffect(() => {
-    if (loading || subscriptionLoading) return;
+    const handleStorageState = () => {
+      const inProgress =
+        sessionStorage.getItem("googleAuthInProgress") === "1";
+      setGoogleFlowActive(inProgress);
+    };
+
+    handleStorageState();
+    window.addEventListener("focus", handleStorageState);
+    document.addEventListener("visibilitychange", handleStorageState);
+
+    return () => {
+      window.removeEventListener("focus", handleStorageState);
+      document.removeEventListener("visibilitychange", handleStorageState);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (loading) return;
 
     if (!user) {
       hasNavigatedRef.current = false;
       return;
     }
+
+    sessionStorage.removeItem("googleAuthInProgress");
+    setGoogleFlowActive(false);
 
     if (hasNavigatedRef.current) return;
     hasNavigatedRef.current = true;
@@ -102,7 +123,6 @@ export default function LoginScreen() {
     userData,
     subscription,
     loading,
-    subscriptionLoading,
     emailVerified,
     phoneVerified,
     hasIdentityConflict,
@@ -111,25 +131,35 @@ export default function LoginScreen() {
     location.state,
   ]);
 
+  const shouldHideClassicLogin = googleFlowActive || loading;
+
   return (
     <AuthContainer>
       <AuthCard>
         <BackHomeButton />
+
         <LogoWrap>
           <LogoImage src={logoTaxiRadar} alt="Logo TaxiRadar24" />
         </LogoWrap>
 
-        <AuthTitle>Iniciar sesión</AuthTitle>
+        <AuthTitle>
+          {shouldHideClassicLogin ? "Completando acceso..." : "Iniciar sesión"}
+        </AuthTitle>
 
         <AuthSubtitle>
-          Accede con tu cuenta o utiliza tu cuenta de Google.
+          {shouldHideClassicLogin
+            ? "Estamos validando tu acceso con Google. Un momento..."
+            : "Accede con tu cuenta o utiliza tu cuenta de Google."}
         </AuthSubtitle>
 
         <BotonGoogle />
 
-        <AuthDivider>o</AuthDivider>
-
-        <UserRegistration mode="login" />
+        {!shouldHideClassicLogin && (
+          <>
+            <AuthDivider>o</AuthDivider>
+            <UserRegistration mode="login" />
+          </>
+        )}
       </AuthCard>
     </AuthContainer>
   );

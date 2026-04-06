@@ -1,3 +1,4 @@
+// src/components/BotonGoogle.js
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -96,6 +97,8 @@ export default function BotonGoogle() {
     try {
       setLoading(true);
 
+      sessionStorage.setItem("googleAuthInProgress", "1");
+
       const result = await loginWithGoogle();
 
       if (!result || result.redirecting) {
@@ -116,6 +119,7 @@ export default function BotonGoogle() {
 
       navigate(redirectTo, { replace: true });
     } catch (error) {
+      sessionStorage.removeItem("googleAuthInProgress");
       console.error("❌ Error en autenticación:", error?.message || error);
       alert("No se pudo iniciar sesión con Google. Inténtalo de nuevo.");
     } finally {

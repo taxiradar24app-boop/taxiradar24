@@ -6,15 +6,11 @@ import { GlobalStyle } from "./Styles/globalStyles";
 
 import CookieConsent from "./components/CookieConsent";
 
-// 🔥 Navigator completo (lazy)
+// ✅ Navigator lazy OK
 const Navigator = lazy(() => import("./navigator/navigator"));
 
-// 🔥 AuthProvider lazy (CLAVE)
-const AuthProviderLazy = lazy(() =>
-  import("./context/AuthContext").then((mod) => ({
-    default: mod.AuthProvider,
-  }))
-);
+// ❌ ELIMINAMOS lazy en AuthProvider
+import { AuthProvider } from "./context/AuthContext";
 
 const appScreenFallbackStyle = {
   height: "100vh",
@@ -42,16 +38,16 @@ export default function App() {
       <HashRouter>
         <GlobalStyle />
 
-        <Suspense
-          fallback={
-            <div style={appScreenFallbackStyle}>Cargando módulo…</div>
-          }
-        >
-          {/* 🔥 Firebase SOLO se carga aquí */}
-          <AuthProviderLazy>
+        {/* ✅ AuthProvider SIN lazy */}
+        <AuthProvider>
+          <Suspense
+            fallback={
+              <div style={appScreenFallbackStyle}>Cargando…</div>
+            }
+          >
             <Navigator />
-          </AuthProviderLazy>
-        </Suspense>
+          </Suspense>
+        </AuthProvider>
 
         <CookieConsent />
       </HashRouter>
