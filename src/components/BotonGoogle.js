@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 
 const GoogleButton = styled(AuthButton)`
   width: 100%;
-  max-width: 420px;   /* 👈 mismo ancho que el botón de login */
+  max-width: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,7 +96,14 @@ export default function BotonGoogle() {
     try {
       setLoading(true);
 
-      const { user, needsPhone } = await loginWithGoogle();
+      const result = await loginWithGoogle();
+
+      // 🔥 CASO PWA → redirect en curso → NO hacer nada
+      if (!result) {
+        return;
+      }
+
+      const { user, needsPhone } = result;
 
       console.log("✅ Google login:", user?.uid);
 
@@ -108,6 +115,7 @@ export default function BotonGoogle() {
       }
 
       navigate(redirectTo, { replace: true });
+
     } catch (error) {
       console.error("❌ Error en autenticación:", error?.message || error);
       alert("No se pudo iniciar sesión con Google. Inténtalo de nuevo.");
@@ -122,13 +130,12 @@ export default function BotonGoogle() {
         {loading ? (
           "Conectando…"
         ) : (
-            <>
-              <ButtonText>Continuar con Google</ButtonText>
+          <>
+            <ButtonText>Continuar con Google</ButtonText>
             <GoogleLogo
               src="/assets/google-Taxiradar24.webp"
               alt="Google TaxiRadar24"
             />
-            
           </>
         )}
       </GoogleButton>

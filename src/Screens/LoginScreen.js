@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import UserRegistration from "./../hooks/UserRegistration";
 import BotonGoogle from "./../components/BotonGoogle";
 
@@ -26,6 +26,7 @@ export default function LoginScreen() {
     userData,
     subscription,
     loading,
+    subscriptionLoading,
     emailVerified,
     phoneVerified,
     hasIdentityConflict,
@@ -34,13 +35,20 @@ export default function LoginScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const { getDefaultEntryPoint } = useSmartNavigation();
+  const hasNavigatedRef = useRef(false);
 
   const redirectTo =
     location.state?.redirectTo || getDefaultEntryPoint() || "/";
 
   useEffect(() => {
-    if (loading) return;
-    if (!user) return;
+    if (loading || subscriptionLoading) return;
+    if (!user) {
+      hasNavigatedRef.current = false;
+      return;
+    }
+    if (hasNavigatedRef.current) return;
+
+    hasNavigatedRef.current = true;
 
     const isPro = subscription?.active === true;
 
@@ -77,12 +85,7 @@ export default function LoginScreen() {
       return;
     }
 
-    if (cameFromTools) {
-      navigate("/herramientas", { replace: true });
-      return;
-    }
-
-    if (isDriver) {
+    if (cameFromTools || isDriver) {
       navigate("/herramientas", { replace: true });
       return;
     }
@@ -98,6 +101,7 @@ export default function LoginScreen() {
     userData,
     subscription,
     loading,
+    subscriptionLoading,
     emailVerified,
     phoneVerified,
     hasIdentityConflict,

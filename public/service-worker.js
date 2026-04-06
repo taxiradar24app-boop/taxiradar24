@@ -1,4 +1,4 @@
-const CACHE_NAME = "taxiradar24-cache-v31";
+const CACHE_NAME = "taxiradar24-cache-v32";
 
 const STATIC_ASSETS = [
   "/",
@@ -16,7 +16,7 @@ const STATIC_ASSETS = [
 // INSTALL
 // =======================
 self.addEventListener("install", (event) => {
-  console.log("[SW] Installing v31");
+  console.log("[SW] Installing v32");
 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
@@ -29,21 +29,36 @@ self.addEventListener("install", (event) => {
 // ACTIVATE
 // =======================
 self.addEventListener("activate", (event) => {
-  console.log("[SW] Activated v31");
+  console.log("[SW] Activated v32");
 
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
+    (async () => {
+      const keys = await caches.keys();
+
+      await Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
             return caches.delete(key);
           }
+          return null;
         })
-      )
-    )
-  );
+      );
 
-  self.clients.claim();
+      await self.clients.claim();
+
+      const clients = await self.clients.matchAll({
+        type: "window",
+        includeUncontrolled: true,
+      });
+
+      for (const client of clients) {
+        client.postMessage({
+          type: "SW_ACTIVATED",
+          version: CACHE_NAME,
+        });
+      }
+    })()
+  );
 });
 
 // =======================
@@ -56,13 +71,28 @@ self.addEventListener("fetch", (event) => {
 
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
 
-  // 🚫 NUNCA cachear HTML principal (CRÍTICO)
+  // Nunca cachear HTML principal
   if (url.pathname === "/" || url.pathname === "/index.html") {
     event.respondWith(fetch(event.request));
     return;
   }
 
-  // 🧠 Assets (cache first)
+  // Nunca cachear auth / api / workers / google / firebase
+  const isSensitiveRequest =
+    url.pathname.startsWith("/api/") ||
+    url.hostname.includes("workers.dev") ||
+    url.hostname.includes("googleapis.com") ||
+    url.hostname.includes("firebaseapp.com") ||
+    url.hostname.includes("firebaseio.com") ||
+    url.hostname.includes("gstatic.com") ||
+    url.hostname.includes("google.com");
+
+  if (isSensitiveRequest) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // Assets estáticos: cache first
   if (url.pathname.startsWith("/assets/")) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
@@ -82,20 +112,25 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // 🧠 JS / CSS (network first, fallback cache)
-  if (
-    url.pathname.endsWith(".js") ||
-    url.pathname.endsWith(".css")
-  ) {
+  // JS / CSS: network first
+  if (url.pathname.endsWith(".js") || url.pathname.endsWith(".css")) {
     event.respondWith(
       fetch(event.request)
-        .then((response) => response)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, clone);
+            });
+          }
+          return response;
+        })
         .catch(() => caches.match(event.request))
     );
     return;
   }
 
-  // 🧠 JSON (network first)
+  // JSON: network first
   if (url.pathname.endsWith(".json")) {
     event.respondWith(
       fetch(event.request)

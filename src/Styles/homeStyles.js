@@ -472,7 +472,7 @@ export const HeroSideCardTools = styled.aside`
       : "rgba(15, 23, 42, 0.95)"};
   border-radius: 1.45rem;
   padding: 1.9rem 2rem;
-  border: 1px solid rgba(148, 163, 184, 0.32);
+  border: 1px solid #ff8c42;
   box-shadow: 0 22px 40px rgba(15, 23, 42, 0.72);
   margin-bottom: 2.4rem;
 

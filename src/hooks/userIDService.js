@@ -17,6 +17,17 @@ async function authMod() {
   return await import("firebase/auth");
 }
 
+function isStandalonePWA() {
+  try {
+    return (
+      window.matchMedia?.("(display-mode: standalone)")?.matches ||
+      window.navigator.standalone === true
+    );
+  } catch {
+    return false;
+  }
+}
+
 export function normalizePhoneNumber(raw) {
   let formatted = String(raw || "").trim().replace(/\s+/g, "");
   if (!formatted) return "";
@@ -231,35 +242,45 @@ export async function loginWithGoogle() {
     signInWithPopup,
     signInWithRedirect,
     getRedirectResult,
-    signOut,
   } = await authMod();
 
   await setPersistence(auth, browserLocalPersistence);
 
-  try {
-    await signOut(auth);
-  } catch {}
-
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
 
-  let result;
+  const isPWA = isStandalonePWA();
 
+  let result = null;
+
+  // 1) Recuperar posible retorno de redirect
   try {
-    result = await signInWithPopup(auth, provider);
+    result = await getRedirectResult(auth);
   } catch (e) {
-    if (
-      e?.code === "auth/popup-blocked" ||
-      e?.code === "auth/popup-closed-by-user"
-    ) {
+    console.warn("⚠️ Error obteniendo redirect result:", e?.code || e?.message);
+  }
+
+  // 2) Si no hay resultado, iniciar login nuevo
+  if (!result) {
+    if (isPWA) {
+      console.log("📱 PWA detectada → usando redirect");
       await signInWithRedirect(auth, provider);
-      result = await getRedirectResult(auth);
-    } else {
-      throw e;
+      return null;
+    }
+
+    try {
+      console.log("🌐 Web detectada → usando popup");
+      result = await signInWithPopup(auth, provider);
+    } catch (e) {
+      console.warn("⚠️ Popup falló, fallback a redirect:", e?.code || e?.message);
+      await signInWithRedirect(auth, provider);
+      return null;
     }
   }
 
-  if (!result) throw new Error("No se obtuvo resultado.");
+  if (!result?.user) {
+    throw new Error("No se pudo iniciar sesión con Google.");
+  }
 
   const user = result.user;
 
