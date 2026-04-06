@@ -1,4 +1,4 @@
-const CACHE_NAME = "taxiradar24-cache-v32";
+const CACHE_NAME = "taxiradar24-cache-v33";
 
 const STATIC_ASSETS = [
   "/",
@@ -9,14 +9,14 @@ const STATIC_ASSETS = [
   "/assets/logo192.png",
   "/assets/logo512.png",
   "/assets/maskable-icon.png",
-  "/assets/apple-touch-icon.v2.png"
+  "/assets/apple-touch-icon.v2.png",
 ];
 
 // =======================
 // INSTALL
 // =======================
 self.addEventListener("install", (event) => {
-  console.log("[SW] Installing v32");
+  console.log("[SW] Installing v33");
 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
@@ -29,7 +29,7 @@ self.addEventListener("install", (event) => {
 // ACTIVATE
 // =======================
 self.addEventListener("activate", (event) => {
-  console.log("[SW] Activated v32");
+  console.log("[SW] Activated v33");
 
   event.waitUntil(
     (async () => {
@@ -112,17 +112,37 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // JS / CSS: network first
+  // JS / CSS: network first + validar tipo real
   if (url.pathname.endsWith(".js") || url.pathname.endsWith(".css")) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          if (response && response.status === 200) {
+          const contentType = response.headers.get("content-type") || "";
+          const isJs = url.pathname.endsWith(".js");
+          const isCss = url.pathname.endsWith(".css");
+
+          const validJs =
+            isJs &&
+            (contentType.includes("javascript") ||
+              contentType.includes("application/x-javascript") ||
+              contentType.includes("text/javascript"));
+
+          const validCss = isCss && contentType.includes("text/css");
+
+          // Solo cachear si el tipo es el correcto
+          if (response && response.status === 200 && (validJs || validCss)) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => {
               cache.put(event.request, clone);
             });
+          } else {
+            console.warn("[SW] Skipped caching invalid JS/CSS response:", {
+              path: url.pathname,
+              status: response?.status,
+              contentType,
+            });
           }
+
           return response;
         })
         .catch(() => caches.match(event.request))
@@ -135,12 +155,19 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          if (response && response.status === 200) {
+          const contentType = response.headers.get("content-type") || "";
+
+          if (
+            response &&
+            response.status === 200 &&
+            contentType.includes("application/json")
+          ) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => {
               cache.put(event.request, clone);
             });
           }
+
           return response;
         })
         .catch(() => caches.match(event.request))
