@@ -38,6 +38,15 @@ function isMobileDevice() {
   }
 }
 
+function shouldUseRedirectForGoogle() {
+  // ✅ Regla final:
+  // - móvil web -> redirect
+  // - móvil PWA -> redirect
+  // - desktop web -> popup
+  // - desktop PWA -> popup
+  return isMobileDevice();
+}
+
 async function ensureGoogleUserDocument(user) {
   const db = await getDb();
   const { doc, getDoc, setDoc, serverTimestamp } = await fs();
@@ -340,15 +349,21 @@ export async function loginWithGoogle() {
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
 
-  const useRedirect = isMobileDevice() || isStandalonePWA();
+  const useRedirect = shouldUseRedirectForGoogle();
 
   if (useRedirect) {
-    console.log("📱 móvil/PWA detectado → usando redirect");
+    console.log("📱 móvil detectado → usando redirect");
     await signInWithRedirect(auth, provider);
     return { redirecting: true };
   }
 
   try {
+    console.log(
+      isStandalonePWA()
+        ? "🖥️ PWA escritorio detectada → usando popup"
+        : "💻 desktop web detectado → usando popup"
+    );
+
     const result = await signInWithPopup(auth, provider);
 
     if (!result?.user) {
@@ -359,6 +374,7 @@ export async function loginWithGoogle() {
     return await ensureGoogleUserDocument(result.user);
   } catch (e) {
     console.warn("⚠️ Popup falló, fallback a redirect:", e?.code || e?.message);
+
     await signInWithRedirect(auth, provider);
     return { redirecting: true };
   }
