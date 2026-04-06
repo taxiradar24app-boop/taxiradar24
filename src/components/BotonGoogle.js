@@ -98,8 +98,7 @@ export default function BotonGoogle() {
 
       const result = await loginWithGoogle();
 
-      // 🔥 CASO PWA → redirect en curso → NO hacer nada
-      if (!result) {
+      if (!result || result.redirecting) {
         return;
       }
 
@@ -108,14 +107,14 @@ export default function BotonGoogle() {
       console.log("✅ Google login:", user?.uid);
 
       if (needsPhone) {
-        return navigate("/verify", {
+        navigate("/verify", {
           state: { redirectTo },
           replace: true,
         });
+        return;
       }
 
       navigate(redirectTo, { replace: true });
-
     } catch (error) {
       console.error("❌ Error en autenticación:", error?.message || error);
       alert("No se pudo iniciar sesión con Google. Inténtalo de nuevo.");

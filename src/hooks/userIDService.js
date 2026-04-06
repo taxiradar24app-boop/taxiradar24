@@ -14,38 +14,89 @@ export async function loginWithGoogle() {
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
 
-  const isPWA = isStandalonePWA();
+  const ua = navigator.userAgent || "";
+  const isIOS =
+    /iPad|iPhone|iPod/.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+  const isPWA =
+    window.matchMedia?.("(display-mode: standalone)")?.matches ||
+    window.navigator.standalone === true;
+
+  const useRedirect = isIOS || isPWA;
 
   let result = null;
 
+  // 1. Intentar recuperar redirect previo
   try {
     result = await getRedirectResult(auth);
-
-    if (result?.user) {
-      sessionStorage.removeItem("googleRedirectInProgress");
-    }
   } catch (e) {
-    sessionStorage.removeItem("googleRedirectInProgress");
     console.warn("⚠️ Error obteniendo redirect result:", e?.code || e?.message);
   }
 
-  if (!result) {
-    if (isPWA) {
-      console.log("📱 PWA detectada → usando redirect");
-      sessionStorage.setItem("googleRedirectInProgress", "1");
-      await signInWithRedirect(auth, provider);
-      return null;
+  // 2. Si ya volvió de Google, procesar resultado
+  if (result?.user) {
+    const user = result.user;
+
+    const db = await getDb();
+    const { doc, getDoc, setDoc } = await fs();
+
+    const userRef = doc(db, "users", user.uid);
+    const snap = await getDoc(userRef);
+
+    if (!snap.exists()) {
+      await setDoc(userRef, {
+        uid: user.uid,
+        displayName: user.displayName || "",
+        email: user.email || null,
+        phoneNumber: null,
+        canonicalPhone: null,
+        canonicalUid: user.uid,
+
+        phoneVerified: false,
+        phoneVerifiedAt: null,
+
+        emailVerifiedSnapshot: !!user.emailVerified,
+        emailVerifiedAt: user.emailVerified ? new Date().toISOString() : null,
+
+        registrationStep: "phone_verification_pending",
+
+        needsMerge: false,
+        mergeCandidates: [],
+        mergeReason: null,
+
+        linkingStatus: "none",
+        linkCandidateUid: null,
+        identityRiskLevel: "low",
+
+        providers: ["google.com"],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+
+      await createInitialProgress(user.uid);
+
+      return { user, needsPhone: true };
     }
 
-    try {
-      console.log("🌐 Web detectada → usando popup");
-      result = await signInWithPopup(auth, provider);
-    } catch (e) {
-      console.warn("⚠️ Popup falló, fallback a redirect:", e?.code || e?.message);
-      sessionStorage.setItem("googleRedirectInProgress", "1");
-      await signInWithRedirect(auth, provider);
-      return null;
-    }
+    const data = snap.data();
+    return { user, needsPhone: !data.phoneVerified };
+  }
+
+  // 3. Si es iPhone/iPad/PWA -> siempre redirect
+  if (useRedirect) {
+    console.log("📱 iOS/PWA detectado → usando redirect");
+    await signInWithRedirect(auth, provider);
+    return { redirecting: true };
+  }
+
+  // 4. Desktop/web normal -> popup
+  try {
+    result = await signInWithPopup(auth, provider);
+  } catch (e) {
+    console.warn("⚠️ Popup falló, fallback a redirect:", e?.code || e?.message);
+    await signInWithRedirect(auth, provider);
+    return { redirecting: true };
   }
 
   if (!result?.user) {
@@ -68,17 +119,23 @@ export async function loginWithGoogle() {
       phoneNumber: null,
       canonicalPhone: null,
       canonicalUid: user.uid,
+
       phoneVerified: false,
       phoneVerifiedAt: null,
+
       emailVerifiedSnapshot: !!user.emailVerified,
       emailVerifiedAt: user.emailVerified ? new Date().toISOString() : null,
+
       registrationStep: "phone_verification_pending",
+
       needsMerge: false,
       mergeCandidates: [],
       mergeReason: null,
+
       linkingStatus: "none",
       linkCandidateUid: null,
       identityRiskLevel: "low",
+
       providers: ["google.com"],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
