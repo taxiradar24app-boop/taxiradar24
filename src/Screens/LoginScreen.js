@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UserRegistration from "./../hooks/UserRegistration";
 import BotonGoogle from "./../components/BotonGoogle";
 
@@ -37,17 +37,31 @@ export default function LoginScreen() {
   const { getDefaultEntryPoint } = useSmartNavigation();
   const hasNavigatedRef = useRef(false);
 
+  const [redirectInProgress, setRedirectInProgress] = useState(false);
+
   const redirectTo =
     location.state?.redirectTo || getDefaultEntryPoint() || "/";
 
   useEffect(() => {
+    const redirectFlag =
+      sessionStorage.getItem("googleRedirectInProgress") === "1";
+    setRedirectInProgress(redirectFlag);
+  }, []);
+
+  useEffect(() => {
     if (loading || subscriptionLoading) return;
+
+    if (user) {
+      sessionStorage.removeItem("googleRedirectInProgress");
+      setRedirectInProgress(false);
+    }
+
     if (!user) {
       hasNavigatedRef.current = false;
       return;
     }
-    if (hasNavigatedRef.current) return;
 
+    if (hasNavigatedRef.current) return;
     hasNavigatedRef.current = true;
 
     const isPro = subscription?.active === true;
@@ -110,25 +124,35 @@ export default function LoginScreen() {
     location.state,
   ]);
 
+  const showBlockingState =
+    redirectInProgress || loading || subscriptionLoading;
+
   return (
     <AuthContainer>
       <AuthCard>
         <BackHomeButton />
+
         <LogoWrap>
           <LogoImage src={logoTaxiRadar} alt="Logo TaxiRadar24" />
         </LogoWrap>
 
-        <AuthTitle>Iniciar sesión</AuthTitle>
+        <AuthTitle>
+          {showBlockingState ? "Completando acceso..." : "Iniciar sesión"}
+        </AuthTitle>
 
         <AuthSubtitle>
-          Accede con tu cuenta o utiliza tu cuenta de Google.
+          {showBlockingState
+            ? "Estamos verificando tu acceso con Google. Un momento..."
+            : "Accede con tu cuenta o utiliza tu cuenta de Google."}
         </AuthSubtitle>
 
-        <BotonGoogle />
-
-        <AuthDivider>o</AuthDivider>
-
-        <UserRegistration mode="login" />
+        {!showBlockingState && (
+          <>
+            <BotonGoogle />
+            <AuthDivider>o</AuthDivider>
+            <UserRegistration mode="login" />
+          </>
+        )}
       </AuthCard>
     </AuthContainer>
   );
