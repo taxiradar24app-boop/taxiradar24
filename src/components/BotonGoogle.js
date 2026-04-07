@@ -100,7 +100,7 @@ export default function BotonGoogle() {
 
       const result = await loginWithGoogle();
 
-      // En redirect el flujo continúa al volver desde Google.
+      // En redirect el flujo continúa al volver desde Google
       if (!result || result.redirecting) {
         return;
       }

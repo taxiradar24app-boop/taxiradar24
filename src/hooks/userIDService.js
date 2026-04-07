@@ -1,8 +1,7 @@
 // src/hooks/userIDService.js
-// ✅ Enterprise Lazy Firebase
 // ✅ auth / identidad básica
-// ✅ flujo limpio email + teléfono
 // ✅ Google Auth estable para web, móvil y PWA
+// ✅ sin lógica duplicada de retorno en AuthContext
 
 import { getAuth, getDb } from "./../services/firebaseConfig";
 import { claimPhoneForUid } from "./../services/accountLinkingService";
@@ -39,6 +38,10 @@ function isMobileDevice() {
 }
 
 function shouldUseRedirectForGoogle() {
+  // ✅ móvil web -> redirect
+  // ✅ móvil PWA -> redirect
+  // ✅ desktop PWA -> redirect
+  // ✅ desktop web -> popup
   return isMobileDevice() || isStandalonePWA();
 }
 
@@ -359,7 +362,6 @@ export async function loginWithGoogle() {
       throw new Error("No se pudo iniciar sesión con Google.");
     }
 
-    sessionStorage.removeItem("googleAuthInProgress");
     return await ensureGoogleUserDocument(result.user);
   } catch (e) {
     const shouldFallbackToRedirect =
@@ -374,33 +376,6 @@ export async function loginWithGoogle() {
 
     await signInWithRedirect(auth, provider);
     return { redirecting: true };
-  }
-}
-
-// --------------------------------------------------
-// Procesar redirect Google
-// --------------------------------------------------
-export async function resolveGoogleRedirectLogin() {
-  const auth = await getAuth();
-  const { getRedirectResult } = await authMod();
-
-  try {
-    const result = await getRedirectResult(auth);
-
-    if (!result?.user) {
-      sessionStorage.removeItem("googleAuthInProgress");
-      return null;
-    }
-
-    sessionStorage.removeItem("googleAuthInProgress");
-    return await ensureGoogleUserDocument(result.user);
-  } catch (e) {
-    sessionStorage.removeItem("googleAuthInProgress");
-    console.warn(
-      "⚠️ Error obteniendo redirect result:",
-      e?.code || e?.message
-    );
-    throw e;
   }
 }
 

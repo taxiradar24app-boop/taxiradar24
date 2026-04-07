@@ -12,7 +12,6 @@ import React, {
 
 import { getAuth, getDb } from "@/services/firebaseConfig";
 import { docLazy, getDocLazy } from "@/services/firestoreService";
-import { resolveGoogleRedirectLogin } from "@/hooks/userIDService";
 
 import usePWAInstallPrompt from "./../hooks/usePWAInstallPrompt";
 import InstallBanner from "./../components/UI/PWA/InstallBanner";
@@ -30,16 +29,13 @@ export function AuthProvider({ children }) {
   const [subscriptionLoading, setSubscriptionLoading] = useState(false);
 
   const [loading, setLoading] = useState(true);
-  const [googleResolving, setGoogleResolving] = useState(
-    sessionStorage.getItem("googleAuthInProgress") === "1"
-  );
   const [showInstallBanner, setShowInstallBanner] = useState(false);
 
   const tokenCacheRef = useRef(null);
   const tokenTimeRef = useRef(0);
   const lastSubscriptionFetchRef = useRef(0);
   const subscriptionInFlightRef = useRef(false);
-  const authInitializedRef = useRef(false);
+  const lastHandledUidRef = useRef(null);
 
   const { canShowPrompt, promptInstall, setCanShowPrompt } =
     usePWAInstallPrompt();
@@ -171,37 +167,37 @@ export function AuthProvider({ children }) {
           if (!mounted) return;
 
           if (!currentUser) {
+            lastHandledUidRef.current = null;
             setUser(null);
             setUserData(null);
             setProgressData(null);
             setSubscription(null);
             setSubscriptionLoading(false);
+
             tokenCacheRef.current = null;
             tokenTimeRef.current = 0;
+            lastSubscriptionFetchRef.current = 0;
+            subscriptionInFlightRef.current = false;
 
-            if (!authInitializedRef.current) {
-              authInitializedRef.current = true;
-            }
-
-            // si no hay flujo Google en curso, ya no estamos cargando
-            if (sessionStorage.getItem("googleAuthInProgress") !== "1") {
-              setGoogleResolving(false);
-              setLoading(false);
-            }
-
+            sessionStorage.removeItem("googleAuthInProgress");
+            setLoading(false);
             return;
           }
 
-          authInitializedRef.current = true;
           setUser(currentUser);
+
+          const isSameUser = lastHandledUidRef.current === currentUser.uid;
 
           try {
             await refreshUserDocs(currentUser);
-            await refreshSubscription(currentUser);
+
+            // Solo forzamos suscripción la primera vez que entra ese uid
+            await refreshSubscription(currentUser, { force: !isSameUser });
+
+            lastHandledUidRef.current = currentUser.uid;
           } finally {
             if (mounted) {
               sessionStorage.removeItem("googleAuthInProgress");
-              setGoogleResolving(false);
               setLoading(false);
             }
           }
@@ -210,25 +206,9 @@ export function AuthProvider({ children }) {
             setShowInstallBanner(true);
           }
         });
-
-        // resolver retorno Google solo una vez al arrancar
-        if (sessionStorage.getItem("googleAuthInProgress") === "1") {
-          try {
-            await resolveGoogleRedirectLogin();
-          } catch (redirectError) {
-            console.error("❌ Error resolviendo redirect Google:", redirectError);
-            sessionStorage.removeItem("googleAuthInProgress");
-            setGoogleResolving(false);
-          }
-        } else {
-          setGoogleResolving(false);
-        }
       } catch (error) {
         console.error("❌ Error inicializando auth:", error);
-        sessionStorage.removeItem("googleAuthInProgress");
-
         if (mounted) {
-          setGoogleResolving(false);
           setLoading(false);
         }
       }
@@ -257,12 +237,12 @@ export function AuthProvider({ children }) {
     setProgressData(null);
     setSubscription(null);
     setSubscriptionLoading(false);
-    setGoogleResolving(false);
 
     tokenCacheRef.current = null;
     tokenTimeRef.current = 0;
     lastSubscriptionFetchRef.current = 0;
     subscriptionInFlightRef.current = false;
+    lastHandledUidRef.current = null;
 
     window.location.href = "/";
   }, []);
@@ -277,8 +257,6 @@ export function AuthProvider({ children }) {
     setShowInstallBanner(false);
     setCanShowPrompt(false);
   };
-
-  const profileReady = !loading && !googleResolving && (!user || userData !== null);
 
   const value = useMemo(() => {
     const proActive = subscription?.active === true;
@@ -295,8 +273,6 @@ export function AuthProvider({ children }) {
       subscriptionLoading,
 
       loading,
-      googleResolving,
-      profileReady,
       logout,
 
       refreshUserDocs: () => refreshUserDocs(user),
@@ -328,8 +304,6 @@ export function AuthProvider({ children }) {
     subscription,
     subscriptionLoading,
     loading,
-    googleResolving,
-    profileReady,
     logout,
     refreshUserDocs,
     refreshSubscription,

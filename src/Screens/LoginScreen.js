@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import UserRegistration from "./../hooks/UserRegistration";
 import BotonGoogle from "./../components/BotonGoogle";
 
@@ -26,8 +26,6 @@ export default function LoginScreen() {
     userData,
     subscription,
     loading,
-    googleResolving,
-    profileReady,
     emailVerified,
     phoneVerified,
     hasIdentityConflict,
@@ -38,36 +36,19 @@ export default function LoginScreen() {
   const { getDefaultEntryPoint } = useSmartNavigation();
   const hasNavigatedRef = useRef(false);
 
-  const [googleFlowActive, setGoogleFlowActive] = useState(false);
-
   const redirectTo =
     location.state?.redirectTo || getDefaultEntryPoint() || "/";
 
   useEffect(() => {
-    const handleStorageState = () => {
-      const inProgress =
-        sessionStorage.getItem("googleAuthInProgress") === "1";
-      setGoogleFlowActive(inProgress);
-    };
-
-    handleStorageState();
-    window.addEventListener("focus", handleStorageState);
-    document.addEventListener("visibilitychange", handleStorageState);
-
-    return () => {
-      window.removeEventListener("focus", handleStorageState);
-      document.removeEventListener("visibilitychange", handleStorageState);
-    };
-  }, []);
-
-  useEffect(() => {
     if (loading) return;
-    if (googleResolving) return;
-    if (!profileReady) return;
-    if (googleFlowActive) return;
 
     if (!user) {
       hasNavigatedRef.current = false;
+
+      if (sessionStorage.getItem("googleAuthInProgress") === "1") {
+        sessionStorage.removeItem("googleAuthInProgress");
+      }
+
       return;
     }
 
@@ -79,7 +60,8 @@ export default function LoginScreen() {
     const isDriver =
       userData?.isDriver ||
       userData?.role === "driver" ||
-      (Array.isArray(userData?.roles) && userData.roles.includes("driver"));
+      (Array.isArray(userData?.roles) &&
+        userData.roles.includes("driver"));
 
     const cameFromTools =
       typeof location.state?.redirectTo === "string" &&
@@ -125,9 +107,6 @@ export default function LoginScreen() {
     userData,
     subscription,
     loading,
-    googleResolving,
-    profileReady,
-    googleFlowActive,
     emailVerified,
     phoneVerified,
     hasIdentityConflict,
@@ -136,17 +115,11 @@ export default function LoginScreen() {
     location.state,
   ]);
 
-  const title = loading || googleResolving
-    ? "Comprobando sesión..."
-    : googleFlowActive
-      ? "Completando acceso..."
-      : "Iniciar sesión";
+  const title = loading ? "Comprobando sesión..." : "Iniciar sesión";
 
-  const subtitle = loading || googleResolving
+  const subtitle = loading
     ? "Estamos verificando tu sesión. Un momento..."
-    : googleFlowActive
-      ? "Si Google te redirige o abre una ventana, completa el acceso y volverás aquí automáticamente."
-      : "Accede con tu cuenta o utiliza tu cuenta de Google.";
+    : "Accede con tu cuenta o utiliza tu cuenta de Google.";
 
   return (
     <AuthContainer>
