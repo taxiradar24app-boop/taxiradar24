@@ -126,14 +126,6 @@ export function AuthProvider({ children }) {
         const auth = await getAuth();
         const { onAuthStateChanged } = await import("firebase/auth");
 
-        try {
-          await resolveGoogleRedirectLogin();
-          sessionStorage.removeItem("googleAuthInProgress");
-        } catch (redirectError) {
-          console.error("❌ Error resolviendo redirect Google:", redirectError);
-          sessionStorage.removeItem("googleAuthInProgress");
-        }
-
         unsub = onAuthStateChanged(auth, async (currentUser) => {
           if (!mounted) return;
 
@@ -161,6 +153,14 @@ export function AuthProvider({ children }) {
             setShowInstallBanner(true);
           }
         });
+
+        try {
+          await resolveGoogleRedirectLogin();
+          sessionStorage.removeItem("googleAuthInProgress");
+        } catch (redirectError) {
+          console.error("❌ Error resolviendo redirect Google:", redirectError);
+          sessionStorage.removeItem("googleAuthInProgress");
+        }
       } catch (error) {
         console.error("❌ Error inicializando auth:", error);
         sessionStorage.removeItem("googleAuthInProgress");

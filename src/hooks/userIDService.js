@@ -2,7 +2,7 @@
 // ✅ Enterprise Lazy Firebase
 // ✅ auth / identidad básica
 // ✅ flujo limpio email + teléfono
-// ✅ Google Auth estable para web, móvil y PWA
+// ✅ Google Auth robusto para web, móvil y PWA
 
 import { getAuth, getDb } from "./../services/firebaseConfig";
 import { claimPhoneForUid } from "./../services/accountLinkingService";
@@ -16,35 +16,6 @@ async function fs() {
 
 async function authMod() {
   return await import("firebase/auth");
-}
-
-function isStandalonePWA() {
-  try {
-    return (
-      window.matchMedia?.("(display-mode: standalone)")?.matches ||
-      window.navigator.standalone === true
-    );
-  } catch {
-    return false;
-  }
-}
-
-function isMobileDevice() {
-  try {
-    const ua = navigator.userAgent || "";
-    return /Android|iPhone|iPad|iPod/i.test(ua);
-  } catch {
-    return false;
-  }
-}
-
-function shouldUseRedirectForGoogle() {
-  // ✅ Regla final:
-  // - móvil web -> redirect
-  // - móvil PWA -> redirect
-  // - desktop web -> popup
-  // - desktop PWA -> popup
-  return isMobileDevice();
 }
 
 async function ensureGoogleUserDocument(user) {
@@ -128,7 +99,9 @@ async function ensureGoogleUserDocument(user) {
 }
 
 export function normalizePhoneNumber(raw) {
-  let formatted = String(raw || "").trim().replace(/\s+/g, "");
+  let formatted = String(raw || "")
+    .trim()
+    .replace(/\s+/g, "");
   if (!formatted) return "";
   if (!formatted.startsWith("+")) formatted = `+34${formatted}`;
   return formatted;
@@ -342,28 +315,21 @@ export async function loginWithGoogle() {
     GoogleAuthProvider,
     signInWithPopup,
     signInWithRedirect,
+    signOut,
   } = await authMod();
 
   await setPersistence(auth, browserLocalPersistence);
 
+  try {
+    await signOut(auth);
+  } catch {
+    // no-op
+  }
+
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
 
-  const useRedirect = shouldUseRedirectForGoogle();
-
-  if (useRedirect) {
-    console.log("📱 móvil detectado → usando redirect");
-    await signInWithRedirect(auth, provider);
-    return { redirecting: true };
-  }
-
   try {
-    console.log(
-      isStandalonePWA()
-        ? "🖥️ PWA escritorio detectada → usando popup"
-        : "💻 desktop web detectado → usando popup"
-    );
-
     const result = await signInWithPopup(auth, provider);
 
     if (!result?.user) {
@@ -373,7 +339,20 @@ export async function loginWithGoogle() {
     sessionStorage.removeItem("googleAuthInProgress");
     return await ensureGoogleUserDocument(result.user);
   } catch (e) {
-    console.warn("⚠️ Popup falló, fallback a redirect:", e?.code || e?.message);
+    const shouldFallbackToRedirect =
+      e?.code === "auth/popup-blocked" ||
+      e?.code === "auth/popup-closed-by-user" ||
+      e?.code === "auth/cancelled-popup-request" ||
+      e?.code === "auth/operation-not-supported-in-this-environment";
+
+    if (!shouldFallbackToRedirect) {
+      throw e;
+    }
+
+    console.warn(
+      "⚠️ Popup no disponible, cambiando a redirect:",
+      e?.code || e?.message
+    );
 
     await signInWithRedirect(auth, provider);
     return { redirecting: true };

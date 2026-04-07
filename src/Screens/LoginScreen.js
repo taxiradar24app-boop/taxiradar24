@@ -131,7 +131,17 @@ export default function LoginScreen() {
     location.state,
   ]);
 
-  const shouldHideClassicLogin = googleFlowActive || loading;
+  const title = loading
+    ? "Comprobando sesión..."
+    : googleFlowActive
+      ? "Completando acceso..."
+      : "Iniciar sesión";
+
+  const subtitle = loading
+    ? "Estamos verificando tu sesión. Un momento..."
+    : googleFlowActive
+      ? "Si Google te redirige o abre una ventana, completa el acceso y volverás aquí automáticamente."
+      : "Accede con tu cuenta o utiliza tu cuenta de Google.";
 
   return (
     <AuthContainer>
@@ -142,24 +152,14 @@ export default function LoginScreen() {
           <LogoImage src={logoTaxiRadar} alt="Logo TaxiRadar24" />
         </LogoWrap>
 
-        <AuthTitle>
-          {shouldHideClassicLogin ? "Completando acceso..." : "Iniciar sesión"}
-        </AuthTitle>
-
-        <AuthSubtitle>
-          {shouldHideClassicLogin
-            ? "Estamos validando tu acceso con Google. Un momento..."
-            : "Accede con tu cuenta o utiliza tu cuenta de Google."}
-        </AuthSubtitle>
+        <AuthTitle>{title}</AuthTitle>
+        <AuthSubtitle>{subtitle}</AuthSubtitle>
 
         <BotonGoogle />
 
-        {!shouldHideClassicLogin && (
-          <>
-            <AuthDivider>o</AuthDivider>
-            <UserRegistration mode="login" />
-          </>
-        )}
+        <AuthDivider>o</AuthDivider>
+
+        <UserRegistration mode="login" />
       </AuthCard>
     </AuthContainer>
   );
