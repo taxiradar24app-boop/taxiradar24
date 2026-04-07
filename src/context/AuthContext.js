@@ -35,11 +35,19 @@ export function AuthProvider({ children }) {
   const tokenCacheRef = useRef(null);
   const tokenTimeRef = useRef(0);
 
+  // ✅ refs que faltaban
+  const lastSubscriptionFetchRef = useRef(0);
+  const subscriptionInFlightRef = useRef(false);
+
   const { canShowPrompt, promptInstall, setCanShowPrompt } =
     usePWAInstallPrompt();
 
   const refreshUserDocs = useCallback(async (currentUser) => {
-    if (!currentUser?.uid) return;
+    if (!currentUser?.uid) {
+      setUserData(null);
+      setProgressData(null);
+      return { userDoc: null, progressDoc: null };
+    }
 
     const db = await getDb();
 
@@ -51,20 +59,41 @@ export function AuthProvider({ children }) {
       getDocLazy(progressRef),
     ]);
 
-    setUserData(userSnap.exists() ? userSnap.data() : null);
-    setProgressData(progressSnap.exists() ? progressSnap.data() : null);
+    const userDoc = userSnap.exists() ? userSnap.data() : null;
+    const progressDoc = progressSnap.exists() ? progressSnap.data() : null;
+
+    setUserData(userDoc);
+    setProgressData(progressDoc);
+
+    return { userDoc, progressDoc };
   }, []);
 
   const refreshSubscription = useCallback(
-    async (userParam) => {
+    async (userParam, options = {}) => {
       const currentUser = userParam || user;
+      const force = options.force === true;
 
       if (!currentUser) {
         setSubscription(null);
         setSubscriptionLoading(false);
-        return;
+        return null;
       }
 
+      // 🚫 Evitar llamadas simultáneas
+      if (subscriptionInFlightRef.current) {
+        return subscription;
+      }
+
+      // ⏱️ Cooldown para evitar spam al Worker
+      const now = Date.now();
+      const cooldownMs = 5000;
+
+      if (!force && now - lastSubscriptionFetchRef.current < cooldownMs) {
+        return subscription;
+      }
+
+      subscriptionInFlightRef.current = true;
+      lastSubscriptionFetchRef.current = now;
       setSubscriptionLoading(true);
 
       try {
@@ -83,16 +112,29 @@ export function AuthProvider({ children }) {
 
         const sub = await fetchMySubscription(currentUser, token);
         setSubscription(sub);
+        return sub;
       } catch (error) {
         console.error("❌ Error cargando suscripción:", error);
-        setSubscription(
-          (prev) => prev || { status: "none", active: false, plan: null }
-        );
+
+        // ⛔ Si el backend responde 429, alarga el cooldown
+        if (
+          error?.message?.includes("Too many requests") ||
+          String(error).includes("429")
+        ) {
+          lastSubscriptionFetchRef.current = Date.now() + 10000;
+        }
+
+        const fallback =
+          subscription || { status: "none", active: false, plan: null };
+
+        setSubscription((prev) => prev || fallback);
+        return fallback;
       } finally {
+        subscriptionInFlightRef.current = false;
         setSubscriptionLoading(false);
       }
     },
-    [user]
+    [user, subscription]
   );
 
   const markPhoneSaved = useCallback((phoneNumber) => {
@@ -137,17 +179,22 @@ export function AuthProvider({ children }) {
             setSubscriptionLoading(false);
             tokenCacheRef.current = null;
             tokenTimeRef.current = 0;
+            sessionStorage.removeItem("googleAuthInProgress");
             setLoading(false);
             return;
           }
 
-          sessionStorage.removeItem("googleAuthInProgress");
-
           setUser(currentUser);
-          setLoading(false);
 
-          await refreshUserDocs(currentUser);
-          await refreshSubscription(currentUser);
+          try {
+            await refreshUserDocs(currentUser);
+            await refreshSubscription(currentUser);
+          } finally {
+            if (mounted) {
+              sessionStorage.removeItem("googleAuthInProgress");
+              setLoading(false);
+            }
+          }
 
           if (mounted && canShowPrompt) {
             setShowInstallBanner(true);
@@ -196,6 +243,8 @@ export function AuthProvider({ children }) {
     setSubscriptionLoading(false);
     tokenCacheRef.current = null;
     tokenTimeRef.current = 0;
+    lastSubscriptionFetchRef.current = 0;
+    subscriptionInFlightRef.current = false;
 
     window.location.href = "/";
   }, []);
@@ -210,6 +259,8 @@ export function AuthProvider({ children }) {
     setShowInstallBanner(false);
     setCanShowPrompt(false);
   };
+
+  const profileReady = !loading && (!user || userData !== null);
 
   const value = useMemo(() => {
     const proActive = subscription?.active === true;
@@ -226,10 +277,11 @@ export function AuthProvider({ children }) {
       subscriptionLoading,
 
       loading,
+      profileReady,
       logout,
 
       refreshUserDocs: () => refreshUserDocs(user),
-      refreshSubscription: () => refreshSubscription(user),
+      refreshSubscription: (options) => refreshSubscription(user, options),
 
       markPhoneSaved,
       setIdentityConflict,
@@ -257,6 +309,7 @@ export function AuthProvider({ children }) {
     subscription,
     subscriptionLoading,
     loading,
+    profileReady,
     logout,
     refreshUserDocs,
     refreshSubscription,

@@ -26,6 +26,7 @@ export default function LoginScreen() {
     userData,
     subscription,
     loading,
+    profileReady,
     emailVerified,
     phoneVerified,
     hasIdentityConflict,
@@ -60,6 +61,7 @@ export default function LoginScreen() {
 
   useEffect(() => {
     if (loading) return;
+    if (!profileReady) return;
 
     if (!user) {
       hasNavigatedRef.current = false;
@@ -123,6 +125,7 @@ export default function LoginScreen() {
     userData,
     subscription,
     loading,
+    profileReady,
     emailVerified,
     phoneVerified,
     hasIdentityConflict,

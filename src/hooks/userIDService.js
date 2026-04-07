@@ -18,6 +18,34 @@ async function authMod() {
   return await import("firebase/auth");
 }
 
+function isStandalonePWA() {
+  try {
+    return (
+      window.matchMedia?.("(display-mode: standalone)")?.matches ||
+      window.navigator.standalone === true
+    );
+  } catch {
+    return false;
+  }
+}
+
+function isMobileDevice() {
+  try {
+    const ua = navigator.userAgent || "";
+    return /Android|iPhone|iPad|iPod/i.test(ua);
+  } catch {
+    return false;
+  }
+}
+
+function shouldUseRedirectForGoogle() {
+  // ✅ móvil web -> redirect
+  // ✅ móvil PWA -> redirect
+  // ✅ desktop web -> popup
+  // ✅ desktop PWA -> popup
+  return isMobileDevice();
+}
+
 async function ensureGoogleUserDocument(user) {
   const db = await getDb();
   const { doc, getDoc, setDoc, serverTimestamp } = await fs();
@@ -315,19 +343,19 @@ export async function loginWithGoogle() {
     GoogleAuthProvider,
     signInWithPopup,
     signInWithRedirect,
-    signOut,
   } = await authMod();
 
   await setPersistence(auth, browserLocalPersistence);
 
-  try {
-    await signOut(auth);
-  } catch {
-    // no-op
-  }
-
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
+
+  const useRedirect = shouldUseRedirectForGoogle();
+
+  if (useRedirect) {
+    await signInWithRedirect(auth, provider);
+    return { redirecting: true };
+  }
 
   try {
     const result = await signInWithPopup(auth, provider);
@@ -348,11 +376,6 @@ export async function loginWithGoogle() {
     if (!shouldFallbackToRedirect) {
       throw e;
     }
-
-    console.warn(
-      "⚠️ Popup no disponible, cambiando a redirect:",
-      e?.code || e?.message
-    );
 
     await signInWithRedirect(auth, provider);
     return { redirecting: true };
