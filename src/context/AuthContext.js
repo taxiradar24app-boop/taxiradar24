@@ -12,6 +12,10 @@ import React, {
 
 import { getAuth, getDb } from "@/services/firebaseConfig";
 import { docLazy, getDocLazy } from "@/services/firestoreService";
+import {
+  resolveGoogleRedirectLogin,
+  getPendingGoogleLinkInfo,
+} from "@/hooks/userIDService";
 
 import usePWAInstallPrompt from "./../hooks/usePWAInstallPrompt";
 import InstallBanner from "./../components/UI/PWA/InstallBanner";
@@ -35,7 +39,7 @@ export function AuthProvider({ children }) {
   const tokenTimeRef = useRef(0);
   const lastSubscriptionFetchRef = useRef(0);
   const subscriptionInFlightRef = useRef(false);
-  const lastHandledUidRef = useRef(null);
+  const redirectCheckFinishedRef = useRef(false);
 
   const { canShowPrompt, promptInstall, setCanShowPrompt } =
     usePWAInstallPrompt();
@@ -163,11 +167,13 @@ export function AuthProvider({ children }) {
         const auth = await getAuth();
         const { onAuthStateChanged } = await import("firebase/auth");
 
+        const redirectPending =
+          sessionStorage.getItem("googleAuthInProgress") === "1";
+
         unsub = onAuthStateChanged(auth, async (currentUser) => {
           if (!mounted) return;
 
           if (!currentUser) {
-            lastHandledUidRef.current = null;
             setUser(null);
             setUserData(null);
             setProgressData(null);
@@ -176,25 +182,19 @@ export function AuthProvider({ children }) {
 
             tokenCacheRef.current = null;
             tokenTimeRef.current = 0;
-            lastSubscriptionFetchRef.current = 0;
-            subscriptionInFlightRef.current = false;
 
-            sessionStorage.removeItem("googleAuthInProgress");
-            setLoading(false);
+            if (!redirectPending || redirectCheckFinishedRef.current) {
+              setLoading(false);
+            }
+
             return;
           }
 
           setUser(currentUser);
 
-          const isSameUser = lastHandledUidRef.current === currentUser.uid;
-
           try {
             await refreshUserDocs(currentUser);
-
-            // Solo forzamos suscripción la primera vez que entra ese uid
-            await refreshSubscription(currentUser, { force: !isSameUser });
-
-            lastHandledUidRef.current = currentUser.uid;
+            await refreshSubscription(currentUser);
           } finally {
             if (mounted) {
               sessionStorage.removeItem("googleAuthInProgress");
@@ -206,8 +206,32 @@ export function AuthProvider({ children }) {
             setShowInstallBanner(true);
           }
         });
+
+        if (redirectPending) {
+          try {
+            const redirectResult = await resolveGoogleRedirectLogin();
+
+            if (redirectResult?.needPasswordLink && mounted) {
+              // dejamos que la pantalla de login muestre el aviso
+              setLoading(false);
+            }
+          } catch (error) {
+            console.error("❌ Error resolviendo redirect Google:", error);
+          } finally {
+            redirectCheckFinishedRef.current = true;
+            sessionStorage.removeItem("googleAuthInProgress");
+
+            if (mounted && !auth.currentUser) {
+              setLoading(false);
+            }
+          }
+        } else {
+          redirectCheckFinishedRef.current = true;
+        }
       } catch (error) {
         console.error("❌ Error inicializando auth:", error);
+        sessionStorage.removeItem("googleAuthInProgress");
+
         if (mounted) {
           setLoading(false);
         }
@@ -242,7 +266,7 @@ export function AuthProvider({ children }) {
     tokenTimeRef.current = 0;
     lastSubscriptionFetchRef.current = 0;
     subscriptionInFlightRef.current = false;
-    lastHandledUidRef.current = null;
+    redirectCheckFinishedRef.current = false;
 
     window.location.href = "/";
   }, []);
@@ -257,6 +281,8 @@ export function AuthProvider({ children }) {
     setShowInstallBanner(false);
     setCanShowPrompt(false);
   };
+
+  const pendingGoogleLink = getPendingGoogleLinkInfo();
 
   const value = useMemo(() => {
     const proActive = subscription?.active === true;
@@ -280,6 +306,8 @@ export function AuthProvider({ children }) {
 
       markPhoneSaved,
       setIdentityConflict,
+
+      pendingGoogleLink,
 
       isLogged: !!user,
       hasIdentityConflict: !!userData?.needsMerge,
@@ -309,6 +337,7 @@ export function AuthProvider({ children }) {
     refreshSubscription,
     markPhoneSaved,
     setIdentityConflict,
+    pendingGoogleLink,
   ]);
 
   return (

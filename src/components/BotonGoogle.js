@@ -2,7 +2,10 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { loginWithGoogle } from "./../hooks/userIDService";
+import {
+  loginWithGoogle,
+  getPendingGoogleLinkInfo,
+} from "./../hooks/userIDService";
 
 import AuthButton from "@/components/UI/Auth/AuthButton";
 
@@ -100,8 +103,20 @@ export default function BotonGoogle() {
 
       const result = await loginWithGoogle();
 
-      // En redirect el flujo continúa al volver desde Google
       if (!result || result.redirecting) {
+        return;
+      }
+
+      if (result.needPasswordLink) {
+        const pending = getPendingGoogleLinkInfo();
+        sessionStorage.removeItem("googleAuthInProgress");
+
+        alert(
+          `Ese correo ya existe con contraseña.\n\n` +
+            `Inicia sesión una vez con tu contraseña` +
+            `${pending?.email ? ` para ${pending.email}` : ""}` +
+            ` y Google quedará vinculado automáticamente.`
+        );
         return;
       }
 

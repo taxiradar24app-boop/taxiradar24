@@ -29,6 +29,7 @@ export default function LoginScreen() {
     emailVerified,
     phoneVerified,
     hasIdentityConflict,
+    pendingGoogleLink,
   } = useAuth();
 
   const navigate = useNavigate();
@@ -44,11 +45,6 @@ export default function LoginScreen() {
 
     if (!user) {
       hasNavigatedRef.current = false;
-
-      if (sessionStorage.getItem("googleAuthInProgress") === "1") {
-        sessionStorage.removeItem("googleAuthInProgress");
-      }
-
       return;
     }
 
@@ -60,8 +56,7 @@ export default function LoginScreen() {
     const isDriver =
       userData?.isDriver ||
       userData?.role === "driver" ||
-      (Array.isArray(userData?.roles) &&
-        userData.roles.includes("driver"));
+      (Array.isArray(userData?.roles) && userData.roles.includes("driver"));
 
     const cameFromTools =
       typeof location.state?.redirectTo === "string" &&
@@ -119,7 +114,9 @@ export default function LoginScreen() {
 
   const subtitle = loading
     ? "Estamos verificando tu sesión. Un momento..."
-    : "Accede con tu cuenta o utiliza tu cuenta de Google.";
+    : pendingGoogleLink?.email
+      ? `Tu correo ${pendingGoogleLink.email} ya existe con contraseña. Inicia sesión con tu contraseña una vez y Google quedará vinculado automáticamente.`
+      : "Accede con tu cuenta o utiliza tu cuenta de Google.";
 
   return (
     <AuthContainer>

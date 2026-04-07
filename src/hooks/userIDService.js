@@ -1,10 +1,12 @@
 // src/hooks/userIDService.js
 // ✅ auth / identidad básica
 // ✅ Google Auth estable para web, móvil y PWA
-// ✅ sin lógica duplicada de retorno en AuthContext
+// ✅ vínculo automático Google <-> password cuando el email ya existe
 
 import { getAuth, getDb } from "./../services/firebaseConfig";
 import { claimPhoneForUid } from "./../services/accountLinkingService";
+
+const PENDING_GOOGLE_LINK_KEY = "pendingGoogleLink";
 
 // --------------------------------------------------
 // Helpers internos (lazy imports)
@@ -38,11 +40,30 @@ function isMobileDevice() {
 }
 
 function shouldUseRedirectForGoogle() {
-  // ✅ móvil web -> redirect
-  // ✅ móvil PWA -> redirect
-  // ✅ desktop PWA -> redirect
-  // ✅ desktop web -> popup
+  // móvil web + móvil PWA + desktop PWA -> redirect
+  // desktop web -> popup
   return isMobileDevice() || isStandalonePWA();
+}
+
+function setPendingGoogleLink(payload) {
+  try {
+    sessionStorage.setItem(PENDING_GOOGLE_LINK_KEY, JSON.stringify(payload));
+  } catch {}
+}
+
+export function getPendingGoogleLinkInfo() {
+  try {
+    const raw = sessionStorage.getItem(PENDING_GOOGLE_LINK_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function clearPendingGoogleLink() {
+  try {
+    sessionStorage.removeItem(PENDING_GOOGLE_LINK_KEY);
+  } catch {}
 }
 
 async function ensureGoogleUserDocument(user) {
@@ -122,6 +143,85 @@ async function ensureGoogleUserDocument(user) {
   }
 
   return { user, needsPhone: !data.phoneVerified };
+}
+
+async function storeGoogleConflict(auth, error, GoogleAuthProvider, fetchSignInMethodsForEmail) {
+  const email =
+    error?.customData?.email ||
+    error?.email ||
+    null;
+
+  const pendingCredential = GoogleAuthProvider.credentialFromError(error);
+
+  let methods = [];
+  if (email) {
+    try {
+      methods = await fetchSignInMethodsForEmail(auth, email);
+    } catch (methodError) {
+      console.warn("⚠️ No se pudieron leer métodos del email:", methodError);
+    }
+  }
+
+  setPendingGoogleLink({
+    email,
+    methods,
+    providerId: "google.com",
+    idToken: pendingCredential?.idToken || null,
+    accessToken: pendingCredential?.accessToken || null,
+    createdAt: new Date().toISOString(),
+  });
+
+  return {
+    needPasswordLink: true,
+    email,
+    methods,
+  };
+}
+
+async function completePendingGoogleLinkForUser(user) {
+  const pending = getPendingGoogleLinkInfo();
+  if (!pending || !user) return null;
+
+  const userEmail = (user.email || "").toLowerCase();
+  const pendingEmail = (pending.email || "").toLowerCase();
+
+  if (pendingEmail && userEmail && pendingEmail !== userEmail) {
+    return null;
+  }
+
+  const { GoogleAuthProvider, linkWithCredential, reload } = await authMod();
+
+  const credential = GoogleAuthProvider.credential(
+    pending.idToken || null,
+    pending.accessToken || null
+  );
+
+  if (!credential) {
+    return null;
+  }
+
+  try {
+    await linkWithCredential(user, credential);
+  } catch (error) {
+    const code = error?.code || "";
+
+    // Si ya está vinculado o el credencial ya se usó, no rompemos el login
+    if (
+      code !== "auth/provider-already-linked" &&
+      code !== "auth/credential-already-in-use"
+    ) {
+      throw error;
+    }
+  }
+
+  try {
+    await reload(user);
+  } catch {}
+
+  clearPendingGoogleLink();
+
+  const result = await ensureGoogleUserDocument(user);
+  return { ...result, linkedGoogle: true };
 }
 
 export function normalizePhoneNumber(raw) {
@@ -321,6 +421,13 @@ export async function loginWithEmail(email, password) {
   await setPersistence(auth, browserLocalPersistence);
 
   const res = await signInWithEmailAndPassword(auth, email, password);
+
+  try {
+    await completePendingGoogleLinkForUser(res.user);
+  } catch (error) {
+    console.error("❌ Error vinculando Google tras login password:", error);
+  }
+
   return res.user;
 }
 
@@ -341,6 +448,7 @@ export async function loginWithGoogle() {
     GoogleAuthProvider,
     signInWithPopup,
     signInWithRedirect,
+    fetchSignInMethodsForEmail,
   } = await authMod();
 
   await setPersistence(auth, browserLocalPersistence);
@@ -362,8 +470,18 @@ export async function loginWithGoogle() {
       throw new Error("No se pudo iniciar sesión con Google.");
     }
 
+    clearPendingGoogleLink();
     return await ensureGoogleUserDocument(result.user);
   } catch (e) {
+    if (e?.code === "auth/account-exists-with-different-credential") {
+      return await storeGoogleConflict(
+        auth,
+        e,
+        GoogleAuthProvider,
+        fetchSignInMethodsForEmail
+      );
+    }
+
     const shouldFallbackToRedirect =
       e?.code === "auth/popup-blocked" ||
       e?.code === "auth/popup-closed-by-user" ||
@@ -376,6 +494,40 @@ export async function loginWithGoogle() {
 
     await signInWithRedirect(auth, provider);
     return { redirecting: true };
+  }
+}
+
+// --------------------------------------------------
+// Procesar redirect Google
+// --------------------------------------------------
+export async function resolveGoogleRedirectLogin() {
+  const auth = await getAuth();
+  const {
+    getRedirectResult,
+    GoogleAuthProvider,
+    fetchSignInMethodsForEmail,
+  } = await authMod();
+
+  try {
+    const result = await getRedirectResult(auth);
+
+    if (!result?.user) {
+      return null;
+    }
+
+    clearPendingGoogleLink();
+    return await ensureGoogleUserDocument(result.user);
+  } catch (e) {
+    if (e?.code === "auth/account-exists-with-different-credential") {
+      return await storeGoogleConflict(
+        auth,
+        e,
+        GoogleAuthProvider,
+        fetchSignInMethodsForEmail
+      );
+    }
+
+    throw e;
   }
 }
 
