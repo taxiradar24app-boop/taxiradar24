@@ -30,14 +30,16 @@ export function AuthProvider({ children }) {
   const [subscriptionLoading, setSubscriptionLoading] = useState(false);
 
   const [loading, setLoading] = useState(true);
+  const [googleResolving, setGoogleResolving] = useState(
+    sessionStorage.getItem("googleAuthInProgress") === "1"
+  );
   const [showInstallBanner, setShowInstallBanner] = useState(false);
 
   const tokenCacheRef = useRef(null);
   const tokenTimeRef = useRef(0);
-
-  // ✅ refs que faltaban
   const lastSubscriptionFetchRef = useRef(0);
   const subscriptionInFlightRef = useRef(false);
+  const authInitializedRef = useRef(false);
 
   const { canShowPrompt, promptInstall, setCanShowPrompt } =
     usePWAInstallPrompt();
@@ -79,12 +81,10 @@ export function AuthProvider({ children }) {
         return null;
       }
 
-      // 🚫 Evitar llamadas simultáneas
       if (subscriptionInFlightRef.current) {
         return subscription;
       }
 
-      // ⏱️ Cooldown para evitar spam al Worker
       const now = Date.now();
       const cooldownMs = 5000;
 
@@ -116,7 +116,6 @@ export function AuthProvider({ children }) {
       } catch (error) {
         console.error("❌ Error cargando suscripción:", error);
 
-        // ⛔ Si el backend responde 429, alarga el cooldown
         if (
           error?.message?.includes("Too many requests") ||
           String(error).includes("429")
@@ -179,11 +178,21 @@ export function AuthProvider({ children }) {
             setSubscriptionLoading(false);
             tokenCacheRef.current = null;
             tokenTimeRef.current = 0;
-            sessionStorage.removeItem("googleAuthInProgress");
-            setLoading(false);
+
+            if (!authInitializedRef.current) {
+              authInitializedRef.current = true;
+            }
+
+            // si no hay flujo Google en curso, ya no estamos cargando
+            if (sessionStorage.getItem("googleAuthInProgress") !== "1") {
+              setGoogleResolving(false);
+              setLoading(false);
+            }
+
             return;
           }
 
+          authInitializedRef.current = true;
           setUser(currentUser);
 
           try {
@@ -192,6 +201,7 @@ export function AuthProvider({ children }) {
           } finally {
             if (mounted) {
               sessionStorage.removeItem("googleAuthInProgress");
+              setGoogleResolving(false);
               setLoading(false);
             }
           }
@@ -201,18 +211,24 @@ export function AuthProvider({ children }) {
           }
         });
 
-        try {
-          await resolveGoogleRedirectLogin();
-          sessionStorage.removeItem("googleAuthInProgress");
-        } catch (redirectError) {
-          console.error("❌ Error resolviendo redirect Google:", redirectError);
-          sessionStorage.removeItem("googleAuthInProgress");
+        // resolver retorno Google solo una vez al arrancar
+        if (sessionStorage.getItem("googleAuthInProgress") === "1") {
+          try {
+            await resolveGoogleRedirectLogin();
+          } catch (redirectError) {
+            console.error("❌ Error resolviendo redirect Google:", redirectError);
+            sessionStorage.removeItem("googleAuthInProgress");
+            setGoogleResolving(false);
+          }
+        } else {
+          setGoogleResolving(false);
         }
       } catch (error) {
         console.error("❌ Error inicializando auth:", error);
         sessionStorage.removeItem("googleAuthInProgress");
 
         if (mounted) {
+          setGoogleResolving(false);
           setLoading(false);
         }
       }
@@ -241,6 +257,8 @@ export function AuthProvider({ children }) {
     setProgressData(null);
     setSubscription(null);
     setSubscriptionLoading(false);
+    setGoogleResolving(false);
+
     tokenCacheRef.current = null;
     tokenTimeRef.current = 0;
     lastSubscriptionFetchRef.current = 0;
@@ -260,7 +278,7 @@ export function AuthProvider({ children }) {
     setCanShowPrompt(false);
   };
 
-  const profileReady = !loading && (!user || userData !== null);
+  const profileReady = !loading && !googleResolving && (!user || userData !== null);
 
   const value = useMemo(() => {
     const proActive = subscription?.active === true;
@@ -277,6 +295,7 @@ export function AuthProvider({ children }) {
       subscriptionLoading,
 
       loading,
+      googleResolving,
       profileReady,
       logout,
 
@@ -309,6 +328,7 @@ export function AuthProvider({ children }) {
     subscription,
     subscriptionLoading,
     loading,
+    googleResolving,
     profileReady,
     logout,
     refreshUserDocs,

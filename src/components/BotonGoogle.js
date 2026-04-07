@@ -96,18 +96,16 @@ export default function BotonGoogle() {
 
     try {
       setLoading(true);
-
       sessionStorage.setItem("googleAuthInProgress", "1");
 
       const result = await loginWithGoogle();
 
+      // En redirect el flujo continúa al volver desde Google.
       if (!result || result.redirecting) {
         return;
       }
 
-      const { user, needsPhone } = result;
-
-      console.log("✅ Google login:", user?.uid);
+      const { needsPhone } = result;
 
       if (needsPhone) {
         navigate("/verify", {
@@ -120,7 +118,7 @@ export default function BotonGoogle() {
       navigate(redirectTo, { replace: true });
     } catch (error) {
       sessionStorage.removeItem("googleAuthInProgress");
-      console.error("❌ Error en autenticación:", error?.message || error);
+      console.error("❌ Error en autenticación Google:", error);
       alert("No se pudo iniciar sesión con Google. Inténtalo de nuevo.");
     } finally {
       setLoading(false);

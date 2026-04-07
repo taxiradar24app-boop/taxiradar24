@@ -26,6 +26,7 @@ export default function LoginScreen() {
     userData,
     subscription,
     loading,
+    googleResolving,
     profileReady,
     emailVerified,
     phoneVerified,
@@ -61,15 +62,14 @@ export default function LoginScreen() {
 
   useEffect(() => {
     if (loading) return;
+    if (googleResolving) return;
     if (!profileReady) return;
+    if (googleFlowActive) return;
 
     if (!user) {
       hasNavigatedRef.current = false;
       return;
     }
-
-    sessionStorage.removeItem("googleAuthInProgress");
-    setGoogleFlowActive(false);
 
     if (hasNavigatedRef.current) return;
     hasNavigatedRef.current = true;
@@ -125,7 +125,9 @@ export default function LoginScreen() {
     userData,
     subscription,
     loading,
+    googleResolving,
     profileReady,
+    googleFlowActive,
     emailVerified,
     phoneVerified,
     hasIdentityConflict,
@@ -134,13 +136,13 @@ export default function LoginScreen() {
     location.state,
   ]);
 
-  const title = loading
+  const title = loading || googleResolving
     ? "Comprobando sesión..."
     : googleFlowActive
       ? "Completando acceso..."
       : "Iniciar sesión";
 
-  const subtitle = loading
+  const subtitle = loading || googleResolving
     ? "Estamos verificando tu sesión. Un momento..."
     : googleFlowActive
       ? "Si Google te redirige o abre una ventana, completa el acceso y volverás aquí automáticamente."

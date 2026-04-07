@@ -2,7 +2,7 @@
 // ✅ Enterprise Lazy Firebase
 // ✅ auth / identidad básica
 // ✅ flujo limpio email + teléfono
-// ✅ Google Auth robusto para web, móvil y PWA
+// ✅ Google Auth estable para web, móvil y PWA
 
 import { getAuth, getDb } from "./../services/firebaseConfig";
 import { claimPhoneForUid } from "./../services/accountLinkingService";
@@ -39,11 +39,7 @@ function isMobileDevice() {
 }
 
 function shouldUseRedirectForGoogle() {
-  // ✅ móvil web -> redirect
-  // ✅ móvil PWA -> redirect
-  // ✅ desktop web -> popup
-  // ✅ desktop PWA -> popup
-  return isMobileDevice();
+  return isMobileDevice() || isStandalonePWA();
 }
 
 async function ensureGoogleUserDocument(user) {
@@ -85,7 +81,6 @@ async function ensureGoogleUserDocument(user) {
     });
 
     await createInitialProgress(user.uid);
-
     return { user, needsPhone: true };
   }
 
