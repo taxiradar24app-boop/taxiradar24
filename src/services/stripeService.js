@@ -1,6 +1,7 @@
-import { getAuth } from "./firebaseConfig";
-import { getDb } from "./firebaseConfig";
+// src/services/stripeService.js
+import { getAuth, getDb } from "./firebaseConfig";
 import { getApiBase } from "./subscriptionService";
+import { getAuthIntent, saveAuthIntent } from "@/services/authIntentService";
 
 async function fs() {
   return await import("firebase/firestore");
@@ -16,6 +17,7 @@ async function waitForAuthenticatedUser(timeoutMs = 10000) {
 
   return new Promise((resolve, reject) => {
     let settled = false;
+    let unsubscribe = null;
 
     const timer = setTimeout(() => {
       if (settled) return;
@@ -24,7 +26,7 @@ async function waitForAuthenticatedUser(timeoutMs = 10000) {
       reject(new Error("User not authenticated"));
     }, timeoutMs);
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user || settled) return;
       settled = true;
       clearTimeout(timer);
@@ -34,22 +36,48 @@ async function waitForAuthenticatedUser(timeoutMs = 10000) {
   });
 }
 
+function getCurrentAppPath() {
+  try {
+    const hash = window.location.hash || "";
+    if (hash.startsWith("#")) {
+      const hashPath = hash.slice(1);
+      return hashPath || "/";
+    }
+
+    const pathname = window.location.pathname || "/";
+    const search = window.location.search || "";
+    return `${pathname}${search}`;
+  } catch {
+    return "/";
+  }
+}
+
+function redirectWithIntent(path, source = "stripe_checkout_guard") {
+  const currentIntent = getAuthIntent();
+  const currentPath = getCurrentAppPath();
+
+  if (!currentIntent?.redirectTo) {
+    saveAuthIntent({
+      redirectTo: currentPath || "/academia/upgrade",
+      source,
+    });
+  }
+
+  window.location.href = path;
+}
+
 export async function createCheckoutSession(plan) {
   if (!plan) {
     throw new Error("Plan no especificado");
   }
-  function getApiBase() {
-  return "https://taxiradar24-academy-api.taxiradar24audio.workers.dev";
-}
 
   const user = await waitForAuthenticatedUser();
 
-  // 🔥 VALIDACIÓN DE IDENTIDAD COMPLETA
   await user.reload();
 
   if (!user.emailVerified) {
-    window.location.href = "/check-email";
-    return;
+    redirectWithIntent("/check-email", "stripe_email_required");
+    return null;
   }
 
   const db = await getDb();
@@ -62,19 +90,18 @@ export async function createCheckoutSession(plan) {
     throw new Error("Usuario no encontrado");
   }
 
-  const userData = snap.data();
-
-  if (!userData.phoneVerified) {
-    window.location.href = "/verify";
-    return;
-  }
+  const userData = snap.data() || {};
 
   if (userData.needsMerge) {
-    window.location.href = "/identity-merge";
-    return;
+    redirectWithIntent("/identity-merge", "stripe_identity_conflict");
+    return null;
   }
 
-  // 🔐 SI TODO OK → STRIPE
+  if (!userData.phoneVerified) {
+    redirectWithIntent("/verify", "stripe_phone_required");
+    return null;
+  }
+
   const token = await user.getIdToken(true);
   const apiBase = getApiBase();
 

@@ -26,8 +26,8 @@ function buildFirebaseConfig() {
 
     // ✅ Usa el dominio real de Firebase Auth / Hosting
     authDomain:
-      getEnvVar("FIREBASE_AUTH_DOMAIN") ||
-      "taxiradar24db.firebaseapp.com",
+    getEnvVar("FIREBASE_AUTH_DOMAIN") ||
+    "taxiradar24.com",
 
     projectId:
       getEnvVar("FIREBASE_PROJECT_ID") ||

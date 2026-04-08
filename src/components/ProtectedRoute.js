@@ -1,48 +1,79 @@
 // src/components/ProtectedRoute.js
-import React, { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./../services/firebaseConfig";
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export default function ProtectedRoute({ children }) {
-  const [user, setUser] = useState(undefined);
+  const {
+    user,
+    loading,
+    emailVerified,
+    phoneVerified,
+    hasIdentityConflict,
+  } = useAuth();
 
-  useEffect(() => {
-    let cancelled = false;
-    let timeout = null;
+  const location = useLocation();
+  const redirectTo = location.pathname + location.search;
 
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      // ✅ Si es null (logout), esperamos un poco antes de redirigir
-      if (!firebaseUser) {
-        timeout = setTimeout(() => {
-          if (!cancelled) setUser(null);
-        }, 200);
-      } else {
-        if (!cancelled) setUser(firebaseUser);
-      }
-    });
-
-    return () => {
-      cancelled = true;
-      if (timeout) clearTimeout(timeout);
-      unsubscribe();
-    };
-  }, []);
-
-  // Mientras Firebase verifica sesión
-  if (user === undefined) {
+  if (loading) {
     return (
-      <div style={{ color: "#fff", textAlign: "center" }}>
-        Cargando...
+      <div
+        style={{
+          minHeight: "60vh",
+          display: "grid",
+          placeItems: "center",
+          color: "#fff",
+          textAlign: "center",
+          padding: "24px",
+        }}
+      >
+        Comprobando sesión…
       </div>
     );
   }
 
-  // Si no hay usuario logeado, redirige al login
-  if (user === null) {
-    return <Navigate to="/login" replace />;
+  if (!user) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{
+          redirectTo,
+          source: "protected_route",
+        }}
+      />
+    );
   }
 
-  // Si hay usuario, muestra el contenido protegido
+  if (hasIdentityConflict) {
+    return (
+      <Navigate
+        to="/identity-merge"
+        replace
+        state={{ redirectTo }}
+      />
+    );
+  }
+
+  if (!emailVerified) {
+    return (
+      <Navigate
+        to="/check-email"
+        replace
+        state={{ redirectTo }}
+      />
+    );
+  }
+
+  if (!phoneVerified) {
+    return (
+      <Navigate
+        to="/verify"
+        replace
+        state={{ redirectTo }}
+      />
+    );
+  }
+
   return children;
 }

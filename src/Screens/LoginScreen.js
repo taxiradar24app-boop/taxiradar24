@@ -6,8 +6,14 @@ import AuthDivider from "@/components/UI/Auth/AuthDivider";
 
 import { useAuth } from "./../context/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSmartNavigation } from "@/utils/SmartNavigation";
 import BackHomeButton from "@/Tools/componentsTools/Buttons/BackButtonTools";
+
+import {
+  getAuthIntent,
+  clearAuthIntent,
+} from "@/services/authIntentService";
+
+import { resolvePostAuthRoute } from "@/navigator/postAuthResolver";
 
 const logoTaxiRadar = "/assets/LOGO_ORIGINAL.webp";
 
@@ -26,19 +32,12 @@ export default function LoginScreen() {
     userData,
     subscription,
     loading,
-    emailVerified,
-    phoneVerified,
-    hasIdentityConflict,
     pendingGoogleLink,
   } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { getDefaultEntryPoint } = useSmartNavigation();
   const hasNavigatedRef = useRef(false);
-
-  const redirectTo =
-    location.state?.redirectTo || getDefaultEntryPoint() || "/";
 
   useEffect(() => {
     if (loading) return;
@@ -51,64 +50,36 @@ export default function LoginScreen() {
     if (hasNavigatedRef.current) return;
     hasNavigatedRef.current = true;
 
-    const isPro = subscription?.active === true;
+    const intent = getAuthIntent();
 
-    const isDriver =
-      userData?.isDriver ||
-      userData?.role === "driver" ||
-      (Array.isArray(userData?.roles) && userData.roles.includes("driver"));
+    const fallbackIntent = location.state?.redirectTo
+      ? {
+          redirectTo: location.state.redirectTo,
+          source: location.state?.source || "login_location_state",
+        }
+      : null;
 
-    const cameFromTools =
-      typeof location.state?.redirectTo === "string" &&
-      location.state.redirectTo.startsWith("/herramientas");
+    const finalIntent = intent || fallbackIntent;
 
-    if (hasIdentityConflict) {
-      navigate("/identity-merge", {
-        replace: true,
-        state: { redirectTo },
-      });
-      return;
-    }
+    const result = resolvePostAuthRoute({
+      user,
+      userData,
+      subscription,
+      intent: finalIntent,
+    });
 
-    if (!emailVerified) {
-      navigate("/check-email", {
-        replace: true,
-        state: { redirectTo },
-      });
-      return;
-    }
+    clearAuthIntent();
 
-    if (!phoneVerified) {
-      navigate("/verify", {
-        replace: true,
-        state: { redirectTo },
-      });
-      return;
-    }
-
-    if (cameFromTools || isDriver) {
-      navigate("/herramientas", { replace: true });
-      return;
-    }
-
-    if (isPro) {
-      navigate("/academia/pro", { replace: true });
-      return;
-    }
-
-    navigate(redirectTo, { replace: true });
-  }, [
-    user,
-    userData,
-    subscription,
-    loading,
-    emailVerified,
-    phoneVerified,
-    hasIdentityConflict,
-    navigate,
-    redirectTo,
-    location.state,
-  ]);
+    navigate(result.path, {
+      replace: true,
+      state:
+        result.path === "/check-email" ||
+        result.path === "/verify" ||
+        result.path === "/identity-merge"
+          ? { redirectTo: finalIntent?.redirectTo || "/" }
+          : undefined,
+    });
+  }, [user, userData, subscription, loading, navigate, location.state]);
 
   const title = loading ? "Comprobando sesión..." : "Iniciar sesión";
 

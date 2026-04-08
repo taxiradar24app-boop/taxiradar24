@@ -1,5 +1,3 @@
-// src/Academy/Pro/AudioLectura/AudioScreen.js
-
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   PageWrapper,
@@ -16,6 +14,7 @@ import {
   AudioMeta,
   AudioPlayer,
   StatusText,
+  ManualLoadButton,
 } from "./AudioStyle";
 
 import { useAuth } from "./../../../context/AuthContext";
@@ -35,7 +34,7 @@ const clampNum = (n, min, max) => Math.max(min, Math.min(max, n));
 
 const AUDIO_HTML_PROPS = {
   controls: true,
-  preload: "metadata",
+  preload: "none",
   controlsList: "nodownload noplaybackrate noremoteplayback",
   disablePictureInPicture: true,
   disableRemotePlayback: true,
@@ -80,10 +79,10 @@ export default function AudioScreen() {
   const savedMapRef = useRef({});
   const audioElsRef = useRef({});
   const resumedOnceRef = useRef({});
-  const loadingByAudioRef = useRef({});
+  const signingRef = useRef({});
+  const durationRef = useRef({});
   const lastSavedTimeRef = useRef({});
   const lastSavedAtRef = useRef({});
-  const durationRef = useRef({});
 
   useEffect(() => {
     savedMapRef.current = savedMap;
@@ -105,8 +104,8 @@ export default function AudioScreen() {
     (async () => {
       try {
         const db = await getDb();
-        const ref = await docLazy(db, "users", uid);
-         const snap = await getDocLazy(ref);
+        const ref = await docLazy(db, "users", userId);
+        const snap = await getDocLazy(ref);
 
         if (!snap.exists()) {
           setSavedMap({});
@@ -190,11 +189,11 @@ export default function AudioScreen() {
         return signedUrls[audio.id];
       }
 
-      if (loadingByAudioRef.current[audio.id]) {
+      if (signingRef.current[audio.id]) {
         return null;
       }
 
-      loadingByAudioRef.current[audio.id] = true;
+      signingRef.current[audio.id] = true;
       setSigning((prev) => ({ ...prev, [audio.id]: true }));
       setSignError((prev) => ({ ...prev, [audio.id]: "" }));
 
@@ -211,30 +210,12 @@ export default function AudioScreen() {
         setSignError((prev) => ({ ...prev, [audio.id]: message }));
         return null;
       } finally {
-        loadingByAudioRef.current[audio.id] = false;
+        signingRef.current[audio.id] = false;
         setSigning((prev) => ({ ...prev, [audio.id]: false }));
       }
     },
     [firebaseUser, signedUrls]
   );
-
-  useEffect(() => {
-    if (!firebaseUser || !audios.length) return;
-
-    let cancelled = false;
-
-    (async () => {
-      for (const audio of audios) {
-        if (cancelled) return;
-        if (signedUrls[audio.id]) continue;
-        await ensureSignedUrl(audio);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [firebaseUser, audios, signedUrls, ensureSignedUrl]);
 
   const handleLoadedMetadata = useCallback(
     (audio, e) => {
@@ -287,15 +268,34 @@ export default function AudioScreen() {
   );
 
   const handlePlay = useCallback(
-    (audio, e) => {
+    async (audio, e) => {
       const el = e.currentTarget;
       audioElsRef.current[audio.id] = el;
 
       try {
         el.playbackRate = playbackRate;
       } catch {}
+
+      if (!el.src) {
+        const url = await ensureSignedUrl(audio);
+
+        if (url) {
+          el.src = url;
+          try {
+            el.load();
+            await el.play();
+          } catch {}
+        }
+      }
     },
-    [playbackRate]
+    [playbackRate, ensureSignedUrl]
+  );
+
+  const handleManualLoad = useCallback(
+    async (audio) => {
+      await ensureSignedUrl(audio);
+    },
+    [ensureSignedUrl]
   );
 
   const handleError = useCallback(
@@ -309,9 +309,8 @@ export default function AudioScreen() {
       });
 
       resumedOnceRef.current[audio.id] = false;
-      await ensureSignedUrl(audio);
     },
-    [firebaseUser, ensureSignedUrl]
+    [firebaseUser]
   );
 
   const handleTimeUpdate = useCallback(
@@ -457,6 +456,15 @@ export default function AudioScreen() {
 
                 {!src && signing[audio.id] ? (
                   <StatusText>Preparando audio seguro...</StatusText>
+                ) : null}
+
+                {!src && !signing[audio.id] ? (
+                  <ManualLoadButton
+                    type="button"
+                    onClick={() => handleManualLoad(audio)}
+                  >
+                    Preparar audio
+                  </ManualLoadButton>
                 ) : null}
 
                 <AudioPlayer

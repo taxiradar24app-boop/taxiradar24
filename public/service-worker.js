@@ -1,4 +1,4 @@
-const CACHE_NAME = "taxiradar24-cache-v34";
+const CACHE_NAME = "taxiradar24-cache-v35";
 
 const STATIC_ASSETS = [
   "/",

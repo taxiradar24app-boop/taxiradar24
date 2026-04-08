@@ -3,6 +3,7 @@
 import React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { resolvePostAuthRoute } from "@/navigator/postAuthResolver";
 
 export default function RequirePlan({ plan, children }) {
   const {
@@ -11,12 +12,10 @@ export default function RequirePlan({ plan, children }) {
     loading,
     subscription,
     subscriptionLoading,
-    emailVerified,
-    phoneVerified,
-    hasIdentityConflict,
   } = useAuth();
 
   const location = useLocation();
+  const redirectTo = location.pathname + location.search;
 
   if (loading || subscriptionLoading) {
     return (
@@ -28,41 +27,29 @@ export default function RequirePlan({ plan, children }) {
           color: "#fff",
         }}
       >
-        Cargando acceso PRO…
+        Cargando acceso…
       </div>
     );
   }
 
-  if (user && hasIdentityConflict) {
+  const result = resolvePostAuthRoute({
+    user,
+    userData,
+    subscription,
+    intent: { redirectTo },
+  });
+
+  if (result.path !== redirectTo) {
+    const needsRedirectState =
+      result.path === "/check-email" ||
+      result.path === "/verify" ||
+      result.path === "/identity-merge";
+
     return (
       <Navigate
-        to="/identity-merge"
+        to={result.path}
         replace
-        state={{ redirectTo: location.pathname }}
-      />
-    );
-  }
-
-  if (!user) {
-    return <Navigate to="/" replace />;
-  }
-
-  if (!emailVerified) {
-    return (
-      <Navigate
-        to="/check-email"
-        replace
-        state={{ redirectTo: location.pathname }}
-      />
-    );
-  }
-
-  if (!phoneVerified) {
-    return (
-      <Navigate
-        to="/verify"
-        replace
-        state={{ redirectTo: location.pathname }}
+        state={needsRedirectState ? { redirectTo } : undefined}
       />
     );
   }

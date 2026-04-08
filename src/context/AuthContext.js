@@ -21,8 +21,76 @@ import usePWAInstallPrompt from "./../hooks/usePWAInstallPrompt";
 import InstallBanner from "./../components/UI/PWA/InstallBanner";
 
 import { fetchMySubscription } from "./../services/subscriptionService";
+import {
+  getAuthIntent,
+  clearAuthIntent,
+} from "@/services/authIntentService";
+import { resolvePostAuthRoute } from "@/navigator/postAuthResolver";
 
 export const AuthContext = createContext(null);
+
+function getCurrentAppPath() {
+  try {
+    const hash = window.location.hash || "";
+
+    if (hash.startsWith("#")) {
+      const hashPath = hash.slice(1) || "/";
+      return hashPath;
+    }
+
+    const pathname = window.location.pathname || "/";
+    const search = window.location.search || "";
+    return `${pathname}${search}`;
+  } catch {
+    return "/";
+  }
+}
+
+function normalizePath(path) {
+  if (!path || typeof path !== "string") return "/";
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
+function isSameRoute(currentPath, targetPath) {
+  return normalizePath(currentPath) === normalizePath(targetPath);
+}
+
+function isPendingIdentityPath(path) {
+  const normalized = normalizePath(path);
+  return (
+    normalized === "/check-email" ||
+    normalized === "/verify" ||
+    normalized === "/identity-merge"
+  );
+}
+
+function isRouteEligibleForAutoResolution(path) {
+  const normalized = normalizePath(path);
+
+  return (
+    normalized === "/" ||
+    normalized === "/login" ||
+    normalized === "/register" ||
+    normalized === "/check-email" ||
+    normalized === "/verify" ||
+    normalized === "/identity-merge"
+  );
+}
+
+function replaceAppRoute(path) {
+  const normalized = normalizePath(path);
+
+  try {
+    const base =
+      window.location.origin +
+      window.location.pathname.replace(/\/$/, "");
+
+    // Compatible con HashRouter
+    window.location.replace(`${base}/#${normalized}`);
+  } catch {
+    window.location.hash = normalized;
+  }
+}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -32,7 +100,9 @@ export function AuthProvider({ children }) {
   const [subscription, setSubscription] = useState(null);
   const [subscriptionLoading, setSubscriptionLoading] = useState(false);
 
-  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [identityLoading, setIdentityLoading] = useState(true);
+
   const [showInstallBanner, setShowInstallBanner] = useState(false);
 
   const tokenCacheRef = useRef(null);
@@ -40,6 +110,7 @@ export function AuthProvider({ children }) {
   const lastSubscriptionFetchRef = useRef(0);
   const subscriptionInFlightRef = useRef(false);
   const redirectCheckFinishedRef = useRef(false);
+  const hasResolvedBootRouteRef = useRef(false);
 
   const { canShowPrompt, promptInstall, setCanShowPrompt } =
     usePWAInstallPrompt();
@@ -86,7 +157,11 @@ export function AuthProvider({ children }) {
       }
 
       const now = Date.now();
-      const cooldownMs = 5000;
+      const cooldownMs = 15000;
+
+      if (!force && now < lastSubscriptionFetchRef.current) {
+        return subscription;
+      }
 
       if (!force && now - lastSubscriptionFetchRef.current < cooldownMs) {
         return subscription;
@@ -120,7 +195,7 @@ export function AuthProvider({ children }) {
           error?.message?.includes("Too many requests") ||
           String(error).includes("429")
         ) {
-          lastSubscriptionFetchRef.current = Date.now() + 10000;
+          lastSubscriptionFetchRef.current = Date.now() + 30000;
         }
 
         const fallback =
@@ -173,38 +248,87 @@ export function AuthProvider({ children }) {
         unsub = onAuthStateChanged(auth, async (currentUser) => {
           if (!mounted) return;
 
+          setAuthLoading(false);
+
           if (!currentUser) {
             setUser(null);
             setUserData(null);
             setProgressData(null);
             setSubscription(null);
             setSubscriptionLoading(false);
+            setIdentityLoading(false);
 
             tokenCacheRef.current = null;
             tokenTimeRef.current = 0;
+            hasResolvedBootRouteRef.current = false;
 
             if (!redirectPending || redirectCheckFinishedRef.current) {
-              setLoading(false);
+              sessionStorage.removeItem("googleAuthInProgress");
             }
 
             return;
           }
 
           setUser(currentUser);
+          setIdentityLoading(true);
+
+          let userDoc = null;
+          let subDoc = null;
 
           try {
-            await refreshUserDocs(currentUser);
-            await refreshSubscription(currentUser);
+            const docs = await refreshUserDocs(currentUser);
+            userDoc = docs?.userDoc || null;
+
+            subDoc = await refreshSubscription(currentUser);
           } finally {
             if (mounted) {
               sessionStorage.removeItem("googleAuthInProgress");
-              setLoading(false);
+              setIdentityLoading(false);
             }
           }
 
           if (mounted && canShowPrompt) {
             setShowInstallBanner(true);
           }
+
+          const intent = getAuthIntent();
+          const currentPath = getCurrentAppPath();
+
+          const shouldResolveRoute =
+            !hasResolvedBootRouteRef.current &&
+            (redirectPending ||
+              !!intent?.redirectTo ||
+              isRouteEligibleForAutoResolution(currentPath));
+
+          if (!shouldResolveRoute) {
+            hasResolvedBootRouteRef.current = true;
+            return;
+          }
+
+          const result = resolvePostAuthRoute({
+            user: currentUser,
+            userData: userDoc,
+            subscription: subDoc || subscription,
+            intent,
+          });
+
+          if (!result?.path) {
+            hasResolvedBootRouteRef.current = true;
+            return;
+          }
+
+          if (isSameRoute(currentPath, result.path)) {
+            hasResolvedBootRouteRef.current = true;
+            return;
+          }
+
+          hasResolvedBootRouteRef.current = true;
+
+          if (!isPendingIdentityPath(result.path)) {
+            clearAuthIntent();
+          }
+
+          replaceAppRoute(result.path);
         });
 
         if (redirectPending) {
@@ -212,8 +336,7 @@ export function AuthProvider({ children }) {
             const redirectResult = await resolveGoogleRedirectLogin();
 
             if (redirectResult?.needPasswordLink && mounted) {
-              // dejamos que la pantalla de login muestre el aviso
-              setLoading(false);
+              setIdentityLoading(false);
             }
           } catch (error) {
             console.error("❌ Error resolviendo redirect Google:", error);
@@ -222,7 +345,7 @@ export function AuthProvider({ children }) {
             sessionStorage.removeItem("googleAuthInProgress");
 
             if (mounted && !auth.currentUser) {
-              setLoading(false);
+              setIdentityLoading(false);
             }
           }
         } else {
@@ -233,7 +356,8 @@ export function AuthProvider({ children }) {
         sessionStorage.removeItem("googleAuthInProgress");
 
         if (mounted) {
-          setLoading(false);
+          setAuthLoading(false);
+          setIdentityLoading(false);
         }
       }
     }
@@ -246,7 +370,7 @@ export function AuthProvider({ children }) {
         unsub();
       }
     };
-  }, [canShowPrompt, refreshSubscription, refreshUserDocs]);
+  }, [canShowPrompt, refreshSubscription, refreshUserDocs, subscription]);
 
   const logout = useCallback(async () => {
     const auth = await getAuth();
@@ -255,20 +379,24 @@ export function AuthProvider({ children }) {
     await signOut(auth);
 
     sessionStorage.removeItem("googleAuthInProgress");
+    clearAuthIntent();
 
     setUser(null);
     setUserData(null);
     setProgressData(null);
     setSubscription(null);
     setSubscriptionLoading(false);
+    setAuthLoading(false);
+    setIdentityLoading(false);
 
     tokenCacheRef.current = null;
     tokenTimeRef.current = 0;
     lastSubscriptionFetchRef.current = 0;
     subscriptionInFlightRef.current = false;
     redirectCheckFinishedRef.current = false;
+    hasResolvedBootRouteRef.current = false;
 
-    window.location.href = "/";
+    replaceAppRoute("/");
   }, []);
 
   const handleAccept = async () => {
@@ -283,6 +411,7 @@ export function AuthProvider({ children }) {
   };
 
   const pendingGoogleLink = getPendingGoogleLinkInfo();
+  const loading = authLoading || identityLoading;
 
   const value = useMemo(() => {
     const proActive = subscription?.active === true;
@@ -298,6 +427,8 @@ export function AuthProvider({ children }) {
       subscription,
       subscriptionLoading,
 
+      authLoading,
+      identityLoading,
       loading,
       logout,
 
@@ -331,6 +462,8 @@ export function AuthProvider({ children }) {
     progressData,
     subscription,
     subscriptionLoading,
+    authLoading,
+    identityLoading,
     loading,
     logout,
     refreshUserDocs,

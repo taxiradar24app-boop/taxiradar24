@@ -1,11 +1,16 @@
 // src/components/BotonGoogle.js
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import {
   loginWithGoogle,
   getPendingGoogleLinkInfo,
 } from "./../hooks/userIDService";
+
+import {
+  saveAuthIntent,
+  buildAuthIntent,
+} from "@/services/authIntentService";
 
 import AuthButton from "@/components/UI/Auth/AuthButton";
 
@@ -88,17 +93,29 @@ const MiniText = styled.div`
 `;
 
 export default function BotonGoogle() {
-  const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
 
-  const redirectTo = location.state?.redirectTo || "/";
+  const redirectTo =
+    location.state?.redirectTo ||
+    (location.pathname !== "/login" ? location.pathname : "/");
+
+  const source = location.state?.source || "login_google_button";
 
   const handleGoogleLogin = async () => {
     if (loading) return;
 
     try {
       setLoading(true);
+
+      saveAuthIntent(
+        buildAuthIntent({
+          redirectTo,
+          source,
+          fallback: "/",
+        })
+      );
+
       sessionStorage.setItem("googleAuthInProgress", "1");
 
       const result = await loginWithGoogle();
@@ -120,17 +137,8 @@ export default function BotonGoogle() {
         return;
       }
 
-      const { needsPhone } = result;
-
-      if (needsPhone) {
-        navigate("/verify", {
-          state: { redirectTo },
-          replace: true,
-        });
-        return;
-      }
-
-      navigate(redirectTo, { replace: true });
+      // ✅ En popup exitoso tampoco decidimos aquí la navegación final.
+      // La pantalla de login / AuthContext se encargarán del siguiente paso.
     } catch (error) {
       sessionStorage.removeItem("googleAuthInProgress");
       console.error("❌ Error en autenticación Google:", error);
