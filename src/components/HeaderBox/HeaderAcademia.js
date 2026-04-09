@@ -5,6 +5,7 @@ import { useAuth } from "@/navigator/sections/auth/useAuth";
 import LoginId, { LoginIdText } from "@/components/Buttons/LoginId";
 
 const iconoUsuario = "/assets/iconoUsuario.png";
+const avatarFallback = "/assets/iconoUsuario.png";
 
 import {
   HeaderWrapper,
@@ -31,13 +32,18 @@ import {
   DesktopDropdownItem,
   DesktopDropdownDivider,
   DrawerActionWrap,
+  DrawerUserTop,
+  DrawerUserIdentity,
+  DrawerUserAvatar,
+  DrawerUserName,
+  DrawerPrimaryGhostButton,
 } from "./HeaderAcademiaStyle";
 
 export default function HeaderAcademia({ withSafeTop = true }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { user, subscription, needsProOnboarding, logout } = useAuth();
+  const { user, userData, subscription, needsProOnboarding, logout } = useAuth();
 
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openDesktopMenu, setOpenDesktopMenu] = useState(false);
@@ -52,37 +58,12 @@ export default function HeaderAcademia({ withSafeTop = true }) {
   const profilePath = needsProOnboarding ? "/perfil/pro-check" : "/perfil";
   const progressPath = needsProOnboarding ? "/perfil/pro-check" : "/progreso";
 
-  const accountLabel = user ? "← Volver al inicio" : "Login / Registro";
+  const accountLabel = user ? "Perfil" : "Login / Registro";
 
-  const go = (path) => {
-    if (!path) return;
-    navigate(path);
-    setOpenDrawer(false);
-    setOpenDesktopMenu(false);
-  };
-
-  const goHome = () => {
-    go("/");
-  };
-
-  const goAccount = () => {
-    if (user) {
-      goHome();
-      return;
-    }
-    go("/login");
-  };
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } finally {
-      setOpenDrawer(false);
-      setOpenDesktopMenu(false);
-    }
-  };
-
-  const isActive = (path) => location.pathname.startsWith(path);
+  const displayName =
+    user?.displayName ||
+    userData?.displayName ||
+    (user?.email ? user.email.split("@")[0] : "Invitado");
 
   const normalizeSlug = (id = "") =>
     id.replace(/^demo-/, "").replace(/^pro-/, "");
@@ -121,6 +102,36 @@ export default function HeaderAcademia({ withSafeTop = true }) {
         arr.findIndex((entry) => entry.path === item.path) === index
     );
   }, [academy, basePath, progressPath]);
+
+  const go = (path) => {
+    if (!path) return;
+    navigate(path);
+    setOpenDrawer(false);
+    setOpenDesktopMenu(false);
+  };
+
+  const goHome = () => {
+    go("/");
+  };
+
+  const goAccount = () => {
+    if (user) {
+      go(profilePath);
+      return;
+    }
+    go("/login");
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      setOpenDrawer(false);
+      setOpenDesktopMenu(false);
+    }
+  };
+
+  const isActive = (path) => location.pathname.startsWith(path);
 
   useEffect(() => {
     if (!openDrawer) return;
@@ -167,8 +178,8 @@ export default function HeaderAcademia({ withSafeTop = true }) {
     <>
       <HeaderWrapper $withSafeTop={withSafeTop}>
         <HeaderInner>
-          <Logo onClick={() => go(isProSub ? "/academia/pro" : "/academia/demo")}>
-            {isProSub ? "Home/PRO" : "Home/DEMO"}
+          <Logo onClick={goHome}>
+            {isProSub ? "← Home/PRO" : "← Home/DEMO"}
           </Logo>
 
           <Nav>
@@ -183,35 +194,31 @@ export default function HeaderAcademia({ withSafeTop = true }) {
             ))}
           </Nav>
 
-          <HeaderRightDesktop>
-            <LoginId type="button" onClick={goAccount}>
-              <LoginIdText>{accountLabel}</LoginIdText>
-            </LoginId>
+<HeaderRightDesktop>
+  {user && (
+    <DesktopMenuWrap ref={desktopMenuRef}>
+      <DesktopUserButton
+        type="button"
+        aria-label="Abrir menú de usuario"
+        onClick={() => setOpenDesktopMenu((prev) => !prev)}
+      >
+        <DesktopUserImage src={iconoUsuario} alt="Usuario" />
+      </DesktopUserButton>
 
-            {user && (
-              <DesktopMenuWrap ref={desktopMenuRef}>
-                <DesktopUserButton
-                  type="button"
-                  aria-label="Abrir menú de usuario"
-                  onClick={() => setOpenDesktopMenu((prev) => !prev)}
-                >
-                  <DesktopUserImage src={iconoUsuario} alt="Usuario" />
-                </DesktopUserButton>
+      <DesktopDropdown open={openDesktopMenu}>
+        <DesktopDropdownItem onClick={goAccount}>
+          {accountLabel}
+        </DesktopDropdownItem>
 
-                <DesktopDropdown open={openDesktopMenu}>
-                  <DesktopDropdownItem onClick={() => go(profilePath)}>
-                    Perfil
-                  </DesktopDropdownItem>
+        <DesktopDropdownDivider />
 
-                  <DesktopDropdownDivider />
-
-                  <DesktopDropdownItem danger onClick={handleLogout}>
-                    Cerrar sesión
-                  </DesktopDropdownItem>
-                </DesktopDropdown>
-              </DesktopMenuWrap>
-            )}
-          </HeaderRightDesktop>
+        <DesktopDropdownItem danger onClick={handleLogout}>
+          Cerrar sesión
+        </DesktopDropdownItem>
+      </DesktopDropdown>
+    </DesktopMenuWrap>
+  )}
+</HeaderRightDesktop>
 
           <HeaderRightMobile>
             <MobileButton
@@ -228,68 +235,77 @@ export default function HeaderAcademia({ withSafeTop = true }) {
       <DrawerOverlay open={openDrawer} onClick={() => setOpenDrawer(false)} />
 
       <MobileDrawer open={openDrawer} $withSafeTop={withSafeTop}>
-        <DrawerClose
-          $withSafeTop={withSafeTop}
-          onClick={() => setOpenDrawer(false)}
-        >
-          ✕
-        </DrawerClose>
+<DrawerClose
+  $withSafeTop={withSafeTop}
+  onClick={() => setOpenDrawer(false)}
+>
+  ✕
+</DrawerClose>
 
+<DrawerContent>
+  <DrawerUserTop>
+    <DrawerUserIdentity>
+      <DrawerUserAvatar
+        src={user?.photoURL || avatarFallback}
+        alt="Usuario"
+      />
+      <DrawerUserName>{displayName}</DrawerUserName>
+    </DrawerUserIdentity>
+  </DrawerUserTop>
+
+  <DrawerDivider />
+
+  <DrawerActionWrap>
+    <DrawerPrimaryGhostButton type="button" onClick={goAccount}>
+      {accountLabel}
+    </DrawerPrimaryGhostButton>
+  </DrawerActionWrap>
+
+    {user && (
+      <>
+        <NavItem onClick={() => go(progressPath)}>Progreso</NavItem>
+        <DrawerDivider />
+      </>
+    )}
+
+    {navItems
+      .filter((item) => item.id !== "progreso")
+      .map((item) => (
+        <NavItem
+          key={item.id}
+          active={isActive(item.path)}
+          onClick={() => go(item.path)}
+        >
+          {item.label}
+        </NavItem>
+      ))}
+
+    {showUpgradeCTA && !isProSub && (
+      <>
         <DrawerDivider />
 
-        <DrawerContent>
-          {user && (
-            <>
-              <NavItem onClick={() => go(profilePath)}>Perfil</NavItem>
-              <NavItem onClick={() => go(progressPath)}>Progreso</NavItem>
-              <DrawerDivider />
-            </>
-          )}
+        <DemoInfoBox>
+          <DemoInfoTitle>Versión DEMO</DemoInfoTitle>
+          <DemoInfoText>
+            Explora la academia y desbloquea todo con PRO
+          </DemoInfoText>
+        </DemoInfoBox>
 
-          {navItems
-            .filter((item) => item.id !== "progreso")
-            .map((item) => (
-              <NavItem
-                key={item.id}
-                active={isActive(item.path)}
-                onClick={() => go(item.path)}
-              >
-                {item.label}
-              </NavItem>
-            ))}
+        <CTAButton onClick={() => go("/academia/upgrade")}>
+          Desbloquear PRO
+        </CTAButton>
+      </>
+    )}
 
-          {showUpgradeCTA && !isProSub && (
-            <>
-              <DrawerDivider />
-
-              <DemoInfoBox>
-                <DemoInfoTitle>Versión DEMO</DemoInfoTitle>
-                <DemoInfoText>
-                  Explora la academia y desbloquea todo con PRO
-                </DemoInfoText>
-              </DemoInfoBox>
-
-              <CTAButton onClick={() => go("/academia/upgrade")}>
-                Desbloquear PRO
-              </CTAButton>
-            </>
-          )}
-
-          <DrawerActionWrap>
-            <LoginId type="button" onClick={goAccount}>
-              <LoginIdText>{accountLabel}</LoginIdText>
-            </LoginId>
-          </DrawerActionWrap>
-
-          {user && (
-            <>
-              <DrawerDivider />
-              <NavItem onClick={handleLogout}>Cerrar sesión</NavItem>
-              <DrawerDivider />
-            </>
-          )}
-        </DrawerContent>
-      </MobileDrawer>
+    {user && (
+      <>
+        <DrawerDivider />
+        <NavItem onClick={handleLogout}>Cerrar sesión</NavItem>
+        <DrawerDivider />
+      </>
+    )}
+  </DrawerContent>
+</MobileDrawer>
     </>
   );
 }

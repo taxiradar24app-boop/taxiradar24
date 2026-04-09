@@ -286,8 +286,8 @@ export const MobileDrawer = styled.div`
   background: #0f1d36;
   padding-top: ${({ $withSafeTop }) =>
     $withSafeTop
-      ? "calc(env(safe-area-inset-top, 0px) + 68px)"
-      : "68px"};
+      ? "calc(env(safe-area-inset-top, 0px) + 18px)"
+      : "18px"};
   z-index: 99999;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -298,8 +298,8 @@ export const MobileDrawer = styled.div`
 export const DrawerContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  padding: 24px 36px 32px;
+  gap: 20px;
+  padding: 10px 36px 32px;
 `;
 
 export const DrawerClose = styled.div`
@@ -347,4 +347,68 @@ export const DrawerActionWrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+`;
+
+export const DrawerUserTop = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  padding: 0;
+  margin-top: 0;
+`;
+
+export const DrawerUserIdentity = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding-top: 2px;
+`;
+
+export const DrawerUserAvatar = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+`;
+
+export const DrawerUserName = styled.div`
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #f8fafc;
+  word-break: break-word;
+`;
+
+export const DrawerPrimaryGhostButton = styled.button`
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.04)
+  );
+  color: #ffffff;
+  font-size: 0.98rem;
+  font-weight: 800;
+  line-height: 1.2;
+  padding: 16px 18px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+  transition: all 0.18s ease;
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.18),
+      rgba(255, 255, 255, 0.06)
+    );
+  }
 `;

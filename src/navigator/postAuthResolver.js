@@ -1,10 +1,9 @@
-// src/navigator/postAuthResolver.js
-
 export function resolvePostAuthRoute({
   user,
   userData,
   subscription,
   intent,
+  currentPath = "/",
 }) {
   if (!user) {
     return {
@@ -16,15 +15,6 @@ export function resolvePostAuthRoute({
   const emailVerified = !!user.emailVerified;
   const phoneVerified = !!userData?.phoneVerified;
   const hasIdentityConflict = !!userData?.needsMerge;
-  const isPro = subscription?.active === true;
-
-  const isDriver =
-    userData?.isDriver ||
-    userData?.role === "driver" ||
-    (Array.isArray(userData?.roles) &&
-      userData.roles.includes("driver"));
-
-  // 🔥 PRIORIDAD ABSOLUTA
 
   if (hasIdentityConflict) {
     return {
@@ -47,8 +37,6 @@ export function resolvePostAuthRoute({
     };
   }
 
-  // 🔥 INTENCIÓN DEL USUARIO (CLAVE)
-
   if (intent?.redirectTo) {
     return {
       path: intent.redirectTo,
@@ -56,26 +44,24 @@ export function resolvePostAuthRoute({
     };
   }
 
-  // 🔥 ROLES
-
-  if (isDriver) {
+  if (
+    currentPath &&
+    currentPath !== "/login" &&
+    currentPath !== "/register" &&
+    currentPath !== "/check-email" &&
+    currentPath !== "/verify" &&
+    currentPath !== "/identity-merge"
+  ) {
     return {
-      path: "/herramientas",
-      reason: "DRIVER_DEFAULT",
+      path: currentPath,
+      reason: "CURRENT_CONTEXT_RESTORED",
     };
   }
-
-  if (isPro) {
-    return {
-      path: "/academia/pro",
-      reason: "PRO_DEFAULT",
-    };
-  }
-
-  // 🔥 FALLBACK
 
   return {
-    path: "/academia/demo",
-    reason: "DEMO_DEFAULT",
+    path: "/",
+    reason: "HOME_DEFAULT",
   };
 }
+
+export default resolvePostAuthRoute;

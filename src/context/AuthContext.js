@@ -1,5 +1,3 @@
-// src/context/AuthContext.js
-
 import React, {
   createContext,
   useContext,
@@ -57,6 +55,7 @@ function isSameRoute(currentPath, targetPath) {
 
 function isPendingIdentityPath(path) {
   const normalized = normalizePath(path);
+
   return (
     normalized === "/check-email" ||
     normalized === "/verify" ||
@@ -82,10 +81,8 @@ function replaceAppRoute(path) {
 
   try {
     const base =
-      window.location.origin +
-      window.location.pathname.replace(/\/$/, "");
+      window.location.origin + window.location.pathname.replace(/\/$/, "");
 
-    // Compatible con HashRouter
     window.location.replace(`${base}/#${normalized}`);
   } catch {
     window.location.hash = normalized;
@@ -111,105 +108,141 @@ export function AuthProvider({ children }) {
   const subscriptionInFlightRef = useRef(false);
   const redirectCheckFinishedRef = useRef(false);
   const hasResolvedBootRouteRef = useRef(false);
+  const currentUidRef = useRef(null);
+  const subscriptionRef = useRef(null);
+  const authNavigationResolvedRef = useRef(false);
 
   const { canShowPrompt, promptInstall, setCanShowPrompt } =
     usePWAInstallPrompt();
 
-  const refreshUserDocs = useCallback(async (currentUser) => {
+  useEffect(() => {
+    subscriptionRef.current = subscription;
+  }, [subscription]);
+
+  const resetRuntimeRefs = useCallback(() => {
+    tokenCacheRef.current = null;
+    tokenTimeRef.current = 0;
+    lastSubscriptionFetchRef.current = 0;
+    subscriptionInFlightRef.current = false;
+    hasResolvedBootRouteRef.current = false;
+    currentUidRef.current = null;
+    authNavigationResolvedRef.current = false;
+  }, []);
+
+  const clearSessionState = useCallback(() => {
+    setUser(null);
+    setUserData(null);
+    setProgressData(null);
+    setSubscription(null);
+    setSubscriptionLoading(false);
+    setAuthLoading(false);
+    setIdentityLoading(false);
+
+    resetRuntimeRefs();
+  }, [resetRuntimeRefs]);
+
+  const refreshUserProfileDoc = useCallback(async (currentUser) => {
     if (!currentUser?.uid) {
       setUserData(null);
-      setProgressData(null);
-      return { userDoc: null, progressDoc: null };
+      return null;
     }
 
     const db = await getDb();
-
     const userRef = await docLazy(db, "users", currentUser.uid);
-    const progressRef = await docLazy(db, "progress", currentUser.uid);
-
-    const [userSnap, progressSnap] = await Promise.all([
-      getDocLazy(userRef),
-      getDocLazy(progressRef),
-    ]);
+    const userSnap = await getDocLazy(userRef);
 
     const userDoc = userSnap.exists() ? userSnap.data() : null;
-    const progressDoc = progressSnap.exists() ? progressSnap.data() : null;
-
     setUserData(userDoc);
-    setProgressData(progressDoc);
 
-    return { userDoc, progressDoc };
+    return userDoc;
   }, []);
 
-  const refreshSubscription = useCallback(
-    async (userParam, options = {}) => {
-      const currentUser = userParam || user;
-      const force = options.force === true;
+  const refreshProgressData = useCallback(async (currentUser) => {
+    if (!currentUser?.uid) {
+      setProgressData(null);
+      return null;
+    }
 
-      if (!currentUser) {
-        setSubscription(null);
-        setSubscriptionLoading(false);
-        return null;
-      }
+    const db = await getDb();
+    const progressRef = await docLazy(db, "progress", currentUser.uid);
+    const progressSnap = await getDocLazy(progressRef);
 
-      if (subscriptionInFlightRef.current) {
-        return subscription;
-      }
+    const progressDoc = progressSnap.exists() ? progressSnap.data() : null;
+    setProgressData(progressDoc);
 
-      const now = Date.now();
-      const cooldownMs = 15000;
+    return progressDoc;
+  }, []);
 
-      if (!force && now < lastSubscriptionFetchRef.current) {
-        return subscription;
-      }
+  const refreshSubscription = useCallback(async (userParam, options = {}) => {
+    const currentUser = userParam || null;
+    const force = options.force === true;
 
-      if (!force && now - lastSubscriptionFetchRef.current < cooldownMs) {
-        return subscription;
-      }
+    if (!currentUser) {
+      setSubscription(null);
+      setSubscriptionLoading(false);
+      return null;
+    }
 
-      subscriptionInFlightRef.current = true;
-      lastSubscriptionFetchRef.current = now;
-      setSubscriptionLoading(true);
+    if (subscriptionInFlightRef.current && !force) {
+      return subscriptionRef.current;
+    }
 
-      try {
-        let token = tokenCacheRef.current;
+    const now = Date.now();
+    const cooldownMs = 15000;
 
-        if (!token || Date.now() - tokenTimeRef.current > 60000) {
-          try {
-            token = await currentUser.getIdToken();
-            tokenCacheRef.current = token;
-            tokenTimeRef.current = Date.now();
-          } catch (err) {
-            console.warn("⚠️ Firebase token falló:", err?.message);
-            token = null;
-          }
+    if (!force && now < lastSubscriptionFetchRef.current) {
+      return subscriptionRef.current;
+    }
+
+    if (!force && now - lastSubscriptionFetchRef.current < cooldownMs) {
+      return subscriptionRef.current;
+    }
+
+    subscriptionInFlightRef.current = true;
+    lastSubscriptionFetchRef.current = now;
+    setSubscriptionLoading(true);
+
+    try {
+      let token = tokenCacheRef.current;
+
+      if (!token || Date.now() - tokenTimeRef.current > 60000) {
+        try {
+          token = await currentUser.getIdToken();
+          tokenCacheRef.current = token;
+          tokenTimeRef.current = Date.now();
+        } catch (err) {
+          console.warn("⚠️ Firebase token falló:", err?.message);
+          token = null;
         }
-
-        const sub = await fetchMySubscription(currentUser, token);
-        setSubscription(sub);
-        return sub;
-      } catch (error) {
-        console.error("❌ Error cargando suscripción:", error);
-
-        if (
-          error?.message?.includes("Too many requests") ||
-          String(error).includes("429")
-        ) {
-          lastSubscriptionFetchRef.current = Date.now() + 30000;
-        }
-
-        const fallback =
-          subscription || { status: "none", active: false, plan: null };
-
-        setSubscription((prev) => prev || fallback);
-        return fallback;
-      } finally {
-        subscriptionInFlightRef.current = false;
-        setSubscriptionLoading(false);
       }
-    },
-    [user, subscription]
-  );
+
+      const sub = await fetchMySubscription(currentUser, token);
+      setSubscription(sub);
+      return sub;
+    } catch (error) {
+      console.error("❌ Error cargando suscripción:", error);
+
+      if (
+        error?.message?.includes("Too many requests") ||
+        String(error).includes("429")
+      ) {
+        lastSubscriptionFetchRef.current = Date.now() + 30000;
+      }
+
+      const fallback =
+        subscriptionRef.current || {
+          status: "none",
+          active: false,
+          plan: null,
+        };
+
+      setSubscription((prev) => prev || fallback);
+      return fallback;
+    } finally {
+      subscriptionInFlightRef.current = false;
+      setSubscriptionLoading(false);
+    }
+  }, []);
 
   const markPhoneSaved = useCallback((phoneNumber) => {
     setUserData((prev) => ({
@@ -234,6 +267,12 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    if (canShowPrompt && user) {
+      setShowInstallBanner(true);
+    }
+  }, [canShowPrompt, user]);
+
+  useEffect(() => {
     let unsub = null;
     let mounted = true;
 
@@ -251,23 +290,43 @@ export function AuthProvider({ children }) {
           setAuthLoading(false);
 
           if (!currentUser) {
-            setUser(null);
-            setUserData(null);
-            setProgressData(null);
-            setSubscription(null);
-            setSubscriptionLoading(false);
-            setIdentityLoading(false);
+            const redirectAlreadyChecked = redirectCheckFinishedRef.current;
 
-            tokenCacheRef.current = null;
-            tokenTimeRef.current = 0;
-            hasResolvedBootRouteRef.current = false;
+            clearSessionState();
 
-            if (!redirectPending || redirectCheckFinishedRef.current) {
+            if (!redirectPending || redirectAlreadyChecked) {
               sessionStorage.removeItem("googleAuthInProgress");
+            }
+
+            const postLogoutPath = sessionStorage.getItem("postLogoutPath");
+
+            if (postLogoutPath) {
+              sessionStorage.removeItem("postLogoutPath");
+
+              if (postLogoutPath.startsWith("/academia/pro")) {
+                replaceAppRoute("/academia/demo");
+                return;
+              }
+
+              if (postLogoutPath.startsWith("/perfil")) {
+                replaceAppRoute("/");
+                return;
+              }
+
+              if (postLogoutPath.startsWith("/herramientas")) {
+                replaceAppRoute("/herramientas");
+                return;
+              }
+
+              replaceAppRoute(postLogoutPath);
+              return;
             }
 
             return;
           }
+
+          const isNewSession = currentUidRef.current !== currentUser.uid;
+          currentUidRef.current = currentUser.uid;
 
           setUser(currentUser);
           setIdentityLoading(true);
@@ -276,10 +335,10 @@ export function AuthProvider({ children }) {
           let subDoc = null;
 
           try {
-            const docs = await refreshUserDocs(currentUser);
-            userDoc = docs?.userDoc || null;
-
-            subDoc = await refreshSubscription(currentUser);
+            [userDoc, subDoc] = await Promise.all([
+              refreshUserProfileDoc(currentUser),
+              refreshSubscription(currentUser),
+            ]);
           } finally {
             if (mounted) {
               sessionStorage.removeItem("googleAuthInProgress");
@@ -287,42 +346,50 @@ export function AuthProvider({ children }) {
             }
           }
 
-          if (mounted && canShowPrompt) {
-            setShowInstallBanner(true);
-          }
+          if (!mounted) return;
+
+          refreshProgressData(currentUser).catch((error) => {
+            console.warn("⚠️ No se pudo cargar progress:", error?.message);
+          });
 
           const intent = getAuthIntent();
           const currentPath = getCurrentAppPath();
 
           const shouldResolveRoute =
             !hasResolvedBootRouteRef.current &&
-            (redirectPending ||
+            (isNewSession ||
+              redirectPending ||
               !!intent?.redirectTo ||
               isRouteEligibleForAutoResolution(currentPath));
 
           if (!shouldResolveRoute) {
             hasResolvedBootRouteRef.current = true;
+            authNavigationResolvedRef.current = true;
             return;
           }
 
           const result = resolvePostAuthRoute({
             user: currentUser,
             userData: userDoc,
-            subscription: subDoc || subscription,
+            subscription: subDoc || subscriptionRef.current,
             intent,
+            currentPath,
           });
 
           if (!result?.path) {
             hasResolvedBootRouteRef.current = true;
+            authNavigationResolvedRef.current = true;
             return;
           }
 
           if (isSameRoute(currentPath, result.path)) {
             hasResolvedBootRouteRef.current = true;
+            authNavigationResolvedRef.current = true;
             return;
           }
 
           hasResolvedBootRouteRef.current = true;
+          authNavigationResolvedRef.current = true;
 
           if (!isPendingIdentityPath(result.path)) {
             clearAuthIntent();
@@ -370,34 +437,28 @@ export function AuthProvider({ children }) {
         unsub();
       }
     };
-  }, [canShowPrompt, refreshSubscription, refreshUserDocs, subscription]);
+  }, [
+    clearSessionState,
+    refreshProgressData,
+    refreshSubscription,
+    refreshUserProfileDoc,
+  ]);
 
   const logout = useCallback(async () => {
     const auth = await getAuth();
     const { signOut } = await import("firebase/auth");
+
+    const currentPath = getCurrentAppPath();
+    sessionStorage.setItem("postLogoutPath", currentPath);
 
     await signOut(auth);
 
     sessionStorage.removeItem("googleAuthInProgress");
     clearAuthIntent();
 
-    setUser(null);
-    setUserData(null);
-    setProgressData(null);
-    setSubscription(null);
-    setSubscriptionLoading(false);
-    setAuthLoading(false);
-    setIdentityLoading(false);
-
-    tokenCacheRef.current = null;
-    tokenTimeRef.current = 0;
-    lastSubscriptionFetchRef.current = 0;
-    subscriptionInFlightRef.current = false;
     redirectCheckFinishedRef.current = false;
-    hasResolvedBootRouteRef.current = false;
-
-    replaceAppRoute("/");
-  }, []);
+    clearSessionState();
+  }, [clearSessionState]);
 
   const handleAccept = async () => {
     await promptInstall();
@@ -432,7 +493,8 @@ export function AuthProvider({ children }) {
       loading,
       logout,
 
-      refreshUserDocs: () => refreshUserDocs(user),
+      refreshUserDocs: () => refreshUserProfileDoc(user),
+      refreshProgressData: () => refreshProgressData(user),
       refreshSubscription: (options) => refreshSubscription(user, options),
 
       markPhoneSaved,
@@ -453,6 +515,7 @@ export function AuthProvider({ children }) {
       phoneVerified: phoneOk,
 
       needsProOnboarding: proActive && (!emailOk || !phoneOk),
+      authNavigationResolved: authNavigationResolvedRef.current,
 
       hasProgress: !!progressData,
     };
@@ -466,7 +529,8 @@ export function AuthProvider({ children }) {
     identityLoading,
     loading,
     logout,
-    refreshUserDocs,
+    refreshUserProfileDoc,
+    refreshProgressData,
     refreshSubscription,
     markPhoneSaved,
     setIdentityConflict,

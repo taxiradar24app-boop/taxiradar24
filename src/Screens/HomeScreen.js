@@ -1,19 +1,12 @@
-// ======================================================================
-// 🏠 HOME SCREEN — UX optimizada
-// Portal principal del ecosistema TaxiRadar24
-// - Mantiene SmartNavigation
-// - Reduce repetición de mensaje
-// - Refuerza Academia + Herramientas
-// - Añade acceso directo para usuarios con cuenta
-// ======================================================================
-
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSmartNavigation } from "@/utils/SmartNavigation";
+import { useAuth } from "@/context/AuthContext";
 
-import { PrimaryButton } from "@/components/Buttons/ButtonsAcademia";
 import LoginId, { LoginIdText } from "@/components/Buttons/LoginId";
+import { PrimaryButton } from "@/components/Buttons/ButtonsAcademia";
 import { ToolsPrimaryButton } from "@/Tools/componentsTools/Buttons/BotonGoTools";
+import MobileUserDrawerLite from "@/components/HeaderBox/MobileUserDrawerLite";
 
 import {
   Container,
@@ -57,9 +50,6 @@ import {
   FadeInSection,
 } from "./../Styles/homeStyles";
 
-/* =========================
-   Hook para animación FadeIn
-========================= */
 function useScrollFadeIn() {
   const ref = useRef(null);
 
@@ -86,12 +76,10 @@ function useScrollFadeIn() {
   return ref;
 }
 
-/* =========================
-   HOME SCREEN
-========================= */
 export default function HomeScreen() {
   const navigate = useNavigate();
   const { goAcademy, goTools } = useSmartNavigation();
+  const { user } = useAuth();
 
   const overviewRef = useScrollFadeIn();
   const stepsRef = useScrollFadeIn();
@@ -101,9 +89,24 @@ export default function HomeScreen() {
     navigate("/login");
   };
 
+  const handleGoTools = () => {
+    if (!user) {
+      navigate("/login", {
+        state: {
+          redirectTo: "/herramientas",
+          source: "tools_home_cta_gate",
+        },
+      });
+      return;
+    }
+
+    goTools();
+  };
+
   return (
     <Container>
-      {/* HERO PRINCIPAL */}
+      <MobileUserDrawerLite />
+
       <HeroSection>
         <HeroContent>
           <HeroTag>Academia online para taxistas de Baleares</HeroTag>
@@ -125,14 +128,15 @@ export default function HomeScreen() {
             <PrimaryButton onClick={goAcademy}>
               Entrar a la Academia
             </PrimaryButton>
-             </HeroCTA>
+          </HeroCTA>
+
+          {!user && (
             <HeroCTA>
-           <LoginId onClick={goLogin}>
-            <LoginIdText>Login / Registro</LoginIdText>
-          </LoginId>
-             </HeroCTA>
-         
-         
+              <LoginId onClick={goLogin}>
+                <LoginIdText>Login / Registro</LoginIdText>
+              </LoginId>
+            </HeroCTA>
+          )}
 
           <HeroStatsRow>
             <HeroStat>
@@ -173,33 +177,30 @@ export default function HomeScreen() {
         </HeroSideCard>
       </HeroSection>
 
-      {/* HERRAMIENTAS TAXISTAS */}
-      
       <FadeInSection ref={overviewRef}>
         <Section>
-          <HeroSideCardTools >
-          <SectionHeader>
-            <HeroCTA>
-              <SectionTag>TaxiRadar24 para taxistas</SectionTag>
-            </HeroCTA>
+          <HeroSideCardTools>
+            <SectionHeader>
+              <HeroCTA>
+                <SectionTag>TaxiRadar24 para taxistas</SectionTag>
+              </HeroCTA>
 
-            <SectionTitle>
-              👉 Herramientas profesional para taxistas
-            </SectionTitle>
+              <SectionTitle>
+                👉 Herramientas profesional para taxistas
+              </SectionTitle>
 
-            <SectionSubtitle>
-              Herramientas diseñadas para mejorar tu operativa diaria como
-              taxista profesional.
-            </SectionSubtitle>
+              <SectionSubtitle>
+                Herramientas diseñadas para mejorar tu operativa diaria como
+                taxista profesional.
+              </SectionSubtitle>
 
-            <HeroCTA>
-              <ToolsPrimaryButton onClick={goTools}>
-                🔧 Herramientas para taxistas
-              </ToolsPrimaryButton>
-            </HeroCTA>
-          </SectionHeader>
-      </HeroSideCardTools>
-
+              <HeroCTA>
+                <ToolsPrimaryButton onClick={handleGoTools}>
+                  🔧 Herramientas para taxistas
+                </ToolsPrimaryButton>
+              </HeroCTA>
+            </SectionHeader>
+          </HeroSideCardTools>
 
           <FeatureGrid>
             <FeatureCard>
@@ -262,7 +263,6 @@ export default function HomeScreen() {
         </Section>
       </FadeInSection>
 
-      {/* TEXTO EXTRA */}
       <FadeInSection ref={stepsRef}>
         <Section background="alt">
           <SectionHeader>
@@ -305,7 +305,6 @@ export default function HomeScreen() {
         </Section>
       </FadeInSection>
 
-      {/* CTA FINAL */}
       <FinalCTASection ref={testimonialsRef}>
         <FinalCTATitle>
           Empieza por el camino que necesitas hoy
@@ -322,7 +321,7 @@ export default function HomeScreen() {
             Entrar a la Academia
           </PrimaryButton>
 
-          <ToolsPrimaryButton onClick={goTools}>
+          <ToolsPrimaryButton onClick={handleGoTools}>
             🔧 Herramientas para taxistas
           </ToolsPrimaryButton>
         </HeroCTA>

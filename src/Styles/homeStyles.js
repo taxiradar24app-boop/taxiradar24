@@ -783,3 +783,150 @@ export const ToolsCTAButton = styled.div`
     width: 100%;
   }
 `;
+export const MobileUserButton = styled.button`
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 14px);
+  right: 14px;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10020;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.32);
+
+  img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    display: block;
+  }
+
+  @media (max-width: 780px) {
+    display: inline-flex;
+  }
+`;
+
+export const HomeMobileMenuOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.48);
+  backdrop-filter: blur(3px);
+  opacity: ${({ $open }) => ($open ? 1 : 0)};
+  pointer-events: ${({ $open }) => ($open ? "auto" : "none")};
+  transition: opacity 220ms ease;
+  z-index: 10030;
+
+  @media (min-width: 781px) {
+    display: none;
+  }
+`;
+
+export const HomeMobileMenuPanel = styled.aside`
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(84vw, 320px);
+  height: 100dvh;
+  background: rgba(10, 21, 40, 0.98);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: -18px 0 36px rgba(0, 0, 0, 0.34);
+  padding:
+    calc(env(safe-area-inset-top, 0px) + 18px)
+    18px
+    calc(env(safe-area-inset-bottom, 0px) + 22px);
+  transform: translateX(${({ $open }) => ($open ? "0%" : "100%")});
+  transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 10040;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  @media (min-width: 781px) {
+    display: none;
+  }
+`;
+
+export const HomeMobileMenuHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 28px;
+  margin-bottom: 16px;
+`;
+
+export const HomeMobileMenuAvatar = styled.img`
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+`;
+
+export const HomeMobileMenuName = styled.div`
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #f8fafc;
+  word-break: break-word;
+`;
+
+export const HomeMobileMenuClose = styled.button`
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 14px);
+  right: 14px;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 1.65rem;
+  line-height: 1;
+  cursor: pointer;
+`;
+
+export const HomeMobileMenuDivider = styled.div`
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 12px 0 14px;
+`;
+
+export const HomeMobileMenuList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const HomeMobileMenuItem = styled.button`
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.94);
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 12px 4px;
+  cursor: pointer;
+
+  &:hover {
+    color: #58e63d;
+  }
+`;
+
+export const HomeMobileMenuPrimaryButton = styled.button`
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #58e63d, #10a37f);
+  color: #08111f;
+  font-size: 0.98rem;
+  font-weight: 800;
+  padding: 14px 16px;
+  cursor: pointer;
+  margin-bottom: 6px;
+`;

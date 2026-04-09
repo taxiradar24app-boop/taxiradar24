@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
+import React, { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { getCategoryData } from "../utils/mapHelpers";
 
 const LeafletMapInner = lazy(() => import("./LeafletMapInner"));
@@ -155,6 +155,7 @@ const MapView = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
+          observer.disconnect();
         }
       },
       { root: null, rootMargin, threshold: 0.12 }
@@ -175,13 +176,15 @@ const MapView = ({
     setShouldLoadMap(true);
   };
 
-  const data = Array.isArray(getCategoryData(category))
-    ? getCategoryData(category)
-    : [];
+  const data = useMemo(() => {
+    const categoryData = getCategoryData(category);
+    return Array.isArray(categoryData) ? categoryData : [];
+  }, [category]);
 
-  const visibleData = activeItem
-    ? data.filter((item) => item.id === activeItem)
-    : data;
+  const visibleData = useMemo(() => {
+    if (!activeItem) return data;
+    return data.filter((item) => item.id === activeItem);
+  }, [activeItem, data]);
 
   if (!shouldLoadMap) {
     return (

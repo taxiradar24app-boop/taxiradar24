@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import MobileUserDrawerLite from "@/components/HeaderBox/MobileUserDrawerLite";
 
 import {
   PageWrapper,
@@ -32,8 +33,28 @@ export default function ToolsLanding() {
   const goCruisers = () => navigate("/herramientas/cruises");
   const goHome = () => navigate("/");
 
+  const toolsMenuItems = [
+    {
+      key: "inicio",
+      label: "Inicio",
+      action: () => navigate("/"),
+    },
+    {
+      key: "academia",
+      label: "Academia",
+      action: () => navigate("/academia/demo"),
+    },
+    {
+      key: "herramientas",
+      label: "Herramientas",
+      action: () => navigate("/herramientas"),
+    },
+  ];
+
   return (
     <PageWrapper>
+      <MobileUserDrawerLite items={toolsMenuItems} />
+
       <HeroSection>
         <TopBar>
           <BackButtonTools to="/" />
@@ -79,39 +100,43 @@ export default function ToolsLanding() {
               <ModuleCTA>Ver: 12 Horas →</ModuleCTA>
             </ModuleFooter>
           </FeatureCard>
+
           <FeatureCard onClick={goBoats} $clickable>
-          <FeatureIcon
-            src="/assets/icono/icono_boat_navegando.webp"
-            alt="Icono ferries"
-            $type="port"
-          />
-          <FeatureTitle $type="ferries">Ferries</FeatureTitle>
-          <FeatureText>
-            Consulta rápida de ferries con llegada a Palma y horarios de entrada al puerto.
-          </FeatureText>
+            <FeatureIcon
+              src="/assets/icono/icono_boat_navegando.webp"
+              alt="Icono ferries"
+              $type="ferries"
+            />
+            <FeatureTitle $type="ferries">Ferries</FeatureTitle>
+            <FeatureText>
+              Consulta rápida de ferries con llegada a Palma y horarios de
+              entrada al puerto.
+            </FeatureText>
 
-          <ModuleFooter>
-            <span />
-            <ModuleCTA>Ver ferries →</ModuleCTA>
-          </ModuleFooter>
-        </FeatureCard>
+            <ModuleFooter>
+              <span />
+              <ModuleCTA>Ver ferries →</ModuleCTA>
+            </ModuleFooter>
+          </FeatureCard>
 
-        <FeatureCard onClick={goCruisers} $clickable>
-          <FeatureIcon
-            src="/assets/icono/icono_boat_navegando.webp"
-            alt="Icono cruceros"
-            $type="port"
-          />
-          <FeatureTitle $type="cruises">Cruceros</FeatureTitle>
-          <FeatureText>
-            Consulta los cruceros previstos en Palma y detecta los horarios de mayor movimiento.
-          </FeatureText>
+          <FeatureCard onClick={goCruisers} $clickable>
+            <FeatureIcon
+              src="/assets/icono/icono_boat_navegando.webp"
+              alt="Icono cruceros"
+              $type="cruises"
+            />
+            <FeatureTitle $type="cruises">Cruceros</FeatureTitle>
+            <FeatureText>
+              Consulta los cruceros previstos en Palma y detecta los horarios de
+              mayor movimiento.
+            </FeatureText>
 
-          <ModuleFooter>
-            <span />
-            <ModuleCTA>Ver cruceros →</ModuleCTA>
-          </ModuleFooter>
-        </FeatureCard>
+            <ModuleFooter>
+              <span />
+              <ModuleCTA>Ver cruceros →</ModuleCTA>
+            </ModuleFooter>
+          </FeatureCard>
+
           <FeatureCard onClick={goTrain} $clickable>
             <FeatureIcon
               src="/assets/icono/icono_tren_viajando.webp"

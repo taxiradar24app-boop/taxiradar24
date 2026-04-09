@@ -1,9 +1,23 @@
-// src/navigator/sections/auth/RequirePlan.js
-
 import React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import { resolvePostAuthRoute } from "@/navigator/postAuthResolver";
+
+function persistPostLoginIntent(path) {
+  try {
+    const normalizedPath = path || "/";
+
+    localStorage.setItem(
+      "postLoginIntent",
+      JSON.stringify({
+        redirectTo: normalizedPath,
+        source: "require_plan_guard",
+        createdAt: new Date().toISOString(),
+      })
+    );
+  } catch (error) {
+    console.warn("⚠️ No se pudo persistir postLoginIntent:", error?.message);
+  }
+}
 
 export default function RequirePlan({ plan, children }) {
   const {
@@ -15,7 +29,7 @@ export default function RequirePlan({ plan, children }) {
   } = useAuth();
 
   const location = useLocation();
-  const redirectTo = location.pathname + location.search;
+  const redirectTo = `${location.pathname}${location.search || ""}`;
 
   if (loading || subscriptionLoading) {
     return (
@@ -32,39 +46,21 @@ export default function RequirePlan({ plan, children }) {
     );
   }
 
-  const result = resolvePostAuthRoute({
-    user,
-    userData,
-    subscription,
-    intent: { redirectTo },
-  });
-
-  if (result.path !== redirectTo) {
-    const needsRedirectState =
-      result.path === "/check-email" ||
-      result.path === "/verify" ||
-      result.path === "/identity-merge";
-
-    return (
-      <Navigate
-        to={result.path}
-        replace
-        state={needsRedirectState ? { redirectTo } : undefined}
-      />
-    );
+  if (!user) {
+    persistPostLoginIntent(redirectTo);
+    return <Navigate to="/login" replace />;
   }
 
-  if (plan === "ACADEMIA_PRO") {
-    const isPro = subscription?.active === true;
-
-    if (!isPro) {
-      return <Navigate to="/academia/upgrade" replace />;
-    }
-
-    return children ? children : <Outlet />;
+  if (!user.emailVerified) {
+    return <Navigate to="/check-email" replace />;
   }
 
-  if (userData?.subscription !== plan) {
+  if (!userData?.phoneVerified) {
+    return <Navigate to="/verify" replace />;
+  }
+
+  if (plan === "ACADEMIA_PRO" && !subscription?.active) {
+    persistPostLoginIntent(redirectTo);
     return <Navigate to="/academia/upgrade" replace />;
   }
 

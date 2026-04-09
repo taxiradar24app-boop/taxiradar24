@@ -1,16 +1,17 @@
-import React, { useEffect, Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import { HashRouter } from "react-router-dom";
 
 import { ThemeProvider } from "./context/ThemeContext.js";
 import { GlobalStyle } from "./Styles/globalStyles";
-
 import CookieConsent from "./components/CookieConsent";
 
-// ✅ Navigator lazy OK
 const Navigator = lazy(() => import("./navigator/navigator"));
 
-// ❌ ELIMINAMOS lazy en AuthProvider
-import { AuthProvider } from "./context/AuthContext";
+const AuthProvider = lazy(() =>
+  import("./context/AuthContext").then((mod) => ({
+    default: mod.AuthProvider || mod.default,
+  }))
+);
 
 const appScreenFallbackStyle = {
   height: "100vh",
@@ -21,6 +22,10 @@ const appScreenFallbackStyle = {
   fontSize: "1.1rem",
   background: "#0a1528",
 };
+
+function AppFallback() {
+  return <div style={appScreenFallbackStyle}>Cargando…</div>;
+}
 
 export default function App() {
   useEffect(() => {
@@ -38,16 +43,13 @@ export default function App() {
       <HashRouter>
         <GlobalStyle />
 
-        {/* ✅ AuthProvider SIN lazy */}
-        <AuthProvider>
-          <Suspense
-            fallback={
-              <div style={appScreenFallbackStyle}>Cargando…</div>
-            }
-          >
-            <Navigator />
-          </Suspense>
-        </AuthProvider>
+        <Suspense fallback={<AppFallback />}>
+          <AuthProvider>
+            <Suspense fallback={<AppFallback />}>
+              <Navigator />
+            </Suspense>
+          </AuthProvider>
+        </Suspense>
 
         <CookieConsent />
       </HashRouter>
