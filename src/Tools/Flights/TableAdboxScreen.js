@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useAdboxFlights } from "@/Tools/Flights/hooksToolsFlights/useAdboxFlights";
 import ButtonBackSlot from "@/components/Buttons/ButtonBackSlot";
 import {
@@ -27,15 +27,60 @@ import { useThemeMode } from "@/context/ThemeContext";
 import { useSmartNavigation } from "@/utils/SmartNavigation";
 
 export default function TableAdboxScreen() {
-  const { flights = [], loading, updatedAt, error } = useAdboxFlights();
+  const { flights = [], loading, updatedAt, error, stale } = useAdboxFlights();
   const { mode } = useThemeMode();
   const { goTools } = useSmartNavigation();
+  const wakeLockRef = useRef(null);
+
+  useEffect(() => {
+    let visibilityHandler = null;
+
+    async function requestWakeLock() {
+      try {
+        if ("wakeLock" in navigator && document.visibilityState === "visible") {
+          const wakeLock = await navigator.wakeLock.request("screen");
+          wakeLockRef.current = wakeLock;
+
+          wakeLock.addEventListener("release", () => {
+            wakeLockRef.current = null;
+          });
+        }
+      } catch (err) {
+        console.warn("No se pudo activar el Wake Lock:", err?.message);
+      }
+    }
+
+    requestWakeLock();
+
+    visibilityHandler = async () => {
+      if (document.visibilityState === "visible" && !wakeLockRef.current) {
+        await requestWakeLock();
+      }
+    };
+
+    document.addEventListener("visibilitychange", visibilityHandler);
+
+    return () => {
+      document.removeEventListener("visibilitychange", visibilityHandler);
+
+      if (wakeLockRef.current) {
+        wakeLockRef.current.release().catch(() => {});
+        wakeLockRef.current = null;
+      }
+    };
+  }, []);
+
+  const nowTs = Date.now();
 
   const getDisplayStatus = (flight) => {
     try {
-      const now = new Date();
-      const eta = new Date(flight.estimated_arrival);
-      const diffMin = (now - eta) / 60000;
+      const etaMs = new Date(
+        flight.estimated_arrival || flight.scheduled_arrival
+      ).getTime();
+
+      if (Number.isNaN(etaMs)) return flight.status;
+
+      const diffMin = (nowTs - etaMs) / 60000;
 
       if (diffMin > 0 && diffMin <= 15) return "landed";
       if (diffMin > 15) return "expired";
@@ -52,12 +97,16 @@ export default function TableAdboxScreen() {
         display_status: getDisplayStatus(flight),
       }))
       .filter((flight) => flight.display_status !== "expired")
-      .sort(
-        (a, b) =>
-          new Date(a.estimated_arrival).getTime() -
-          new Date(b.estimated_arrival).getTime()
-      );
-  }, [flights]);
+      .sort((a, b) => {
+        const aTime = new Date(
+          a.estimated_arrival || a.scheduled_arrival || 0
+        ).getTime();
+        const bTime = new Date(
+          b.estimated_arrival || b.scheduled_arrival || 0
+        ).getTime();
+        return aTime - bTime;
+      });
+  }, [flights, nowTs]);
 
   const hourlyForecast = useMemo(() => {
     const bucket = {};
@@ -161,7 +210,7 @@ export default function TableAdboxScreen() {
 
       <MetaRow>
         <UpdatePill>
-          🕒 Última actualización:{" "}
+          {stale ? "⚠️ Datos desactualizados · " : "🕒 Última actualización: "}
           {updatedAt
             ? new Date(updatedAt).toLocaleTimeString([], {
                 hour: "2-digit",
@@ -195,7 +244,7 @@ export default function TableAdboxScreen() {
               </tr>
             ) : (
               processedFlights.map((flight) => (
-                <tr key={flight.id}>
+                <tr key={flight.id || `${flight.flight_number}-${flight.estimated_arrival}`}>
                   <td className="hide-flight-mobile">
                     <FlightCode>{flight.flight_number || "—"}</FlightCode>
                   </td>

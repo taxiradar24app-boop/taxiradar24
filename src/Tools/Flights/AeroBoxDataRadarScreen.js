@@ -87,7 +87,7 @@ export default function FlightAeroDataBoxScreen() {
 
     async function requestWakeLock() {
       try {
-        if ("wakeLock" in navigator) {
+        if ("wakeLock" in navigator && document.visibilityState === "visible") {
           const wakeLock = await navigator.wakeLock.request("screen");
           wakeLockRef.current = wakeLock;
 
@@ -154,7 +154,6 @@ export default function FlightAeroDataBoxScreen() {
   }, []);
 
   return (
-    
     <Container>
       <TopBar>
         <ButtonBackSlot

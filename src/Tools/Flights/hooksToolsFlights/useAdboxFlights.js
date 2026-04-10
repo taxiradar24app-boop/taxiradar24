@@ -1,62 +1,96 @@
-// ✅ useAdboxFlights.js
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const ENDPOINT =
+  "https://taxitip-worker.taxitip.workers.dev/vuelos/adbox/next12h";
 
 export function useAdboxFlights() {
   const [flights, setFlights] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [updatedAt, setUpdatedAt] = useState(Date.now());
+  const [updatedAt, setUpdatedAt] = useState(null);
   const [error, setError] = useState(null);
-  const [stale, setStale] = useState(false); // ⚠️ aviso de datos viejos
+  const [stale, setStale] = useState(false);
+
+  const abortRef = useRef(null);
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
-    let alive = true;
-    const cleanup = {};
+    isMountedRef.current = true;
 
     async function fetchFlights() {
       try {
+        if (abortRef.current) {
+          abortRef.current.abort();
+        }
+
+        const controller = new AbortController();
+        abortRef.current = controller;
+
         setError(null);
-        const res = await fetch(
-          "https://taxitip-worker.taxitip.workers.dev/vuelos/adbox/next12h",
-          { cache: "no-store" }
-        );
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const res = await fetch(ENDPOINT, {
+          method: "GET",
+          cache: "no-store",
+          signal: controller.signal,
+    
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
         const data = await res.json();
-        if (!alive) return;
 
-        setFlights(Array.isArray(data.items) ? data.items : []);
-        setUpdatedAt(data.updatedAt || Date.now());
+        if (!isMountedRef.current) return;
 
-        // 🕒 control de obsolescencia
-        const ageMs = Date.now() - (data.updatedAt || Date.now());
-        setStale(ageMs > 15 * 60 * 1000); // 15 min sin actualizar
+        const nextFlights = Array.isArray(data.items) ? data.items : [];
+        const nextUpdatedAt = data.updatedAt || Date.now();
+        const ageMs = Date.now() - new Date(nextUpdatedAt).getTime();
+
+        setFlights(nextFlights);
+        setUpdatedAt(nextUpdatedAt);
+        setStale(ageMs > 15 * 60 * 1000);
       } catch (e) {
-        if (!alive) return;
+        if (e?.name === "AbortError") return;
+        if (!isMountedRef.current) return;
+
         console.error("❌ useAdboxFlights error:", e);
         setError("No se pudieron cargar los vuelos.");
-        setFlights([]);
+        setStale(true);
       } finally {
-        if (alive) setLoading(false);
+        if (isMountedRef.current) {
+          setLoading(false);
+        }
       }
     }
 
-    // 🚀 Llamada inicial inmediata
+    function handleVisibilityOrFocus() {
+      if (document.visibilityState === "visible") {
+        fetchFlights();
+      }
+    }
+
     fetchFlights();
 
-    // ⏳ Desfase inicial 2 min para no coincidir con CRON del Worker
-    const initialOffset = 2 * 60 * 1000;
+    const intervalId = setInterval(fetchFlights, 30000);
 
-    const timeout = setTimeout(() => {
-      fetchFlights();
-      // 🔁 Frecuencia cada 1 hora (plan gratis AeroDataBox)
-      const id = setInterval(fetchFlights, 60 * 60 * 1000);
-      cleanup.id = id;
-    }, initialOffset);
+    document.addEventListener("visibilitychange", handleVisibilityOrFocus);
+    window.addEventListener("focus", handleVisibilityOrFocus);
+    window.addEventListener("online", fetchFlights);
 
-    // 🧹 Limpieza al desmontar
     return () => {
-      alive = false;
-      clearTimeout(timeout);
-      if (cleanup.id) clearInterval(cleanup.id);
+      isMountedRef.current = false;
+
+      clearInterval(intervalId);
+      document.removeEventListener(
+        "visibilitychange",
+        handleVisibilityOrFocus
+      );
+      window.removeEventListener("focus", handleVisibilityOrFocus);
+      window.removeEventListener("online", fetchFlights);
+
+      if (abortRef.current) {
+        abortRef.current.abort();
+      }
     };
   }, []);
 
