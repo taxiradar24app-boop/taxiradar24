@@ -1,7 +1,8 @@
-const CACHE_NAME = "taxiradar24-cache-v35";
+const CACHE_NAME = "taxiradar24-cache-v38";
 
 const STATIC_ASSETS = [
   "/",
+  "/index.html",
   "/manifest.json",
   "/assets/favicon.ico",
   "/assets/favicon-16x16.png",
@@ -12,11 +13,8 @@ const STATIC_ASSETS = [
   "/assets/apple-touch-icon.v2.png",
 ];
 
-// =======================
-// INSTALL
-// =======================
 self.addEventListener("install", (event) => {
-  console.log("[SW] Installing v34");
+  console.log("[SW] Installing", CACHE_NAME);
 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
@@ -25,11 +23,8 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
-// =======================
-// ACTIVATE
-// =======================
 self.addEventListener("activate", (event) => {
-  console.log("[SW] Activated v34");
+  console.log("[SW] Activated", CACHE_NAME);
 
   event.waitUntil(
     (async () => {
@@ -61,29 +56,26 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// =======================
-// FETCH
-// =======================
-self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") return;
+self.addEventListener("message", (event) => {
+  if (event.data?.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
 
-  const url = new URL(event.request.url);
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
+
+  if (request.method !== "GET") return;
+
+  const url = new URL(request.url);
 
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
 
-  // 🔥 CRÍTICO: nunca interceptar namespace reservado de Firebase
   if (url.pathname.startsWith("/__/")) {
-    event.respondWith(fetch(event.request));
+    event.respondWith(fetch(request));
     return;
   }
 
-  // Nunca cachear HTML principal
-  if (url.pathname === "/" || url.pathname === "/index.html") {
-    event.respondWith(fetch(event.request));
-    return;
-  }
-
-  // Nunca cachear auth / api / workers / google / firebase
   const isSensitiveRequest =
     url.pathname.startsWith("/api/") ||
     url.hostname.includes("workers.dev") ||
@@ -94,21 +86,47 @@ self.addEventListener("fetch", (event) => {
     url.hostname.includes("google.com");
 
   if (isSensitiveRequest) {
-    event.respondWith(fetch(event.request));
+    event.respondWith(fetch(request));
     return;
   }
 
-  // Assets estáticos: cache first
-  if (url.pathname.startsWith("/assets/")) {
-    event.respondWith(
-      caches.match(event.request).then((cached) => {
-        if (cached) return cached;
+  const isNavigationRequest =
+    request.mode === "navigate" ||
+    request.destination === "document" ||
+    (request.headers.get("accept") || "").includes("text/html");
 
-        return fetch(event.request).then((response) => {
+  if (isNavigationRequest) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
           if (response && response.status === 200) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, clone);
+              cache.put("/index.html", clone);
+            });
+          }
+          return response;
+        })
+        .catch(async () => {
+          const cached =
+            (await caches.match("/index.html")) || (await caches.match("/"));
+          if (cached) return cached;
+          throw new Error("No cached index.html available");
+        })
+    );
+    return;
+  }
+
+  if (url.pathname.startsWith("/assets/")) {
+    event.respondWith(
+      caches.match(request).then((cached) => {
+        if (cached) return cached;
+
+        return fetch(request).then((response) => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, clone);
             });
           }
           return response;
@@ -118,10 +136,9 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // JS / CSS: network first + validar tipo real
   if (url.pathname.endsWith(".js") || url.pathname.endsWith(".css")) {
     event.respondWith(
-      fetch(event.request)
+      fetch(request)
         .then((response) => {
           const contentType = response.headers.get("content-type") || "";
           const isJs = url.pathname.endsWith(".js");
@@ -138,27 +155,20 @@ self.addEventListener("fetch", (event) => {
           if (response && response.status === 200 && (validJs || validCss)) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, clone);
-            });
-          } else {
-            console.warn("[SW] Skipped caching invalid JS/CSS response:", {
-              path: url.pathname,
-              status: response?.status,
-              contentType,
+              cache.put(request, clone);
             });
           }
 
           return response;
         })
-        .catch(() => caches.match(event.request))
+        .catch(() => caches.match(request))
     );
     return;
   }
 
-  // JSON: network first
   if (url.pathname.endsWith(".json")) {
     event.respondWith(
-      fetch(event.request)
+      fetch(request)
         .then((response) => {
           const contentType = response.headers.get("content-type") || "";
 
@@ -169,21 +179,34 @@ self.addEventListener("fetch", (event) => {
           ) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, clone);
+              cache.put(request, clone);
             });
           }
 
           return response;
         })
-        .catch(() => caches.match(event.request))
+        .catch(() => caches.match(request))
     );
     return;
   }
+
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      if (cached) return cached;
+
+      return fetch(request).then((response) => {
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, clone);
+          });
+        }
+        return response;
+      });
+    })
+  );
 });
 
-// =======================
-// PUSH
-// =======================
 self.addEventListener("push", (event) => {
   const data = event.data ? event.data.json() : {};
   const title = data.title || "TaxiRadar24";

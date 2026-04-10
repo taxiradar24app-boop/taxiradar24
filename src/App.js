@@ -3,7 +3,7 @@ import { HashRouter } from "react-router-dom";
 
 import { ThemeProvider } from "./context/ThemeContext.js";
 import { GlobalStyle } from "./Styles/globalStyles";
-import CookieConsent from "./components/CookieConsent";
+import CookieConsent from "./PrivacyPolicies/CookieConsent.js";
 
 const Navigator = lazy(() => import("./navigator/navigator"));
 
@@ -12,6 +12,9 @@ const AuthProvider = lazy(() =>
     default: mod.AuthProvider || mod.default,
   }))
 );
+
+const COOKIE_STATUS_KEY = "taxiradar24_cookie_consent_status_v1";
+const COOKIE_PREFS_KEY = "taxiradar24_cookie_consent_v1";
 
 const appScreenFallbackStyle = {
   height: "100vh",
@@ -29,12 +32,31 @@ function AppFallback() {
 
 export default function App() {
   useEffect(() => {
-    const consent = localStorage.getItem("cookieConsent");
+    try {
+      const consentStatus = localStorage.getItem(COOKIE_STATUS_KEY);
+      const savedPrefs = localStorage.getItem(COOKIE_PREFS_KEY);
 
-    if (consent === "accepted") {
-      import("./services/analytics.js").then(({ initAnalytics }) =>
-        initAnalytics()
-      );
+      if (!consentStatus || !savedPrefs) return;
+
+      const parsedPrefs = JSON.parse(savedPrefs);
+      const analyticsAccepted = !!parsedPrefs?.analytics;
+
+      if (
+        (consentStatus === "accepted_all" || consentStatus === "customized") &&
+        analyticsAccepted
+      ) {
+        import("./services/analytics.js")
+          .then(({ initAnalytics }) => {
+            if (typeof initAnalytics === "function") {
+              initAnalytics();
+            }
+          })
+          .catch((error) => {
+            console.error("No se pudo inicializar analytics:", error);
+          });
+      }
+    } catch (error) {
+      console.error("Error leyendo el consentimiento de cookies:", error);
     }
   }, []);
 

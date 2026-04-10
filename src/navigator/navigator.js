@@ -30,6 +30,23 @@ const IdentityMergeScreen = React.lazy(() =>
   import("@/Screens/IdentityMergeScreen")
 );
 
+// PrivacyPolicies
+const PrivacyPage = React.lazy(() =>
+  import("@/PrivacyPolicies/PrivacyPage")
+);
+const CookiesPage = React.lazy(() =>
+  import("@/PrivacyPolicies/CookiesPage")
+);
+const TermsPage = React.lazy(() =>
+  import("@/PrivacyPolicies/TermsPage")
+);
+const PaymentsSubscriptionsPage = React.lazy(() =>
+  import("@/PrivacyPolicies/PaymentsSubscriptionsPage")
+);
+const LegalNoticePage = React.lazy(() =>
+  import("@/PrivacyPolicies/LegalNoticePage")
+);
+
 // Tools lazy
 const ToolsModule = React.lazy(() => import("@/Tools/ToolsModule"));
 
@@ -83,6 +100,15 @@ export default function Navigator() {
           <Route path="progreso" element={<ProgressLayout />} />
           <Route path="profile/pro-check" element={<ProfileProCheck />} />
           <Route path="identity-merge" element={<IdentityMergeScreen />} />
+
+          <Route path="privacidad" element={<PrivacyPage />} />
+          <Route path="cookies" element={<CookiesPage />} />
+          <Route path="terminos" element={<TermsPage />} />
+          <Route
+            path="pagos-y-suscripciones"
+            element={<PaymentsSubscriptionsPage />}
+          />
+          <Route path="aviso-legal" element={<LegalNoticePage />} />
         </Route>
 
         {renderRouteTree(academyRoutes)}
