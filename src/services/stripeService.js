@@ -1,4 +1,3 @@
-// src/services/stripeService.js
 import { getAuth, getDb } from "./firebaseConfig";
 import { getApiBase } from "./subscriptionService";
 import { getAuthIntent, saveAuthIntent } from "@/services/authIntentService";
@@ -38,12 +37,6 @@ async function waitForAuthenticatedUser(timeoutMs = 10000) {
 
 function getCurrentAppPath() {
   try {
-    const hash = window.location.hash || "";
-    if (hash.startsWith("#")) {
-      const hashPath = hash.slice(1);
-      return hashPath || "/";
-    }
-
     const pathname = window.location.pathname || "/";
     const search = window.location.search || "";
     return `${pathname}${search}`;

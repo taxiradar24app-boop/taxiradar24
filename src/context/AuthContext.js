@@ -36,13 +36,6 @@ const PUBLIC_AUTH_DEFERRED_ROUTES = new Set([
 
 function getCurrentAppPath() {
   try {
-    const hash = window.location.hash || "";
-
-    if (hash.startsWith("#")) {
-      const hashPath = hash.slice(1) || "/";
-      return hashPath;
-    }
-
     const pathname = window.location.pathname || "/";
     const search = window.location.search || "";
     return `${pathname}${search}`;
@@ -92,12 +85,9 @@ function replaceAppRoute(path) {
   const normalized = normalizePath(path);
 
   try {
-    const base =
-      window.location.origin + window.location.pathname.replace(/\/$/, "");
-
-    window.location.replace(`${base}/#${normalized}`);
+    window.location.replace(normalized);
   } catch {
-    window.location.hash = normalized;
+    window.location.href = normalized;
   }
 }
 

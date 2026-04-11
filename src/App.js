@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect } from "react";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 import { ThemeProvider } from "./context/ThemeContext.js";
 import { GlobalStyle } from "./Styles/globalStyles";
@@ -62,7 +62,7 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <HashRouter>
+      <BrowserRouter>
         <GlobalStyle />
 
         <Suspense fallback={<AppFallback />}>
@@ -74,7 +74,7 @@ export default function App() {
         </Suspense>
 
         <CookieConsent />
-      </HashRouter>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

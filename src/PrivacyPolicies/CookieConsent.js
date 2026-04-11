@@ -66,7 +66,7 @@ const legalItemsSeed = [
         del usuario dentro de la plataforma.
         <br />
         <br />
-        <a href="/#/privacidad">Leer política completa</a>
+        <a href="/privacidad">Leer política completa</a>
       </>
     ),
   },
@@ -80,7 +80,7 @@ const legalItemsSeed = [
         aceptar, rechazar o guardar preferencias.
         <br />
         <br />
-        <a href="/#/cookies">Leer política completa</a>
+        <a href="/cookies">Leer política completa</a>
       </>
     ),
   },
@@ -95,7 +95,7 @@ const legalItemsSeed = [
         usuario, contenidos, propiedad intelectual y límites de responsabilidad.
         <br />
         <br />
-        <a href="/#/terminos">Leer términos completos</a>
+        <a href="/terminos">Leer términos completos</a>
       </>
     ),
   },
@@ -109,7 +109,7 @@ const legalItemsSeed = [
         cancelación y la relación con Stripe como proveedor de pago.
         <br />
         <br />
-        <a href="/#/pagos-y-suscripciones">Leer política de pagos</a>
+        <a href="/pagos-y-suscripciones">Leer política de pagos</a>
       </>
     ),
   },
@@ -123,7 +123,7 @@ const legalItemsSeed = [
         legales básicos del servicio.
         <br />
         <br />
-        <a href="/#/aviso-legal">Leer aviso legal</a>
+        <a href="/aviso-legal">Leer aviso legal</a>
       </>
     ),
   },
