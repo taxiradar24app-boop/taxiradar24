@@ -1,4 +1,9 @@
-const CACHE_NAME = "taxiradar24-cache-v39";
+const CACHE_NAME = "taxiradar24-cache-v40";
+
+const APP_SHELL_CACHE = CACHE_NAME;
+const RUNTIME_CACHE = `${CACHE_NAME}-runtime`;
+const IMAGE_CACHE = `${CACHE_NAME}-images`;
+const JSON_CACHE = `${CACHE_NAME}-json`;
 
 const STATIC_ASSETS = [
   "/",
@@ -14,25 +19,26 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener("install", (event) => {
-  console.log("[SW] Installing", CACHE_NAME);
-
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(APP_SHELL_CACHE).then((cache) => cache.addAll(STATIC_ASSETS))
   );
 
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
-  console.log("[SW] Activated", CACHE_NAME);
-
   event.waitUntil(
     (async () => {
       const keys = await caches.keys();
 
       await Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) {
+          if (
+            key !== APP_SHELL_CACHE &&
+            key !== RUNTIME_CACHE &&
+            key !== IMAGE_CACHE &&
+            key !== JSON_CACHE
+          ) {
             return caches.delete(key);
           }
           return null;
@@ -71,7 +77,8 @@ self.addEventListener("fetch", (event) => {
 
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
 
-  if (url.pathname.startsWith("/__/")) {
+  const isFirebaseInternal = url.pathname.startsWith("/__/");
+  if (isFirebaseInternal) {
     event.respondWith(fetch(request));
     return;
   }
@@ -83,7 +90,8 @@ self.addEventListener("fetch", (event) => {
     url.hostname.includes("firebaseapp.com") ||
     url.hostname.includes("firebaseio.com") ||
     url.hostname.includes("gstatic.com") ||
-    url.hostname.includes("google.com");
+    url.hostname.includes("google.com") ||
+    url.hostname.includes("stripe.com");
 
   if (isSensitiveRequest) {
     event.respondWith(fetch(request));
@@ -95,99 +103,45 @@ self.addEventListener("fetch", (event) => {
     request.destination === "document" ||
     (request.headers.get("accept") || "").includes("text/html");
 
-    if (isNavigationRequest) {
-      event.respondWith(fetch(request).catch(() => caches.match("/index.html")));
-      return;
-    }
-
-  if (url.pathname.startsWith("/assets/")) {
+  if (isNavigationRequest) {
     event.respondWith(
-      caches.match(request).then((cached) => {
+      fetch(request).catch(async () => {
+        const cached =
+          (await caches.match("/index.html")) || (await caches.match("/"));
         if (cached) return cached;
-
-        return fetch(request).then((response) => {
-          if (response && response.status === 200) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, clone);
-            });
-          }
-          return response;
-        });
+        throw new Error("No cached app shell available");
       })
     );
     return;
   }
 
-  if (url.pathname.endsWith(".js") || url.pathname.endsWith(".css")) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const contentType = response.headers.get("content-type") || "";
-          const isJs = url.pathname.endsWith(".js");
-          const isCss = url.pathname.endsWith(".css");
+  const isImageRequest =
+    request.destination === "image" || url.pathname.startsWith("/assets/");
 
-          const validJs =
-            isJs &&
-            (contentType.includes("javascript") ||
-              contentType.includes("application/x-javascript") ||
-              contentType.includes("text/javascript"));
-
-          const validCss = isCss && contentType.includes("text/css");
-
-          if (response && response.status === 200 && (validJs || validCss)) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, clone);
-            });
-          }
-
-          return response;
-        })
-        .catch(() => caches.match(request))
-    );
+  if (isImageRequest) {
+    event.respondWith(cacheFirst(request, IMAGE_CACHE));
     return;
   }
 
-  if (url.pathname.endsWith(".json")) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const contentType = response.headers.get("content-type") || "";
+  const isStaticCodeRequest =
+    url.pathname.endsWith(".js") ||
+    url.pathname.endsWith(".css") ||
+    url.pathname.endsWith(".woff2") ||
+    url.pathname.endsWith(".woff") ||
+    url.pathname.endsWith(".ttf");
 
-          if (
-            response &&
-            response.status === 200 &&
-            contentType.includes("application/json")
-          ) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, clone);
-            });
-          }
-
-          return response;
-        })
-        .catch(() => caches.match(request))
-    );
+  if (isStaticCodeRequest) {
+    event.respondWith(staleWhileRevalidate(request, RUNTIME_CACHE));
     return;
   }
 
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached;
+  const isJsonRequest = url.pathname.endsWith(".json");
+  if (isJsonRequest) {
+    event.respondWith(networkFirst(request, JSON_CACHE));
+    return;
+  }
 
-      return fetch(request).then((response) => {
-        if (response && response.status === 200) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, clone);
-          });
-        }
-        return response;
-      });
-    })
-  );
+  event.respondWith(networkFirst(request, RUNTIME_CACHE));
 });
 
 self.addEventListener("push", (event) => {
@@ -202,3 +156,50 @@ self.addEventListener("push", (event) => {
 
   event.waitUntil(self.registration.showNotification(title, options));
 });
+
+async function cacheFirst(request, cacheName) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
+
+  const response = await fetch(request);
+  if (isCacheable(response)) {
+    const cache = await caches.open(cacheName);
+    cache.put(request, response.clone());
+  }
+  return response;
+}
+
+async function networkFirst(request, cacheName) {
+  try {
+    const response = await fetch(request);
+    if (isCacheable(response)) {
+      const cache = await caches.open(cacheName);
+      cache.put(request, response.clone());
+    }
+    return response;
+  } catch (error) {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    throw error;
+  }
+}
+
+async function staleWhileRevalidate(request, cacheName) {
+  const cached = await caches.match(request);
+
+  const fetchPromise = fetch(request)
+    .then(async (response) => {
+      if (isCacheable(response)) {
+        const cache = await caches.open(cacheName);
+        cache.put(request, response.clone());
+      }
+      return response;
+    })
+    .catch(() => null);
+
+  return cached || fetchPromise;
+}
+
+function isCacheable(response) {
+  return !!response && response.status === 200;
+}

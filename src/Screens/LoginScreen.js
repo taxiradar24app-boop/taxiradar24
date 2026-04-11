@@ -41,15 +41,17 @@ export default function LoginScreen() {
         <AuthTitle>{title}</AuthTitle>
         <AuthSubtitle>{subtitle}</AuthSubtitle>
 
-        {!loading && (
-          <Suspense fallback={null}>
-            <BotonGoogle />
-          </Suspense>
-        )}
+        {!loading ? (
+          <>
+            <Suspense fallback={null}>
+              <BotonGoogle />
+            </Suspense>
 
-        <AuthDivider>o</AuthDivider>
+            <AuthDivider>o</AuthDivider>
 
-        <UserRegistration mode="login" />
+            <UserRegistration mode="login" />
+          </>
+        ) : null}
       </AuthCard>
     </AuthContainer>
   );
