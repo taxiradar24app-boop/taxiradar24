@@ -38,15 +38,11 @@ export default function ToolsModule() {
       <Routes>
         <Route element={<ToolsLayout />}>
           <Route index element={<ToolsLanding />} />
-
           <Route path="flights" element={<FlightAeroDataBoxScreen />} />
           <Route path="flights/scheduled" element={<TableAdboxScreen />} />
-
           <Route path="train" element={<TrainScreen />} />
-
           <Route path="boats" element={<BoatsScreen />} />
           <Route path="cruises" element={<CrusierScreen />} />
-
           <Route path="*" element={<Navigate to="/herramientas" replace />} />
         </Route>
       </Routes>

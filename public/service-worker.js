@@ -1,4 +1,4 @@
-const CACHE_NAME = "taxiradar24-cache-v38";
+const CACHE_NAME = "taxiradar24-cache-v39";
 
 const STATIC_ASSETS = [
   "/",
@@ -95,27 +95,10 @@ self.addEventListener("fetch", (event) => {
     request.destination === "document" ||
     (request.headers.get("accept") || "").includes("text/html");
 
-  if (isNavigationRequest) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          if (response && response.status === 200) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put("/index.html", clone);
-            });
-          }
-          return response;
-        })
-        .catch(async () => {
-          const cached =
-            (await caches.match("/index.html")) || (await caches.match("/"));
-          if (cached) return cached;
-          throw new Error("No cached index.html available");
-        })
-    );
-    return;
-  }
+    if (isNavigationRequest) {
+      event.respondWith(fetch(request).catch(() => caches.match("/index.html")));
+      return;
+    }
 
   if (url.pathname.startsWith("/assets/")) {
     event.respondWith(

@@ -4,10 +4,10 @@ import { Outlet, useLocation } from "react-router-dom";
 export default function PublicLayout() {
   const { pathname } = useLocation();
 
-  const noHeaderRoutes = ["/", "/academia", "/academia/demo", "/herramientas"];
+  const noHeaderRoutes = ["/"];
   const minimalHeaderRoutes = ["/login", "/register", "/reset-password"];
 
-  const noHeader = noHeaderRoutes.some((r) => pathname.startsWith(r));
+  const noHeader = noHeaderRoutes.includes(pathname);
   const minimalHeader = minimalHeaderRoutes.includes(pathname);
 
   if (noHeader) {
@@ -18,12 +18,17 @@ export default function PublicLayout() {
     );
   }
 
-  return (
-    <>
-      {/* Aquí luego colocaremos un HeaderMinimal PRO */}
+  if (minimalHeader) {
+    return (
       <main style={{ paddingTop: "64px" }}>
         <Outlet />
       </main>
-    </>
+    );
+  }
+
+  return (
+    <main style={{ paddingTop: "64px" }}>
+      <Outlet />
+    </main>
   );
 }

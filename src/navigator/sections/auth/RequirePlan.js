@@ -31,6 +31,7 @@ export default function RequirePlan({ plan, children }) {
   const location = useLocation();
   const redirectTo = `${location.pathname}${location.search || ""}`;
 
+  // ⏳ Espera global
   if (loading || subscriptionLoading) {
     return (
       <div
@@ -46,19 +47,23 @@ export default function RequirePlan({ plan, children }) {
     );
   }
 
+  // 🔐 No login
   if (!user) {
     persistPostLoginIntent(redirectTo);
     return <Navigate to="/login" replace />;
   }
 
+  // 📧 Email no verificado
   if (!user.emailVerified) {
     return <Navigate to="/check-email" replace />;
   }
 
+  // 📱 Teléfono no verificado
   if (!userData?.phoneVerified) {
     return <Navigate to="/verify" replace />;
   }
 
+  // 💎 PRO requerido
   if (plan === "ACADEMIA_PRO" && !subscription?.active) {
     persistPostLoginIntent(redirectTo);
     return <Navigate to="/academia/upgrade" replace />;

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+
 import {
   loginWithGoogle,
   getPendingGoogleLinkInfo,
@@ -137,11 +138,10 @@ export default function BotonGoogle() {
         return;
       }
 
-      // ✅ En popup exitoso tampoco decidimos aquí la navegación final.
-      // La pantalla de login / AuthContext se encargarán del siguiente paso.
+      // La navegación final la resuelve AuthContext.
     } catch (error) {
       sessionStorage.removeItem("googleAuthInProgress");
-      console.error("❌ Error en autenticación Google:", error);
+      console.error("Error en autenticación Google:", error);
       alert("No se pudo iniciar sesión con Google. Inténtalo de nuevo.");
     } finally {
       setLoading(false);

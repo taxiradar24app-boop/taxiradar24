@@ -10,7 +10,7 @@ import {
   UserDropdownDivider,
 } from "./UserMenuStyle";
 
-const iconoUsuario = "/assets/iconoUsuario.webp";
+const iconoUsuario = "/assets/iconoUsuario-70.webp";
 
 export default function UserMenu({ mobile = false, onAction = () => {} }) {
   const navigate = useNavigate();

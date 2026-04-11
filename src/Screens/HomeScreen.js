@@ -79,7 +79,7 @@ function useScrollFadeIn() {
 export default function HomeScreen() {
   const navigate = useNavigate();
   const { goAcademy, goTools } = useSmartNavigation();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   const overviewRef = useScrollFadeIn();
   const stepsRef = useScrollFadeIn();
@@ -130,7 +130,7 @@ export default function HomeScreen() {
             </PrimaryButton>
           </HeroCTA>
 
-          {!user && (
+          {!loading && !user && (
             <HeroCTA>
               <LoginId onClick={goLogin}>
                 <LoginIdText>Login / Registro</LoginIdText>

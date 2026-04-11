@@ -4,8 +4,8 @@ import { resolveNavigation } from "@/navigator/navigationConfig";
 import { useAuth } from "@/navigator/sections/auth/useAuth";
 import LoginId, { LoginIdText } from "@/components/Buttons/LoginId";
 
-const iconoUsuario = "/assets/iconoUsuario.png";
-const avatarFallback = "/assets/iconoUsuario.png";
+const iconoUsuario = "/assets/iconoUsuario-70.webp";
+const avatarFallback = "/assets/iconoUsuario-70.webp";
 
 import {
   HeaderWrapper,

@@ -2,34 +2,22 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
     <meta name="theme-color" content="#081325" />
     <meta name="application-name" content="TaxiRadar24 Academia" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="TaxiRadar24 Academia" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <title>
-      TaxiRadar24 Academia | Preparar el Permiso Municipal de Taxista en Palma
-    </title>
+    <title>TaxiRadar24 Academia | Permiso Municipal de Taxista en Palma</title>
+
     <meta
       name="description"
-      content="TaxiRadar24 Academia es la plataforma profesional para preparar el Permiso Municipal de Taxista en Palma de Mallorca. Estudia reglamento oficial, callejero, audios explicativos y simulador de examen con una formación clara, práctica y pensada para aprobar."
+      content="Academia profesional para preparar el examen de taxista en Palma."
     />
-    <meta
-      name="keywords"
-      content="TaxiRadar24 Academia, permiso municipal de taxista, examen taxi Palma, academia taxista Palma de Mallorca, reglamento taxi Palma, callejero taxi Palma, simulador examen taxi, carnet taxista Mallorca"
-    />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://taxiradar24.com/" />
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -44,66 +32,32 @@
       media="print"
       onload="this.media='all'"
     />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-      />
-    </noscript>
 
     <link
       rel="preload"
       as="image"
       href="/assets/taxiRadar24_front-optimized.webp"
-      type="image/webp"
       fetchpriority="high"
     />
 
-    <meta
-      property="og:title"
-      content="TaxiRadar24 Academia | Preparar el Permiso Municipal de Taxista en Palma"
-    />
-    <meta
-      property="og:description"
-      content="Academia profesional para preparar el examen de taxista en Palma de Mallorca."
-    />
-    <meta property="og:url" content="https://taxiradar24.com/" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="TaxiRadar24 Academia" />
-    <meta property="og:locale" content="es_ES" />
+    <meta property="og:title" content="TaxiRadar24 Academia" />
     <meta
       property="og:image"
       content="https://taxiradar24.com/assets/og-image.png"
     />
 
-    <meta name="twitter:card" content="summary_large_image" />
-
     <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" href="/assets/favicon.ico" sizes="any" />
-    <link rel="shortcut icon" href="/assets/favicon.ico" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/assets/apple-touch-icon.v2.png"
-    />
-
-    <meta
-      name="google-site-verification"
-      content="D-JEqLPydf0LBvCtapusQ1qoqGXmaTzjclVEp1sxElI"
-    />
+    <link rel="icon" href="/assets/favicon.ico" />
 
     <style>
-      .seo-hidden {
-        position: absolute;
-        left: -9999px;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-      }
-
       html,
       body {
+        margin: 0;
         background: #081325;
+      }
+
+      #root {
+        min-height: 100vh;
       }
     </style>
   </head>
@@ -111,62 +65,6 @@
   <body>
     <div id="root"></div>
 
-    <h1 class="seo-hidden">
-      TaxiRadar24 Academia - Academia para preparar el Permiso Municipal de
-      Taxista en Palma de Mallorca
-    </h1>
-
-    <p class="seo-hidden">
-      Plataforma profesional para preparar el examen de taxista en Palma con
-      reglamento, callejero, audios y simulador.
-    </p>
-
-    <noscript>Debes habilitar JavaScript para usar TaxiRadar24 Academia.</noscript>
-
-    <script>
-      (function () {
-        if (!("serviceWorker" in navigator)) return;
-
-        let refreshing = false;
-
-        navigator.serviceWorker.addEventListener("controllerchange", () => {
-          if (refreshing) return;
-          refreshing = true;
-          window.location.reload();
-        });
-
-        window.addEventListener("load", async () => {
-          try {
-            const registration = await navigator.serviceWorker.register(
-              "/service-worker.js"
-            );
-
-            if (registration.waiting) {
-              registration.waiting.postMessage({ type: "SKIP_WAITING" });
-            }
-
-            registration.addEventListener("updatefound", () => {
-              const newWorker = registration.installing;
-              if (!newWorker) return;
-
-              newWorker.addEventListener("statechange", () => {
-                if (
-                  newWorker.state === "installed" &&
-                  navigator.serviceWorker.controller
-                ) {
-                  newWorker.postMessage({ type: "SKIP_WAITING" });
-                }
-              });
-            });
-
-            setInterval(() => {
-              registration.update().catch(() => {});
-            }, 60000);
-          } catch (error) {
-            console.error("Error registrando el service worker:", error);
-          }
-        });
-      })();
-    </script>
+    <noscript>Debes habilitar JavaScript.</noscript>
   </body>
 </html>

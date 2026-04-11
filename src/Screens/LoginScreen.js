@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import UserRegistration from "./../hooks/UserRegistration";
-import BotonGoogle from "./../components/BotonGoogle";
+
+const BotonGoogle = lazy(() => import("./../components/BotonGoogle"));
 
 import AuthDivider from "@/components/UI/Auth/AuthDivider";
 import { useAuth } from "./../context/AuthContext";
@@ -40,7 +41,11 @@ export default function LoginScreen() {
         <AuthTitle>{title}</AuthTitle>
         <AuthSubtitle>{subtitle}</AuthSubtitle>
 
-        {!loading && <BotonGoogle />}
+        {!loading && (
+          <Suspense fallback={null}>
+            <BotonGoogle />
+          </Suspense>
+        )}
 
         <AuthDivider>o</AuthDivider>
 

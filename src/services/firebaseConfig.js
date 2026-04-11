@@ -3,9 +3,15 @@
 let _appInstance = null;
 let _authInstance = null;
 let _dbInstance = null;
-let _persistenceReady = false;
+
+let _authModule = null;
+let _firestoreModule = null;
+
 let _firebaseConfigCache = null;
 
+// --------------------------------------------------
+// ENV
+// --------------------------------------------------
 function getEnvVar(key) {
   return (
     (typeof process !== "undefined" && process.env?.[`REACT_APP_${key}`]) ||
@@ -16,6 +22,9 @@ function getEnvVar(key) {
   );
 }
 
+// --------------------------------------------------
+// CONFIG
+// --------------------------------------------------
 function buildFirebaseConfig() {
   if (_firebaseConfigCache) return _firebaseConfigCache;
 
@@ -24,10 +33,9 @@ function buildFirebaseConfig() {
       getEnvVar("FIREBASE_API_KEY") ||
       "AIzaSyBA6MEcmuci9c8uFhvRwkasG5ot8BeiRHM",
 
-    // ✅ Usa el dominio real de Firebase Auth / Hosting
     authDomain:
-    getEnvVar("FIREBASE_AUTH_DOMAIN") ||
-    "taxiradar24.com",
+      getEnvVar("FIREBASE_AUTH_DOMAIN") ||
+      "taxiradar24.com",
 
     projectId:
       getEnvVar("FIREBASE_PROJECT_ID") ||
@@ -44,90 +52,69 @@ function buildFirebaseConfig() {
     appId:
       getEnvVar("FIREBASE_APP_ID") ||
       "1:829274808088:web:db5ed97be1d89146d1086d",
-
-    measurementId:
-      getEnvVar("FIREBASE_MEASUREMENT_ID") ||
-      "G-PMNL95ESWN",
   };
 
-  const requiredKeys = [
-    "apiKey",
-    "authDomain",
-    "projectId",
-    "storageBucket",
-    "messagingSenderId",
-    "appId",
-  ];
-
-  const missingKeys = requiredKeys.filter((key) => !config[key]);
-
-  if (missingKeys.length > 0) {
-    console.error("🔥 Firebase CONFIG ERROR", {
-      missingKeys,
-      configPreview: {
-        apiKey: !!config.apiKey,
-        authDomain: config.authDomain,
-        projectId: config.projectId,
-      },
-    });
-
-    throw new Error(
-      `Firebase config incompleta. Faltan: ${missingKeys.join(", ")}`
-    );
-  }
-
   _firebaseConfigCache = config;
-  return _firebaseConfigCache;
+  return config;
 }
 
-export function getFirebaseConfig() {
-  return buildFirebaseConfig();
-}
-
+// --------------------------------------------------
+// APP
+// --------------------------------------------------
 export async function getApp() {
   if (_appInstance) return _appInstance;
 
-  const { initializeApp, getApps, getApp: getExistingApp } = await import(
-    "firebase/app"
-  );
+  const firebaseApp = await import("firebase/app");
 
   const config = buildFirebaseConfig();
 
-  _appInstance = getApps().length ? getExistingApp() : initializeApp(config);
+  _appInstance =
+    firebaseApp.getApps().length > 0
+      ? firebaseApp.getApp()
+      : firebaseApp.initializeApp(config);
 
   return _appInstance;
 }
 
+// --------------------------------------------------
+// AUTH
+// --------------------------------------------------
 export async function getAuth() {
   if (_authInstance) return _authInstance;
 
   const app = await getApp();
 
-  const { getAuth, setPersistence, browserLocalPersistence } = await import(
-    "firebase/auth"
-  );
+  if (!_authModule) {
+    _authModule = await import("firebase/auth");
+  }
+
+  const { getAuth, setPersistence, browserLocalPersistence } = _authModule;
 
   const auth = getAuth(app);
 
-  if (!_persistenceReady) {
-    _persistenceReady = true;
-    try {
-      await setPersistence(auth, browserLocalPersistence);
-    } catch (error) {
-      console.error("Error al establecer persistencia:", error);
-    }
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+  } catch (e) {
+    console.warn("⚠️ persistencia auth:", e?.message);
   }
 
   _authInstance = auth;
   return auth;
 }
 
+// --------------------------------------------------
+// FIRESTORE
+// --------------------------------------------------
 export async function getDb() {
   if (_dbInstance) return _dbInstance;
 
   const app = await getApp();
 
-  const { getFirestore } = await import("firebase/firestore");
+  if (!_firestoreModule) {
+    _firestoreModule = await import("firebase/firestore");
+  }
+
+  const { getFirestore } = _firestoreModule;
 
   _dbInstance = getFirestore(app);
   return _dbInstance;

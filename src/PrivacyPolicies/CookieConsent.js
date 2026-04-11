@@ -1,4 +1,3 @@
-// src/PrivacyPolicies/CookieConsent.js
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Overlay,
@@ -232,16 +231,33 @@ export default function CookieConsent() {
     }));
   };
 
-
-
   if (!visible) return null;
 
   return (
-    <Overlay>
+    <Overlay
+      style={{
+        position: "fixed",
+        inset: "auto 0 0 0",
+        width: "100%",
+        background: "transparent",
+        zIndex: 9999,
+        pointerEvents: "none",
+      }}
+    >
       <Modal
         role="dialog"
         aria-modal="true"
         aria-labelledby="cookie-consent-title"
+        style={{
+          position: "fixed",
+          left: "0",
+          right: "0",
+          bottom: "0",
+          width: "100%",
+          maxWidth: "100%",
+          margin: "0",
+          pointerEvents: "auto",
+        }}
       >
         <TopBar>
           <SummaryBar>
@@ -277,8 +293,6 @@ export default function CookieConsent() {
               </SummaryConfigButton>
             </SummaryActions>
           </SummaryBar>
-
-
         </TopBar>
 
         {detailsOpen && (
@@ -387,9 +401,7 @@ export default function CookieConsent() {
                             aria-expanded={isOpen}
                           >
                             <LegalHeaderLeft>
-                              <LegalHeaderTitle>
-                                {item.title}
-                              </LegalHeaderTitle>
+                              <LegalHeaderTitle>{item.title}</LegalHeaderTitle>
                               <LegalHeaderSub>{item.subtitle}</LegalHeaderSub>
                             </LegalHeaderLeft>
 

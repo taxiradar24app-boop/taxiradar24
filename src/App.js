@@ -17,12 +17,12 @@ const COOKIE_STATUS_KEY = "taxiradar24_cookie_consent_status_v1";
 const COOKIE_PREFS_KEY = "taxiradar24_cookie_consent_v1";
 
 const appScreenFallbackStyle = {
-  height: "100vh",
+  minHeight: "100vh",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   color: "#10a37f",
-  fontSize: "1.1rem",
+  fontSize: "1.05rem",
   background: "#0a1528",
 };
 

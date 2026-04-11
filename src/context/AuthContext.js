@@ -27,6 +27,13 @@ import { resolvePostAuthRoute } from "@/navigator/postAuthResolver";
 
 export const AuthContext = createContext(null);
 
+const PUBLIC_AUTH_DEFERRED_ROUTES = new Set([
+  "/permiso-taxi-palma",
+  "/academia-taxista-mallorca",
+  "/examen-taxi-palma-test",
+  "/tarifas-taxi-palma",
+]);
+
 function getCurrentAppPath() {
   try {
     const hash = window.location.hash || "";
@@ -74,6 +81,11 @@ function isRouteEligibleForAutoResolution(path) {
     normalized === "/verify" ||
     normalized === "/identity-merge"
   );
+}
+
+function isDeferredPublicRoute(path) {
+  const normalized = normalizePath(path).split("?")[0];
+  return PUBLIC_AUTH_DEFERRED_ROUTES.has(normalized);
 }
 
 function replaceAppRoute(path) {
@@ -277,12 +289,23 @@ export function AuthProvider({ children }) {
     let mounted = true;
 
     async function initAuth() {
+      const currentPath = getCurrentAppPath();
+      const redirectPending =
+        sessionStorage.getItem("googleAuthInProgress") === "1";
+
+      if (isDeferredPublicRoute(currentPath) && !redirectPending) {
+        redirectCheckFinishedRef.current = true;
+
+        if (mounted) {
+          setAuthLoading(false);
+          setIdentityLoading(false);
+        }
+        return;
+      }
+
       try {
         const auth = await getAuth();
         const { onAuthStateChanged } = await import("firebase/auth");
-
-        const redirectPending =
-          sessionStorage.getItem("googleAuthInProgress") === "1";
 
         unsub = onAuthStateChanged(auth, async (currentUser) => {
           if (!mounted) return;
@@ -353,14 +376,14 @@ export function AuthProvider({ children }) {
           });
 
           const intent = getAuthIntent();
-          const currentPath = getCurrentAppPath();
+          const livePath = getCurrentAppPath();
 
           const shouldResolveRoute =
             !hasResolvedBootRouteRef.current &&
             (isNewSession ||
               redirectPending ||
               !!intent?.redirectTo ||
-              isRouteEligibleForAutoResolution(currentPath));
+              isRouteEligibleForAutoResolution(livePath));
 
           if (!shouldResolveRoute) {
             hasResolvedBootRouteRef.current = true;
@@ -373,7 +396,7 @@ export function AuthProvider({ children }) {
             userData: userDoc,
             subscription: subDoc || subscriptionRef.current,
             intent,
-            currentPath,
+            currentPath: livePath,
           });
 
           if (!result?.path) {
@@ -382,7 +405,7 @@ export function AuthProvider({ children }) {
             return;
           }
 
-          if (isSameRoute(currentPath, result.path)) {
+          if (isSameRoute(livePath, result.path)) {
             hasResolvedBootRouteRef.current = true;
             authNavigationResolvedRef.current = true;
             return;

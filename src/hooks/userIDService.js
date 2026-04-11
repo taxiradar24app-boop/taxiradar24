@@ -1,16 +1,23 @@
 // src/hooks/userIDService.js
-// ✅ auth / identidad básica
-// ✅ Google Auth estable para web, móvil y PWA
-// ✅ vínculo automático Google <-> password cuando el email ya existe
+// auth / identidad básica
+// Google Auth estable para web, móvil y PWA
+// vínculo automático Google <-> password cuando el email ya existe
 
-import { getAuth, getDb } from "./../services/firebaseConfig";
 import { claimPhoneForUid } from "./../services/accountLinkingService";
 
 const PENDING_GOOGLE_LINK_KEY = "pendingGoogleLink";
 
 // --------------------------------------------------
-// Helpers internos (lazy imports)
+// Lazy helpers
 // --------------------------------------------------
+async function getFirebaseServices() {
+  const { getAuth, getDb } = await import("./../services/firebaseConfig");
+  return {
+    getAuth,
+    getDb,
+  };
+}
+
 async function fs() {
   return await import("firebase/firestore");
 }
@@ -40,8 +47,6 @@ function isMobileDevice() {
 }
 
 function shouldUseRedirectForGoogle() {
-  // móvil web + móvil PWA + desktop PWA -> redirect
-  // desktop web -> popup
   return isMobileDevice() || isStandalonePWA();
 }
 
@@ -66,7 +71,22 @@ export function clearPendingGoogleLink() {
   } catch {}
 }
 
+export function normalizePhoneNumber(raw) {
+  let formatted = String(raw || "")
+    .trim()
+    .replace(/\s+/g, "");
+
+  if (!formatted) return "";
+  if (!formatted.startsWith("+")) formatted = `+34${formatted}`;
+
+  return formatted;
+}
+
+// --------------------------------------------------
+// Internal helpers
+// --------------------------------------------------
 async function ensureGoogleUserDocument(user) {
+  const { getDb } = await getFirebaseServices();
   const db = await getDb();
   const { doc, getDoc, setDoc, serverTimestamp } = await fs();
 
@@ -145,12 +165,79 @@ async function ensureGoogleUserDocument(user) {
   return { user, needsPhone: !data.phoneVerified };
 }
 
-async function storeGoogleConflict(auth, error, GoogleAuthProvider, fetchSignInMethodsForEmail) {
-  const email =
-    error?.customData?.email ||
-    error?.email ||
-    null;
+async function createInitialProgress(userId) {
+  const { getDb } = await getFirebaseServices();
+  const db = await getDb();
+  const { doc, setDoc, serverTimestamp } = await fs();
 
+  await setDoc(doc(db, "progress", userId), {
+    userId,
+    overall: 0,
+    reglamento: { completed: 0, total: 82, progress: 0 },
+    audio: { minutes: 0, progress: 0 },
+    simulador: { attempts: 0, passed: 0, avgScore: 0, demoAttempts: 0 },
+    callejero: { attempts: 0, avgScore: 0, demoAttempts: 0 },
+    tarifas: { completed: false },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    updatedAtServer: serverTimestamp(),
+  });
+}
+
+async function identityGuardPhone(uid, phoneNumber) {
+  try {
+    if (!uid || !phoneNumber) return;
+
+    const { getDb } = await getFirebaseServices();
+    const db = await getDb();
+    const {
+      collection,
+      query,
+      where,
+      getDocs,
+      doc,
+      updateDoc,
+      serverTimestamp,
+    } = await fs();
+
+    const q = query(
+      collection(db, "users"),
+      where("phoneNumber", "==", phoneNumber)
+    );
+
+    const snap = await getDocs(q);
+    const others = [];
+
+    snap.forEach((d) => {
+      if (d.id !== uid) others.push(d.id);
+    });
+
+    if (others.length > 0) {
+      await updateDoc(doc(db, "users", uid), {
+        needsMerge: true,
+        mergeCandidates: others,
+        mergeReason: "PHONE_DUPLICATE",
+        mergeDetectedAt: serverTimestamp(),
+      });
+    } else {
+      await updateDoc(doc(db, "users", uid), {
+        needsMerge: false,
+        mergeCandidates: [],
+        mergeReason: null,
+      });
+    }
+  } catch (e) {
+    console.warn("Identity Guard (phone) error:", e);
+  }
+}
+
+async function storeGoogleConflict(
+  auth,
+  error,
+  GoogleAuthProvider,
+  fetchSignInMethodsForEmail
+) {
+  const email = error?.customData?.email || error?.email || null;
   const pendingCredential = GoogleAuthProvider.credentialFromError(error);
 
   let methods = [];
@@ -158,7 +245,7 @@ async function storeGoogleConflict(auth, error, GoogleAuthProvider, fetchSignInM
     try {
       methods = await fetchSignInMethodsForEmail(auth, email);
     } catch (methodError) {
-      console.warn("⚠️ No se pudieron leer métodos del email:", methodError);
+      console.warn("No se pudieron leer métodos del email:", methodError);
     }
   }
 
@@ -205,7 +292,6 @@ async function completePendingGoogleLinkForUser(user) {
   } catch (error) {
     const code = error?.code || "";
 
-    // Si ya está vinculado o el credencial ya se usó, no rompemos el login
     if (
       code !== "auth/provider-already-linked" &&
       code !== "auth/credential-already-in-use"
@@ -224,90 +310,14 @@ async function completePendingGoogleLinkForUser(user) {
   return { ...result, linkedGoogle: true };
 }
 
-export function normalizePhoneNumber(raw) {
-  let formatted = String(raw || "")
-    .trim()
-    .replace(/\s+/g, "");
-  if (!formatted) return "";
-  if (!formatted.startsWith("+")) formatted = `+34${formatted}`;
-  return formatted;
-}
-
-// --------------------------------------------------
-// Crear progreso inicial
-// --------------------------------------------------
-async function createInitialProgress(userId) {
-  const db = await getDb();
-  const { doc, setDoc, serverTimestamp } = await fs();
-
-  await setDoc(doc(db, "progress", userId), {
-    userId,
-    overall: 0,
-    reglamento: { completed: 0, total: 82, progress: 0 },
-    audio: { minutes: 0, progress: 0 },
-    simulador: { attempts: 0, passed: 0, avgScore: 0, demoAttempts: 0 },
-    callejero: { attempts: 0, avgScore: 0, demoAttempts: 0 },
-    tarifas: { completed: false },
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    updatedAtServer: serverTimestamp(),
-  });
-}
-
-// --------------------------------------------------
-// Identity Guard
-// --------------------------------------------------
-async function identityGuardPhone(uid, phoneNumber) {
-  try {
-    if (!uid || !phoneNumber) return;
-
-    const db = await getDb();
-    const {
-      collection,
-      query,
-      where,
-      getDocs,
-      doc,
-      updateDoc,
-      serverTimestamp,
-    } = await fs();
-
-    const q = query(
-      collection(db, "users"),
-      where("phoneNumber", "==", phoneNumber)
-    );
-
-    const snap = await getDocs(q);
-    const others = [];
-
-    snap.forEach((d) => {
-      if (d.id !== uid) others.push(d.id);
-    });
-
-    if (others.length > 0) {
-      await updateDoc(doc(db, "users", uid), {
-        needsMerge: true,
-        mergeCandidates: others,
-        mergeReason: "PHONE_DUPLICATE",
-        mergeDetectedAt: serverTimestamp(),
-      });
-    } else {
-      await updateDoc(doc(db, "users", uid), {
-        needsMerge: false,
-        mergeCandidates: [],
-        mergeReason: null,
-      });
-    }
-  } catch (e) {
-    console.warn("Identity Guard (phone) error:", e);
-  }
-}
-
 // --------------------------------------------------
 // Registro Email
 // --------------------------------------------------
 export async function registerWithEmail(name, email, password, phoneNumber) {
+  const { getAuth, getDb } = await getFirebaseServices();
   const auth = await getAuth();
+  const db = await getDb();
+
   const {
     setPersistence,
     browserLocalPersistence,
@@ -319,7 +329,6 @@ export async function registerWithEmail(name, email, password, phoneNumber) {
   const res = await createUserWithEmailAndPassword(auth, email, password);
   const user = res.user;
 
-  const db = await getDb();
   const { doc, setDoc, serverTimestamp } = await fs();
   const normalizedPhone = phoneNumber ? normalizePhoneNumber(phoneNumber) : null;
 
@@ -372,6 +381,7 @@ export async function sendEmailVerificationToUser(user) {
 }
 
 export async function resendEmailVerification() {
+  const { getAuth } = await getFirebaseServices();
   const auth = await getAuth();
   const currentUser = auth.currentUser;
 
@@ -384,6 +394,7 @@ export async function resendEmailVerification() {
 }
 
 export async function syncEmailVerificationStatus(uid) {
+  const { getAuth, getDb } = await getFirebaseServices();
   const auth = await getAuth();
   const currentUser = auth.currentUser;
 
@@ -411,7 +422,9 @@ export async function syncEmailVerificationStatus(uid) {
 // Login Email
 // --------------------------------------------------
 export async function loginWithEmail(email, password) {
+  const { getAuth } = await getFirebaseServices();
   const auth = await getAuth();
+
   const {
     setPersistence,
     browserLocalPersistence,
@@ -425,15 +438,17 @@ export async function loginWithEmail(email, password) {
   try {
     await completePendingGoogleLinkForUser(res.user);
   } catch (error) {
-    console.error("❌ Error vinculando Google tras login password:", error);
+    console.error("Error vinculando Google tras login password:", error);
   }
 
   return res.user;
 }
 
 export async function resetPassword(email) {
+  const { getAuth } = await getFirebaseServices();
   const auth = await getAuth();
   const { sendPasswordResetEmail } = await authMod();
+
   await sendPasswordResetEmail(auth, email);
 }
 
@@ -441,7 +456,9 @@ export async function resetPassword(email) {
 // Google Login
 // --------------------------------------------------
 export async function loginWithGoogle() {
+  const { getAuth } = await getFirebaseServices();
   const auth = await getAuth();
+
   const {
     setPersistence,
     browserLocalPersistence,
@@ -501,7 +518,9 @@ export async function loginWithGoogle() {
 // Procesar redirect Google
 // --------------------------------------------------
 export async function resolveGoogleRedirectLogin() {
+  const { getAuth } = await getFirebaseServices();
   const auth = await getAuth();
+
   const {
     getRedirectResult,
     GoogleAuthProvider,
@@ -532,11 +551,13 @@ export async function resolveGoogleRedirectLogin() {
 }
 
 // --------------------------------------------------
-// Guardar teléfono SIN verificar
+// Teléfono
 // --------------------------------------------------
 export async function savePhoneNumber(uid, phoneNumber) {
+  const { getDb } = await getFirebaseServices();
   const db = await getDb();
   const { doc, updateDoc, serverTimestamp } = await fs();
+
   const normalizedPhone = normalizePhoneNumber(phoneNumber);
 
   await updateDoc(doc(db, "users", uid), {
@@ -549,9 +570,6 @@ export async function savePhoneNumber(uid, phoneNumber) {
   await identityGuardPhone(uid, normalizedPhone);
 }
 
-// --------------------------------------------------
-// Marcar teléfono verificado
-// --------------------------------------------------
 export async function markPhoneAsVerified(uid, phoneNumber, meta = {}) {
   const normalizedPhone = normalizePhoneNumber(phoneNumber);
   const result = await claimPhoneForUid(uid, normalizedPhone, meta);
@@ -559,6 +577,7 @@ export async function markPhoneAsVerified(uid, phoneNumber, meta = {}) {
   if (result?.status === "ok" && !result.conflict) {
     await identityGuardPhone(uid, result.phoneNumber);
 
+    const { getDb } = await getFirebaseServices();
     const db = await getDb();
     const { doc, updateDoc, serverTimestamp } = await fs();
 

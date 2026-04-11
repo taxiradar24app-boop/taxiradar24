@@ -16,13 +16,27 @@ const Main = styled.main`
   padding-bottom: 40px;
 `;
 
+const LoaderWrap = styled.div`
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+`;
+
 export default function AcademiaDemoLayout() {
   const location = useLocation();
   const { subscription, loading, subscriptionLoading } = useAuth();
 
   const isPro = subscription?.active === true;
 
-  if (loading || subscriptionLoading) return null;
+  if (loading || subscriptionLoading) {
+    return (
+      <LayoutWrap>
+        <HeaderAcademia withSafeTop />
+        <LoaderWrap>Cargando…</LoaderWrap>
+      </LayoutWrap>
+    );
+  }
 
   if (isPro) {
     return <Navigate to="/academia/pro" replace state={{ from: location }} />;

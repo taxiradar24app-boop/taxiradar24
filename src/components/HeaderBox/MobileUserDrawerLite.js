@@ -16,8 +16,8 @@ import {
   MobileDrawerPrimaryButton,
 } from "./MobileUserDrawerLiteStyle";
 
-const iconoUsuario = "/assets/iconoUsuario.png";
-const avatarFallback = "/assets/iconoUsuario.png";
+const iconoUsuario = "/assets/iconoUsuario-70.webp";
+const avatarFallback = "/assets/iconoUsuario-70.webp";
 
 export default function MobileUserDrawerLite({
   items,

@@ -47,7 +47,7 @@ const LegalNoticePage = React.lazy(() =>
   import("@/PrivacyPolicies/LegalNoticePage")
 );
 
-// Tools lazy
+// Tools
 const ToolsModule = React.lazy(() => import("@/Tools/ToolsModule"));
 
 function AppLoader({ text = "Cargando…" }) {
@@ -88,19 +88,31 @@ export default function Navigator() {
   return (
     <Suspense fallback={<AppLoader text="Cargando vista…" />}>
       <Routes>
+        {/* Home separada */}
         <Route element={<PublicLayout />}>
           <Route index element={<HomeScreen />} />
+        </Route>
+
+        {/* Auth + pantallas públicas ligeras */}
+        <Route element={<PublicLayout />}>
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           <Route path="check-email" element={<CheckEmailScreen />} />
           <Route path="reset-password" element={<ResetPasswordScreen />} />
           <Route path="verify" element={<PhoneVerificationScreen />} />
           <Route path="success" element={<SuccessPage />} />
+          <Route path="identity-merge" element={<IdentityMergeScreen />} />
+        </Route>
+
+        {/* Perfil */}
+        <Route element={<PublicLayout />}>
           <Route path="perfil" element={<ProfileLayout />} />
           <Route path="progreso" element={<ProgressLayout />} />
           <Route path="profile/pro-check" element={<ProfileProCheck />} />
-          <Route path="identity-merge" element={<IdentityMergeScreen />} />
+        </Route>
 
+        {/* Legales */}
+        <Route element={<PublicLayout />}>
           <Route path="privacidad" element={<PrivacyPage />} />
           <Route path="cookies" element={<CookiesPage />} />
           <Route path="terminos" element={<TermsPage />} />
@@ -111,11 +123,14 @@ export default function Navigator() {
           <Route path="aviso-legal" element={<LegalNoticePage />} />
         </Route>
 
+        {/* Academia */}
         {renderRouteTree(academyRoutes)}
 
+        {/* Tools */}
         <Route path="herramientas/*" element={<ToolsModule />} />
         <Route path="tools/*" element={<Navigate to="/herramientas" replace />} />
 
+        {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>

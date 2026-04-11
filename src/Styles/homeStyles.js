@@ -1,4 +1,3 @@
-// src/Styles/homeStyles.js
 import styled from "styled-components";
 
 /* ======================================================
@@ -13,9 +12,8 @@ export const Container = styled.div`
   align-items: center;
   justify-content: flex-start;
   background:
-    linear-gradient(rgba(10, 15, 30, 0.28), rgba(10, 15, 30, 0.28)),
-    url(${(props) => props.bg}) no-repeat center center;
-  background-size: cover;
+    radial-gradient(circle at top, rgba(9, 20, 42, 0.92) 0%, rgba(5, 15, 32, 0.98) 52%, #04101f 100%),
+    linear-gradient(180deg, #071427 0%, #061224 100%);
   margin: 0;
   padding: 0 0 3rem 0;
   border: none;
@@ -406,7 +404,7 @@ export const SectionHeader = styled.div`
 `;
 
 export const SectionTag = styled.div`
-    display: inline-flex;
+  display: inline-flex;
   width: fit-content;
   max-width: 100%;
   padding: 0.28rem 0.8rem;
@@ -422,6 +420,7 @@ export const SectionTag = styled.div`
       ? theme.tools?.colors?.brand || "#00A8F3"
       : "#a5e9fc"};
   margin-bottom: 0.42rem;
+
   @media (max-width: 640px) {
     white-space: normal;
     font-size: 0.78rem;
@@ -432,13 +431,12 @@ export const SectionTag = styled.div`
 export const SectionTitle = styled.h2`
   font-size: clamp(1.2rem, 1vw + 1.2rem, 2.15rem);
   line-height: 1.18;
-  
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   margin: 0 0 0.65rem 0;
   color: ${({ $toolsSection, theme }) =>
     $toolsSection
-      ? theme.tools?.colors?.brand|| "#f9fafb"
+      ? theme.tools?.colors?.brand || "#f9fafb"
       : "#f9fafb"};
 
   @media (max-width: 640px) {
@@ -466,7 +464,7 @@ export const SectionSubtitle = styled.p`
 export const HeroSideCardTools = styled.aside`
   width: 100%;
   align-self: stretch;
-    background: ${({ $toolsSection, theme }) =>
+  background: ${({ $toolsSection, theme }) =>
     $toolsSection
       ? theme.tools?.colors?.bgCard || "rgba(10,22,40,0.92)"
       : "rgba(15, 23, 42, 0.95)"};
@@ -783,6 +781,7 @@ export const ToolsCTAButton = styled.div`
     width: 100%;
   }
 `;
+
 export const MobileUserButton = styled.button`
   position: fixed;
   top: calc(env(safe-area-inset-top, 0px) + 14px);
