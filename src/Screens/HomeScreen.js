@@ -7,6 +7,7 @@ import LoginId, { LoginIdText } from "@/components/Buttons/LoginId";
 import { PrimaryButton } from "@/components/Buttons/ButtonsAcademia";
 import { ToolsPrimaryButton } from "@/Tools/componentsTools/Buttons/BotonGoTools";
 import MobileUserDrawerLite from "@/components/HeaderBox/MobileUserDrawerLite";
+import SEOFooterSection from "@/components/Footer/SEOFooterSection";
 
 import {
   Container,
@@ -326,6 +327,7 @@ export default function HomeScreen() {
           </ToolsPrimaryButton>
         </HeroCTA>
       </FinalCTASection>
+      <SEOFooterSection />
     </Container>
   );
 }

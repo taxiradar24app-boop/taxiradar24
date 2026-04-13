@@ -47,6 +47,35 @@ const LegalNoticePage = React.lazy(() =>
   import("@/PrivacyPolicies/LegalNoticePage")
 );
 
+// LandigPage 
+const LangingPagesLayout = React.lazy(() =>
+  import("@/navigator/layouts/LangingPagesLayout")
+);
+
+const GuiaTaxistaMallorca = React.lazy(() =>
+  import("@/LandingPages/guia-taxista-mallorca")
+);
+
+const CuantoCuestaLicenciaTaxiPalma = React.lazy(() =>
+  import("@/LandingPages/cuanto-cuesta-licencia-taxi-palma")
+);
+
+const CuantoGanaUnTaxistaEnMallorca = React.lazy(() =>
+  import("@/LandingPages/cuanto-gana-un-taxista-en-mallorca")
+);
+
+const RequisitosTaxistaPalma = React.lazy(() =>
+  import("@/LandingPages/requisitos-taxista-palma")
+);
+
+const TestTaxistaPalma = React.lazy(() =>
+  import("@/LandingPages/test-taxista-palma")
+);
+
+const ExamenTaxistaMallorca = React.lazy(() =>
+  import("@/LandingPages/examen-taxista-mallorca")
+);
+
 // Tools
 const ToolsModule = React.lazy(() => import("@/Tools/ToolsModule"));
 
@@ -88,12 +117,13 @@ export default function Navigator() {
   return (
     <Suspense fallback={<AppLoader text="Cargando vista…" />}>
       <Routes>
-        {/* Home separada */}
+
+        {/* Home */}
         <Route element={<PublicLayout />}>
           <Route index element={<HomeScreen />} />
         </Route>
 
-        {/* Auth + pantallas públicas ligeras */}
+        {/* Auth */}
         <Route element={<PublicLayout />}>
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
@@ -130,8 +160,37 @@ export default function Navigator() {
         <Route path="herramientas/*" element={<ToolsModule />} />
         <Route path="tools/*" element={<Navigate to="/herramientas" replace />} />
 
+        {/* 🟢 LANDING PAGES SEO (AQUÍ VA) */}
+        <Route element={<LangingPagesLayout />}>
+          <Route
+            path="guia-taxista-mallorca"
+            element={<GuiaTaxistaMallorca />}
+          />
+          <Route
+            path="cuanto-cuesta-licencia-taxi-palma"
+            element={<CuantoCuestaLicenciaTaxiPalma />}
+          />
+          <Route
+            path="cuanto-gana-un-taxista-en-mallorca"
+            element={<CuantoGanaUnTaxistaEnMallorca />}
+          />
+          <Route
+            path="requisitos-taxista-palma"
+            element={<RequisitosTaxistaPalma />}
+          />
+          <Route
+            path="test-taxista-palma"
+            element={<TestTaxistaPalma />}
+          />
+          <Route
+            path="examen-taxista-mallorca"
+            element={<ExamenTaxistaMallorca />}
+          />
+        </Route>
+
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
+
       </Routes>
     </Suspense>
   );

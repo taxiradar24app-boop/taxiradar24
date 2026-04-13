@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext.js";
 import { GlobalStyle } from "./Styles/globalStyles";
 import CookieConsent from "./PrivacyPolicies/CookieConsent.js";
-
+import { HelmetProvider } from "react-helmet-async";
 const Navigator = lazy(() => import("./navigator/navigator"));
 
 const AuthProvider = lazy(() =>
@@ -60,8 +60,9 @@ export default function App() {
     }
   }, []);
 
-  return (
-    <ThemeProvider>
+return (
+  <ThemeProvider>
+    <HelmetProvider>
       <BrowserRouter>
         <GlobalStyle />
 
@@ -75,6 +76,7 @@ export default function App() {
 
         <CookieConsent />
       </BrowserRouter>
-    </ThemeProvider>
-  );
+    </HelmetProvider>
+  </ThemeProvider>
+);
 }
