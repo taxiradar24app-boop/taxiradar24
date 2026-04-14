@@ -5,7 +5,7 @@ const BotonGoogle = lazy(() => import("./../components/BotonGoogle"));
 
 import AuthDivider from "@/components/UI/Auth/AuthDivider";
 import { useAuth } from "./../context/AuthContext";
-import BackHomeButton from "@/Tools/componentsTools/Buttons/BackButtonTools";
+// import BackHomeButton from "@/Tools/componentsTools/Buttons/BackButtonTools";
 
 const logoTaxiRadar = "/assets/LOGO_ORIGINAL.webp";
 
@@ -32,7 +32,7 @@ export default function LoginScreen() {
   return (
     <AuthContainer>
       <AuthCard>
-        <BackHomeButton />
+        {/* <BackHomeButton /> */}
 
         <LogoWrap>
           <LogoImage src={logoTaxiRadar} alt="Logo TaxiRadar24" />

@@ -200,7 +200,7 @@ const handleContact = () => {
           </HeroSideList>
 
           <HeroCTAContact onClick={handleContact}>
-            💬 Resolver dudas ahora
+            💬 Resolver dudas por WhatsApp
           </HeroCTAContact>
         </HeroSideCard>
       </HeroSection>

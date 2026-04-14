@@ -1,4 +1,4 @@
-const CACHE_NAME = "taxiradar24-cache-v44";
+const CACHE_NAME = "taxiradar24-cache-v46";
 
 const APP_SHELL_CACHE = CACHE_NAME;
 const RUNTIME_CACHE = `${CACHE_NAME}-runtime`;
@@ -164,7 +164,7 @@ async function cacheFirst(request, cacheName) {
   const response = await fetch(request);
   if (isCacheable(response)) {
     const cache = await caches.open(cacheName);
-    cache.put(request, response.clone());
+    await cache.put(request, response.clone());
   }
   return response;
 }
@@ -174,7 +174,7 @@ async function networkFirst(request, cacheName) {
     const response = await fetch(request);
     if (isCacheable(response)) {
       const cache = await caches.open(cacheName);
-      cache.put(request, response.clone());
+      await cache.put(request, response.clone());
     }
     return response;
   } catch (error) {
@@ -191,7 +191,7 @@ async function staleWhileRevalidate(request, cacheName) {
     .then(async (response) => {
       if (isCacheable(response)) {
         const cache = await caches.open(cacheName);
-        cache.put(request, response.clone());
+        await cache.put(request, response.clone());
       }
       return response;
     })
