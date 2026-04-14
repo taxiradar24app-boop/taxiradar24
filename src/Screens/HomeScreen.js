@@ -106,15 +106,15 @@ export default function HomeScreen() {
   };
 
 const handleContact = () => {
-  const phone = process.env.REACT_APP_WHATSAPP_PHONE;
-
-  const text =
-    "Hola, quiero información sobre cómo obtener la licencia de taxi en Palma de Mallorca.";
-
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
-
-  window.open(url, "_blank", "noopener,noreferrer");
+  try {
+    window.open("https://w.app/taxiradar24", "_blank", "noopener,noreferrer");
+  } catch (e) {
+    const phone = process.env.REACT_APP_WHATSAPP_PHONE;
+    const text = encodeURIComponent("Hola 👋, quiero información.");
+    window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
+  }
 };
+  
   return (
     <Container>
       <MobileUserDrawerLite />
