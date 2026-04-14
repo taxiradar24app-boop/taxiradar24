@@ -162,7 +162,7 @@ export default function CuantoCuestaLicenciaTaxiPalma() {
 
           <SnippetText>
             En la actualidad, el precio de una licencia de taxi en Palma de Mallorca 
-            suele situarse aproximadamente entre <strong>140.000 € y más de 300.000 €</strong>, 
+            suele situarse aproximadamente entre <strong>110.000 € y más de 140.000 €</strong>, 
             dependiendo del mercado de traspaso, de si incluye vehículo y de las condiciones 
             de la operación.
 
@@ -174,7 +174,7 @@ export default function CuantoCuestaLicenciaTaxiPalma() {
           </SnippetText>
 
           <SnippetNote>
-            En la práctica, muchas operaciones en Palma de Mallorca suelen situarse en torno a los 180.000 € – 250.000 €, aunque el rango puede variar según el momento del mercado y las condiciones del traspaso.
+            En la práctica, muchas operaciones en Palma de Mallorca suelen situarse en torno a los 120.000 €, aunque el rango puede variar según el momento del mercado y las condiciones del traspaso.
           </SnippetNote>
         </SnippetBox>
             

@@ -29,6 +29,7 @@ import {
   HeroSideTitle,
   HeroSideText,
   HeroSideList,
+  HeroCTAContact,
   HeroSideItem,
   Section,
   SectionHeader,
@@ -104,25 +105,33 @@ export default function HomeScreen() {
     goTools();
   };
 
+  const handleContact = () => {
+    navigate("/contacto");
+  };
+
   return (
     <Container>
       <MobileUserDrawerLite />
 
       <HeroSection>
         <HeroContent>
-          <HeroTag>Academia online para taxistas de Baleares</HeroTag>
+          <HeroTag>Curso para ser taxista en Palma de Mallorca</HeroTag>
 
           <HeroTitle>
-            Academia TaxiRadar24:
-            <SubTitle>Formación con PDF oficial del reglamento en vigor.</SubTitle>
+            Cómo obtener la licencia de taxi en Palma de Mallorca
+            <SubTitle>
+              Prepárate para el examen municipal y empieza a trabajar como
+              taxista.
+            </SubTitle>
           </HeroTitle>
 
-          <Title2>Permiso Municipal de Taxista</Title2>
+          <Title2>Academia especializada en licencia taxi Palma</Title2>
 
           <HeroSubtitle>
-            Estudia con una ruta clara: Reglamento explicado, audios guiados,
-            simuladores y callejero de Palma en una sola plataforma, desde móvil
-            o PWA.
+            Aprende los requisitos para ser taxista en Palma, estudia el
+            reglamento oficial, practica con simuladores reales y prepárate
+            para aprobar el examen municipal con una metodología clara y
+            directa.
           </HeroSubtitle>
 
           <HeroCTA>
@@ -142,7 +151,7 @@ export default function HomeScreen() {
           <HeroStatsRow>
             <HeroStat>
               <HeroStatNumber>15</HeroStatNumber>
-              <HeroStatLabel>audios del Reglamento</HeroStatLabel>
+              <HeroStatLabel>audios del reglamento</HeroStatLabel>
             </HeroStat>
 
             <HeroStat>
@@ -158,23 +167,35 @@ export default function HomeScreen() {
         </HeroContent>
 
         <HeroSideCard>
-          <HeroSideBadge>Próximas convocatorias</HeroSideBadge>
+          <HeroSideBadge>Próximas convocatorias "Noviembre 2026"</HeroSideBadge>
 
           <HeroSideTitle>
-            Una academia pensada para estudiar con foco real
+            ¿Quieres sacarte la licencia de taxi en Palma?
           </HeroSideTitle>
 
           <HeroSideText>
-            Entra, sigue la ruta recomendada y practica con contenido orientado
-            al examen municipal de Palma.
+            Te ayudamos paso a paso a entender el proceso, preparar el examen y
+            empezar a trabajar como taxista en Palma de Mallorca.
           </HeroSideText>
 
           <HeroSideList>
-            <HeroSideItem>✔ Reglamento explicado en lenguaje claro</HeroSideItem>
-            <HeroSideItem>✔ Audios para estudiar en cualquier momento</HeroSideItem>
-            <HeroSideItem>✔ Simuladores con preguntas reales</HeroSideItem>
-            <HeroSideItem>✔ Callejero y práctica oficial de Palma</HeroSideItem>
+            <HeroSideItem>
+              ✔ Requisitos para obtener la licencia de taxi
+            </HeroSideItem>
+            <HeroSideItem>
+              ✔ Cómo es el examen municipal de Palma
+            </HeroSideItem>
+            <HeroSideItem>
+              ✔ Cuánto cuesta la licencia de taxi
+            </HeroSideItem>
+            <HeroSideItem>
+              ✔ Cuánto gana un taxista en Palma
+            </HeroSideItem>
           </HeroSideList>
+
+          <HeroCTAContact onClick={handleContact}>
+            💬 Resolver dudas ahora
+          </HeroCTAContact>
         </HeroSideCard>
       </HeroSection>
 
@@ -187,12 +208,12 @@ export default function HomeScreen() {
               </HeroCTA>
 
               <SectionTitle>
-                👉 Herramientas profesional para taxistas
+                Herramientas para taxistas en Palma de Mallorca
               </SectionTitle>
 
               <SectionSubtitle>
-                Herramientas diseñadas para mejorar tu operativa diaria como
-                taxista profesional.
+                Consulta llegadas al aeropuerto, planifica mejor tu jornada y
+                trabaja con información en tiempo real.
               </SectionSubtitle>
 
               <HeroCTA>
@@ -206,38 +227,38 @@ export default function HomeScreen() {
           <FeatureGrid>
             <FeatureCard>
               <FeatureIcon>✈️</FeatureIcon>
-              <h3>Herramientas para taxistas</h3>
+              <h3>Llegadas aeropuerto Palma en tiempo real</h3>
               <p>
-                Radar de llegadas y utilidades profesionales para trabajar con
-                más contexto y mejor preparación.
+                Consulta vuelos que llegan a Palma y anticípate a la demanda de
+                clientes en aeropuerto.
               </p>
               <PillList>
+                <Pill>Llegadas Palma</Pill>
                 <Pill>Radar vuelos</Pill>
-                <Pill>Panel profesional</Pill>
                 <Pill>Uso desde móvil</Pill>
               </PillList>
             </FeatureCard>
 
             <FeatureCard>
               <FeatureIcon>📘</FeatureIcon>
-              <h3>Contenido orientado al examen real</h3>
+              <h3>Curso orientado al examen municipal</h3>
               <p>
-                Estudia con bloques pensados para entender qué cae en la prueba
-                y cómo responder con seguridad.
+                Estudia el reglamento, entiende qué entra en la prueba y
+                practica con una preparación pensada para aprobar.
               </p>
               <PillList>
                 <Pill>Temario guiado</Pill>
-                <Pill>Ejemplos</Pill>
+                <Pill>Examen municipal</Pill>
                 <Pill>Preguntas reales</Pill>
               </PillList>
             </FeatureCard>
 
             <FeatureCard>
               <FeatureIcon>📱</FeatureIcon>
-              <h3>Acceso flexible</h3>
+              <h3>Estudia desde móvil o PWA</h3>
               <p>
-                Puedes estudiar y consultar la plataforma desde casa, academia,
-                taxi o cualquier dispositivo.
+                Accede a la academia desde casa, el taxi o cualquier dispositivo
+                y mantén tu preparación activa cada día.
               </p>
               <PillList>
                 <Pill>PWA</Pill>
@@ -248,10 +269,10 @@ export default function HomeScreen() {
 
             <FeatureCard>
               <FeatureIcon>🎓</FeatureIcon>
-              <h3>Academia TaxiRadar24</h3>
+              <h3>Preparación para licencia taxi Palma</h3>
               <p>
-                Preparación guiada para el permiso municipal de taxista con una
-                metodología clara y práctica.
+                Sigue una ruta clara con reglamento, audios, simuladores y
+                callejero para avanzar con seguridad hacia tu objetivo.
               </p>
               <PillList>
                 <Pill>Reglamento</Pill>
@@ -268,38 +289,40 @@ export default function HomeScreen() {
         <Section background="alt">
           <SectionHeader>
             <SectionTag>Cómo funciona</SectionTag>
-            <SectionTitle>Una ruta simple para avanzar con seguridad</SectionTitle>
+            <SectionTitle>
+              Cómo sacarte la licencia de taxi en Palma paso a paso
+            </SectionTitle>
             <SectionSubtitle>
-              TaxiRadar24 está pensado para que entiendas rápido qué hacer
-              primero, cómo practicar y cómo continuar después.
+              Sigue una ruta clara para entender el examen municipal, estudiar
+              el contenido y prepararte para trabajar como taxista.
             </SectionSubtitle>
           </SectionHeader>
 
           <StepsWrapper>
             <StepItem>
               <StepNumber>1</StepNumber>
-              <StepTitle>Entra y ubica tu camino</StepTitle>
+              <StepTitle>Infórmate sobre la licencia</StepTitle>
               <StepText>
-                Accede a la Academia si te preparas para el examen o entra en
-                Herramientas si ya trabajas como taxista.
+                Descubre los requisitos para ser taxista en Palma y cómo
+                funciona el proceso municipal.
               </StepText>
             </StepItem>
 
             <StepItem>
               <StepNumber>2</StepNumber>
-              <StepTitle>Estudia o practica con foco</StepTitle>
+              <StepTitle>Prepárate para el examen</StepTitle>
               <StepText>
-                Sigue el contenido principal, escucha audios, haz simuladores y
-                entrena el callejero con una estructura clara.
+                Estudia el reglamento, practica con simuladores y entrena con
+                preguntas reales.
               </StepText>
             </StepItem>
 
             <StepItem>
               <StepNumber>3</StepNumber>
-              <StepTitle>Avanza con continuidad</StepTitle>
+              <StepTitle>Empieza a trabajar</StepTitle>
               <StepText>
-                Mantén una rutina, repasa lo importante y utiliza la plataforma
-                como espacio central de preparación y trabajo.
+                Una vez aprobado el examen, estarás listo para trabajar como
+                taxista en Palma de Mallorca.
               </StepText>
             </StepItem>
           </StepsWrapper>
@@ -308,13 +331,12 @@ export default function HomeScreen() {
 
       <FinalCTASection ref={testimonialsRef}>
         <FinalCTATitle>
-          Empieza por el camino que necesitas hoy
+          Empieza hoy a prepararte para la licencia de taxi en Palma
         </FinalCTATitle>
 
         <FinalCTAText>
-          Accede a la Academia para prepararte para el examen o entra en
-          Herramientas si buscas utilidades profesionales para tu trabajo
-          diario.
+          Accede a la academia y sigue una preparación completa para aprobar el
+          examen municipal y trabajar como taxista en Mallorca.
         </FinalCTAText>
 
         <HeroCTA>
@@ -327,6 +349,7 @@ export default function HomeScreen() {
           </ToolsPrimaryButton>
         </HeroCTA>
       </FinalCTASection>
+
       <SEOFooterSection />
     </Container>
   );

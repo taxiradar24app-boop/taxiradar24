@@ -12,7 +12,12 @@ export const Container = styled.div`
   align-items: center;
   justify-content: flex-start;
   background:
-    radial-gradient(circle at top, rgba(9, 20, 42, 0.92) 0%, rgba(5, 15, 32, 0.98) 52%, #04101f 100%),
+    radial-gradient(
+      circle at top,
+      rgba(9, 20, 42, 0.92) 0%,
+      rgba(5, 15, 32, 0.98) 52%,
+      #04101f 100%
+    ),
     linear-gradient(180deg, #071427 0%, #061224 100%);
   margin: 0;
   padding: 0 0 3rem 0;
@@ -115,7 +120,7 @@ export const HeroTitle = styled.h1`
   letter-spacing: ${({ theme }) => theme.letterSpacings.tighter};
   color: ${({ theme }) => theme.colors.yellow};
   margin: 0 0 0.3rem 0;
-  max-width: 30ch;
+  max-width: 24ch;
 
   @media (max-width: 640px) {
     font-size: clamp(2rem, 8vw, 3rem);
@@ -171,7 +176,7 @@ export const HeroSubtitle = styled.p`
   line-height: ${({ theme }) => theme.lineHeights.body};
   letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: ${({ theme }) => theme.colors.grey};
-  max-width: 34rem;
+  max-width: 42rem;
   margin: 0 0 0.5rem 0;
 
   @media (max-width: 768px) {
@@ -261,7 +266,7 @@ export const HeroSideCard = styled.aside`
   background: ${({ theme }) => theme.colors.sideCardBg};
   border-radius: 1.45rem;
   padding: 1.6rem;
-  border: 1px solid rgba(148, 163, 184, 0.32);
+  border: 1px solid rgba(16, 163, 127, 0.4);
   box-shadow: 0 22px 40px rgba(15, 23, 42, 0.72);
   max-width: 26rem;
 
@@ -338,6 +343,44 @@ export const HeroSideItem = styled.li`
   letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   color: #c7d2fe;
   margin-bottom: 0.4rem;
+`;
+
+export const HeroCTAContact = styled.button`
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #10a37f, #34d399);
+  color: #022c22;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  box-shadow: 0 10px 25px rgba(16, 163, 127, 0.25);
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(16, 163, 127, 0.35);
+    background: linear-gradient(135deg, #0d8f6c, #22c55e);
+  }
+
+  &:active {
+    transform: scale(0.97);
+    box-shadow: 0 5px 15px rgba(16, 163, 127, 0.2);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.5);
+  }
 `;
 
 /* ======================================================
@@ -520,18 +563,14 @@ export const FeatureCard = styled.div`
     $toolsSection
       ? theme.tools?.colors?.bgCard || "rgba(10,22,40,0.92)"
       : "rgba(15, 23, 42, 0.95)"};
-
   border-radius: 1.3rem;
   padding: 1.2rem 1.25rem 1.25rem;
-
   border: 1px solid
     ${({ $toolsSection, theme }) =>
       $toolsSection
         ? theme.border || "rgba(255,255,255,0.08)"
         : "rgba(55, 65, 81, 0.9)"};
-
   box-shadow: 0 18px 32px rgba(15, 23, 42, 0.74);
-
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -545,8 +584,7 @@ export const FeatureCard = styled.div`
       $toolsSection
         ? theme.tools?.colors?.brandSoft || "rgba(0,168,243,0.16)"
         : "rgba(129, 140, 248, 0.7)"};
-
-    background: ${({ $toolsSection, theme }) =>
+    background: ${({ $toolsSection }) =>
       $toolsSection
         ? "linear-gradient(180deg, rgba(0,168,243,0.08) 0%, rgba(10,22,40,0.96) 100%)"
         : "radial-gradient(circle at top, rgba(30, 64, 175, 0.7), rgba(15, 23, 42, 0.98))"};
@@ -557,10 +595,7 @@ export const FeatureCard = styled.div`
     line-height: ${({ theme }) => theme.lineHeights.title};
     font-weight: ${({ theme }) => theme.fontWeights.semibold};
     letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
-    color: ${({ $toolsSection, theme }) =>
-      $toolsSection
-        ? theme.tools?.colors?.textStrong || "#e5e7eb"
-        : "#e5e7eb"};
+    color: #e5e7eb;
     margin-bottom: 0.45rem;
   }
 
@@ -569,8 +604,7 @@ export const FeatureCard = styled.div`
     font-weight: ${({ theme }) => theme.fontWeights.regular};
     line-height: ${({ theme }) => theme.lineHeights.body};
     letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
-    color: ${({ $toolsSection, theme }) =>
-      $toolsSection ? theme.text || "#e8edf3" : "#9ca3af"};
+    color: #9ca3af;
     margin-bottom: 0.8rem;
   }
 `;
@@ -593,22 +627,9 @@ export const Pill = styled.span`
   letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
   padding: 0.16rem 0.62rem;
   border-radius: 999px;
-
-  background: ${({ $toolsSection, theme }) =>
-    $toolsSection
-      ? theme.tools?.colors?.brandSoft || "rgba(0,168,243,0.14)"
-      : "rgba(15, 23, 42, 0.9)"};
-
-  border: 1px solid
-    ${({ $toolsSection, theme }) =>
-      $toolsSection
-        ? theme.tools?.colors?.brandSoft || "rgba(0,168,243,0.16)"
-        : "rgba(148, 163, 184, 0.7)"};
-
-  color: ${({ $toolsSection, theme }) =>
-    $toolsSection
-      ? theme.tools?.colors?.textStrong || "#e5e7eb"
-      : "#e5e7eb"};
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  color: #e5e7eb;
 `;
 
 /* =========================
@@ -665,78 +686,6 @@ export const StepText = styled.p`
 `;
 
 /* =========================
-   SEO CARD
-========================= */
-export const SeoCard = styled.section`
-  color: #f1f1f1;
-  padding: 2rem;
-  max-width: 900px;
-  margin: 3rem auto 0;
-  line-height: ${({ theme }) => theme.lineHeights.relaxed};
-  text-align: left;
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 12px;
-
-  h1 {
-    color: #f4d35e;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    font-size: clamp(1.7rem, 1vw + 1.2rem, 2.3rem);
-    font-weight: ${({ theme }) => theme.fontWeights.heavy};
-    line-height: ${({ theme }) => theme.lineHeights.heading};
-    letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
-  }
-
-  h2 {
-    color: #f4d35e;
-    margin-top: 2rem;
-    margin-bottom: 0.6rem;
-    font-size: ${({ theme }) => theme.fontSizes.xl};
-    font-weight: ${({ theme }) => theme.fontWeights.bold};
-    line-height: ${({ theme }) => theme.lineHeights.heading};
-  }
-
-  h3 {
-    margin-top: 1.8rem;
-    color: #2ce3b5;
-    font-size: ${({ theme }) => theme.fontSizes.lg};
-    font-weight: ${({ theme }) => theme.fontWeights.bold};
-    line-height: ${({ theme }) => theme.lineHeights.title};
-  }
-
-  p {
-    margin-bottom: 1.3rem;
-    font-size: ${({ theme }) => theme.fontSizes.md};
-    font-weight: ${({ theme }) => theme.fontWeights.regular};
-    line-height: ${({ theme }) => theme.lineHeights.body};
-    letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
-    opacity: 0.95;
-  }
-
-  strong {
-    color: #f1f1f1;
-  }
-`;
-
-/* =========================
-   ANIMACIÓN ENTRADA
-========================= */
-export const FadeInSection = styled.div`
-  width: 100%;
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 0.8s ease-out,
-    transform 0.8s ease-out;
-  will-change: opacity, transform;
-
-  &.is-visible {
-    opacity: 1;
-    transform: none;
-  }
-`;
-
-/* =========================
    CTA FINAL
 ========================= */
 export const FinalCTASection = styled.section`
@@ -768,164 +717,20 @@ export const FinalCTAText = styled.p`
   margin-bottom: 1.55rem;
 `;
 
-export const ToolsCTAButton = styled.div`
+/* =========================
+   ANIMACIÓN ENTRADA
+========================= */
+export const FadeInSection = styled.div`
   width: 100%;
-  max-width: 420px;
-  margin-top: 1rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+  will-change: opacity, transform;
 
-  @media (max-width: 640px) {
-    max-width: 100%;
+  &.is-visible {
+    opacity: 1;
+    transform: none;
   }
-
-  & > button {
-    width: 100%;
-  }
-`;
-
-export const MobileUserButton = styled.button`
-  position: fixed;
-  top: calc(env(safe-area-inset-top, 0px) + 14px);
-  right: 14px;
-  width: 48px;
-  height: 48px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  background: rgba(15, 23, 42, 0.88);
-  backdrop-filter: blur(10px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 10020;
-  cursor: pointer;
-  padding: 0;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.32);
-
-  img {
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
-    display: block;
-  }
-
-  @media (max-width: 780px) {
-    display: inline-flex;
-  }
-`;
-
-export const HomeMobileMenuOverlay = styled.div`
-  position: fixed;
-  inset: 0;
-  background: rgba(2, 6, 23, 0.48);
-  backdrop-filter: blur(3px);
-  opacity: ${({ $open }) => ($open ? 1 : 0)};
-  pointer-events: ${({ $open }) => ($open ? "auto" : "none")};
-  transition: opacity 220ms ease;
-  z-index: 10030;
-
-  @media (min-width: 781px) {
-    display: none;
-  }
-`;
-
-export const HomeMobileMenuPanel = styled.aside`
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: min(84vw, 320px);
-  height: 100dvh;
-  background: rgba(10, 21, 40, 0.98);
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: -18px 0 36px rgba(0, 0, 0, 0.34);
-  padding:
-    calc(env(safe-area-inset-top, 0px) + 18px)
-    18px
-    calc(env(safe-area-inset-bottom, 0px) + 22px);
-  transform: translateX(${({ $open }) => ($open ? "0%" : "100%")});
-  transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  z-index: 10040;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-
-  @media (min-width: 781px) {
-    display: none;
-  }
-`;
-
-export const HomeMobileMenuHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-right: 28px;
-  margin-bottom: 16px;
-`;
-
-export const HomeMobileMenuAvatar = styled.img`
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  object-fit: cover;
-  display: block;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-`;
-
-export const HomeMobileMenuName = styled.div`
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1.2;
-  color: #f8fafc;
-  word-break: break-word;
-`;
-
-export const HomeMobileMenuClose = styled.button`
-  position: absolute;
-  top: calc(env(safe-area-inset-top, 0px) + 14px);
-  right: 14px;
-  border: none;
-  background: transparent;
-  color: #ffffff;
-  font-size: 1.65rem;
-  line-height: 1;
-  cursor: pointer;
-`;
-
-export const HomeMobileMenuDivider = styled.div`
-  width: 100%;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  margin: 12px 0 14px;
-`;
-
-export const HomeMobileMenuList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-export const HomeMobileMenuItem = styled.button`
-  width: 100%;
-  border: none;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.94);
-  text-align: left;
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 12px 4px;
-  cursor: pointer;
-
-  &:hover {
-    color: #58e63d;
-  }
-`;
-
-export const HomeMobileMenuPrimaryButton = styled.button`
-  width: 100%;
-  border: none;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #58e63d, #10a37f);
-  color: #08111f;
-  font-size: 0.98rem;
-  font-weight: 800;
-  padding: 14px 16px;
-  cursor: pointer;
-  margin-bottom: 6px;
 `;
