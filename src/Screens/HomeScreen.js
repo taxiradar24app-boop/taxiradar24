@@ -105,10 +105,16 @@ export default function HomeScreen() {
     goTools();
   };
 
-  const handleContact = () => {
-    navigate("/contacto");
-  };
+const handleContact = () => {
+  const phone = process.env.REACT_APP_WHATSAPP_PHONE;
 
+  const text =
+    "Hola, quiero información sobre cómo obtener la licencia de taxi en Palma de Mallorca.";
+
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+
+  window.open(url, "_blank", "noopener,noreferrer");
+};
   return (
     <Container>
       <MobileUserDrawerLite />
