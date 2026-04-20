@@ -114,7 +114,7 @@ export const HeroTag = styled.div`
 `;
 
 export const HeroTitle = styled.h1`
-  font-size: clamp(2rem, 2.5vw + 1.4rem, 3.15rem);
+  font-size: clamp(1.5rem, 2vw + 1.2rem, 3.15rem);
   line-height: 1.04;
   font-weight: ${({ theme }) => theme.fontWeights.heavy};
   letter-spacing: ${({ theme }) => theme.letterSpacings.tighter};

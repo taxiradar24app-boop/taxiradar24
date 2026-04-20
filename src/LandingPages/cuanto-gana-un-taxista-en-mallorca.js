@@ -33,7 +33,6 @@ import {
   RelatedGrid,
   RelatedCard,
   RelatedTitle,
-  RelatedText,
   TableWrap,
   Table,
   Thead,
@@ -49,10 +48,10 @@ export default function CuantoGanaUnTaxistaEnMallorca() {
     "https://taxiradar24.com/cuanto-gana-un-taxista-en-mallorca";
 
   const title =
-    "¿Cuánto gana un taxista en Palma de Mallorca en 2026? (2000€ - 3000€+)";
+    "¿Cuánto gana un taxista en Palma de Mallorca? Sueldo real, ingresos y cuánto se gana (2026)";
 
   const description =
-    "Descubre cuánto gana un taxista en Palma de Mallorca en 2026: ingresos reales entre 1500€ y 3000€, factores clave y si merece la pena trabajar en el taxi.";
+    "Descubre cuánto gana un taxista en Palma: ingresos reales, sueldo mensual, cuánto se gana en verano y si merece la pena trabajar en el taxi en Mallorca.";
 
   return (
     <>
@@ -64,6 +63,7 @@ export default function CuantoGanaUnTaxistaEnMallorca() {
 
       <Page>
         <Wrapper>
+
           <Breadcrumbs>
             <CrumbLink to="/">Inicio</CrumbLink>
             <Separator>/</Separator>
@@ -76,56 +76,72 @@ export default function CuantoGanaUnTaxistaEnMallorca() {
             </CrumbCurrent>
           </Breadcrumbs>
 
+          {/* HERO */}
           <Hero>
             <Eyebrow>Guía TaxiRadar24</Eyebrow>
 
             <Title>
-              ¿Cuánto gana un taxista en Palma de Mallorca en 2026?
+              ¿Cuánto gana un taxista en Palma de Mallorca?
             </Title>
 
             <Lead>
-              Un taxista en Palma de Mallorca puede ganar entre{" "}
-              <strong>2000€ y 3000€ al mes</strong>, dependiendo de la temporada,
-              los turnos y la experiencia. Si estás pensando en entrar en el sector,
-              aquí tienes una visión real de cuánto se puede ganar y de qué depende.
+              El sueldo de un taxista en Palma de Mallorca puede situarse entre{" "}
+              <strong>2000€ y 3000€ al mes</strong>, aunque en temporada alta puede
+              ser superior. Todo depende de cómo trabajes, cuándo trabajes y dónde.
             </Lead>
-                      
-          <SnippetBox>
-            <SnippetLabel>Respuesta rápida</SnippetLabel>
-            <SnippetText>
-              El sueldo de un taxista en Palma varía según la época del año,
-              siendo el verano el periodo con mayor actividad y rentabilidad.
-            </SnippetText>
-          </SnippetBox>
+
+            <SnippetBox>
+              <SnippetLabel>Respuesta rápida</SnippetLabel>
+              <SnippetText>
+                En verano un taxista puede ganar bastante más que en invierno,
+                especialmente trabajando en aeropuerto y zonas turísticas.
+              </SnippetText>
+            </SnippetBox>
           </Hero>
 
           <Content>
 
-          {/* BLOQUE PRINCIPAL */}
-          <Section>
-            <SectionTitle>
-              Cuánto gana un taxista en Palma de Mallorca realmente
-            </SectionTitle>
+            {/* BLOQUE SEO FUERTE */}
+            <Section>
+              <SectionTitle>
+                Sueldo de un taxista en Palma de Mallorca: ingresos reales
+              </SectionTitle>
 
-            <Paragraph>
-              El sueldo de un taxista en Palma de Mallorca no es fijo, pero en condiciones
-              normales puede situarse entre{" "}
-              <strong>2000€ y 3000€ al mes</strong>, dependiendo del nivel de actividad,
-              los turnos y la experiencia.
-            </Paragraph>
+              <Paragraph>
+                Muchas personas buscan cuánto gana un taxista en Palma y la realidad
+                es que no existe un sueldo fijo. Los ingresos dependen directamente
+                de la actividad, los turnos y la temporada.
+              </Paragraph>
 
-            <Paragraph>
-              Muchos aspirantes buscan cuánto gana un taxista en Palma realmente, y la
-              respuesta depende en gran parte de la temporada. En verano, la demanda
-              aumenta debido al turismo, lo que permite generar más ingresos, especialmente
-              en zonas como el aeropuerto, hoteles y áreas turísticas.
-            </Paragraph>
+              <Paragraph>
+                En condiciones normales, un taxista en Mallorca puede generar entre
+                2000€ y 3000€ al mes, aunque en verano los ingresos pueden ser más altos.
+              </Paragraph>
+            </Section>
 
-            <Paragraph>
-              Por tanto, el ingreso de un taxista en Mallorca está directamente relacionado
-              con la dedicación, la estrategia de trabajo y el conocimiento del entorno.
-            </Paragraph>
-          </Section>
+            {/* NUEVO BLOQUE SEO */}
+            <Section>
+              <SectionTitle>
+                ¿Cuánto gana un taxista en Palma en verano?
+              </SectionTitle>
+
+              <Paragraph>
+                Durante la temporada turística, Palma recibe millones de visitantes,
+                lo que incrementa la demanda de taxis.
+              </Paragraph>
+
+              <Paragraph>
+                En este periodo, muchos taxistas concentran su actividad en el aeropuerto,
+                hoteles y zonas de alta rotación, aumentando significativamente sus ingresos.
+              </Paragraph>
+
+              <SnippetBox>
+                <SnippetLabel>Clave</SnippetLabel>
+                <SnippetText>
+                  El verano es donde realmente se gana dinero en el taxi en Mallorca.
+                </SnippetText>
+              </SnippetBox>
+            </Section>
 
             {/* AEROPUERTO */}
             <Section>
@@ -134,30 +150,27 @@ export default function CuantoGanaUnTaxistaEnMallorca() {
               </SectionTitle>
 
               <Paragraph>
-                El aeropuerto de Palma es uno de los puntos más importantes del
-                trabajo diario. Durante la temporada turística, concentra gran
-                parte de los servicios.
+                El aeropuerto es uno de los puntos más rentables del trabajo diario.
               </Paragraph>
 
               <Paragraph>
-                Trabajar en esta zona puede aumentar los ingresos diarios,
-                aunque también requiere conocer bien horarios y dinámica de
-                trabajo.
+                Los servicios suelen ser más largos y constantes, lo que permite
+                aumentar la facturación diaria.
               </Paragraph>
             </Section>
 
             {/* FACTORES */}
             <Section>
               <SectionTitle>
-                Factores que influyen en los ingresos
+                Factores que influyen en cuánto gana un taxista
               </SectionTitle>
 
               <BulletList>
-                <li>Temporada alta o baja</li>
-                <li>Turnos de trabajo</li>
-                <li>Zona de actividad (aeropuerto, centro, hoteles)</li>
-                <li>Experiencia profesional</li>
-                <li>Conocimiento del callejero de Palma</li>
+                <li>Temporada (verano vs invierno)</li>
+                <li>Turnos (día o noche)</li>
+                <li>Zona de trabajo</li>
+                <li>Experiencia</li>
+                <li>Conocimiento de Palma</li>
               </BulletList>
             </Section>
 
@@ -180,54 +193,36 @@ export default function CuantoGanaUnTaxistaEnMallorca() {
                     </Tr>
                     <Tr>
                       <Td>Aeropuerto</Td>
-                      <Td>Zona clave de trabajo</Td>
+                      <Td>Servicios más largos</Td>
                     </Tr>
                     <Tr>
                       <Td>Noches</Td>
-                      <Td>Mayor rotación de servicios</Td>
-                    </Tr>
-                    <Tr>
-                      <Td>Experiencia</Td>
-                      <Td>Mejor rendimiento diario</Td>
+                      <Td>Mayor rotación</Td>
                     </Tr>
                   </tbody>
                 </Table>
               </TableWrap>
             </Section>
 
-            {/* VIVIR DEL TAXI */}
-            <Section>
-              <SectionTitle>
-                ¿Se puede vivir del taxi en Mallorca?
-              </SectionTitle>
-
-              <Paragraph>
-                Sí, muchas personas viven del taxi en Palma de Mallorca, pero no
-                es una actividad pasiva. Requiere constancia, organización y
-                conocimiento del entorno.
-              </Paragraph>
-            </Section>
-
             {/* DECISIÓN */}
             <Section>
               <SectionTitle>
-                ¿Merece la pena ser taxista en Palma?
+                ¿Merece la pena ser taxista en Palma de Mallorca?
               </SectionTitle>
 
               <Paragraph>
-                Para muchas personas sí, especialmente en una ciudad turística
-                como Palma. Sin embargo, es importante entender todo el proceso
-                antes de empezar.
+                Sí, pero no es automático. Es una profesión activa que requiere
+                dedicación, estrategia y conocimiento del entorno.
               </Paragraph>
 
               <Paragraph>
-                Antes de tomar la decisión, revisa los{" "}
+                Antes de empezar, revisa los{" "}
                 <InlineLink to="/requisitos-taxista-palma">
-                  requisitos para ser taxista en Palma
+                  requisitos para ser taxista
                 </InlineLink>{" "}
                 y cómo es el{" "}
                 <InlineLink to="/examen-taxista-mallorca">
-                  examen de taxista en Mallorca
+                  examen de taxi en Palma
                 </InlineLink>.
               </Paragraph>
             </Section>
@@ -237,8 +232,7 @@ export default function CuantoGanaUnTaxistaEnMallorca() {
               <CTATitle>Empieza con ventaja</CTATitle>
 
               <CTAParagraph>
-                Si quieres entrar en el sector, lo más importante es prepararte
-                bien desde el principio.
+                Si quieres entrar en el sector, prepárate desde el principio.
               </CTAParagraph>
 
               <CTAButtons>
@@ -261,7 +255,7 @@ export default function CuantoGanaUnTaxistaEnMallorca() {
                     ¿Cuánto gana un taxista en Palma al mes?
                   </FaqQuestion>
                   <FaqAnswer>
-                    Entre 2000€ y 3000€, dependiendo de la temporada y el trabajo.
+                    Entre 2000€ y 3000€, dependiendo del trabajo y la temporada.
                   </FaqAnswer>
                 </FaqItem>
 
@@ -270,16 +264,7 @@ export default function CuantoGanaUnTaxistaEnMallorca() {
                     ¿Se gana más en verano?
                   </FaqQuestion>
                   <FaqAnswer>
-                    Sí, el turismo incrementa la demanda.
-                  </FaqAnswer>
-                </FaqItem>
-
-                <FaqItem>
-                  <FaqQuestion>
-                    ¿Es importante conocer Palma?
-                  </FaqQuestion>
-                  <FaqAnswer>
-                    Mucho. Mejora el rendimiento y los ingresos.
+                    Sí, es cuando hay más demanda.
                   </FaqAnswer>
                 </FaqItem>
               </FaqWrap>

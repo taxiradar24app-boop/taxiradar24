@@ -29,11 +29,11 @@ export default function FormatoExamenTaxiPalma() {
     <>
       <Helmet>
         <title>
-          Formato del examen de taxista en Palma de Mallorca (Guía oficial)
+          Examen taxi Palma: formato real, puntuación y cómo aprobar (2026)
         </title>
         <meta
           name="description"
-          content="Descubre cómo es el examen de taxista en Palma: estructura real, test, callejero, rutas, normas y cómo aprobar."
+          content="Descubre cómo es realmente el examen de taxista en Palma: puntuación, test, callejero, rutas y claves para aprobar a la primera."
         />
       </Helmet>
 
@@ -42,203 +42,163 @@ export default function FormatoExamenTaxiPalma() {
 
           {/* HERO */}
           <Hero>
-            <Eyebrow>Guía Oficial TaxiRadar24</Eyebrow>
+            <Eyebrow>Guía TaxiRadar24</Eyebrow>
 
             <Title>
-              Cómo es el examen de taxista en Palma de Mallorca
+              Cómo es realmente el examen de taxi en Palma (y cómo aprobarlo)
             </Title>
 
             <Lead>
-              El examen para obtener el permiso municipal de taxista en Palma está estructurado en varias fases y requiere preparación específica en normativa, callejero y rutas.
+              El examen de taxista en Palma no es solo teoría. Tiene reglas,
+              puntuación, penalizaciones y una estructura que debes entender
+              para aprobar.
             </Lead>
 
             <SnippetBox>
               <SnippetLabel>Resumen clave</SnippetLabel>
               <SnippetText>
-                El examen se divide en dos partes: una primera fase eliminatoria (callejero + test) y una segunda fase de rutas que determina la aptitud final.
+                90 minutos de examen → 2 partes → necesitas mínimo 50 puntos en
+                la primera para pasar a rutas.
               </SnippetText>
             </SnippetBox>
           </Hero>
 
           <Content>
 
-            {/* INTRODUCCIÓN */}
+            {/* ESTRUCTURA REAL */}
             <Section>
-              <SectionTitle>Introducción al proceso</SectionTitle>
-
-              <Paragraph>
-                El procedimiento para obtener el permiso municipal de taxista en Palma está regulado por el Ayuntamiento y requiere seguir un proceso estructurado desde la inscripción hasta la obtención del carnet.
-              </Paragraph>
-
-              <Paragraph>
-                Toda la información oficial se publica exclusivamente en la web municipal, siendo el único canal válido durante todo el proceso.
-              </Paragraph>
-
-              <SnippetBox>
-                <SnippetLabel>Importante</SnippetLabel>
-                <SnippetText>
-                  Toda la comunicación oficial del examen se realiza únicamente a través de la web del Ayuntamiento.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
-
-            {/* NORMATIVA */}
-            <Section>
-              <SectionTitle>Normativa aplicable</SectionTitle>
-
-              <Paragraph>
-                El examen se rige por el Reglamento municipal del transporte público y por diferentes decretos que regulan el acceso al permiso de taxista.
-              </Paragraph>
-
-              <SnippetBox>
-                <SnippetLabel>Punto clave</SnippetLabel>
-                <SnippetText>
-                  Gran parte del examen tipo test se basa directamente en el Reglamento municipal.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
-
-            {/* INSCRIPCIÓN */}
-            <Section>
-              <SectionTitle>Inscripción a las pruebas</SectionTitle>
-
-              <Paragraph>
-                La inscripción debe realizarse con al menos 30 días de antelación y puede hacerse de forma presencial o telemática.
-              </Paragraph>
-
-              <SnippetBox>
-                <SnippetLabel>Error frecuente</SnippetLabel>
-                <SnippetText>
-                  No cumplir el plazo de inscripción implica no poder presentarse al examen.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
-
-            {/* PROCEDIMIENTO EXAMEN */}
-            <Section>
-              <SectionTitle>Procedimiento del examen</SectionTitle>
-
-              <Paragraph>
-                El examen tiene una duración total de 90 minutos y está dividido en dos partes.
-              </Paragraph>
+              <SectionTitle>Formato real del examen de taxi Palma</SectionTitle>
 
               <BulletList>
-                <li>Primera parte: Callejero + Test (eliminatoria)</li>
-                <li>Segunda parte: Rutas</li>
+                <li>Duración total: 90 minutos</li>
+                <li>Primera parte: callejero + test (eliminatoria)</li>
+                <li>Segunda parte: rutas</li>
               </BulletList>
 
               <SnippetBox>
-                <SnippetLabel>Clave del examen</SnippetLabel>
+                <SnippetLabel>Clave absoluta</SnippetLabel>
                 <SnippetText>
-                  Si no apruebas la primera parte, la segunda no se corrige.
+                  Si no llegas a 50 puntos en la primera parte → estás fuera.
                 </SnippetText>
               </SnippetBox>
             </Section>
 
-            {/* PRIMERA PARTE */}
+            {/* CALLEJERO */}
             <Section>
-              <SectionTitle>Primera parte: Callejero y Test</SectionTitle>
+              <SectionTitle>Ejercicio de callejero (10 puntos)</SectionTitle>
 
               <Paragraph>
-                La primera parte evalúa la capacidad de localizar direcciones y el conocimiento teórico del aspirante.
+                Tendrás que localizar 10 direcciones en el callejero en solo 10 minutos.
               </Paragraph>
 
               <BulletList>
-                <li>Callejero: localizar direcciones en tiempo limitado</li>
-                <li>Test: 60 preguntas sobre normativa y ciudad</li>
+                <li>Cada acierto → +1 punto</li>
+                <li>Error o vacío → 0 puntos</li>
               </BulletList>
 
               <SnippetBox>
-                <SnippetLabel>Dificultad real</SnippetLabel>
+                <SnippetLabel>Error típico</SnippetLabel>
                 <SnippetText>
-                  La mayoría de aspirantes falla en esta fase por falta de práctica real.
+                  No indicar plano + cuadrícula = respuesta incorrecta.
                 </SnippetText>
               </SnippetBox>
             </Section>
 
-            {/* SEGUNDA PARTE */}
+            {/* TEST */}
             <Section>
-              <SectionTitle>Segunda parte: Rutas</SectionTitle>
+              <SectionTitle>Test del examen (60 preguntas)</SectionTitle>
 
               <Paragraph>
-                Esta parte consiste en desarrollar itinerarios reales por Palma, aplicando conocimiento de vías principales y circulación.
+                El test es la parte más importante y donde más gente suspende.
               </Paragraph>
 
-              <SnippetBox>
-                <SnippetLabel>Punto crítico</SnippetLabel>
-                <SnippetText>
-                  Las rutas deben seguir el camino más lógico, respetando señalización y accesos reales.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
-
-            {/* NORMAS */}
-            <Section>
-              <SectionTitle>Normas para la realización del examen</SectionTitle>
-
               <BulletList>
-                <li>No se permite el uso de dispositivos electrónicos</li>
-                <li>No se puede hablar durante la prueba</li>
-                <li>El examen debe estar correctamente identificado</li>
+                <li>60 preguntas tipo test</li>
+                <li>+1 punto por acierto</li>
+                <li>-0.25 / -0.33 por error</li>
+                <li>Preguntas sin responder → no restan</li>
               </BulletList>
-
-              <SnippetBox>
-                <SnippetLabel>Expulsión inmediata</SnippetLabel>
-                <SnippetText>
-                  El uso del móvil o copiar implica la anulación del examen.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
-
-            {/* EXPULSIÓN */}
-            <Section>
-              <SectionTitle>Motivos de expulsión del examen</SectionTitle>
-
-              <BulletList>
-                <li>Copiar o comunicarse con otros aspirantes</li>
-                <li>Uso de dispositivos electrónicos</li>
-                <li>Alterar el desarrollo del examen</li>
-              </BulletList>
-            </Section>
-
-            {/* NO ADMITIDOS */}
-            <Section>
-              <SectionTitle>Casos en los que no se admite inscripción</SectionTitle>
-
-              <BulletList>
-                <li>Documentación falsa</li>
-                <li>Suspensión del permiso de conducir</li>
-                <li>Expulsiones previas por fraude</li>
-              </BulletList>
-            </Section>
-
-            {/* RESULTADOS */}
-            <Section>
-              <SectionTitle>Publicación de resultados y carnet</SectionTitle>
 
               <Paragraph>
-                Los resultados se publican en la web municipal y se establece un plazo de alegaciones.
+                El contenido se basa principalmente en:
               </Paragraph>
 
+              <BulletList>
+                <li>Reglamento municipal</li>
+                <li>Tarifas</li>
+                <li>Calles principales</li>
+                <li>Lugares clave de Palma</li>
+              </BulletList>
+
               <SnippetBox>
-                <SnippetLabel>Importante</SnippetLabel>
+                <SnippetLabel>Realidad</SnippetLabel>
                 <SnippetText>
-                  No se comunican resultados por teléfono, solo en la web oficial.
+                  Más del 50% del test es normativa → aquí se decide el aprobado.
+                </SnippetText>
+              </SnippetBox>
+            </Section>
+
+            {/* RUTAS */}
+            <Section>
+              <SectionTitle>Ejercicio de rutas (30 puntos)</SectionTitle>
+
+              <Paragraph>
+                Tendrás que resolver 3 rutas reales dentro de Palma.
+              </Paragraph>
+
+              <BulletList>
+                <li>10 puntos por ruta</li>
+                <li>Mínimo 20 puntos para aprobar</li>
+              </BulletList>
+
+              <Paragraph>
+                Se evalúa:
+              </Paragraph>
+
+              <BulletList>
+                <li>Ruta más corta y lógica</li>
+                <li>Respeto de señalización</li>
+                <li>Nombres correctos de calles</li>
+              </BulletList>
+
+              <SnippetBox>
+                <SnippetLabel>Penalizaciones reales</SnippetLabel>
+                <SnippetText>
+                  Error de calle → -1 punto | Ruta incorrecta → hasta -3 puntos
+                </SnippetText>
+              </SnippetBox>
+            </Section>
+
+            {/* CLAVES */}
+            <Section>
+              <SectionTitle>Claves reales para aprobar</SectionTitle>
+
+              <BulletList>
+                <li>Dominar el reglamento (no memorizar)</li>
+                <li>Practicar test reales</li>
+                <li>Entrenar callejero con tiempo</li>
+                <li>Simular rutas reales</li>
+              </BulletList>
+
+              <SnippetBox>
+                <SnippetLabel>Verdad incómoda</SnippetLabel>
+                <SnippetText>
+                  El examen no se aprueba estudiando… se aprueba entrenando.
                 </SnippetText>
               </SnippetBox>
             </Section>
 
             {/* CTA */}
             <CTABox>
-              <CTATitle>Prepárate con método real</CTATitle>
+              <CTATitle>Empieza a entrenar el examen real</CTATitle>
 
               <CTAParagraph>
-                El examen no se aprueba solo con teoría. Necesitas práctica real.
+                Practica con preguntas tipo examen y mejora tus resultados.
               </CTAParagraph>
 
               <CTAButtons>
                 <PrimaryLink to="/test-taxista-palma">
-                  Practicar test reales
+                  Practicar test
                 </PrimaryLink>
               </CTAButtons>
             </CTABox>
