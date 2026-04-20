@@ -56,42 +56,58 @@ export default function GuiaTaxistaMallorca() {
                 sector y prepararte con una base mucho más seria.
               </Paragraph>
 
-              <GridThree>
-                <RelatedCard to="/requisitos-taxista-palma">
-                  <RelatedTitle>Requisitos para ser taxista</RelatedTitle>
-                  <RelatedText>
-                    Entiende lo que necesitas antes de empezar.
-                  </RelatedText>
-                </RelatedCard>
+<GridThree>
 
-                <RelatedCard to="/examen-taxista-mallorca">
-                  <RelatedTitle>Examen taxista Mallorca</RelatedTitle>
-                  <RelatedText>
-                    Cómo prepararlo con más seguridad.
-                  </RelatedText>
-                </RelatedCard>
+  <RelatedCard to="/requisitos-taxista-palma">
+    <RelatedTitle>Requisitos para ser taxista</RelatedTitle>
+    <RelatedText>
+      Entiende lo que necesitas antes de empezar.
+    </RelatedText>
+  </RelatedCard>
 
-                <RelatedCard to="/test-taxista-palma">
-                  <RelatedTitle>Test taxista Palma</RelatedTitle>
-                  <RelatedText>
-                    La práctica que convierte teoría en resultado.
-                  </RelatedText>
-                </RelatedCard>
+  <RelatedCard to="/examen-taxista-mallorca">
+    <RelatedTitle>Examen taxista Mallorca</RelatedTitle>
+    <RelatedText>
+      Visión general del examen y cómo funciona.
+    </RelatedText>
+  </RelatedCard>
 
-                <RelatedCard to="/cuanto-gana-un-taxista-en-mallorca">
-                  <RelatedTitle>Cuánto gana un taxista</RelatedTitle>
-                  <RelatedText>
-                    Descubre el atractivo profesional del sector.
-                  </RelatedText>
-                </RelatedCard>
+  <RelatedCard to="/formato-examen-taxista-palma">
+    <RelatedTitle>Formato del examen</RelatedTitle>
+    <RelatedText>
+      Estructura real del examen y cómo se corrige.
+    </RelatedText>
+  </RelatedCard>
 
-                <RelatedCard to="/cuanto-cuesta-licencia-taxi-palma">
-                  <RelatedTitle>Cuánto cuesta una licencia</RelatedTitle>
-                  <RelatedText>
-                    Analiza el contexto económico antes de dar el paso.
-                  </RelatedText>
-                </RelatedCard>
-              </GridThree>
+  <RelatedCard to="/como-aprobar-examen-taxista-palma">
+    <RelatedTitle>Cómo aprobar el examen</RelatedTitle>
+    <RelatedText>
+      Estrategia real para superar la prueba.
+    </RelatedText>
+  </RelatedCard>
+
+  <RelatedCard to="/test-taxista-palma">
+    <RelatedTitle>Test taxista Palma</RelatedTitle>
+    <RelatedText>
+      Entrena como en el examen y mejora tu nivel.
+    </RelatedText>
+  </RelatedCard>
+
+  <RelatedCard to="/cuanto-gana-un-taxista-en-mallorca">
+    <RelatedTitle>Cuánto gana un taxista</RelatedTitle>
+    <RelatedText>
+      Descubre el atractivo profesional del sector.
+    </RelatedText>
+  </RelatedCard>
+
+  <RelatedCard to="/cuanto-cuesta-licencia-taxi-palma">
+    <RelatedTitle>Cuánto cuesta una licencia</RelatedTitle>
+    <RelatedText>
+      Analiza el contexto económico antes de dar el paso.
+    </RelatedText>
+  </RelatedCard>
+
+</GridThree>
             </Section>
 
             <CTABox>

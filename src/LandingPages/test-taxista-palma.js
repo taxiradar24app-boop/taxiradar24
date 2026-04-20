@@ -39,34 +39,16 @@ import {
   GridThree,
 } from "./LandigPagesStyle";
 
+import { Link as InlineLink } from "react-router-dom";
+
 export default function TestTaxistaPalma() {
   const canonicalUrl = "https://taxiradar24.com/test-taxista-palma";
-  const title = "Test taxista Palma gratis | Simulador y práctica | TaxiRadar24";
-  const description =
-    "Practica con un test de taxista en Palma, mejora tu preparación y entiende cómo entrenar con más eficacia para el examen.";
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "¿Sirve hacer test para preparar el examen de taxista?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Sí. Practicar con test ayuda a fijar contenidos, detectar errores y ganar confianza antes del examen.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "¿Basta con memorizar teoría?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "No. La práctica con preguntas y simulaciones es clave para medir el nivel real.",
-        },
-      },
-    ],
-  };
+  const title =
+    "Test taxista Palma gratis: practicar examen taxi Mallorca";
+
+  const description =
+    "Practica con test de taxista en Palma de Mallorca, mejora tu nivel y prepárate con simulaciones reales del examen.";
 
   return (
     <>
@@ -74,150 +56,212 @@ export default function TestTaxistaPalma() {
         <title>{title}</title>
         <meta name="description" content={description} />
         <link rel="canonical" href={canonicalUrl} />
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
 
       <Page>
         <Wrapper>
-          <Breadcrumbs aria-label="breadcrumb">
+          <Breadcrumbs>
             <CrumbLink to="/">Inicio</CrumbLink>
             <Separator>/</Separator>
-            <CrumbLink to="/guia-taxista-mallorca">Guía taxista Mallorca</CrumbLink>
+            <CrumbLink to="/guia-taxista-mallorca">
+              Guía taxista Mallorca
+            </CrumbLink>
             <Separator>/</Separator>
             <CrumbCurrent>Test taxista Palma</CrumbCurrent>
           </Breadcrumbs>
 
           <Hero>
             <Eyebrow>Guía TaxiRadar24</Eyebrow>
-            <Title>Test taxista Palma gratis: práctica real para avanzar</Title>
+
+            <Title>
+              "Test taxista Palma: entrena como en el examen y aprueba con TaxiRadar24"
+            </Title>
+
             <Lead>
-              Si quieres preparar bien el examen de taxista en Palma, hacer test no es un
-              complemento: es una parte central del proceso de aprendizaje.
+              Si estás preparando el examen de taxista en Palma de Mallorca,
+              hacer test es la forma más rápida de mejorar tu nivel y detectar
+              errores antes del examen real.
             </Lead>
 
             <SnippetBox>
               <SnippetLabel>Respuesta rápida</SnippetLabel>
               <SnippetText>
-                Practicar con preguntas tipo test te ayuda a entender el nivel real, a
-                detectar errores y a entrenar con más eficacia para el examen.
+                Practicar test de taxi en Palma te permite medir tu nivel real,
+                mejorar la rapidez y entrenar con preguntas similares al examen.
               </SnippetText>
             </SnippetBox>
           </Hero>
 
           <Content>
+
+            {/* BLOQUE SEO */}
             <Section>
-              <SectionTitle>Por qué los test marcan la diferencia</SectionTitle>
+              <SectionTitle>
+                Por qué hacer test es clave para aprobar el examen de taxi
+              </SectionTitle>
+
               <Paragraph>
-                Leer teoría puede darte una base, pero no te muestra cómo reaccionas ante
-                preguntas concretas. El test te obliga a recordar, decidir y medir tu nivel
-                real de comprensión.
+                Preparar el examen de taxista en Mallorca sin hacer test es uno
+                de los errores más comunes. La práctica es lo que transforma la
+                teoría en resultados.
               </Paragraph>
+
+              <Paragraph>
+                Los test te ayudan a entender el tipo de preguntas reales y a
+                mejorar tu capacidad de respuesta bajo presión.
+              </Paragraph>
+            </Section>
+
+            {/* BENEFICIOS */}
+            <Section>
+              <SectionTitle>
+                Ventajas de practicar con test de taxista en Palma
+              </SectionTitle>
+
               <BulletList>
-                <li>Te ayuda a fijar conceptos</li>
-                <li>Revela errores que no ves al leer</li>
-                <li>Mejora tu velocidad mental</li>
-                <li>Acerca la preparación al examen real</li>
+                <li>Detectas errores rápidamente</li>
+                <li>Refuerzas conocimientos clave</li>
+                <li>Mejoras la velocidad de respuesta</li>
+                <li>Simulas el examen real</li>
+                <li>Ganas seguridad antes del examen</li>
               </BulletList>
             </Section>
 
+            {/* MINI TEST */}
             <Section>
-              <SectionTitle>Mini práctica orientativa</SectionTitle>
+              <SectionTitle>
+                Ejemplo de preguntas tipo examen taxi Palma
+              </SectionTitle>
+
               <GridThree>
                 <SoftCard>
+                  <Paragraph><strong>Pregunta 1</strong></Paragraph>
                   <Paragraph>
-                    <strong>Pregunta 1</strong>
-                  </Paragraph>
-                  <Paragraph>
-                    ¿Qué importancia tiene el conocimiento del callejero de Palma dentro de
-                    la preparación?
+                    ¿Qué importancia tiene conocer el callejero de Palma?
                   </Paragraph>
                 </SoftCard>
 
                 <SoftCard>
+                  <Paragraph><strong>Pregunta 2</strong></Paragraph>
                   <Paragraph>
-                    <strong>Pregunta 2</strong>
-                  </Paragraph>
-                  <Paragraph>
-                    ¿Por qué la normativa y las tarifas deben estudiarse junto con la
-                    práctica?
+                    ¿Por qué es importante dominar la normativa del taxi?
                   </Paragraph>
                 </SoftCard>
 
                 <SoftCard>
+                  <Paragraph><strong>Pregunta 3</strong></Paragraph>
                   <Paragraph>
-                    <strong>Pregunta 3</strong>
-                  </Paragraph>
-                  <Paragraph>
-                    ¿Qué ventaja aporta practicar con simulaciones tipo examen?
+                    ¿Qué ventaja aporta simular el examen real?
                   </Paragraph>
                 </SoftCard>
               </GridThree>
             </Section>
 
+            {/* MÉTODO */}
             <Section>
-              <SectionTitle>Cómo usar bien los test</SectionTitle>
+              <SectionTitle>
+                Cómo usar los test para mejorar rápido
+              </SectionTitle>
+
               <NumberList>
                 <li>Empieza con bloques pequeños</li>
-                <li>Corrige cada error con atención</li>
+                <li>Corrige cada error</li>
                 <li>Repite preguntas falladas</li>
-                <li>Alterna test con teoría y simulaciones</li>
-                <li>Mide tu progreso de forma constante</li>
+                <li>Combina test con teoría</li>
+                <li>Haz simulaciones completas</li>
               </NumberList>
             </Section>
 
+            {/* INTERLINKING */}
+            <Section>
+              <SectionTitle>
+                Antes de hacer test, entiende el contexto
+              </SectionTitle>
+
+              <Paragraph>
+                Antes de practicar, es recomendable conocer los{" "}
+                <InlineLink to="/requisitos-taxista-palma">
+                  requisitos para ser taxista en Palma
+                </InlineLink>{" "}
+                y cómo es el{" "}
+                <InlineLink to="/examen-taxista-mallorca">
+                  examen de taxista en Mallorca
+                </InlineLink>.
+              </Paragraph>
+            </Section>
+
+            {/* CTA */}
             <CTABox>
-              <CTATitle>Entrena con una estructura profesional</CTATitle>
+              <CTATitle>Entrena como un profesional</CTATitle>
+
               <CTAParagraph>
-                TaxiRadar24 te permite practicar con más orden, trabajar sobre contenidos
-                relevantes y avanzar hacia el examen con una base mucho más sólida.
+                Con TaxiRadar24 puedes practicar con test reales y mejorar tu
+                preparación de forma estructurada.
               </CTAParagraph>
+
               <CTAButtons>
-                <PrimaryLink to="/academia-taxista-mallorca">Acceder a la academia</PrimaryLink>
-                <SecondaryLink to="/examen-taxista-mallorca">Ver guía del examen</SecondaryLink>
+                <PrimaryLink to="/academia-taxista-mallorca">
+                  Acceder a la academia
+                </PrimaryLink>
+                <SecondaryLink to="/guia-taxista-mallorca">
+                  Ver guía completa
+                </SecondaryLink>
               </CTAButtons>
             </CTABox>
 
+            {/* FAQ */}
             <Section>
               <SectionTitle>Preguntas frecuentes</SectionTitle>
+
               <FaqWrap>
                 <FaqItem>
-                  <FaqQuestion>¿Hacer test ayuda de verdad?</FaqQuestion>
+                  <FaqQuestion>
+                    ¿Hacer test ayuda a aprobar?
+                  </FaqQuestion>
                   <FaqAnswer>
-                    Sí. Es una de las formas más eficaces de medir y consolidar el estudio.
+                    Sí, es la forma más eficaz de preparar el examen.
                   </FaqAnswer>
                 </FaqItem>
+
                 <FaqItem>
-                  <FaqQuestion>¿Basta con memorizar?</FaqQuestion>
+                  <FaqQuestion>
+                    ¿Cuántos test debo hacer?
+                  </FaqQuestion>
                   <FaqAnswer>
-                    No. La práctica es la parte que transforma la teoría en rendimiento real.
+                    Cuantos más practiques, mayor será tu seguridad.
                   </FaqAnswer>
                 </FaqItem>
               </FaqWrap>
             </Section>
 
+            {/* RELATED */}
             <RelatedSection>
               <SectionTitle>Seguir leyendo</SectionTitle>
+
               <RelatedGrid>
                 <RelatedCard to="/examen-taxista-mallorca">
-                  <RelatedTitle>Examen taxista Mallorca</RelatedTitle>
+                  <RelatedTitle>Examen taxi Mallorca</RelatedTitle>
                   <RelatedText>
-                    Entiende cómo prepararlo con mejores criterios.
+                    Cómo aprobar con método.
                   </RelatedText>
                 </RelatedCard>
+
                 <RelatedCard to="/requisitos-taxista-palma">
-                  <RelatedTitle>Requisitos para ser taxista</RelatedTitle>
+                  <RelatedTitle>Requisitos taxista Palma</RelatedTitle>
                   <RelatedText>
-                    Conoce el contexto completo antes de presentarte.
+                    Todo lo necesario para empezar.
                   </RelatedText>
                 </RelatedCard>
+
                 <RelatedCard to="/cuanto-gana-un-taxista-en-mallorca">
                   <RelatedTitle>Cuánto gana un taxista</RelatedTitle>
                   <RelatedText>
-                    Descubre el interés profesional detrás del esfuerzo.
+                    Descubre el potencial del sector.
                   </RelatedText>
                 </RelatedCard>
               </RelatedGrid>
             </RelatedSection>
+
           </Content>
         </Wrapper>
       </Page>

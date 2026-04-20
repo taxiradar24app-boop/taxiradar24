@@ -17,10 +17,8 @@ import {
   Content,
   Section,
   SectionTitle,
-  SubTitle,
   Paragraph,
   BulletList,
-  NumberList,
   CTABox,
   CTATitle,
   CTAParagraph,
@@ -38,42 +36,16 @@ import {
   RelatedText,
 } from "./LandigPagesStyle";
 
+import { Link as InlineLink } from "react-router-dom";
+
 export default function RequisitosTaxistaPalma() {
   const canonicalUrl = "https://taxiradar24.com/requisitos-taxista-palma";
-  const title = "Requisitos para ser taxista en Palma de Mallorca | TaxiRadar24";
-  const description =
-    "Conoce los requisitos para ser taxista en Palma de Mallorca, qué documentos suelen pedirse y por qué el examen es una parte clave del proceso.";
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "¿Qué necesito para ser taxista en Palma?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Debes cumplir con los requisitos oficiales, reunir la documentación exigida y preparar correctamente el examen correspondiente.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "¿El examen es obligatorio?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Sí. La preparación del examen es uno de los pasos más importantes para acceder al sector.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "¿Conviene entrenar con test reales?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Sí. Practicar con preguntas y simulaciones ayuda a ganar seguridad y a entender mejor el nivel exigido.",
-        },
-      },
-    ],
-  };
+  const title =
+    "Requisitos para ser taxista en Palma de Mallorca (Guía oficial 2026)";
+
+  const description =
+    "Guía oficial para obtener el carnet de taxista en Palma: requisitos reales, examen, documentación, dificultad y cómo aprobar a la primera.";
 
   return (
     <>
@@ -81,136 +53,254 @@ export default function RequisitosTaxistaPalma() {
         <title>{title}</title>
         <meta name="description" content={description} />
         <link rel="canonical" href={canonicalUrl} />
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
 
       <Page>
         <Wrapper>
-          <Breadcrumbs aria-label="breadcrumb">
+
+          <Breadcrumbs>
             <CrumbLink to="/">Inicio</CrumbLink>
             <Separator>/</Separator>
-            <CrumbLink to="/guia-taxista-mallorca">Guía taxista Mallorca</CrumbLink>
+            <CrumbLink to="/guia-taxista-mallorca">
+              Guía taxista Mallorca
+            </CrumbLink>
             <Separator>/</Separator>
-            <CrumbCurrent>Requisitos para ser taxista</CrumbCurrent>
+            <CrumbCurrent>
+              Requisitos para ser taxista
+            </CrumbCurrent>
           </Breadcrumbs>
 
+          {/* HERO */}
           <Hero>
-            <Eyebrow>Guía TaxiRadar24</Eyebrow>
-            <Title>Requisitos para ser taxista en Palma de Mallorca</Title>
+            <Eyebrow>Guía Oficial TaxiRadar24</Eyebrow>
+
+            <Title>
+              Requisitos oficiales para obtener el carnet de taxista en Palma de Mallorca
+            </Title>
+
             <Lead>
-              Antes de pensar en trabajar como taxista en Palma, es fundamental entender
-              qué se exige, qué pasos debes cumplir y por qué la preparación previa marca
-              una diferencia enorme.
+              Para ejercer como conductor de autotaxi en Palma es obligatorio superar un proceso regulado por el Ayuntamiento, que incluye requisitos de acceso, inscripción al examen y acreditaciones oficiales.
             </Lead>
 
             <SnippetBox>
-              <SnippetLabel>Respuesta rápida</SnippetLabel>
+              <SnippetLabel>Requisito clave</SnippetLabel>
               <SnippetText>
-                Para entrar en el sector necesitas cumplir con los requisitos oficiales,
-                reunir la documentación necesaria y preparar bien el examen, que es una de
-                las partes más exigentes del proceso.
+                Es imprescindible disponer de permiso de conducción tipo B con al menos un año de experiencia, acreditar el nivel de catalán oral y superar el examen oficial.
               </SnippetText>
             </SnippetBox>
           </Hero>
 
           <Content>
+
+            {/* BLOQUE INTENCIÓN REAL */}
             <Section>
-              <SectionTitle>Qué debes tener en cuenta</SectionTitle>
+              <SectionTitle>
+                Qué necesitas realmente para ser taxista en Palma
+              </SectionTitle>
+
+              <Paragraph>
+                Para obtener el carnet de taxista en Palma no basta con cumplir requisitos administrativos. El proceso incluye normativa, acreditaciones oficiales y la superación del{" "}
+                <InlineLink to="/examen-taxista-mallorca">
+                  examen de taxista en Mallorca
+                </InlineLink>.
+              </Paragraph>
+
+              <Paragraph>
+                El verdadero filtro del proceso es el examen, donde se evalúa el conocimiento real del aspirante.
+              </Paragraph>
+
+              <SnippetBox>
+                <SnippetLabel>Resumen real</SnippetLabel>
+                <SnippetText>
+                  Cumplir requisitos es solo el primer paso. La clave está en preparar el examen correctamente.
+                </SnippetText>
+              </SnippetBox>
+            </Section>
+
+            {/* REQUISITOS */}
+            <Section>
+              <SectionTitle>
+                Requisitos oficiales de acceso al examen
+              </SectionTitle>
+
               <BulletList>
-                <li>Documentación básica exigida para iniciar el proceso</li>
-                <li>Condiciones personales y administrativas</li>
-                <li>Capacidad para superar el examen</li>
-                <li>Conocimiento de Palma, normativa y entorno profesional</li>
+                <li>Permiso de conducción B con mínimo 1 año</li>
+                <li>Acreditación de catalán oral</li>
+                <li>Sin antecedentes penales</li>
+                <li>Sin delitos de naturaleza sexual</li>
               </BulletList>
+
+              <SnippetBox>
+                <SnippetLabel>Punto crítico</SnippetLabel>
+                <SnippetText>
+                  Sin el nivel de catalán o la experiencia mínima de conducción, no puedes acceder al examen.
+                </SnippetText>
+              </SnippetBox>
             </Section>
 
+            {/* INSCRIPCIÓN */}
             <Section>
-              <SectionTitle>El examen es el punto decisivo</SectionTitle>
+              <SectionTitle>
+                Procedimiento de inscripción al examen
+              </SectionTitle>
+
               <Paragraph>
-                Muchos aspirantes piensan primero en los papeles, pero la realidad es que
-                el gran filtro suele ser el examen. Prepararlo bien desde el principio evita
-                pérdida de tiempo, frustración y estudio desordenado.
+                El plazo de inscripción se abre tras la convocatoria oficial y finaliza un mes antes del examen.
               </Paragraph>
-              <Paragraph>
-                No basta con leer teoría. Para tener opciones reales, necesitas entrenar con
-                preguntas, simular situaciones y trabajar sobre contenidos que se parezcan a
-                lo que de verdad vas a encontrar.
-              </Paragraph>
+
+              <BulletList>
+                <li>DNI / NIE / Pasaporte</li>
+                <li>Permiso de conducir</li>
+                <li>Pago de tasa</li>
+                <li>Acreditación de catalán</li>
+              </BulletList>
+
+              <SnippetBox>
+                <SnippetLabel>Importante</SnippetLabel>
+                <SnippetText>
+                  Fuera de plazo o sin documentación → exclusión automática.
+                </SnippetText>
+              </SnippetBox>
             </Section>
 
+            {/* CATALÁN */}
             <Section>
-              <SectionTitle>Pasos recomendados</SectionTitle>
-              <NumberList>
-                <li>Entender los requisitos y el contexto del proceso</li>
-                <li>Organizar la documentación necesaria</li>
-                <li>Empezar cuanto antes la preparación del examen</li>
-                <li>Practicar con test y simulaciones</li>
-                <li>Consolidar normativa, tarifas y callejero</li>
-              </NumberList>
+              <SectionTitle>
+                Acreditación del catalán
+              </SectionTitle>
+
+              <BulletList>
+                <li>Certificado oficial</li>
+                <li>Titulación académica (ESO/Bach)</li>
+                <li>Prueba oficial del Ayuntamiento</li>
+              </BulletList>
+
+              <SnippetBox>
+                <SnippetLabel>Punto clave</SnippetLabel>
+                <SnippetText>
+                  El catalán es obligatorio, no es opcional.
+                </SnippetText>
+              </SnippetBox>
             </Section>
 
+            {/* EXAMEN */}
+            <Section>
+              <SectionTitle>
+                Cómo es el examen de taxista en Palma
+              </SectionTitle>
+
+              <Paragraph>
+                Se convoca dos veces al año (febrero y noviembre).
+              </Paragraph>
+
+              <SnippetBox>
+                <SnippetLabel>Frecuencia</SnippetLabel>
+                <SnippetText>
+                  Solo hay dos oportunidades al año → cada intento cuenta.
+                </SnippetText>
+              </SnippetBox>
+            </Section>
+
+            {/* DIFICULTAD */}
+            <Section>
+              <SectionTitle>
+                Dificultad real del examen
+              </SectionTitle>
+
+              <Paragraph>
+                Muchos aspirantes no aprueban en su primer intento.
+              </Paragraph>
+
+              <SnippetBox>
+                <SnippetLabel>Realidad</SnippetLabel>
+                <SnippetText>
+                  El mayor error es presentarse sin preparación específica.
+                </SnippetText>
+              </SnippetBox>
+            </Section>
+
+            {/* DOCUMENTACIÓN FINAL */}
+            <Section>
+              <SectionTitle>
+                Documentación para obtener el carnet
+              </SectionTitle>
+
+              <BulletList>
+                <li>Foto carnet</li>
+                <li>Antecedentes penales</li>
+                <li>Certificado delitos sexuales</li>
+                <li>Certificado médico</li>
+                <li>Pago de tasa</li>
+              </BulletList>
+
+              <SnippetBox>
+                <SnippetLabel>Condición crítica</SnippetLabel>
+                <SnippetText>
+                  El aprobado caduca en 1 año si no completas el proceso.
+                </SnippetText>
+              </SnippetBox>
+            </Section>
+
+            {/* ERRORES */}
+            <Section>
+              <SectionTitle>
+                Errores comunes
+              </SectionTitle>
+
+              <BulletList>
+                <li>No preparar el examen</li>
+                <li>Subestimar la dificultad</li>
+                <li>No dominar callejero</li>
+                <li>Fallar en plazos</li>
+              </BulletList>
+
+              <SnippetBox>
+                <SnippetLabel>Error frecuente</SnippetLabel>
+                <SnippetText>
+                  Presentarse sin preparación es el principal motivo de suspenso.
+                </SnippetText>
+              </SnippetBox>
+            </Section>
+
+            {/* CTA */}
             <CTABox>
-              <CTATitle>Prepara el examen con criterio profesional</CTATitle>
+              <CTATitle>Prepárate con ventaja</CTATitle>
+
               <CTAParagraph>
-                TaxiRadar24 está pensado para ayudarte a estudiar mejor, practicar con una
-                estructura clara y avanzar con más seguridad hacia el objetivo.
+                Practica con preguntas reales y mejora tus probabilidades de aprobar.
               </CTAParagraph>
+
               <CTAButtons>
-                <PrimaryLink to="/academia-taxista-mallorca">Entrar en la academia</PrimaryLink>
-                <SecondaryLink to="/test-taxista-palma">Ver test</SecondaryLink>
+                <PrimaryLink to="/test-taxista-palma">
+                  Practicar test
+                </PrimaryLink>
+                <SecondaryLink to="/guia-taxista-mallorca">
+                  Ver guía completa
+                </SecondaryLink>
               </CTAButtons>
             </CTABox>
 
+            {/* FAQ */}
             <Section>
               <SectionTitle>Preguntas frecuentes</SectionTitle>
+
               <FaqWrap>
                 <FaqItem>
-                  <FaqQuestion>¿Hay que preparar bien el examen?</FaqQuestion>
+                  <FaqQuestion>¿Es difícil el examen?</FaqQuestion>
                   <FaqAnswer>
-                    Sí. Es uno de los puntos más importantes de todo el proceso.
+                    Sí, requiere preparación específica.
                   </FaqAnswer>
                 </FaqItem>
+
                 <FaqItem>
-                  <FaqQuestion>¿Vale con estudiar teoría?</FaqQuestion>
+                  <FaqQuestion>¿Cuántas convocatorias hay?</FaqQuestion>
                   <FaqAnswer>
-                    Lo más eficaz es combinar teoría con práctica real, test y simulaciones.
-                  </FaqAnswer>
-                </FaqItem>
-                <FaqItem>
-                  <FaqQuestion>¿Conviene empezar pronto?</FaqQuestion>
-                  <FaqAnswer>
-                    Sí. Una preparación con tiempo suele dar mejores resultados que estudiar
-                    con prisas.
+                    Dos al año.
                   </FaqAnswer>
                 </FaqItem>
               </FaqWrap>
             </Section>
 
-            <RelatedSection>
-              <SectionTitle>Seguir leyendo</SectionTitle>
-              <RelatedGrid>
-                <RelatedCard to="/test-taxista-palma">
-                  <RelatedTitle>Test taxista Palma</RelatedTitle>
-                  <RelatedText>
-                    Entrena con preguntas y estructura tipo examen.
-                  </RelatedText>
-                </RelatedCard>
-
-                <RelatedCard to="/examen-taxista-mallorca">
-                  <RelatedTitle>Cómo aprobar el examen</RelatedTitle>
-                  <RelatedText>
-                    Método claro para preparar la prueba con más seguridad.
-                  </RelatedText>
-                </RelatedCard>
-
-                <RelatedCard to="/cuanto-gana-un-taxista-en-mallorca">
-                  <RelatedTitle>Cuánto gana un taxista</RelatedTitle>
-                  <RelatedText>
-                    Descubre por qué tanta gente quiere entrar en el sector.
-                  </RelatedText>
-                </RelatedCard>
-              </RelatedGrid>
-            </RelatedSection>
           </Content>
         </Wrapper>
       </Page>

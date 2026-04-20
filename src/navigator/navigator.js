@@ -75,6 +75,13 @@ const TestTaxistaPalma = React.lazy(() =>
 const ExamenTaxistaMallorca = React.lazy(() =>
   import("@/LandingPages/examen-taxista-mallorca")
 );
+const FormatoExamenTaxistaPalma = React.lazy(() =>
+  import("@/LandingPages/formato-examen-taxista-palma")
+);
+
+const ComoAprobarExamenTaxistaPalma = React.lazy(() =>
+  import("@/LandingPages/como-aprobar-examen-taxista-palma")
+);
 
 // Tools
 const ToolsModule = React.lazy(() => import("@/Tools/ToolsModule"));
@@ -185,6 +192,14 @@ export default function Navigator() {
           <Route
             path="examen-taxista-mallorca"
             element={<ExamenTaxistaMallorca />}
+          />
+          <Route
+            path="formato-examen-taxista-palma"
+            element={<FormatoExamenTaxistaPalma />}
+          />
+          <Route
+            path="como-aprobar-examen-taxista-palma"
+            element={<ComoAprobarExamenTaxistaPalma />}
           />
         </Route>
 

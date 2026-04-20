@@ -19,7 +19,6 @@ import {
   SectionTitle,
   Paragraph,
   BulletList,
-  NumberList,
   CTABox,
   CTATitle,
   CTAParagraph,
@@ -37,11 +36,16 @@ import {
   RelatedText,
 } from "./LandigPagesStyle";
 
+import { Link as InlineLink } from "react-router-dom";
+
 export default function ExamenTaxistaMallorca() {
   const canonicalUrl = "https://taxiradar24.com/examen-taxista-mallorca";
-  const title = "Examen taxista Mallorca: cómo aprobar a la primera | TaxiRadar24";
+
+  const title =
+    "Examen taxista Mallorca: guía general del examen en Palma | TaxiRadar24";
+
   const description =
-    "Guía para entender el examen de taxista en Mallorca, cómo prepararlo mejor y por qué la práctica con test y simulaciones marca la diferencia.";
+    "Guía general del examen de taxista en Palma de Mallorca: qué es, cómo se divide, qué partes tiene y qué debes consultar para prepararlo con criterio.";
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -49,18 +53,26 @@ export default function ExamenTaxistaMallorca() {
     mainEntity: [
       {
         "@type": "Question",
-        name: "¿Es difícil el examen de taxista en Mallorca?",
+        name: "¿Cómo es el examen de taxista en Palma de Mallorca?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Puede ser exigente si no se prepara con método. La combinación de teoría, test y simulación mejora mucho las opciones.",
+          text: "El examen se divide en dos partes: una primera parte eliminatoria compuesta por callejero y test, y una segunda parte de rutas.",
         },
       },
       {
         "@type": "Question",
-        name: "¿Qué conviene estudiar?",
+        name: "¿Cuánto dura el examen de taxista en Palma?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Es importante trabajar normativa, tarifas, callejero y comprensión del entorno profesional de Palma.",
+          text: "La duración total de la prueba es de 90 minutos.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "¿Se corrige la segunda parte si suspendes la primera?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. La primera parte es eliminatoria y solo si se supera se evalúa la segunda parte del examen.",
         },
       },
     ],
@@ -72,94 +84,234 @@ export default function ExamenTaxistaMallorca() {
         <title>{title}</title>
         <meta name="description" content={description} />
         <link rel="canonical" href={canonicalUrl} />
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
       </Helmet>
 
       <Page>
         <Wrapper>
-          <Breadcrumbs aria-label="breadcrumb">
+          <Breadcrumbs>
             <CrumbLink to="/">Inicio</CrumbLink>
             <Separator>/</Separator>
-            <CrumbLink to="/guia-taxista-mallorca">Guía taxista Mallorca</CrumbLink>
+            <CrumbLink to="/guia-taxista-mallorca">
+              Guía taxista Mallorca
+            </CrumbLink>
             <Separator>/</Separator>
             <CrumbCurrent>Examen taxista Mallorca</CrumbCurrent>
           </Breadcrumbs>
 
           <Hero>
             <Eyebrow>Guía TaxiRadar24</Eyebrow>
-            <Title>Examen taxista Mallorca: cómo aprobar con más seguridad</Title>
+
+            <Title>
+              Examen taxista Mallorca: guía general del examen en Palma
+            </Title>
+
             <Lead>
-              El examen es el filtro que más respeto genera entre los aspirantes. La buena
-              noticia es que una preparación ordenada puede cambiar mucho el resultado.
+              El examen de taxista en Palma de Mallorca es la prueba clave para
+              obtener el permiso municipal. Antes de prepararlo en serio,
+              conviene entender su estructura general, qué partes lo componen y
+              qué tipo de conocimientos exige.
             </Lead>
 
             <SnippetBox>
-              <SnippetLabel>Respuesta rápida</SnippetLabel>
+              <SnippetLabel>Resumen rápido</SnippetLabel>
               <SnippetText>
-                Aprobar el examen de taxista en Mallorca exige método, práctica y
-                constancia. Quien combina teoría, test y simulación suele llegar con mucha
-                más seguridad.
+                El examen de taxista en Palma se compone de una primera parte
+                eliminatoria de callejero y test, y una segunda parte de rutas.
+                Si no superas la primera fase, la segunda no se corrige.
               </SnippetText>
             </SnippetBox>
           </Hero>
 
           <Content>
             <Section>
-              <SectionTitle>Qué suele marcar la diferencia</SectionTitle>
-              <BulletList>
-                <li>Estudiar con una estructura clara</li>
-                <li>Practicar con preguntas frecuentes</li>
-                <li>Trabajar el callejero de Palma</li>
-                <li>Consolidar normativa y tarifas</li>
-                <li>Simular la presión del examen</li>
-              </BulletList>
-            </Section>
+              <SectionTitle>
+                Qué es el examen de taxista en Palma de Mallorca
+              </SectionTitle>
 
-            <Section>
-              <SectionTitle>Error común de muchos aspirantes</SectionTitle>
               <Paragraph>
-                El error más habitual es pensar que basta con leer contenido y memorizar.
-                En realidad, el rendimiento mejora cuando conviertes el estudio en práctica
-                activa y revisión constante.
+                El examen de taxista en Palma es la prueba de aptitud que debe
+                superar el aspirante para avanzar en el proceso de obtención del
+                permiso municipal de taxista.
+              </Paragraph>
+
+              <Paragraph>
+                No se trata solo de una prueba teórica. El examen está pensado
+                para comprobar si el candidato domina los conocimientos
+                necesarios para ejercer con criterio profesional dentro del
+                servicio de autotaxi en Palma.
               </Paragraph>
             </Section>
 
             <Section>
-              <SectionTitle>Método recomendado</SectionTitle>
-              <NumberList>
-                <li>Comprender el temario y organizarlo</li>
-                <li>Estudiar bloques cortos con foco</li>
-                <li>Hacer test después de cada bloque</li>
-                <li>Revisar fallos y repetir</li>
-                <li>Simular exámenes completos</li>
-              </NumberList>
+              <SectionTitle>
+                Cómo se divide el examen de taxista
+              </SectionTitle>
+
+              <Paragraph>
+                La prueba oficial se organiza en dos partes claramente
+                diferenciadas.
+              </Paragraph>
+
+              <BulletList>
+                <li>Primera parte: callejero y test</li>
+                <li>Segunda parte: rutas o itinerarios</li>
+              </BulletList>
+
+              <Paragraph>
+                La primera parte tiene carácter eliminatorio. Eso significa que
+                solo los aspirantes que alcanzan el nivel exigido en esa fase
+                pasan a la evaluación de la segunda parte.
+              </Paragraph>
+
+              <SnippetBox>
+                <SnippetLabel>Punto clave</SnippetLabel>
+                <SnippetText>
+                  Entender esta estructura cambia totalmente la forma correcta
+                  de preparar el examen.
+                </SnippetText>
+              </SnippetBox>
+            </Section>
+
+            <Section>
+              <SectionTitle>
+                Qué conocimientos se evalúan en el examen
+              </SectionTitle>
+
+              <Paragraph>
+                El examen exige una combinación de conocimientos normativos,
+                operativos y de orientación profesional dentro de Palma.
+              </Paragraph>
+
+              <BulletList>
+                <li>Normativa aplicable al servicio del taxi</li>
+                <li>Tarifas vigentes</li>
+                <li>Uso del callejero</li>
+                <li>Vías principales de Palma</li>
+                <li>Lugares de referencia y accesos principales</li>
+                <li>Resolución correcta de rutas</li>
+              </BulletList>
+
+              <Paragraph>
+                Por eso, prepararlo bien implica mucho más que leer teoría: hay
+                que entender el examen y después trabajar cada bloque con
+                método.
+              </Paragraph>
+            </Section>
+
+            <Section>
+              <SectionTitle>
+                Dónde conviene profundizar para prepararlo bien
+              </SectionTitle>
+
+              <Paragraph>
+                Esta página es una guía general. Si quieres preparar el examen
+                con criterio, lo recomendable es separar bien cada intención.
+              </Paragraph>
+
+              <Paragraph>
+                Para entender la estructura exacta de la prueba, consulta{" "}
+                <InlineLink to="/formato-examen-taxista-palma">
+                  cómo es el formato del examen de taxista en Palma
+                </InlineLink>
+                .
+              </Paragraph>
+
+              <Paragraph>
+                Si lo que necesitas es práctica, puedes entrenar con el{" "}
+                <InlineLink to="/test-taxista-palma">
+                  test de taxista en Palma
+                </InlineLink>
+                .
+              </Paragraph>
+
+              <Paragraph>
+                Y si buscas una estrategia completa de estudio, aquí tienes la
+                guía sobre{" "}
+                <InlineLink to="/como-aprobar-examen-taxista-palma">
+                  cómo aprobar el examen de taxista en Palma
+                </InlineLink>
+                .
+              </Paragraph>
+            </Section>
+
+            <Section>
+              <SectionTitle>
+                Antes del examen: el punto de partida correcto
+              </SectionTitle>
+
+              <Paragraph>
+                Antes de centrarte en la preparación, conviene revisar también
+                los{" "}
+                <InlineLink to="/requisitos-taxista-palma">
+                  requisitos para ser taxista en Palma
+                </InlineLink>
+                , ya que el acceso al examen y la obtención final del carnet
+                dependen de cumplir las condiciones oficiales del proceso.
+              </Paragraph>
+
+              <SnippetBox>
+                <SnippetLabel>Enfoque recomendado</SnippetLabel>
+                <SnippetText>
+                  Primero entiende el proceso, después la estructura del examen,
+                  luego practica y finalmente trabaja una estrategia real de
+                  aprobado.
+                </SnippetText>
+              </SnippetBox>
             </Section>
 
             <CTABox>
-              <CTATitle>Prepárate de forma más inteligente</CTATitle>
+              <CTATitle>Prepara el examen con una base ordenada</CTATitle>
+
               <CTAParagraph>
-                TaxiRadar24 está pensado para ayudarte a pasar de estudiar sin orden a
-                entrenar con una estructura mucho más eficaz.
+                Si quieres avanzar con más claridad, empieza por entender el
+                formato oficial, practica con test y después trabaja la
+                estrategia completa de preparación.
               </CTAParagraph>
+
               <CTAButtons>
-                <PrimaryLink to="/academia-taxista-mallorca">Ver academia</PrimaryLink>
-                <SecondaryLink to="/test-taxista-palma">Practicar test</SecondaryLink>
+                <PrimaryLink to="/formato-examen-taxista-palma">
+                  Ver formato del examen
+                </PrimaryLink>
+                <SecondaryLink to="/test-taxista-palma">
+                  Practicar test
+                </SecondaryLink>
               </CTAButtons>
             </CTABox>
 
             <Section>
               <SectionTitle>Preguntas frecuentes</SectionTitle>
+
               <FaqWrap>
                 <FaqItem>
-                  <FaqQuestion>¿Es un examen exigente?</FaqQuestion>
+                  <FaqQuestion>
+                    ¿Cómo es el examen de taxista en Palma?
+                  </FaqQuestion>
                   <FaqAnswer>
-                    Sí, especialmente si no se prepara con un método claro.
+                    Se divide en dos partes: una primera parte eliminatoria de
+                    callejero y test, y una segunda parte de rutas.
                   </FaqAnswer>
                 </FaqItem>
+
                 <FaqItem>
-                  <FaqQuestion>¿Conviene hacer simulaciones?</FaqQuestion>
+                  <FaqQuestion>
+                    ¿La primera parte del examen es eliminatoria?
+                  </FaqQuestion>
                   <FaqAnswer>
-                    Sí. Te acercan a la realidad del examen y mejoran tu seguridad.
+                    Sí. Si no se supera la primera parte, la segunda no se
+                    corrige.
+                  </FaqAnswer>
+                </FaqItem>
+
+                <FaqItem>
+                  <FaqQuestion>
+                    ¿Dónde puedo ver la estructura completa del examen?
+                  </FaqQuestion>
+                  <FaqAnswer>
+                    En la página de formato del examen, donde se explica con más
+                    detalle cada bloque de la prueba.
                   </FaqAnswer>
                 </FaqItem>
               </FaqWrap>
@@ -167,23 +319,26 @@ export default function ExamenTaxistaMallorca() {
 
             <RelatedSection>
               <SectionTitle>Seguir leyendo</SectionTitle>
+
               <RelatedGrid>
+                <RelatedCard to="/formato-examen-taxista-palma">
+                  <RelatedTitle>Formato del examen</RelatedTitle>
+                  <RelatedText>
+                    Entiende la estructura oficial de la prueba.
+                  </RelatedText>
+                </RelatedCard>
+
                 <RelatedCard to="/test-taxista-palma">
                   <RelatedTitle>Test taxista Palma</RelatedTitle>
                   <RelatedText>
-                    Practica con preguntas para medir tu nivel.
+                    Practica con preguntas tipo examen.
                   </RelatedText>
                 </RelatedCard>
-                <RelatedCard to="/requisitos-taxista-palma">
-                  <RelatedTitle>Requisitos para ser taxista</RelatedTitle>
+
+                <RelatedCard to="/como-aprobar-examen-taxista-palma">
+                  <RelatedTitle>Cómo aprobar el examen</RelatedTitle>
                   <RelatedText>
-                    El contexto necesario antes de presentarte.
-                  </RelatedText>
-                </RelatedCard>
-                <RelatedCard to="/cuanto-gana-un-taxista-en-mallorca">
-                  <RelatedTitle>Cuánto gana un taxista</RelatedTitle>
-                  <RelatedText>
-                    Entiende el atractivo real del sector.
+                    Sigue una estrategia real de preparación.
                   </RelatedText>
                 </RelatedCard>
               </RelatedGrid>
