@@ -121,23 +121,18 @@ const handleContact = () => {
 
       <HeroSection>
         <HeroContent>
-        <HeroTitle>
-          Cómo obtener la licencia de taxi en Palma de Mallorca (Guía 2026)
+<HeroTitle>
+  Curso carnet de taxista en Palma de Mallorca
+</HeroTitle>
+<SubTitle>
+  Guía completa para aprobar el examen municipal en 2026
+</SubTitle>
 
-          <SubTitle>
-            Carnet de taxista, examen y requisitos para empezar en Palma.
-          </SubTitle>
-        </HeroTitle>
 
-        <Title2>
-          Academia para taxistas en Palma de Mallorca
-        </Title2>
-
-        <HeroSubtitle>
-          Aprende cómo ser taxista en Palma paso a paso: requisitos oficiales,
-          examen municipal, documentación y preparación completa. Practica con test
-          y simulador real para aprobar a la primera.
-        </HeroSubtitle>
+<HeroSubtitle>
+  Prepárate con simulador real, test oficiales y callejero de Palma.
+  Todo lo que necesitas para aprobar a la primera.
+</HeroSubtitle>
 
           <HeroCTA>
             <PrimaryButton onClick={goAcademy}>
@@ -175,7 +170,7 @@ const handleContact = () => {
           <HeroSideBadge>Próximas convocatorias "Noviembre 2026"</HeroSideBadge>
 
         <HeroSideTitle>
-          ¿Quieres obtener la licencia de taxi en Palma de Mallorca?
+          ¿Quieres trabajar de taxista en Palma de Mallorca?
         </HeroSideTitle>
 
         <HeroSideText>

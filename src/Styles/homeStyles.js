@@ -114,8 +114,8 @@ export const HeroTag = styled.div`
 `;
 
 export const HeroTitle = styled.h1`
-  font-size: clamp(1.5rem, 2vw + 1.2rem, 3.15rem);
-  line-height: 1.04;
+  font-size: clamp(1.9rem, 2.4vw + 1.6rem, 3.15rem);
+  line-height: 1.2;
   font-weight: ${({ theme }) => theme.fontWeights.heavy};
   letter-spacing: ${({ theme }) => theme.letterSpacings.tighter};
   color: ${({ theme }) => theme.colors.yellow};
@@ -125,7 +125,7 @@ export const HeroTitle = styled.h1`
   @media (max-width: 640px) {
     font-size: clamp(2rem, 8vw, 3rem);
     line-height: 1.05;
-    max-width: 11ch;
+    max-width: 12ch;
     margin-bottom: 0.4rem;
   }
 `;
@@ -154,7 +154,7 @@ export const Title2 = styled.h2`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   letter-spacing: ${({ theme }) => theme.letterSpacings.tight};
   color: ${({ theme }) => theme.colors.yellow};
-  max-width: 20ch;
+  max-width: 25ch;
   margin: 0.8rem 0 0.5rem 0;
 
   @media (max-width: 768px) {
