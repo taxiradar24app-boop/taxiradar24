@@ -199,139 +199,137 @@ const handleContact = () => {
         </HeroSideCard>
       </HeroSection>
 
-      <FadeInSection ref={overviewRef}>
-        <Section>
-          <HeroSideCardTools>
-            <SectionHeader>
-              <HeroCTA>
-                <SectionTag>TaxiRadar24 para taxistas</SectionTag>
-              </HeroCTA>
+<FadeInSection ref={overviewRef}>
+  <Section>
+    <HeroSideCardTools>
+      <SectionHeader>
+        <HeroCTA>
+          <SectionTag>TaxiRadar24 para taxistas</SectionTag>
+        </HeroCTA>
 
-              <SectionTitle>
-                Herramientas para taxistas en Palma de Mallorca
-              </SectionTitle>
+        <SectionTitle>
+          Herramientas para taxistas en Palma de Mallorca
+        </SectionTitle>
 
-              <SectionSubtitle>
-                Consulta llegadas al aeropuerto, planifica mejor tu jornada y
-                trabaja con información en tiempo real.
-              </SectionSubtitle>
+        <SectionSubtitle>
+          Anticípate a la demanda, consulta llegadas al aeropuerto y trabaja con
+          información en tiempo real para maximizar cada jornada.
+        </SectionSubtitle>
 
-              <HeroCTA>
-                <ToolsPrimaryButton onClick={handleGoTools}>
-                  🔧 Herramientas para taxistas
-                </ToolsPrimaryButton>
-              </HeroCTA>
-            </SectionHeader>
-          </HeroSideCardTools>
+        <HeroCTA>
+          <ToolsPrimaryButton onClick={handleGoTools}>
+            🔧 Acceder a herramientas
+          </ToolsPrimaryButton>
+        </HeroCTA>
+      </SectionHeader>
+    </HeroSideCardTools>
 
-          <FeatureGrid>
-            <FeatureCard>
-              <FeatureIcon>✈️</FeatureIcon>
-              <h3>Llegadas aeropuerto Palma en tiempo real</h3>
-              <p>
-                Consulta vuelos que llegan a Palma y anticípate a la demanda de
-                clientes en aeropuerto.
-              </p>
-              <PillList>
-                <Pill>Llegadas Palma</Pill>
-                <Pill>Radar vuelos</Pill>
-                <Pill>Uso desde móvil</Pill>
-              </PillList>
-            </FeatureCard>
+    <FeatureGrid>
+      <FeatureCard>
+        <FeatureIcon>✈️</FeatureIcon>
+        <h3>Llegadas a Palma en tiempo real</h3>
+        <p>
+          Visualiza los vuelos que llegan a Palma y colócate antes que otros
+          conductores en zonas de alta demanda.
+        </p>
+        <PillList>
+          <Pill>Llegadas aeropuerto</Pill>
+          <Pill>Radar vuelos</Pill>
+          <Pill>Tiempo real</Pill>
+        </PillList>
+      </FeatureCard>
 
-            <FeatureCard>
-              <FeatureIcon>📘</FeatureIcon>
-              <h3>Curso orientado al examen municipal</h3>
-              <p>
-                Estudia el reglamento, entiende qué entra en la prueba y
-                practica con una preparación pensada para aprobar.
-              </p>
-              <PillList>
-                <Pill>Temario guiado</Pill>
-                <Pill>Examen municipal</Pill>
-                <Pill>Preguntas reales</Pill>
-              </PillList>
-            </FeatureCard>
+      <FeatureCard>
+        <FeatureIcon>📘</FeatureIcon>
+        <h3>Curso para aprobar el examen de taxista</h3>
+        <p>
+          Aprende exactamente lo que entra en el examen municipal y practica con
+          un sistema diseñado para aprobar a la primera.
+        </p>
+        <PillList>
+          <Pill>Examen oficial</Pill>
+          <Pill>Temario guiado</Pill>
+          <Pill>Preguntas reales</Pill>
+        </PillList>
+      </FeatureCard>
 
-            <FeatureCard>
-              <FeatureIcon>📱</FeatureIcon>
-              <h3>Estudia desde móvil o PWA</h3>
-              <p>
-                Accede a la academia desde casa, el taxi o cualquier dispositivo
-                y mantén tu preparación activa cada día.
-              </p>
-              <PillList>
-                <Pill>PWA</Pill>
-                <Pill>Móvil</Pill>
-                <Pill>24/7</Pill>
-              </PillList>
-            </FeatureCard>
+      <FeatureCard>
+        <FeatureIcon>📱</FeatureIcon>
+        <h3>Estudia desde el móvil, donde quieras</h3>
+        <p>
+          Accede desde casa, el taxi o cualquier dispositivo y mantén tu progreso
+          activo todos los días sin perder ritmo.
+        </p>
+        <PillList>
+          <Pill>PWA</Pill>
+          <Pill>Móvil</Pill>
+          <Pill>24/7</Pill>
+        </PillList>
+      </FeatureCard>
 
-            <FeatureCard>
-              <FeatureIcon>🎓</FeatureIcon>
-              <h3>Preparación para licencia taxi Palma</h3>
-              <p>
-                Sigue una ruta clara con reglamento, audios, simuladores y
-                callejero para avanzar con seguridad hacia tu objetivo.
-              </p>
-              <PillList>
-                <Pill>Reglamento</Pill>
-                <Pill>Audios</Pill>
-                <Pill>Simuladores</Pill>
-                <Pill>Callejero</Pill>
-              </PillList>
-            </FeatureCard>
-          </FeatureGrid>
-        </Section>
-      </FadeInSection>
+      <FeatureCard>
+        <FeatureIcon>🎓</FeatureIcon>
+        <h3>Preparación completa para ser taxista en Palma</h3>
+        <p>
+          Sigue un sistema claro con reglamento, audios, simulador y callejero
+          para avanzar con seguridad hasta conseguir tu carnet.
+        </p>
+        <PillList>
+          <Pill>Reglamento</Pill>
+          <Pill>Audios</Pill>
+          <Pill>Simulador</Pill>
+          <Pill>Callejero</Pill>
+        </PillList>
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+</FadeInSection>
 
-      <FadeInSection ref={stepsRef}>
-        <Section background="alt">
-          <SectionHeader>
-            <SectionTag>Cómo funciona</SectionTag>
-            <SectionTitle>
-              Cómo sacarte la licencia de taxi en Palma paso a paso
-            </SectionTitle>
-            <SectionSubtitle>
-              Sigue una ruta clara para entender el examen municipal, estudiar
-              el contenido y prepararte para trabajar como taxista.
-            </SectionSubtitle>
-          </SectionHeader>
+<FadeInSection ref={stepsRef}>
+  <Section background="alt">
+    <SectionHeader>
+      <SectionTag>Cómo funciona</SectionTag>
 
-          <StepsWrapper>
-            <StepItem>
-              <StepNumber>1</StepNumber>
-              <StepTitle>Infórmate sobre la licencia</StepTitle>
-              <StepText>
-                Descubre los requisitos para ser taxista en Palma y cómo
-                funciona el proceso municipal.
-              </StepText>
-            </StepItem>
+      <SectionTitle>
+        Cómo conseguir el carnet de taxista en Palma paso a paso
+      </SectionTitle>
 
-            <StepItem>
-              <StepNumber>2</StepNumber>
-              <StepTitle>Prepárate para el examen</StepTitle>
-              <StepText>
-                Estudia el reglamento, practica con simuladores y entrena con
-                preguntas reales.
-              </StepText>
-            </StepItem>
+      <SectionSubtitle>
+        Desde los requisitos hasta aprobar el examen municipal y empezar a trabajar como conductor en Palma de Mallorca.
+      </SectionSubtitle>
+    </SectionHeader>
 
-            <StepItem>
-              <StepNumber>3</StepNumber>
-              <StepTitle>Empieza a trabajar</StepTitle>
-              <StepText>
-                Una vez aprobado el examen, estarás listo para trabajar como
-                taxista en Palma de Mallorca.
-              </StepText>
-            </StepItem>
-          </StepsWrapper>
-        </Section>
-      </FadeInSection>
+    <StepsWrapper>
+      <StepItem>
+        <StepNumber>1</StepNumber>
+        <StepTitle>Requisitos para ser taxista en Palma</StepTitle>
+        <StepText>
+          Comprueba que cumples con el permiso de conducir, documentación y condiciones necesarias para presentarte al examen municipal.
+        </StepText>
+      </StepItem>
+
+      <StepItem>
+        <StepNumber>2</StepNumber>
+        <StepTitle>Prepárate para el examen municipal</StepTitle>
+        <StepText>
+          Estudia el reglamento, domina el callejero de Palma y practica con test reales y simulador para llegar preparado al examen.
+        </StepText>
+      </StepItem>
+
+      <StepItem>
+        <StepNumber>3</StepNumber>
+        <StepTitle>Obtén el carnet y empieza a trabajar</StepTitle>
+        <StepText>
+          Tras aprobar el examen y entregar la documentación, podrás trabajar como conductor de taxi en Palma sin necesidad de tener licencia propia.
+        </StepText>
+      </StepItem>
+    </StepsWrapper>
+  </Section>
+</FadeInSection>
 
       <FinalCTASection ref={testimonialsRef}>
         <FinalCTATitle>
-          Empieza hoy a prepararte para la licencia de taxi en Palma
+          Empieza hoy a prepararte para obtener el carnet de taxi en Palma
         </FinalCTATitle>
 
         <FinalCTAText>

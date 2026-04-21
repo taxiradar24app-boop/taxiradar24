@@ -8,7 +8,6 @@ import {
   Title,
   Lead,
   SnippetBox,
-  SnippetLabel,
   SnippetText,
   Content,
   Section,
@@ -20,20 +19,20 @@ import {
   CTAParagraph,
   CTAButtons,
   PrimaryLink,
+  MicroHighlight,
+  CheckList,
 } from "./LandigPagesStyle";
-
-import { Link as InlineLink } from "react-router-dom";
 
 export default function FormatoExamenTaxiPalma() {
   return (
     <>
       <Helmet>
         <title>
-          Examen taxi Palma: formato real, puntuación y cómo aprobar (2026)
+          Formato examen taxi Palma: estructura real y puntuación (2026)
         </title>
         <meta
           name="description"
-          content="Descubre cómo es realmente el examen de taxista en Palma: puntuación, test, callejero, rutas y claves para aprobar a la primera."
+          content="Descubre el formato real del examen de taxista en Palma: puntuación, test, callejero, rutas y claves para aprobar."
         />
       </Helmet>
 
@@ -42,66 +41,73 @@ export default function FormatoExamenTaxiPalma() {
 
           {/* HERO */}
           <Hero>
-            <Eyebrow>Guía TaxiRadar24</Eyebrow>
+            <Eyebrow>TaxiRadar24</Eyebrow>
 
             <Title>
-              Cómo es realmente el examen de taxi en Palma (y cómo aprobarlo)
+              Formato real del examen de taxista en Palma
             </Title>
 
             <Lead>
-              El examen de taxista en Palma no es solo teoría. Tiene reglas,
-              puntuación, penalizaciones y una estructura que debes entender
-              para aprobar.
+              Si entiendes cómo se puntúa el examen, ya tienes media prueba hecha.
             </Lead>
 
             <SnippetBox>
-              <SnippetLabel>Resumen clave</SnippetLabel>
               <SnippetText>
-                90 minutos de examen → 2 partes → necesitas mínimo 50 puntos en
-                la primera para pasar a rutas.
+                👉 90 minutos → 2 partes → si no pasas la primera, estás fuera.
               </SnippetText>
             </SnippetBox>
           </Hero>
 
           <Content>
 
-            {/* ESTRUCTURA REAL */}
+            {/* VISIÓN RÁPIDA */}
             <Section>
-              <SectionTitle>Formato real del examen de taxi Palma</SectionTitle>
+              <SectionTitle>Así funciona el examen</SectionTitle>
 
-              <BulletList>
-                <li>Duración total: 90 minutos</li>
-                <li>Primera parte: callejero + test (eliminatoria)</li>
-                <li>Segunda parte: rutas</li>
-              </BulletList>
+              <CheckList>
+                <li>90 minutos totales</li>
+                <li>Primera parte → test + callejero</li>
+                <li>Segunda parte → rutas</li>
+              </CheckList>
 
-              <SnippetBox>
-                <SnippetLabel>Clave absoluta</SnippetLabel>
-                <SnippetText>
-                  Si no llegas a 50 puntos en la primera parte → estás fuera.
-                </SnippetText>
-              </SnippetBox>
+              <MicroHighlight>
+                👉 La primera parte decide todo.
+              </MicroHighlight>
+            </Section>
+
+            {/* CORTE */}
+            <Section>
+              <SectionTitle>El corte que deja fuera a la mayoría</SectionTitle>
+
+              <Paragraph>
+                Para pasar a la segunda parte necesitas mínimo:
+              </Paragraph>
+
+              <MicroHighlight>
+                👉 50 puntos en test + callejero
+              </MicroHighlight>
+
+              <Paragraph>
+                Si no llegas, el examen termina ahí.
+              </Paragraph>
             </Section>
 
             {/* CALLEJERO */}
             <Section>
-              <SectionTitle>Ejercicio de callejero (10 puntos)</SectionTitle>
+              <SectionTitle>Callejero (10 puntos)</SectionTitle>
 
               <Paragraph>
-                Tendrás que localizar 10 direcciones en el callejero en solo 10 minutos.
+                Tienes 10 minutos para ubicar 10 direcciones.
               </Paragraph>
 
-              <BulletList>
-                <li>Cada acierto → +1 punto</li>
-                <li>Error o vacío → 0 puntos</li>
-              </BulletList>
+              <CheckList>
+                <li>+1 punto por acierto</li>
+                <li>0 puntos si fallas</li>
+              </CheckList>
 
-              <SnippetBox>
-                <SnippetLabel>Error típico</SnippetLabel>
-                <SnippetText>
-                  No indicar plano + cuadrícula = respuesta incorrecta.
-                </SnippetText>
-              </SnippetBox>
+              <MicroHighlight>
+                👉 Error típico: no indicar plano y cuadrícula correctamente.
+              </MicroHighlight>
             </Section>
 
             {/* TEST */}
@@ -109,15 +115,15 @@ export default function FormatoExamenTaxiPalma() {
               <SectionTitle>Test del examen (60 preguntas)</SectionTitle>
 
               <Paragraph>
-                El test es la parte más importante y donde más gente suspende.
+                El test es la parte más importante del examen y donde más aspirantes fallan.
               </Paragraph>
 
-              <BulletList>
+              <CheckList>
                 <li>60 preguntas tipo test</li>
                 <li>+1 punto por acierto</li>
                 <li>-0.25 / -0.33 por error</li>
                 <li>Preguntas sin responder → no restan</li>
-              </BulletList>
+              </CheckList>
 
               <Paragraph>
                 El contenido se basa principalmente en:
@@ -130,70 +136,47 @@ export default function FormatoExamenTaxiPalma() {
                 <li>Lugares clave de Palma</li>
               </BulletList>
 
-              <SnippetBox>
-                <SnippetLabel>Realidad</SnippetLabel>
-                <SnippetText>
-                  Más del 50% del test es normativa → aquí se decide el aprobado.
-                </SnippetText>
-              </SnippetBox>
+              <MicroHighlight>
+                👉 Más del 50% del test es normativa: aquí se decide el aprobado.
+              </MicroHighlight>
             </Section>
 
             {/* RUTAS */}
             <Section>
-              <SectionTitle>Ejercicio de rutas (30 puntos)</SectionTitle>
+              <SectionTitle>Rutas (30 puntos)</SectionTitle>
 
               <Paragraph>
-                Tendrás que resolver 3 rutas reales dentro de Palma.
+                Tendrás que resolver 3 trayectos reales.
               </Paragraph>
 
-              <BulletList>
+              <CheckList>
                 <li>10 puntos por ruta</li>
-                <li>Mínimo 20 puntos para aprobar</li>
-              </BulletList>
+                <li>Mínimo 20 para aprobar</li>
+              </CheckList>
 
-              <Paragraph>
-                Se evalúa:
-              </Paragraph>
-
-              <BulletList>
-                <li>Ruta más corta y lógica</li>
-                <li>Respeto de señalización</li>
-                <li>Nombres correctos de calles</li>
-              </BulletList>
-
-              <SnippetBox>
-                <SnippetLabel>Penalizaciones reales</SnippetLabel>
-                <SnippetText>
-                  Error de calle → -1 punto | Ruta incorrecta → hasta -3 puntos
-                </SnippetText>
-              </SnippetBox>
+              <MicroHighlight>
+                👉 No gana el que sabe más calles, gana el que elige mejor.
+              </MicroHighlight>
             </Section>
 
-            {/* CLAVES */}
+            {/* ERRORES */}
             <Section>
-              <SectionTitle>Claves reales para aprobar</SectionTitle>
+              <SectionTitle>Errores que te hacen suspender</SectionTitle>
 
               <BulletList>
-                <li>Dominar el reglamento (no memorizar)</li>
-                <li>Practicar test reales</li>
-                <li>Entrenar callejero con tiempo</li>
-                <li>Simular rutas reales</li>
+                <li>No practicar test</li>
+                <li>Dejar callejero para el final</li>
+                <li>No entrenar con tiempo</li>
+                <li>No simular examen real</li>
               </BulletList>
-
-              <SnippetBox>
-                <SnippetLabel>Verdad incómoda</SnippetLabel>
-                <SnippetText>
-                  El examen no se aprueba estudiando… se aprueba entrenando.
-                </SnippetText>
-              </SnippetBox>
             </Section>
 
             {/* CTA */}
             <CTABox>
-              <CTATitle>Empieza a entrenar el examen real</CTATitle>
+              <CTATitle>Entrena como en el examen real</CTATitle>
 
               <CTAParagraph>
-                Practica con preguntas tipo examen y mejora tus resultados.
+                Entender el formato es solo el primer paso. Ahora toca practicar.
               </CTAParagraph>
 
               <CTAButtons>

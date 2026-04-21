@@ -12,7 +12,6 @@ import {
   Title,
   Lead,
   SnippetBox,
-  SnippetLabel,
   SnippetText,
   Content,
   Section,
@@ -35,19 +34,19 @@ import {
   RelatedCard,
   RelatedTitle,
   RelatedText,
+  CheckList,
+  MicroHighlight,
 } from "./LandigPagesStyle";
-
-import { Link as InlineLink } from "react-router-dom";
 
 export default function ComoAprobarExamenTaxistaPalma() {
   const canonicalUrl =
     "https://taxiradar24.com/como-aprobar-examen-taxista-palma";
 
   const title =
-    "Cómo aprobar el examen de taxista en Palma de Mallorca en 2026";
+    "Cómo aprobar el examen de taxista en Palma (método real 2026)";
 
   const description =
-    "Guía práctica para aprobar el examen de taxista en Palma: método de estudio, errores comunes, callejero, test, rutas y estrategia real para llegar preparado.";
+    "Aprende cómo aprobar el examen de taxista en Palma con método real: callejero, test, rutas y estrategia para superar la prueba.";
 
   return (
     <>
@@ -59,6 +58,7 @@ export default function ComoAprobarExamenTaxistaPalma() {
 
       <Page>
         <Wrapper>
+
           <Breadcrumbs>
             <CrumbLink to="/">Inicio</CrumbLink>
             <Separator>/</Separator>
@@ -67,319 +67,173 @@ export default function ComoAprobarExamenTaxistaPalma() {
             </CrumbLink>
             <Separator>/</Separator>
             <CrumbCurrent>
-              Cómo aprobar el examen de taxista
+              Cómo aprobar examen
             </CrumbCurrent>
           </Breadcrumbs>
 
+          {/* HERO */}
           <Hero>
-            <Eyebrow>Guía TaxiRadar24</Eyebrow>
+            <Eyebrow>TaxiRadar24</Eyebrow>
 
             <Title>
-              Cómo aprobar el examen de taxista en Palma de Mallorca
+              Cómo aprobar el examen de taxista en Palma
             </Title>
 
             <Lead>
-              Aprobar el examen de taxista en Palma no depende solo de estudiar
-              teoría. La clave está en entender cómo se corrige la prueba,
-              dominar el callejero, practicar test con criterio y entrenar las
-              rutas como si fueras al examen real.
+              No necesitas estudiar más… necesitas estudiar mejor.
+              Aprobar este examen depende de cómo entrenas, no solo de cuánto lees.
             </Lead>
 
             <SnippetBox>
-              <SnippetLabel>Respuesta rápida</SnippetLabel>
               <SnippetText>
-                Para aprobar el examen de taxista en Palma necesitas preparar
-                bien la primera parte eliminatoria, ganar rapidez en callejero,
-                consolidar la normativa y entrenar rutas con método.
+                👉 El examen no se aprueba con teoría. Se aprueba con práctica.
               </SnippetText>
             </SnippetBox>
           </Hero>
 
           <Content>
+
+            {/* REALIDAD */}
             <Section>
-              <SectionTitle>
-                Qué significa realmente aprobar el examen de taxista
-              </SectionTitle>
+              <SectionTitle>La realidad del examen</SectionTitle>
 
               <Paragraph>
-                El examen de taxista en Palma exige algo más que memorizar
-                contenidos. El aspirante tiene que demostrar que sabe responder
-                con precisión, que entiende la lógica del servicio y que puede
-                moverse por Palma con criterio profesional.
+                La mayoría de aspirantes estudia durante semanas…
               </Paragraph>
 
               <Paragraph>
-                Por eso, preparar esta prueba bien significa trabajar tres
-                pilares a la vez: conocimiento reglamentario, rapidez operativa
-                y resolución correcta de itinerarios.
+                pero suspende el día del examen.
               </Paragraph>
 
-              <SnippetBox>
-                <SnippetLabel>Punto clave</SnippetLabel>
-                <SnippetText>
-                  No aprueba quien estudia más horas sin método, sino quien
-                  entrena exactamente lo que el examen pide.
-                </SnippetText>
-              </SnippetBox>
+              <MicroHighlight>
+                👉 No fallan por falta de estudio. Fallan por falta de entrenamiento.
+              </MicroHighlight>
+
+              <CheckList>
+                <li>No practican test reales</li>
+                <li>No dominan el callejero con tiempo</li>
+                <li>No entienden cómo se corrige</li>
+              </CheckList>
             </Section>
 
+            {/* ESTRUCTURA */}
             <Section>
-              <SectionTitle>
-                Empieza por entender cómo está estructurado el examen
-              </SectionTitle>
+              <SectionTitle>Cómo funciona realmente el examen</SectionTitle>
 
               <Paragraph>
-                Antes de estudiar, conviene entender{" "}
-                <InlineLink to="/formato-examen-taxista-palma">
-                  cómo es el examen de taxista en Palma
-                </InlineLink>
-                . Cuando conoces la estructura real de la prueba, dejas de
-                estudiar a ciegas y puedes organizar mejor el tiempo.
+                El examen tiene dos partes, pero solo una decide si continúas.
               </Paragraph>
 
-              <Paragraph>
-                La primera parte actúa como filtro real. Si no alcanzas el nivel
-                suficiente en esa fase, la parte de rutas no entra en juego. Por
-                eso, la estrategia correcta empieza por blindar la base del
-                examen.
-              </Paragraph>
+              <CheckList>
+                <li>Primera parte → test + callejero (eliminatoria)</li>
+                <li>Segunda parte → rutas</li>
+              </CheckList>
 
-              <SnippetBox>
-                <SnippetLabel>Enfoque correcto</SnippetLabel>
-                <SnippetText>
-                  Primero aseguras callejero y test; después entrenas rutas para
-                  llegar al examen con opciones reales de APTO.
-                </SnippetText>
-              </SnippetBox>
+              <MicroHighlight>
+                👉 Si fallas la primera, no hay segunda.
+              </MicroHighlight>
             </Section>
 
+            {/* MÉTODO */}
             <Section>
-              <SectionTitle>
-                Cómo estudiar la primera parte del examen sin perder tiempo
-              </SectionTitle>
-
-              <Paragraph>
-                La primera parte concentra una gran parte del esfuerzo útil del
-                aspirante. Aquí no conviene improvisar. La prioridad debe ser
-                consolidar aquello que más se repite y aquello que más penaliza
-                los errores.
-              </Paragraph>
-
-              <BulletList>
-                <li>Practicar callejero con límite real de tiempo</li>
-                <li>Estudiar la normativa con enfoque de examen</li>
-                <li>Trabajar las tarifas sin dejarlas para el final</li>
-                <li>
-                  Relacionar lugares relevantes con su acceso peatonal principal
-                </li>
-                <li>Hacer test frecuentes para detectar fallos</li>
-              </BulletList>
-
-              <SnippetBox>
-                <SnippetLabel>Realidad del examen</SnippetLabel>
-                <SnippetText>
-                  Muchos aspirantes fallan no por desconocimiento total, sino
-                  por falta de precisión, velocidad y práctica específica.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
-
-            <Section>
-              <SectionTitle>
-                Callejero: la parte que muchos subestiman
-              </SectionTitle>
-
-              <Paragraph>
-                El callejero parece sencillo desde fuera, pero en el examen
-                marca diferencias. No basta con saber localizar una calle: hay
-                que responder con el formato correcto, sin dudar y dentro del
-                tiempo disponible.
-              </Paragraph>
-
-              <Paragraph>
-                Si quieres llegar con nivel real, tienes que repetir este bloque
-                hasta ganar soltura. La rapidez aquí no se improvisa el día del
-                examen.
-              </Paragraph>
+              <SectionTitle>Método real para aprobar</SectionTitle>
 
               <NumberList>
-                <li>Practica direcciones todos los días</li>
-                <li>Responde siempre con plano y cuadrícula completos</li>
-                <li>Simula el tiempo real de examen</li>
-                <li>Corrige tus errores en el momento</li>
-                <li>Repite hasta automatizar el proceso</li>
+                <li>Entiende cómo es el examen</li>
+                <li>Practica test desde el inicio</li>
+                <li>Entrena callejero todos los días</li>
+                <li>Corrige cada error</li>
+                <li>Introduce rutas cuando tengas base</li>
+                <li>Simula el examen completo</li>
               </NumberList>
 
               <SnippetBox>
-                <SnippetLabel>Error muy frecuente</SnippetLabel>
                 <SnippetText>
-                  Perder puntos en callejero por responder incompleto o por no
-                  llegar a tiempo es más común de lo que parece.
+                  👉 No es estudiar mucho. Es estudiar lo correcto.
                 </SnippetText>
               </SnippetBox>
             </Section>
 
+            {/* CALLEJERO */}
             <Section>
-              <SectionTitle>
-                Test: cómo convertir teoría en puntos
-              </SectionTitle>
+              <SectionTitle>Callejero: donde se pierde el examen</SectionTitle>
 
               <Paragraph>
-                El test no debe prepararse como una lectura pasiva. La forma más
-                eficaz de mejorar es estudiar por bloques, resolver preguntas y
-                revisar de inmediato por qué una respuesta es correcta o
-                incorrecta.
+                El callejero no es difícil… pero exige rapidez.
+              </Paragraph>
+
+              <CheckList>
+                <li>Responder completo</li>
+                <li>No dudar</li>
+                <li>Respetar formato</li>
+                <li>Llegar a tiempo</li>
+              </CheckList>
+
+              <MicroHighlight>
+                👉 Aquí se pierden más puntos de los que crees.
+              </MicroHighlight>
+            </Section>
+
+            {/* TEST */}
+            <Section>
+              <SectionTitle>Test: lo que realmente sube tu nivel</SectionTitle>
+
+              <Paragraph>
+                El test es donde conviertes teoría en reflejos.
+              </Paragraph>
+
+              <CheckList>
+                <li>Detectas errores rápido</li>
+                <li>Aprendes cómo preguntan</li>
+                <li>Mejoras velocidad</li>
+                <li>Ganas seguridad</li>
+              </CheckList>
+
+              <MicroHighlight>
+                👉 Si no haces test, no estás preparado.
+              </MicroHighlight>
+            </Section>
+
+            {/* RUTAS */}
+            <Section>
+              <SectionTitle>Rutas: nivel profesional</SectionTitle>
+
+              <Paragraph>
+                Aquí ya no memorizas, decides.
               </Paragraph>
 
               <Paragraph>
-                Para eso, lo mejor es entrenar con un{" "}
-                <InlineLink to="/test-taxista-palma">
-                  test de taxista en Palma
-                </InlineLink>{" "}
-                pensado para examen. Así detectas lagunas, repites conceptos
-                importantes y conviertes la teoría en reflejo práctico.
+                Tienes que pensar como taxista.
               </Paragraph>
+
+              <MicroHighlight>
+                👉 No gana el que sabe más calles. Gana el que elige mejor.
+              </MicroHighlight>
+            </Section>
+
+            {/* ERRORES */}
+            <Section>
+              <SectionTitle>Errores que te hacen suspender</SectionTitle>
 
               <BulletList>
-                <li>Haz sesiones cortas y constantes</li>
-                <li>No memorices sin entender</li>
-                <li>Repite las preguntas falladas</li>
-                <li>Trabaja reglamento, tarifas y lugares relevantes</li>
-                <li>Mide tu evolución por bloques</li>
-              </BulletList>
-
-              <SnippetBox>
-                <SnippetLabel>Claves para subir nivel</SnippetLabel>
-                <SnippetText>
-                  El test mejora cuando corriges cada error y entiendes el
-                  patrón de la pregunta, no cuando haces preguntas al azar sin
-                  revisar.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
-
-            <Section>
-              <SectionTitle>
-                Rutas: la parte que separa al aspirante del profesional
-              </SectionTitle>
-
-              <Paragraph>
-                La segunda parte del examen exige pensar como taxista. No se
-                trata solo de conocer nombres de vías, sino de elegir un
-                itinerario coherente, ajustado al enunciado y compatible con la
-                circulación real.
-              </Paragraph>
-
-              <Paragraph>
-                Aquí la preparación cambia: ya no basta con recordar contenido,
-                hay que tomar decisiones correctas. Por eso esta parte se
-                entrena resolviendo rutas, revisando el sentido circulatorio y
-                entendiendo por qué una opción es válida y otra no.
-              </Paragraph>
-
-              <SnippetBox>
-                <SnippetLabel>Punto crítico</SnippetLabel>
-                <SnippetText>
-                  Una ruta puede caer no solo por omitir vías, sino por no
-                  ajustarse al enunciado o por elegir un itinerario poco lógico.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
-
-            <Section>
-              <SectionTitle>
-                Método real de estudio para aprobar
-              </SectionTitle>
-
-              <Paragraph>
-                Si quieres avanzar de forma seria, necesitas una rutina de
-                estudio clara. La preparación desordenada da sensación de
-                trabajo, pero no siempre se traduce en resultados.
-              </Paragraph>
-
-              <NumberList>
-                <li>Entiende los requisitos y la estructura completa</li>
-                <li>Prioriza callejero y test al inicio</li>
-                <li>Reserva tiempo fijo para normativa y tarifas</li>
-                <li>Practica test varias veces por semana</li>
-                <li>Introduce rutas cuando la base esté consolidada</li>
-                <li>Haz simulaciones de examen completas</li>
-                <li>Refuerza solo los errores que más repites</li>
-              </NumberList>
-
-              <SnippetBox>
-                <SnippetLabel>Método recomendado</SnippetLabel>
-                <SnippetText>
-                  Estudiar por fases evita saturarte y te permite llegar más
-                  fuerte a la parte decisiva del examen.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
-
-            <Section>
-              <SectionTitle>
-                Errores que te alejan del APTO
-              </SectionTitle>
-
-              <BulletList>
-                <li>Estudiar mucho contenido sin practicar examen</li>
+                <li>Estudiar sin practicar</li>
                 <li>Dejar callejero para el final</li>
-                <li>Hacer test sin revisar errores</li>
-                <li>Subestimar las rutas</li>
-                <li>Confiar en memoria sin entender el porqué</li>
-                <li>Llegar al examen sin haber simulado tiempos reales</li>
+                <li>No corregir errores</li>
+                <li>No simular examen real</li>
               </BulletList>
-
-              <SnippetBox>
-                <SnippetLabel>Error más habitual</SnippetLabel>
-                <SnippetText>
-                  El aspirante que cree que con leer la guía oficial es
-                  suficiente suele llegar con demasiadas dudas al examen.
-                </SnippetText>
-              </SnippetBox>
             </Section>
 
-            <Section>
-              <SectionTitle>
-                Qué hacer si empiezas desde cero
-              </SectionTitle>
-
-              <Paragraph>
-                Si estás al principio del proceso, lo más útil es ordenar la
-                preparación desde la base. Primero conviene revisar los{" "}
-                <InlineLink to="/requisitos-taxista-palma">
-                  requisitos para ser taxista en Palma
-                </InlineLink>{" "}
-                y después entrar en la lógica del examen.
-              </Paragraph>
-
-              <Paragraph>
-                A partir de ahí, la secuencia más inteligente es: comprender el
-                formato, practicar test, trabajar callejero y entrenar rutas con
-                corrección real.
-              </Paragraph>
-
-              <SnippetBox>
-                <SnippetLabel>Camino recomendado</SnippetLabel>
-                <SnippetText>
-                  Si empiezas desde cero, no busques correr: busca construir una
-                  base fuerte y avanzar con orden.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
-
+            {/* CTA */}
             <CTABox>
-              <CTATitle>Prepárate con una estrategia que sí suma</CTATitle>
+              <CTATitle>Prepárate como en el examen real</CTATitle>
 
               <CTAParagraph>
-                En TaxiRadar24 trabajamos la preparación con enfoque real de
-                examen: test, estructura, práctica y herramientas para llegar
-                más seguro al día de la prueba.
+                Entrena con test reales, simulador y sistema completo.
               </CTAParagraph>
 
               <CTAButtons>
                 <PrimaryLink to="/academia-taxista-mallorca">
-                  Acceder a la academia
+                  Empezar ahora
                 </PrimaryLink>
                 <SecondaryLink to="/test-taxista-palma">
                   Practicar test
@@ -387,79 +241,49 @@ export default function ComoAprobarExamenTaxistaPalma() {
               </CTAButtons>
             </CTABox>
 
+            {/* FAQ */}
             <Section>
               <SectionTitle>Preguntas frecuentes</SectionTitle>
 
               <FaqWrap>
                 <FaqItem>
-                  <FaqQuestion>
-                    ¿Se puede aprobar el examen de taxista estudiando solo?
-                  </FaqQuestion>
+                  <FaqQuestion>¿Es difícil el examen?</FaqQuestion>
                   <FaqAnswer>
-                    Sí, pero sin método ni práctica específica el proceso suele
-                    volverse más lento y más inseguro.
+                    Sí, si no entrenas correctamente.
                   </FaqAnswer>
                 </FaqItem>
 
                 <FaqItem>
-                  <FaqQuestion>
-                    ¿Qué parte conviene preparar primero?
-                  </FaqQuestion>
+                  <FaqQuestion>¿Cuánto tarda prepararlo?</FaqQuestion>
                   <FaqAnswer>
-                    Lo más recomendable es empezar por callejero y test, porque
-                    forman la base de la primera parte eliminatoria.
-                  </FaqAnswer>
-                </FaqItem>
-
-                <FaqItem>
-                  <FaqQuestion>
-                    ¿Hacer test ayuda de verdad a aprobar?
-                  </FaqQuestion>
-                  <FaqAnswer>
-                    Sí. Practicar test acelera la comprensión, detecta fallos y
-                    te acerca al tipo de exigencia real del examen.
-                  </FaqAnswer>
-                </FaqItem>
-
-                <FaqItem>
-                  <FaqQuestion>
-                    ¿Las rutas se preparan solo memorizando calles?
-                  </FaqQuestion>
-                  <FaqAnswer>
-                    No. Las rutas exigen criterio, sentido circulatorio,
-                    interpretación del enunciado y capacidad de resolver el
-                    itinerario correcto.
+                    Depende del método, no del tiempo.
                   </FaqAnswer>
                 </FaqItem>
               </FaqWrap>
             </Section>
 
+            {/* RELATED */}
             <RelatedSection>
               <SectionTitle>Seguir leyendo</SectionTitle>
 
               <RelatedGrid>
-                <RelatedCard to="/formato-examen-taxista-palma">
-                  <RelatedTitle>Formato del examen</RelatedTitle>
-                  <RelatedText>
-                    Entiende cómo se estructura la prueba.
-                  </RelatedText>
-                </RelatedCard>
-
                 <RelatedCard to="/test-taxista-palma">
-                  <RelatedTitle>Test taxista Palma</RelatedTitle>
-                  <RelatedText>
-                    Practica con enfoque real de examen.
-                  </RelatedText>
+                  <RelatedTitle>Test taxista</RelatedTitle>
+                  <RelatedText>Entrena como en el examen</RelatedText>
                 </RelatedCard>
 
                 <RelatedCard to="/requisitos-taxista-palma">
-                  <RelatedTitle>Requisitos taxista Palma</RelatedTitle>
-                  <RelatedText>
-                    Revisa el punto de partida del proceso.
-                  </RelatedText>
+                  <RelatedTitle>Requisitos</RelatedTitle>
+                  <RelatedText>Comprueba si puedes empezar</RelatedText>
+                </RelatedCard>
+
+                <RelatedCard to="/formato-examen-taxista-palma">
+                  <RelatedTitle>Formato examen</RelatedTitle>
+                  <RelatedText>Entiende la estructura real</RelatedText>
                 </RelatedCard>
               </RelatedGrid>
             </RelatedSection>
+
           </Content>
         </Wrapper>
       </Page>

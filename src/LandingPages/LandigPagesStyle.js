@@ -13,7 +13,7 @@ export const Page = styled.main`
 
 export const Wrapper = styled.div`
   width: 100%;
-  max-width: 720px; // 🔥 antes 980
+  max-width: 720px;
   margin: 0 auto;
   padding: 28px 20px 80px;
 `;
@@ -182,6 +182,50 @@ export const Paragraph = styled.p`
 export const Strong = styled.strong`
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   color: #000000;
+`;
+
+export const MiniLead = styled.p`
+  margin: 0 0 14px;
+  color: #111111;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+`;
+
+export const MicroHighlight = styled.p`
+  margin: 0 0 16px;
+  color: #111111;
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: ${({ theme }) => theme.lineHeights.body};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+`;
+
+export const CheckList = styled.ul`
+  margin: 0 0 16px;
+  padding-left: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 12px;
+    color: #1d1d1d;
+    font-size: ${({ theme }) => theme.fontSizes.md};
+    font-weight: ${({ theme }) => theme.fontWeights.regular};
+    line-height: ${({ theme }) => theme.lineHeights.body};
+    letter-spacing: ${({ theme }) => theme.letterSpacings.normal};
+  }
+
+  li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #111111;
+    font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  }
 `;
 
 // =========================

@@ -1,4 +1,4 @@
-const CACHE_NAME = "taxiradar24-cache-v50";
+const CACHE_NAME = "taxiradar24-cache-v51";
 
 const APP_SHELL_CACHE = CACHE_NAME;
 const RUNTIME_CACHE = `${CACHE_NAME}-runtime`;

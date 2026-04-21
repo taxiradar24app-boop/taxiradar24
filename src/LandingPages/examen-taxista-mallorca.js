@@ -12,7 +12,6 @@ import {
   Title,
   Lead,
   SnippetBox,
-  SnippetLabel,
   SnippetText,
   Content,
   Section,
@@ -29,54 +28,18 @@ import {
   FaqItem,
   FaqQuestion,
   FaqAnswer,
-  RelatedSection,
-  RelatedGrid,
-  RelatedCard,
-  RelatedTitle,
-  RelatedText,
+  MicroHighlight,
+  CheckList,
 } from "./LandigPagesStyle";
-
-import { Link as InlineLink } from "react-router-dom";
 
 export default function ExamenTaxistaMallorca() {
   const canonicalUrl = "https://taxiradar24.com/examen-taxista-mallorca";
 
   const title =
-    "Examen taxi Palma de Mallorca: cómo es, inscripción y proceso completo (2026)";
+    "Examen taxi Palma: cómo es realmente y qué necesitas para aprobar (2026)";
 
   const description =
-    "Guía completa del examen de taxista en Palma: cómo es, convocatoria, inscripción, requisitos y cómo aprobar a la primera.";
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "¿Cómo es el examen de taxista en Palma de Mallorca?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "El examen se divide en dos partes: una primera parte eliminatoria de callejero y test, y una segunda parte de rutas.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "¿Cuántas convocatorias hay?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Se realizan dos convocatorias al año, normalmente en febrero y noviembre.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "¿Cuánto dura el examen?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "La duración aproximada es de 90 minutos.",
-        },
-      },
-    ],
-  };
+    "Descubre cómo es el examen de taxista en Palma, su estructura real y qué necesitas para aprobar a la primera.";
 
   return (
     <>
@@ -84,9 +47,6 @@ export default function ExamenTaxistaMallorca() {
         <title>{title}</title>
         <meta name="description" content={description} />
         <link rel="canonical" href={canonicalUrl} />
-        <script type="application/ld+json">
-          {JSON.stringify(faqSchema)}
-        </script>
       </Helmet>
 
       <Page>
@@ -104,145 +64,136 @@ export default function ExamenTaxistaMallorca() {
 
           {/* HERO */}
           <Hero>
-            <Eyebrow>Guía TaxiRadar24</Eyebrow>
+            <Eyebrow>TaxiRadar24</Eyebrow>
 
             <Title>
-              Examen taxi Palma de Mallorca: cómo es y cómo aprobarlo
+              Cómo es el examen de taxista en Palma
             </Title>
 
             <Lead>
-              El examen de taxista en Palma es el paso clave para obtener el
-              carnet municipal. Entender su estructura, proceso e inscripción
-              es fundamental para aprobar a la primera.
+              El examen es el paso que decide si trabajas o no.
+              No es complicado… pero sí exigente.
             </Lead>
 
             <SnippetBox>
-              <SnippetLabel>Resumen rápido</SnippetLabel>
               <SnippetText>
-                El examen tiene dos partes: una primera eliminatoria de test y
-                callejero, y una segunda de rutas. Si no superas la primera, la
-                segunda no se corrige.
+                👉 La mayoría no suspende por no saber… suspende por no entrenar.
               </SnippetText>
             </SnippetBox>
           </Hero>
 
           <Content>
 
-            {/* PROCESO */}
+            {/* REALIDAD */}
             <Section>
-              <SectionTitle>
-                Proceso completo del examen de taxista en Palma
-              </SectionTitle>
+              <SectionTitle>La realidad del examen</SectionTitle>
 
               <Paragraph>
-                El examen de taxi en Palma forma parte de un proceso oficial que
-                incluye convocatoria, inscripción, realización del examen y
-                validación final.
+                Cada convocatoria deja fuera a muchos aspirantes.
               </Paragraph>
 
               <Paragraph>
-                Se convoca dos veces al año (febrero y noviembre) y la información
-                oficial se publica en la web del Ayuntamiento (Mobipalma).
+                No porque sea imposible.
               </Paragraph>
 
-              <SnippetBox>
-                <SnippetLabel>Importante</SnippetLabel>
-                <SnippetText>
-                  Solo hay dos oportunidades al año → cada intento cuenta.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
+              <MicroHighlight>
+                👉 Porque no entienden cómo funciona realmente.
+              </MicroHighlight>
 
-            {/* INSCRIPCIÓN */}
-            <Section>
-              <SectionTitle>
-                Cómo inscribirse al examen taxi Palma
-              </SectionTitle>
-
-              <Paragraph>
-                El plazo de inscripción comienza tras la convocatoria oficial y
-                finaliza aproximadamente un mes antes del examen.
-              </Paragraph>
-
-              <BulletList>
-                <li>DNI / NIE o pasaporte</li>
-                <li>Permiso de conducir</li>
-                <li>Pago de tasa</li>
-                <li>Acreditación de catalán</li>
-              </BulletList>
-
-              <SnippetBox>
-                <SnippetLabel>Atención</SnippetLabel>
-                <SnippetText>
-                  Fuera de plazo o sin documentación → exclusión automática.
-                </SnippetText>
-              </SnippetBox>
+              <CheckList>
+                <li>No practican test</li>
+                <li>No entrenan callejero con tiempo</li>
+                <li>No conocen el formato real</li>
+              </CheckList>
             </Section>
 
             {/* ESTRUCTURA */}
             <Section>
-              <SectionTitle>
-                Cómo es el examen de taxista en Palma
-              </SectionTitle>
+              <SectionTitle>Estructura del examen</SectionTitle>
 
               <BulletList>
-                <li>Primera parte: test + callejero (eliminatoria)</li>
-                <li>Segunda parte: rutas</li>
+                <li>Primera parte → test + callejero (eliminatoria)</li>
+                <li>Segunda parte → rutas</li>
               </BulletList>
 
               <Paragraph>
-                La primera parte es el mayor filtro. Solo si la apruebas, se
-                corrige la segunda.
+                La primera parte decide todo.
               </Paragraph>
 
-              <SnippetBox>
-                <SnippetLabel>Clave</SnippetLabel>
-                <SnippetText>
-                  La mayoría suspende por no preparar correctamente el test y el callejero.
-                </SnippetText>
-              </SnippetBox>
+              <MicroHighlight>
+                👉 Si no la apruebas, la segunda no cuenta.
+              </MicroHighlight>
+            </Section>
+
+            {/* CONVOCATORIA */}
+            <Section>
+              <SectionTitle>Convocatorias</SectionTitle>
+
+              <Paragraph>
+                El examen se convoca dos veces al año.
+              </Paragraph>
+
+              <CheckList>
+                <li>Febrero</li>
+                <li>Noviembre</li>
+              </CheckList>
+
+              <MicroHighlight>
+                👉 Solo tienes dos oportunidades al año.
+              </MicroHighlight>
+            </Section>
+
+            {/* INSCRIPCIÓN */}
+            <Section>
+              <SectionTitle>Inscripción</SectionTitle>
+
+              <BulletList>
+                <li>DNI / NIE</li>
+                <li>Permiso de conducir</li>
+                <li>Pago de tasa</li>
+                <li>Catalán (si aplica)</li>
+              </BulletList>
+
+              <MicroHighlight>
+                👉 Solicitudes fuera de plazo quedan fuera automáticamente.
+              </MicroHighlight>
             </Section>
 
             {/* RESULTADOS */}
             <Section>
-              <SectionTitle>
-                Resultados y revisión del examen
-              </SectionTitle>
+              <SectionTitle>Resultados</SectionTitle>
 
               <Paragraph>
-                Se publica una plantilla provisional con 3 días para alegaciones,
-                seguida de la lista definitiva de aptos y no aptos.
+                Primero se publica una plantilla provisional.
+              </Paragraph>
+
+              <Paragraph>
+                Después, lista definitiva.
               </Paragraph>
             </Section>
 
-            {/* CARNET */}
+            {/* DESPUÉS */}
             <Section>
-              <SectionTitle>
-                Qué hacer después de aprobar el examen
-              </SectionTitle>
+              <SectionTitle>Después de aprobar</SectionTitle>
 
               <BulletList>
-                <li>Certificado de antecedentes penales</li>
-                <li>Certificado delitos sexuales</li>
+                <li>Antecedentes penales</li>
                 <li>Certificado médico</li>
-                <li>Fotografía carnet</li>
-                <li>Pago de tasa</li>
+                <li>Foto carnet</li>
+                <li>Pago de tasas</li>
               </BulletList>
 
-              <SnippetBox>
-                <SnippetLabel>Muy importante</SnippetLabel>
-                <SnippetText>
-                  El aprobado caduca en 1 año si no completas el proceso.
-                </SnippetText>
-              </SnippetBox>
+              <MicroHighlight>
+                👉 El aprobado no dura para siempre.
+              </MicroHighlight>
             </Section>
 
             {/* CTA */}
             <CTABox>
-              <CTATitle>Prepárate para aprobar el examen</CTATitle>
+              <CTATitle>Ahora ya sabes cómo es el examen</CTATitle>
 
               <CTAParagraph>
-                Practica con test reales y mejora tus probabilidades de éxito.
+                El siguiente paso es prepararlo correctamente.
               </CTAParagraph>
 
               <CTAButtons>
@@ -261,16 +212,16 @@ export default function ExamenTaxistaMallorca() {
 
               <FaqWrap>
                 <FaqItem>
-                  <FaqQuestion>¿Cuántas convocatorias hay?</FaqQuestion>
+                  <FaqQuestion>¿Es difícil?</FaqQuestion>
                   <FaqAnswer>
-                    Dos al año, normalmente en febrero y noviembre.
+                    Sí, si no entrenas.
                   </FaqAnswer>
                 </FaqItem>
 
                 <FaqItem>
-                  <FaqQuestion>¿Es difícil el examen?</FaqQuestion>
+                  <FaqQuestion>¿Cuánto dura?</FaqQuestion>
                   <FaqAnswer>
-                    Sí, requiere preparación específica.
+                    Aproximadamente 90 minutos.
                   </FaqAnswer>
                 </FaqItem>
               </FaqWrap>

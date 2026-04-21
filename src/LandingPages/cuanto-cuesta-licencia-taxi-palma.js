@@ -3,18 +3,12 @@ import { Helmet } from "react-helmet-async";
 import {
   Page,
   Wrapper,
-  Breadcrumbs,
-  CrumbLink,
-  CrumbCurrent,
-  Separator,
   Hero,
   Eyebrow,
   Title,
   Lead,
   SnippetBox,
-  SnippetLabel,
   SnippetText,
-  SnippetNote,
   Content,
   Section,
   SectionTitle,
@@ -41,6 +35,8 @@ import {
   Tr,
   Th,
   Td,
+  MicroHighlight,
+  CheckList,
 } from "./LandigPagesStyle";
 
 export default function CuantoCuestaLicenciaTaxiPalma() {
@@ -48,10 +44,10 @@ export default function CuantoCuestaLicenciaTaxiPalma() {
     "https://taxiradar24.com/cuanto-cuesta-licencia-taxi-palma";
 
   const title =
-    "¿Cuánto cuesta una licencia de taxi en Palma de Mallorca? Precio real y traspaso (2026)";
+    "Precio licencia taxi Palma: cuánto cuesta realmente (2026)";
 
   const description =
-    "Precio real de una licencia de taxi en Palma de Mallorca: cuánto cuesta el traspaso, gastos, requisitos y si merece la pena invertir en el sector.";
+    "Descubre cuánto cuesta una licencia de taxi en Palma, por qué es cara y si necesitas comprarla para empezar a trabajar.";
 
   return (
     <>
@@ -66,112 +62,112 @@ export default function CuantoCuestaLicenciaTaxiPalma() {
 
           {/* HERO */}
           <Hero>
-            <Eyebrow>Guía TaxiRadar24</Eyebrow>
+            <Eyebrow>TaxiRadar24</Eyebrow>
 
             <Title>
-              ¿Cuánto cuesta una licencia de taxi en Palma de Mallorca?
+              Precio de una licencia de taxi en Palma
             </Title>
 
             <Lead>
-              El precio de una licencia de taxi en Palma de Mallorca suele estar entre{" "}
-              <strong>110.000 € y más de 140.000 €</strong>, dependiendo del mercado
-              de traspaso, el vehículo incluido y las condiciones de la operación.
+              Comprar una licencia de taxi en Palma puede costar entre{" "}
+              <strong>110.000 € y más de 140.000 €</strong>.
             </Lead>
 
             <SnippetBox>
-              <SnippetLabel>Precio real</SnippetLabel>
-
               <SnippetText>
-                La mayoría de operaciones en Palma se sitúan en torno a{" "}
-                <strong>120.000 €</strong>, aunque puede variar según la demanda,
-                la temporada y el estado del vehículo.
+                👉 Pero hay algo importante: no necesitas comprar una licencia para empezar a trabajar.
               </SnippetText>
-
-              <SnippetNote>
-                El Ajuntament regula el proceso, pero el precio lo marca el mercado.
-              </SnippetNote>
             </SnippetBox>
           </Hero>
 
           <Content>
 
-            {/* BLOQUE SEO FUERTE */}
+            {/* BLOQUE CLAVE */}
             <Section>
               <SectionTitle>
-                Precio de una licencia de taxi en Palma: cuánto vale realmente
+                Lo que debes saber antes de pensar en comprar una licencia
               </SectionTitle>
 
               <Paragraph>
-                Cuando alguien busca cuánto cuesta una licencia de taxi en Palma,
-                en realidad está preguntando por el valor de mercado del traspaso.
+                Mucha gente piensa que necesita comprar una licencia para trabajar como taxista.
               </Paragraph>
 
               <Paragraph>
-                A diferencia de otros permisos, la licencia de taxi en Mallorca no
-                tiene un precio fijo oficial, sino que funciona como un activo que
-                se compra y vende entre profesionales.
+                Pero no es así.
               </Paragraph>
+
+              <MicroHighlight>
+                👉 Primero necesitas el carnet municipal.
+              </MicroHighlight>
+
+              <CheckList>
+                <li>El carnet te permite trabajar</li>
+                <li>La licencia es una inversión</li>
+                <li>Puedes trabajar sin comprarla</li>
+              </CheckList>
             </Section>
 
-            {/* NUEVO BLOQUE SEO */}
+            {/* PRECIO */}
             <Section>
               <SectionTitle>
-                ¿Por qué cuesta tanto una licencia de taxi en Palma?
+                Cuánto cuesta realmente una licencia de taxi
               </SectionTitle>
 
               <Paragraph>
-                El alto precio de las licencias se debe a la limitación de número,
-                la alta demanda en una ciudad turística y el potencial de ingresos
-                del sector.
+                El precio no es fijo. Se basa en el mercado de traspaso.
               </Paragraph>
 
+              <BulletList>
+                <li>110.000 € → precios bajos</li>
+                <li>120.000 € → media habitual</li>
+                <li>140.000 €+ → operaciones completas</li>
+              </BulletList>
+
               <SnippetBox>
-                <SnippetLabel>Clave</SnippetLabel>
                 <SnippetText>
-                  Estás comprando acceso a un negocio, no solo un permiso.
+                  👉 Estás comprando un negocio, no solo un permiso.
                 </SnippetText>
               </SnippetBox>
             </Section>
 
-            {/* FACTORES */}
+            {/* POR QUÉ ES CARA */}
             <Section>
               <SectionTitle>
-                Factores que influyen en el precio de la licencia
+                Por qué las licencias son tan caras
               </SectionTitle>
 
               <BulletList>
-                <li>Demanda del mercado en Palma</li>
-                <li>Vehículo incluido en el traspaso</li>
-                <li>Estado y antigüedad del coche</li>
-                <li>Temporada y momento económico</li>
-                <li>Rentabilidad del sector taxi</li>
+                <li>Número limitado de licencias</li>
+                <li>Alta demanda en Palma</li>
+                <li>Potencial de ingresos</li>
+                <li>Ciudad turística</li>
               </BulletList>
             </Section>
 
             {/* TABLA */}
             <Section>
-              <SectionTitle>Factores clave de precio</SectionTitle>
+              <SectionTitle>Factores de precio</SectionTitle>
 
               <TableWrap>
                 <Table>
                   <Thead>
                     <Tr>
                       <Th>Factor</Th>
-                      <Th>Impacto en el precio</Th>
+                      <Th>Impacto</Th>
                     </Tr>
                   </Thead>
                   <tbody>
                     <Tr>
-                      <Td>Alta demanda</Td>
-                      <Td>Subida de precios</Td>
+                      <Td>Demanda alta</Td>
+                      <Td>Sube el precio</Td>
                     </Tr>
                     <Tr>
                       <Td>Vehículo incluido</Td>
-                      <Td>Aumenta el valor</Td>
+                      <Td>Aumenta valor</Td>
                     </Tr>
                     <Tr>
-                      <Td>Verano</Td>
-                      <Td>Mayor interés comprador</Td>
+                      <Td>Temporada alta</Td>
+                      <Td>Más compradores</Td>
                     </Tr>
                   </tbody>
                 </Table>
@@ -181,60 +177,51 @@ export default function CuantoCuestaLicenciaTaxiPalma() {
             {/* GASTOS */}
             <Section>
               <SectionTitle>
-                Qué gastos hay además de comprar la licencia
+                Gastos adicionales
               </SectionTitle>
-
-              <Paragraph>
-                El coste total de entrar en el sector del taxi en Palma no es solo
-                el precio del traspaso.
-              </Paragraph>
 
               <BulletList>
                 <li>Vehículo</li>
                 <li>Seguro</li>
                 <li>Mantenimiento</li>
-                <li>Tasas administrativas</li>
-                <li>Preparación del examen</li>
+                <li>Tasas</li>
               </BulletList>
             </Section>
 
             {/* DECISIÓN */}
             <Section>
               <SectionTitle>
-                ¿Merece la pena comprar una licencia de taxi en Palma?
+                ¿Merece la pena comprar una licencia?
               </SectionTitle>
 
               <Paragraph>
-                Depende de tu enfoque. Es una inversión elevada, pero en una ciudad
-                turística como Palma puede ser rentable si se trabaja correctamente.
+                Depende de tu objetivo.
               </Paragraph>
 
-              <Paragraph>
-                Antes de comprar, revisa los{" "}
-                <a href="/requisitos-taxista-palma">
-                  requisitos para ser taxista
-                </a>{" "}
-                y cómo es el{" "}
-                <a href="/examen-taxista-mallorca">
-                  examen de taxi en Palma
-                </a>.
-              </Paragraph>
+              <CheckList>
+                <li>Si quieres trabajar → necesitas carnet</li>
+                <li>Si quieres invertir → licencia</li>
+              </CheckList>
+
+              <MicroHighlight>
+                👉 La mayoría empieza trabajando, no comprando.
+              </MicroHighlight>
             </Section>
 
             {/* CTA */}
             <CTABox>
-              <CTATitle>Antes de invertir, prepárate</CTATitle>
+              <CTATitle>Empieza por el carnet, no por la inversión</CTATitle>
 
               <CTAParagraph>
-                Entender el sector es clave antes de comprar una licencia.
+                Aprende el proceso completo antes de tomar decisiones grandes.
               </CTAParagraph>
 
               <CTAButtons>
-                <PrimaryLink to="/test-taxista-palma">
-                  Practicar examen
-                </PrimaryLink>
-                <SecondaryLink to="/guia-taxista-mallorca">
+                <PrimaryLink to="/guia-taxista-mallorca">
                   Ver guía completa
+                </PrimaryLink>
+                <SecondaryLink to="/test-taxista-palma">
+                  Practicar examen
                 </SecondaryLink>
               </CTAButtons>
             </CTABox>
@@ -245,30 +232,18 @@ export default function CuantoCuestaLicenciaTaxiPalma() {
 
               <FaqWrap>
                 <FaqItem>
-                  <FaqQuestion>
-                    ¿Cuánto cuesta una licencia de taxi en Palma?
-                  </FaqQuestion>
-                  <FaqAnswer>
-                    Entre 110.000 € y más de 140.000 € según el mercado.
-                  </FaqAnswer>
+                  <FaqQuestion>¿Necesito licencia para empezar?</FaqQuestion>
+                  <FaqAnswer>No. Necesitas el carnet.</FaqAnswer>
                 </FaqItem>
 
                 <FaqItem>
-                  <FaqQuestion>
-                    ¿El precio es fijo?
-                  </FaqQuestion>
-                  <FaqAnswer>
-                    No, depende del traspaso y del mercado.
-                  </FaqAnswer>
+                  <FaqQuestion>¿Se puede trabajar sin comprar?</FaqQuestion>
+                  <FaqAnswer>Sí, trabajando para un titular.</FaqAnswer>
                 </FaqItem>
 
                 <FaqItem>
-                  <FaqQuestion>
-                    ¿Es rentable?
-                  </FaqQuestion>
-                  <FaqAnswer>
-                    Puede serlo, especialmente en temporada alta.
-                  </FaqAnswer>
+                  <FaqQuestion>¿Es rentable?</FaqQuestion>
+                  <FaqAnswer>Depende del trabajo y la temporada.</FaqAnswer>
                 </FaqItem>
               </FaqWrap>
             </Section>
@@ -278,16 +253,16 @@ export default function CuantoCuestaLicenciaTaxiPalma() {
               <SectionTitle>Seguir leyendo</SectionTitle>
 
               <RelatedGrid>
-                <RelatedCard to="/requisitos-taxista-palma">
-                  <RelatedTitle>Requisitos taxista Palma</RelatedTitle>
+                <RelatedCard to="/guia-taxista-mallorca">
+                  <RelatedTitle>Cómo ser taxista</RelatedTitle>
                 </RelatedCard>
 
-                <RelatedCard to="/examen-taxista-mallorca">
-                  <RelatedTitle>Examen taxi Mallorca</RelatedTitle>
+                <RelatedCard to="/requisitos-taxista-palma">
+                  <RelatedTitle>Requisitos</RelatedTitle>
                 </RelatedCard>
 
                 <RelatedCard to="/cuanto-gana-un-taxista-en-mallorca">
-                  <RelatedTitle>Cuánto gana un taxista</RelatedTitle>
+                  <RelatedTitle>Cuánto se gana</RelatedTitle>
                 </RelatedCard>
               </RelatedGrid>
             </RelatedSection>

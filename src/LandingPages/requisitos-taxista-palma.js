@@ -29,18 +29,19 @@ import {
   FaqItem,
   FaqQuestion,
   FaqAnswer,
+  CheckList,
+  MicroHighlight,
+  MiniLead,
 } from "./LandigPagesStyle";
-
-import { Link as InlineLink } from "react-router-dom";
 
 export default function RequisitosTaxistaPalma() {
   const canonicalUrl = "https://taxiradar24.com/requisitos-taxista-palma";
 
   const title =
-    "Requisitos para ser taxista en Palma de Mallorca (Carnet y examen 2026)";
+    "Requisitos para ser taxista en Palma de Mallorca (Carnet municipal 2026)";
 
   const description =
-    "Todo lo que necesitas para obtener el carnet de taxista en Palma: requisitos, examen, inscripción, documentación y cómo aprobar a la primera.";
+    "Requisitos reales para obtener el carnet de taxista en Palma: permiso de conducir, catalán, examen y documentación. Guía clara y actualizada.";
 
   return (
     <>
@@ -67,163 +68,139 @@ export default function RequisitosTaxistaPalma() {
 
           {/* HERO */}
           <Hero>
-            <Eyebrow>Guía Oficial TaxiRadar24</Eyebrow>
+            <Eyebrow>TaxiRadar24</Eyebrow>
 
             <Title>
-              Requisitos para obtener el carnet de taxista en Palma de Mallorca
+              Requisitos para ser taxista en Palma de Mallorca
             </Title>
 
             <Lead>
-              Para trabajar como taxista en Palma es necesario cumplir requisitos
-              oficiales, inscribirse al examen municipal y superar una prueba
-              exigente que determina quién puede ejercer la profesión.
+              Antes de presentarte al examen necesitas cumplir unas condiciones
+              básicas. Aquí tienes el filtro real: si puedes acceder o no al carnet municipal.
             </Lead>
 
             <SnippetBox>
-              <SnippetLabel>Clave</SnippetLabel>
               <SnippetText>
-                El mayor filtro no son los requisitos, es el examen. Prepararlo
-                correctamente marca la diferencia.
+                👉 Si no cumples estos requisitos, no podrás presentarte al examen.
               </SnippetText>
             </SnippetBox>
           </Hero>
 
           <Content>
 
-            {/* PROCESO */}
+            {/* CHECK RÁPIDO */}
             <Section>
-              <SectionTitle>
-                Proceso completo para obtener la licencia de taxi en Palma
-              </SectionTitle>
+              <SectionTitle>¿Puedes presentarte al examen?</SectionTitle>
 
-              <Paragraph>
-                Aunque muchos lo llaman “carnet de taxista”, en Palma de Mallorca
-                el proceso consiste en obtener un permiso municipal tras superar
-                un examen oficial y cumplir todos los requisitos exigidos.
-              </Paragraph>
+              <MiniLead>
+                Comprueba en 30 segundos si cumples lo necesario:
+              </MiniLead>
 
-              <Paragraph>
-                El examen se convoca dos veces al año, normalmente en febrero y
-                noviembre, y toda la información se publica en la web oficial del
-                Ayuntamiento.
-              </Paragraph>
+              <CheckList>
+                <li>Permiso de conducir B con mínimo 1 año</li>
+                <li>Puedes acreditar nivel de catalán oral</li>
+                <li>No tienes antecedentes penales</li>
+                <li>No tienes delitos de carácter sexual</li>
+              </CheckList>
 
-              <SnippetBox>
-                <SnippetLabel>Importante</SnippetLabel>
-                <SnippetText>
-                  Solo hay dos oportunidades al año para presentarse al examen.
-                </SnippetText>
-              </SnippetBox>
+              <MicroHighlight>
+                👉 Si cumples estos 4 puntos, puedes presentarte.
+              </MicroHighlight>
             </Section>
 
-            {/* REQUISITOS */}
+            {/* EXPLICACIÓN REAL */}
             <Section>
-              <SectionTitle>
-                Requisitos para acceder al examen de taxista en Palma
-              </SectionTitle>
+              <SectionTitle>Requisitos explicados sin rodeos</SectionTitle>
+
+              <Paragraph>
+                Estos son los puntos que el Ayuntamiento exige para acceder al examen.
+              </Paragraph>
 
               <BulletList>
-                <li>Permiso de conducir clase B con al menos 1 año</li>
-                <li>Nivel de catalán oral suficiente</li>
-                <li>Sin antecedentes penales</li>
-                <li>Sin delitos de naturaleza sexual</li>
+                <li>
+                  <strong>Permiso de conducir:</strong> mínimo clase B con 1 año de experiencia.
+                </li>
+                <li>
+                  <strong>Catalán oral:</strong> puedes acreditarlo con título o mediante prueba.
+                </li>
+                <li>
+                  <strong>Antecedentes:</strong> no puedes tener antecedentes penales ni delitos sexuales.
+                </li>
               </BulletList>
 
               <SnippetBox>
-                <SnippetLabel>Condición obligatoria</SnippetLabel>
                 <SnippetText>
-                  Si no cumples estos requisitos, no podrás acceder al examen.
+                  👉 Los certificados suelen pedirse después de aprobar el examen.
                 </SnippetText>
               </SnippetBox>
             </Section>
 
             {/* INSCRIPCIÓN */}
             <Section>
-              <SectionTitle>
-                Cómo inscribirse al examen de taxi en Palma
-              </SectionTitle>
+              <SectionTitle>Cómo inscribirte al examen</SectionTitle>
 
               <Paragraph>
-                El plazo de inscripción comienza tras la convocatoria oficial y
-                finaliza aproximadamente un mes antes del examen.
+                Cuando se abre la convocatoria, tienes un plazo limitado para presentar la solicitud.
               </Paragraph>
 
-              <BulletList>
-                <li>DNI, NIE o pasaporte en vigor</li>
+              <CheckList>
+                <li>DNI, NIE o pasaporte</li>
                 <li>Permiso de conducir</li>
                 <li>Pago de la tasa de examen</li>
-                <li>Acreditación del nivel de catalán</li>
-              </BulletList>
+                <li>Documento de catalán (si aplica)</li>
+              </CheckList>
 
-              <SnippetBox>
-                <SnippetLabel>Atención</SnippetLabel>
-                <SnippetText>
-                  Solicitudes fuera de plazo o incompletas quedan excluidas automáticamente.
-                </SnippetText>
-              </SnippetBox>
+              <MicroHighlight>
+                👉 Solicitudes incompletas o fuera de plazo quedan fuera automáticamente.
+              </MicroHighlight>
             </Section>
 
             {/* EXAMEN */}
             <Section>
-              <SectionTitle>
-                Cómo es el examen de taxista en Palma de Mallorca
-              </SectionTitle>
+              <SectionTitle>El verdadero filtro: el examen</SectionTitle>
 
               <Paragraph>
-                El examen tiene una duración aproximada de 1 hora y media y
-                evalúa conocimientos sobre normativa, callejero y funcionamiento
-                del servicio de taxi.
+                Cumplir los requisitos solo te permite entrar.
               </Paragraph>
-
-              <SnippetBox>
-                <SnippetLabel>Realidad</SnippetLabel>
-                <SnippetText>
-                  Muchos aspirantes suspenden por no practicar con test y simuladores reales.
-                </SnippetText>
-              </SnippetBox>
-            </Section>
-
-            {/* RESULTADOS */}
-            <Section>
-              <SectionTitle>
-                Resultados del examen
-              </SectionTitle>
 
               <Paragraph>
-                Se publica una plantilla provisional con un plazo de 3 días para
-                alegaciones, seguido de la lista definitiva de aptos y no aptos.
+                Lo que realmente decide si trabajas o no es el examen municipal.
               </Paragraph>
+
+              <MicroHighlight>
+                👉 La mayoría suspende por no practicar correctamente.
+              </MicroHighlight>
             </Section>
 
             {/* DOCUMENTACIÓN */}
             <Section>
-              <SectionTitle>
-                Documentación para obtener el carnet de taxista
-              </SectionTitle>
+              <SectionTitle>Después de aprobar</SectionTitle>
+
+              <Paragraph>
+                Si superas el examen, tendrás que entregar la documentación final:
+              </Paragraph>
 
               <BulletList>
-                <li>Fotografía tipo carnet</li>
                 <li>Certificado de antecedentes penales</li>
                 <li>Certificado de delitos sexuales</li>
-                <li>Certificado médico oficial</li>
-                <li>Pago de la tasa</li>
+                <li>Certificado médico</li>
+                <li>Fotografía tipo carnet</li>
+                <li>Pago de tasas</li>
               </BulletList>
 
               <SnippetBox>
-                <SnippetLabel>Importante</SnippetLabel>
                 <SnippetText>
-                  El aprobado caduca en 1 año si no completas el proceso.
+                  👉 El aprobado caduca si no completas el proceso a tiempo.
                 </SnippetText>
               </SnippetBox>
             </Section>
 
             {/* CTA */}
             <CTABox>
-              <CTATitle>Prepárate para aprobar</CTATitle>
+              <CTATitle>Prepárate para el examen con ventaja</CTATitle>
 
               <CTAParagraph>
-                Practica con test reales y simulador de examen para aumentar tus
-                probabilidades de éxito.
+                No basta con cumplir requisitos. Necesitas entrenar como en el examen real.
               </CTAParagraph>
 
               <CTAButtons>
@@ -244,14 +221,21 @@ export default function RequisitosTaxistaPalma() {
                 <FaqItem>
                   <FaqQuestion>¿Cuántas convocatorias hay?</FaqQuestion>
                   <FaqAnswer>
-                    Dos al año, normalmente en febrero y noviembre.
+                    Normalmente dos al año: febrero y noviembre.
+                  </FaqAnswer>
+                </FaqItem>
+
+                <FaqItem>
+                  <FaqQuestion>¿Necesito licencia para empezar?</FaqQuestion>
+                  <FaqAnswer>
+                    No. Primero necesitas el carnet municipal para trabajar como conductor.
                   </FaqAnswer>
                 </FaqItem>
 
                 <FaqItem>
                   <FaqQuestion>¿Es difícil el examen?</FaqQuestion>
                   <FaqAnswer>
-                    Sí, requiere preparación específica y práctica.
+                    Sí. Requiere práctica con test y preparación específica.
                   </FaqAnswer>
                 </FaqItem>
               </FaqWrap>
