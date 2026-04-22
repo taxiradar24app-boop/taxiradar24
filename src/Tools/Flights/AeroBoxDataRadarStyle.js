@@ -148,8 +148,11 @@ export const HourForecastWrap = styled.div`
     max-width: 100%;
   }
 
+  /* 🔥 MOBILE FIX */
   @media (max-width: 480px) {
-    gap: 8px;
+    grid-template-columns: 1fr;   /* 👈 UNA sola columna */
+    justify-items: center;        /* 👈 centra las pills */
+    gap: 12px;
   }
 `;
 
@@ -162,27 +165,47 @@ export const HourForecastItem = styled.div`
   width: 100%;
   padding: 10px 14px;
   border-radius: 999px;
-  background: rgba(16, 163, 127, 0.1);
-  border: 1px solid rgba(16, 163, 127, 0.22);
+
+  /* 🎯 COLOR POR RANGO */
+${({ $range }) => {
+  switch ($range) {
+    case "low":
+      return css`
+        background: rgba(34, 197, 94, 0.12);
+        border: 1px solid rgba(34, 197, 94, 0.35);
+      `;
+    case "medium":
+      return css`
+        background: rgba(250, 204, 21, 0.12);
+        border: 1px solid rgba(250, 204, 21, 0.35);
+      `;
+    case "high":
+      return css`
+        background: rgba(239, 68, 68, 0.14);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+      `;
+  }
+}}
+
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.03),
     0 8px 20px rgba(0, 0, 0, 0.18);
 
+  /* 🔥 HORA ACTUAL (tiene prioridad visual) */
   ${({ $isCurrentHour }) =>
     $isCurrentHour &&
     css`
-      background: rgba(168, 85, 247, 0.16);
-      border: 1px solid rgba(168, 85, 247, 0.42);
+      background: rgba(168, 85, 247, 0.18);
+      border: 1px solid rgba(168, 85, 247, 0.5);
       box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.04),
-        0 0 0 1px rgba(168, 85, 247, 0.14),
-        0 10px 24px rgba(76, 29, 149, 0.28);
+        0 0 0 2px rgba(168, 85, 247, 0.25),
+        0 10px 24px rgba(76, 29, 149, 0.35);
     `}
 
   @media (max-width: 480px) {
-    min-height: 44px;
-    padding: 8px 11px;
-    gap: 8px;
+    width: 80%;
+    min-height: 56px;
+    padding: 12px 16px;
   }
 `;
 
@@ -201,18 +224,17 @@ export const HourForecastHour = styled.span`
 `;
 
 export const HourForecastCount = styled.span`
-  color: ${({ $isCurrentHour }) => ($isCurrentHour ? "#e9d5ff" : "#a3e635")};
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  font-size: ${({ theme }) => theme.fontSizes?.sm || "0.9375rem"};
-  font-weight: ${({ theme }) => theme.fontWeights?.bold || 700};
-  line-height: 1.2;
-  white-space: nowrap;
-  text-align: right;
-
-  @media (max-width: 480px) {
-    font-size: 0.84rem;
+  font-weight: 700;
+${({ $range }) => {
+  switch ($range) {
+    case "low":
+      return `color: #4ade80;`;
+    case "medium":
+      return `color: #f87171;`;
+    case "high":
+      return `color: #fde047;`;
   }
+}}
 `;
 
 /* =========================

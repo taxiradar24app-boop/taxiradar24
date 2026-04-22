@@ -121,7 +121,7 @@ export default function ToolsLanding() {
 
           <FeatureCard onClick={goCruisers} $clickable>
             <FeatureIcon
-              src="/assets/icono/icono_boat_navegando.webp"
+              src="/assets/icono/icono_cruceros_frente.webp"
               alt="Icono cruceros"
               $type="cruises"
             />

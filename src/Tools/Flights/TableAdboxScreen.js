@@ -131,7 +131,11 @@ export default function TableAdboxScreen() {
   }, [processedFlights]);
 
   const currentHour = new Date().getHours();
-
+const getRange = (count) => {
+  if (count <= 30) return "low";
+  if (count <= 40) return "medium";
+  return "high";
+};
   const renderStatus = (status) => {
     if (status === "Expected") return "🟢 On Time";
     if (status === "Delayed") return "🟠 Delayed";
@@ -191,14 +195,18 @@ export default function TableAdboxScreen() {
 
               return (
                 <HourForecastItem
-                  key={item.hour}
-                  $isCurrentHour={isCurrentHour}
-                >
+  key={item.hour}
+  $isCurrentHour={isCurrentHour}
+  $range={getRange(item.count)}
+>
                   <HourForecastHour $isCurrentHour={isCurrentHour}>
                     {String(item.hour).padStart(2, "0")}:00
                   </HourForecastHour>
 
-                  <HourForecastCount $isCurrentHour={isCurrentHour}>
+                  <HourForecastCount
+  $isCurrentHour={isCurrentHour}
+  $range={getRange(item.count)}
+>
                     {item.count} {item.count === 1 ? "vuelo" : "vuelos"}
                   </HourForecastCount>
                 </HourForecastItem>
