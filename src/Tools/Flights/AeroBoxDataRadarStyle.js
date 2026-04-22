@@ -228,9 +228,9 @@ export const HourForecastCount = styled.span`
 ${({ $range }) => {
   switch ($range) {
     case "low":
-      return `color: #4ade80;`;
+      return `color: #e18a68;`;
     case "medium":
-      return `color: #f87171;`;
+      return `color: #4ade80;`;
     case "high":
       return `color: #fde047;`;
   }
