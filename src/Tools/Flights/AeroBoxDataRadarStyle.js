@@ -148,10 +148,10 @@ export const HourForecastWrap = styled.div`
     max-width: 100%;
   }
 
-  /* 🔥 MOBILE FIX */
   @media (max-width: 480px) {
-    grid-template-columns: 1fr;   /* 👈 UNA sola columna */
-    justify-items: center;        /* 👈 centra las pills */
+    font-size: 0.95rem;
+    grid-template-columns: 1fr;
+    justify-items: center;
     gap: 12px;
   }
 `;
@@ -165,33 +165,45 @@ export const HourForecastItem = styled.div`
   width: 100%;
   padding: 10px 14px;
   border-radius: 999px;
-
-  /* 🎯 COLOR POR RANGO */
-${({ $range }) => {
-  switch ($range) {
-    case "low":
-      return css`
-        background: rgba(34, 197, 94, 0.12);
-        border: 1px solid rgba(34, 197, 94, 0.35);
-      `;
-    case "medium":
-      return css`
-        background: rgba(250, 204, 21, 0.12);
-        border: 1px solid rgba(250, 204, 21, 0.35);
-      `;
-    case "high":
-      return css`
-        background: rgba(239, 68, 68, 0.14);
-        border: 1px solid rgba(239, 68, 68, 0.4);
-      `;
-  }
-}}
-
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.03),
     0 8px 20px rgba(0, 0, 0, 0.18);
 
-  /* 🔥 HORA ACTUAL (tiene prioridad visual) */
+  ${({ $range }) => {
+    switch ($range) {
+      case "orangeSoft":
+        return css`
+          background: rgba(249, 115, 22, 0.12);
+          border: 1px solid rgba(249, 115, 22, 0.34);
+        `;
+      case "orangeMedium":
+        return css`
+          background: rgba(251, 146, 60, 0.13);
+          border: 1px solid rgba(251, 146, 60, 0.36);
+        `;
+      case "orangeStrong":
+        return css`
+          background: rgba(253, 186, 116, 0.14);
+          border: 1px solid rgba(253, 186, 116, 0.38);
+        `;
+      case "green":
+        return css`
+          background: rgba(34, 197, 94, 0.12);
+          border: 1px solid rgba(34, 197, 94, 0.35);
+        `;
+      case "gold":
+        return css`
+          background: rgba(250, 204, 21, 0.12);
+          border: 1px solid rgba(250, 204, 21, 0.35);
+        `;
+      default:
+        return css`
+          background: rgba(148, 163, 184, 0.1);
+          border: 1px solid rgba(148, 163, 184, 0.24);
+        `;
+    }
+  }}
+
   ${({ $isCurrentHour }) =>
     $isCurrentHour &&
     css`
@@ -219,22 +231,50 @@ export const HourForecastHour = styled.span`
   white-space: nowrap;
 
   @media (max-width: 480px) {
-    font-size: 0.84rem;
+    font-size: 1.2rem;
   }
 `;
 
 export const HourForecastCount = styled.span`
   font-weight: 700;
-${({ $range }) => {
-  switch ($range) {
-    case "low":
-      return `color: #e18a68;`;
-    case "medium":
-      return `color: #4ade80;`;
-    case "high":
-      return `color: #fde047;`;
-  }
-}}
+  white-space: nowrap;
+
+  ${({ $isPastHour }) =>
+    $isPastHour &&
+    css`
+      color: #8fb2d7;
+    `}
+
+  ${({ $isPastHour, $range }) => {
+    if ($isPastHour) return "";
+
+    switch ($range) {
+      case "orangeSoft":
+        return css`
+          color: #fb923c;
+        `;
+      case "orangeMedium":
+        return css`
+          color: #f59e0b;
+        `;
+      case "orangeStrong":
+        return css`
+          color: #fdba74;
+        `;
+      case "green":
+        return css`
+          color: #4ade80;
+        `;
+      case "gold":
+        return css`
+          color: #fde047;
+        `;
+      default:
+        return css`
+          color: #dbeafe;
+        `;
+    }
+  }}
 `;
 
 /* =========================
@@ -500,7 +540,7 @@ const statusStyles = {
     border: 1px solid rgba(239, 68, 68, 0.22);
   `,
   landed: css`
-    color: #e9d5ff;
+    color: #a855f7;
     background: rgba(168, 85, 247, 0.12);
     border: 1px solid rgba(168, 85, 247, 0.22);
   `,

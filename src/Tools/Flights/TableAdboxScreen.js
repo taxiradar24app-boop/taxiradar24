@@ -118,24 +118,40 @@ export default function TableAdboxScreen() {
       const date = new Date(baseDate);
       if (Number.isNaN(date.getTime())) return;
 
-      const hour = date.getHours();
-      bucket[hour] = (bucket[hour] || 0) + 1;
+      const bucketDate = new Date(date);
+      bucketDate.setMinutes(0, 0, 0);
+
+      const key = bucketDate.toISOString();
+
+      if (!bucket[key]) {
+        bucket[key] = {
+          key,
+          date: bucketDate,
+          hour: bucketDate.getHours(),
+          count: 0,
+        };
+      }
+
+      bucket[key].count += 1;
     });
 
-    return Object.entries(bucket)
-      .map(([hour, count]) => ({
-        hour: Number(hour),
-        count,
-      }))
-      .sort((a, b) => a.hour - b.hour);
+    return Object.values(bucket).sort((a, b) => a.date.getTime() - b.date.getTime());
   }, [processedFlights]);
 
-  const currentHour = new Date().getHours();
-const getRange = (count) => {
-  if (count <= 30) return "low";
-  if (count <= 40) return "medium";
-  return "high";
-};
+  const currentHourStart = useMemo(() => {
+    const d = new Date();
+    d.setMinutes(0, 0, 0);
+    return d.getTime();
+  }, [nowTs]);
+
+  const getRange = (count) => {
+    if (count <= 9) return "orangeSoft";
+    if (count <= 19) return "orangeMedium";
+    if (count <= 29) return "orangeStrong";
+    if (count <= 39) return "green";
+    return "gold";
+  };
+
   const renderStatus = (status) => {
     if (status === "Expected") return "🟢 On Time";
     if (status === "Delayed") return "🟠 Delayed";
@@ -191,23 +207,29 @@ const getRange = (count) => {
             </HourForecastItem>
           ) : (
             hourlyForecast.map((item) => {
-              const isCurrentHour = item.hour === currentHour;
+              const bucketTs = item.date.getTime();
+              const isCurrentHour = bucketTs === currentHourStart;
+              const isPastHour = bucketTs < currentHourStart;
+              const range = getRange(item.count);
+              const label = isPastHour && !isCurrentHour ? "landed" : item.count === 1 ? "vuelo" : "vuelos";
 
               return (
                 <HourForecastItem
-  key={item.hour}
-  $isCurrentHour={isCurrentHour}
-  $range={getRange(item.count)}
->
+                  key={item.key}
+                  $isCurrentHour={isCurrentHour}
+                  $range={range}
+                  $isPastHour={isPastHour}
+                >
                   <HourForecastHour $isCurrentHour={isCurrentHour}>
                     {String(item.hour).padStart(2, "0")}:00
                   </HourForecastHour>
 
                   <HourForecastCount
-  $isCurrentHour={isCurrentHour}
-  $range={getRange(item.count)}
->
-                    {item.count} {item.count === 1 ? "vuelo" : "vuelos"}
+                    $isCurrentHour={isCurrentHour}
+                    $range={range}
+                    $isPastHour={isPastHour}
+                  >
+                    {item.count} {label}
                   </HourForecastCount>
                 </HourForecastItem>
               );
@@ -252,7 +274,9 @@ const getRange = (count) => {
               </tr>
             ) : (
               processedFlights.map((flight) => (
-                <tr key={flight.id || `${flight.flight_number}-${flight.estimated_arrival}`}>
+                <tr
+                  key={flight.id || `${flight.flight_number}-${flight.estimated_arrival}`}
+                >
                   <td className="hide-flight-mobile">
                     <FlightCode>{flight.flight_number || "—"}</FlightCode>
                   </td>

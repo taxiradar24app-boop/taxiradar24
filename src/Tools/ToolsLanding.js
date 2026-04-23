@@ -66,7 +66,24 @@ export default function ToolsLanding() {
       </HeroSection>
 
       <Section>
+    
         <FeatureGrid>
+                  <FeatureCard onClick={goScheduled} $clickable>
+            <FeatureIcon
+              src="/assets/icono/icono_avion_vuelo.webp"
+              alt="Icono próximas llegadas"
+              $type="arrivals"
+            />
+            <FeatureTitle $type="arrivals">Próximas llegadas</FeatureTitle>
+            <FeatureText>
+              Revisa la previsión de vuelos y anticípate a los próximos picos.
+            </FeatureText>
+
+            <ModuleFooter>
+              <span />
+              <ModuleCTA>Ver: 12 Horas →</ModuleCTA>
+            </ModuleFooter>
+          </FeatureCard>
           <FeatureCard onClick={goFlights} $clickable>
             <FeatureIcon
               src="/assets/icono/icono_avion_aproximandose.webp"
@@ -81,23 +98,6 @@ export default function ToolsLanding() {
             <ModuleFooter>
               <span />
               <ModuleCTA>Ver: 30 minutos →</ModuleCTA>
-            </ModuleFooter>
-          </FeatureCard>
-
-          <FeatureCard onClick={goScheduled} $clickable>
-            <FeatureIcon
-              src="/assets/icono/icono_avion_vuelo.webp"
-              alt="Icono próximas llegadas"
-              $type="arrivals"
-            />
-            <FeatureTitle $type="arrivals">Próximas llegadas</FeatureTitle>
-            <FeatureText>
-              Revisa la previsión de vuelos y anticípate a los próximos picos.
-            </FeatureText>
-
-            <ModuleFooter>
-              <span />
-              <ModuleCTA>Ver: 12 Horas →</ModuleCTA>
             </ModuleFooter>
           </FeatureCard>
 
